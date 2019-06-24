@@ -1,0 +1,117 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ngx-fileupload-example": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "example",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ngx-fileupload-example",
+            "index": "example/index.html",
+            "main": "example/main.ts",
+            "polyfills": "example/polyfills.ts",
+            "tsConfig": "example/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "example/favicon.ico",
+              "example/assets"
+            ],
+            "styles": [
+              "example/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "example/environments/environment.ts",
+                  "with": "example/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ngx-fileupload-example:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-fileupload-example:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngx-fileupload-example:build"
+          }
+        }
+      }
+    },
+    "ngx-fileupload": {
+      "projectType": "library",
+      "root": "lib/ngx-fileupload",
+      "sourceRoot": "lib/ngx-fileupload",
+      "prefix": "ngx-fileupload",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "lib/tsconfig.lib.json",
+            "project": "lib/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "lib/tests/main.ts",
+            "tsConfig": "lib/tests/tsconfig.spec.json",
+            "karmaConfig": "lib/tests/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "lib/ngx-fileupload/tsconfig.lib.json",
+              "lib/ngx-fileupload/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }},
+  "defaultProject": "ngx-fileupload-example"
+}

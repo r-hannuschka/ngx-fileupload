@@ -1,5 +1,5 @@
-import { UploadFile } from 'lib/public-api';
-import { FileState } from 'lib/ngx-fileupload/model/upload-file';
+import { FileModel } from 'lib/public-api';
+import { FileState } from 'lib/ngx-fileupload/model/file';
 
 describe('Model: UploadFile', () => {
 
@@ -7,11 +7,11 @@ describe('Model: UploadFile', () => {
     const FILE_NAME = 'hello_world.txt';
 
     let file: File;
-    let model: UploadFile;
+    let model: FileModel;
 
     beforeEach(() => {
         file = new File([FILE_CONTENT], FILE_NAME, {type: 'text/plain'});
-        model = new UploadFile(file);
+        model = new FileModel(file);
     });
 
     it('should return filename', () => {
@@ -31,8 +31,8 @@ describe('Model: UploadFile', () => {
     });
 
     it('should set new state', () => {
-        model.state = FileState.UPLOADING;
-        expect(model.state).toBe(FileState.UPLOADING);
+        model.state = FileState.PROGRESS;
+        expect(model.state).toBe(FileState.PROGRESS);
     });
 
     it('should return uploaded size: 0 by default', () => {

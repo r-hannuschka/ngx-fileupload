@@ -1,11 +1,12 @@
 export enum FileState {
     QUEUED    = 'queued',
-    UPLOADING = 'uploading',
+    START     = 'start',
+    PROGRESS  = 'progress',
     UPLOADED  = 'uploaded',
-    CANCELD   = 'canceled'
+    CANCELED  = 'canceled'
 }
 
-export class UploadFile {
+export class FileModel {
 
     private file: File;
 
@@ -18,6 +19,13 @@ export class UploadFile {
      */
     public constructor(file: File) {
         this.file = file;
+    }
+
+    /**
+     * get raw file
+     */
+    public get blob(): Blob {
+        return this.file;
     }
 
     /**
@@ -41,18 +49,30 @@ export class UploadFile {
         return this.file.type;
     }
 
+    /**
+     * set current upload state
+     */
     public set state(state: FileState) {
         this.uploadedState = state;
     }
 
+    /**
+     * get current upload state
+     */
     public get state(): FileState {
         return this.uploadedState;
     }
 
+    /**
+     * set uploaded size
+     */
     public set uploaded(bytes: number) {
         this.uploadedSize = bytes;
     }
 
+    /**
+     * get uploaded size
+     */
     public get uploaded(): number {
         return this.uploadedSize;
     }

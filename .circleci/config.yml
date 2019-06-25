@@ -1,0 +1,61 @@
+version: 2.1
+
+orbs:
+    codecov: codecov/codecov@1.0.5
+
+defaults: &defaults
+  working_directory: ~/ngx-fileupload
+  docker:
+      - image: circleci/node:10.9.0-browsers
+
+aliases:
+  - &filter_master
+      branches:
+        only: master
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
+      - run:
+          name: "install packages"
+          command: cd src && npm install
+      - save_cache:
+          key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
+          paths:
+            - "src/node_modules"
+      - persist_to_workspace:
+          root: ~/ngx-fileupload
+          paths:
+            - .
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/ngx-fileupload
+      - run:
+          name: "run lint"
+          command: cd src && npm run lint -- ngx-fileupload
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/ngx-fileupload
+      - run:
+          name: "run unit tests"
+          command: cd src && npm run test -- ngx-fileupload --watch=false
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - install
+      - lint:
+          requires:
+            - install
+      - test:
+          requires:
+            - install

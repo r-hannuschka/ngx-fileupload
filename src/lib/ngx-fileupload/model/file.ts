@@ -6,6 +6,9 @@ export enum FileState {
     CANCELED  = 'canceled'
 }
 
+/**
+ * Represents a file which will be uploaded
+ */
 export class FileModel {
 
     private file: File;

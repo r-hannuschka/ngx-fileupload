@@ -1,0 +1,8 @@
+<ng-template #defaultUploadItem let-file=file>
+    <div>{{file.name}}</div>
+    <div>{{file.state}}</div>
+    <div>{{file.uploaded}} / {{file.size}}</div>
+</ng-template>
+
+<ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context" >
+</ng-container>

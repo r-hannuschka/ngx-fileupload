@@ -1,0 +1,9 @@
+<ng-template #defaultUploadItem>
+    <h1>default upload item</h1>
+</ng-template>
+
+<div class="upload-container" style="background: red; height: 200px; width: 100%;">
+    <ng-container *ngFor="let item of items">
+        <ng-container *ngTemplateOutlet="itemTpl"></ng-container>
+    </ng-container>
+</div>

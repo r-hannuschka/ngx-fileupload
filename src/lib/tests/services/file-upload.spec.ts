@@ -29,7 +29,7 @@ describe('Model: UploadFile', () => {
         const httpClient = injector.get(HttpClient as Type<HttpClient>);
         const model = new FileModel(uploadFile);
 
-        fileupload = new FileUpload(httpClient, model);
+        fileupload = new FileUpload(httpClient, model, { url });
     });
 
     afterEach(() => {
@@ -37,7 +37,7 @@ describe('Model: UploadFile', () => {
     });
 
     it('should submit post request', () => {
-        fileupload.start(url);
+        fileupload.start();
         const req = httpMock.expectOne(url);
 
         expect(req.request.method).toBe('POST');
@@ -45,7 +45,7 @@ describe('Model: UploadFile', () => {
     });
 
     it('should submit file', () => {
-        fileupload.start(url);
+        fileupload.start();
 
         const req  = httpMock.expectOne(url);
         const body = req.request.body as FormData;
@@ -67,7 +67,7 @@ describe('Model: UploadFile', () => {
                 }
             });
 
-        fileupload.start(url);
+        fileupload.start();
         const mockReq = httpMock.expectOne(url);
         mockReq.event({type: HttpEventType.UploadProgress, loaded: 7, total: 10 } as HttpProgressEvent);
         mockReq.flush('');
@@ -82,7 +82,7 @@ describe('Model: UploadFile', () => {
                 }
             });
 
-        fileupload.start(url);
+        fileupload.start();
         httpMock.expectOne(url);
         // cancel request
         fileupload.cancel();
@@ -91,22 +91,15 @@ describe('Model: UploadFile', () => {
     it('should not start upload if allready running', () => {
         const file = fileupload.file;
         file.state = FileState.PROGRESS;
-
-        fileupload.start(url);
+        fileupload.start();
         httpMock.expectNone(url);
     });
 
     it('should not cancel upload if allready done / canceled', () => {
-
-        fileupload.start(url);
-
+        fileupload.start();
         const mockReq = httpMock.expectOne(url);
         mockReq.flush('');
-
-        // request is allreay completed
-        // we could not cancel anymore
         fileupload.cancel();
-
         expect(fileupload.file.state).toBe(FileState.UPLOADED);
     });
 });

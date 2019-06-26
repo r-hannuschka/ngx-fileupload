@@ -1,23 +1,41 @@
-import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpParams } from '@angular/common/http';
 import { FileModel, FileState } from '../model/file';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 
+export interface UploadOptions {
+    url: string;
+    params?: HttpParams;
+}
+
 /**
- * represents a single file upload
- * notfiy on upload state changed
+ * represents a single fileupload
  */
 export class FileUpload {
 
+    /**
+     * if cancel$ emits true, current upload will stopped
+     */
     private cancel$: Subject<boolean> = new Subject();
 
+    /**
+     * upload stream to notify observers if something has been changed
+     */
     private upload$: BehaviorSubject<FileModel>;
 
+    /**
+     * flag upload is canceled, so we know if request gets completed
+     * of canceled
+     */
     private isCanceled = false;
 
+    /**
+     * create FileUpload service
+     */
     public constructor(
         private http: HttpClient,
-        private fileModel: FileModel
+        private fileModel: FileModel,
+        private url: string
     ) {
         this.upload$ = new BehaviorSubject(this.fileModel);
     }
@@ -26,9 +44,9 @@ export class FileUpload {
      * upload file to server but only
      * if file is not queued, abort request on cancel
      */
-    public start(url: string) {
+    public start() {
         if (this.file.state === FileState.QUEUED) {
-            this.uploadFile(url).pipe(
+            this.uploadFile().pipe(
                 takeUntil(this.cancel$),
                 tap({
                     next: (event: HttpEvent<string>) => this.handleHttpEvent(event)
@@ -41,7 +59,7 @@ export class FileUpload {
     }
 
     /**
-     * cancel current file upload
+     * cancel current file upload, this will complete change subject
      */
     public cancel() {
         let isCancelAble = this.file.state !== FileState.CANCELED;
@@ -54,12 +72,16 @@ export class FileUpload {
     }
 
     /**
-     * returns allways the current state from upload
+     * returns observable which notify if file upload state
+     * has been changed
      */
-    public get change(): Observable<any> {
+    public get change(): Observable<FileModel> {
         return this.upload$.asObservable();
     }
 
+    /**
+     * get file which should uploaded
+     */
     public get file(): FileModel {
         return this.fileModel;
     }
@@ -67,11 +89,12 @@ export class FileUpload {
     /**
      * build form data and send request to server
      */
-    private uploadFile(url: string) {
+    private uploadFile(): Observable<HttpEvent<string>> {
+
         const formData = new FormData();
         formData.append('file', this.file.blob, this.file.fileName);
 
-        return this.http.post<string>(url, formData, {
+        return this.http.post<string>(this.url, formData, {
             reportProgress: true,
             observe: 'events'
         });

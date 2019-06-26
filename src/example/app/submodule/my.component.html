@@ -1,19 +1,10 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-    <h1>my component</h1>
+<h1>my component</h1>
 
-    <ng-template #myItemTemplate let-file=file>
-        <h3>danke Thomas</h3>
-        <div>{{file.name}}</div>
-        <div>{{file.state}}</div>
-        <div>{{file.uploaded}} / {{file.size}}</div>
-    </ng-template>
-
-    <div>
-        <ngx-fileupload-item *ngFor="let upload of uploads" [template]="myItemTemplate" [upload]="upload"></ngx-fileupload-item>
-    </div>
-
-    <div [ngxFileuploadDropZone]="'http://localhost:3000/upload'" (addUploads)="onUploadsAdd($event)" style="height: 300px; border: 1px solid">
-        <h1>drop files here to upload</h1>
-    </div>
+<div>
+    <ngx-fileupload-item *ngFor="let upload of uploads" [upload]="upload" (completed)="onCompleted($event)"></ngx-fileupload-item>
 </div>
+
+<div [ngxFileupload]="'http://localhost:3000/upload'" (addUploads)="onUploadsAdd($event)" style="height: 300px; border: 1px solid">
+    <h1>drop files here to upload</h1>
+</div>
+

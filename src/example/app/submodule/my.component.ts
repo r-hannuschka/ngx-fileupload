@@ -7,10 +7,10 @@ import { FileUpload } from 'lib/public-api';
 })
 export class MyComponent {
 
-    public uploads: FileUpload[];
+    public uploads: FileUpload[] = [];
 
     public onUploadsAdd(uploads: FileUpload[]) {
-        this.uploads = uploads;
+        this.uploads.push(...uploads);
     }
 
     public stateChange(event) {

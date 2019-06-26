@@ -1,8 +1,21 @@
-<ng-template #defaultUploadItem let-file=file>
-    <div>{{file.name}}</div>
-    <div>{{file.state}}</div>
-    <div>{{file.uploaded}} / {{file.size}}</div>
+<ng-template #defaultUploadItem let-file="file" let-control="ctrl">
+    <div class="upload-item">
+        <div class="item-header">
+            <strong>{{file.name}}</strong>
+            <button type="button" (click)="control.stop()"  *ngIf="file.state !== 'queued'">stop</button>
+            <button type="button" (click)="control.start()" *ngIf="file.state === 'queued'">start</button>
+        </div>
+        <div class="item-progress">
+            <div class="progress-info">
+                <span>{{file.state}}</span>
+                <span class="label">{{file.progress}} %</span>
+            </div>
+            <div class="progressbar-outer">
+                <div class="progressbar" [ngStyle]="{width: file.progress + '%'}"></div>
+            </div>
+        </div>
+    </div>
 </ng-template>
 
-<ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context" >
+<ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context">
 </ng-container>

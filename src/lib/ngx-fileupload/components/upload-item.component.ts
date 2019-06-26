@@ -1,64 +1,62 @@
 
-import { Component, OnInit, AfterViewInit, Input, ViewChild, TemplateRef } from '@angular/core';
-import { FileState, FileModel } from '../model/file';
-import { FileUpload } from '../services/file-upload';
-
-export interface FileContext {
-    state: FileState;
-    uploaded: number;
-    size: number;
-    name: string;
-}
+import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core';
+import { FileUpload, FileData } from '../services/file-upload';
+import { UploadControl } from '../services/upload-control';
 
 @Component({
     selector: 'ngx-fileupload-item',
-    templateUrl: 'upload-item.component.html'
+    templateUrl: 'upload-item.component.html',
+    styleUrls: ['./upload-item.component.scss']
 })
-export class UploadItemComponent implements OnInit, AfterViewInit {
+export class UploadItemComponent implements OnInit {
 
+    /**
+     * item template which should used to render upload data
+     */
     public itemTpl: TemplateRef<any>;
 
-    public context: {file: FileContext};
+    /**
+     * template context which is bound to rendered template
+     */
+    public context: {
+        file: FileData,
+        ctrl: UploadControl
+    };
 
+    /**
+     * file upload which should bound to this view
+     */
     private fileUpload: FileUpload;
 
-    public constructor() {
-    }
-
+    /**
+     * sets upload we want to bind with current view
+     */
     @Input()
     public set upload(fileUpload: FileUpload) {
         this.fileUpload = fileUpload;
-
-        const fileContext: FileContext = {
-            state    : this.fileUpload.file.state,
-            uploaded : this.fileUpload.file.uploaded,
-            size     : this.fileUpload.file.fileSize,
-            name     : this.fileUpload.file.fileName
-        };
-
+        const fileContext: FileData = this.fileUpload.toJson();
         this.context = {
-            file: fileContext
+            file: fileContext,
+            ctrl: new UploadControl(fileUpload)
         };
     }
 
+    /**
+     * sets template which should used to render file data
+     */
     @ViewChild('defaultUploadItem', {static: true})
     @Input()
     public set template(tpl: TemplateRef<any>) {
         this.itemTpl = tpl || this.itemTpl;
     }
 
+    /**
+     * @inheritdoc
+     */
     ngOnInit(): void {
-        this.fileUpload.change.subscribe({
-            next: (file: FileModel) => {
-                this.context.file.state = file.state;
-                this.context.file.uploaded = file.uploaded;
-            }
-        });
-    }
-
-    ngAfterViewInit() {
-        window.setTimeout(() => {
-            this.fileUpload.start();
-        }, 0);
+        this.fileUpload.change
+            .subscribe({
+                next: () => this.context.file = this.fileUpload.toJson()
+            });
     }
 }

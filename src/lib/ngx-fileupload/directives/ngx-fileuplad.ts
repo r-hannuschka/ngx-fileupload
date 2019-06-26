@@ -4,12 +4,12 @@ import { FileModel } from '../model/file';
 import { FileUpload } from '../services/file-upload';
 
 @Directive({
-  selector: '[ngxFileuploadDropZone]'
+  selector: '[ngxFileupload]'
 })
-export class DropZoneDirective {
+export class NgxFileuploadDirective {
 
-    @Input('ngxFileuploadDropZone')
-    public configuration: string;
+    @Input('ngxFileupload')
+    public url: string;
 
     @Output()
     public addUploads: EventEmitter<FileUpload[]>;
@@ -35,7 +35,7 @@ export class DropZoneDirective {
         // convert upload files to file uploads
         const uploads = files.map((file) => {
             const fileModel  = new FileModel(file);
-            return new FileUpload(this.httpClient, fileModel, this.configuration);
+            return new FileUpload(this.httpClient, fileModel, this.url);
         });
 
         this.addUploads.emit(uploads);

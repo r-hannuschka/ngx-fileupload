@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { DropZoneDirective } from './directives/drop-zone';
 import { UploadItemComponent } from './components/upload-item.component';
+import { NgxFileuploadDirective } from './directives/ngx-fileuplad';
 
 @NgModule( {
     declarations: [
-        DropZoneDirective,
+        NgxFileuploadDirective,
         UploadItemComponent
     ],
     imports: [
@@ -14,7 +14,7 @@ import { UploadItemComponent } from './components/upload-item.component';
         HttpClientModule
     ],
     exports: [
-        DropZoneDirective,
+        NgxFileuploadDirective,
         UploadItemComponent
     ]
 })

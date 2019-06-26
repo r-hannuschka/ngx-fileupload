@@ -3,9 +3,12 @@ import { FileModel, FileState } from '../model/file';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 
-export interface UploadOptions {
-    url: string;
-    params?: HttpParams;
+export interface FileData {
+    state: FileState;
+    uploaded: number;
+    size: number;
+    name: string;
+    progress: number;
 }
 
 /**
@@ -84,6 +87,19 @@ export class FileUpload {
      */
     public get file(): FileModel {
         return this.fileModel;
+    }
+
+    public toJson(): FileData {
+
+        const progress = this.file.uploaded * 100 / this.file.fileSize;
+
+        return {
+            state    : this.file.state,
+            uploaded : this.file.uploaded,
+            size     : this.file.fileSize,
+            name     : this.file.fileName,
+            progress : Math.round(progress > 100 ? 100 : progress)
+        };
     }
 
     /**

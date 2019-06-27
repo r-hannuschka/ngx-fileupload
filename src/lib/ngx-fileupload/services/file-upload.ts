@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent } from '@angular/common/http';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil, filter } from 'rxjs/operators';
 import { FileModel, UploadState } from '../model/file';
 
 export interface FileData {
@@ -27,12 +27,6 @@ export class FileUpload {
     private upload$: BehaviorSubject<FileModel>;
 
     /**
-     * flag upload is canceled, so we know if request gets completed
-     * of canceled
-     */
-    private isCanceled = false;
-
-    /**
      * create FileUpload service
      */
     public constructor(
@@ -48,15 +42,14 @@ export class FileUpload {
      * if file is not queued, abort request on cancel
      */
     public start() {
+        /** only start upload if state is not queued */
         if (this.file.state === UploadState.QUEUED) {
             this.uploadFile().pipe(
                 takeUntil(this.cancel$),
-                tap({
-                    next: (event: HttpEvent<string>) => this.handleHttpEvent(event)
-                })
+                filter(() => this.file.state !== UploadState.CANCELED)
             )
             .subscribe({
-                complete: () => this.handleUploadCompleted()
+                next: (event: HttpEvent<string>) => this.handleHttpEvent(event)
             });
         }
     }
@@ -65,12 +58,14 @@ export class FileUpload {
      * cancel current file upload, this will complete change subject
      */
     public cancel() {
+
         let isCancelAble = this.file.state !== UploadState.CANCELED;
-        isCancelAble = isCancelAble && this.file.state !== UploadState.UPLOADED;
+        isCancelAble     = isCancelAble && this.file.state !== UploadState.UPLOADED;
 
         if (isCancelAble) {
-            this.isCanceled = true;
+            this.file.state = UploadState.CANCELED;
             this.cancel$.next(true);
+            this.completeUpload();
         }
     }
 
@@ -127,6 +122,7 @@ export class FileUpload {
         switch (event.type) {
             case HttpEventType.Sent: this.handleSent(); break;
             case HttpEventType.UploadProgress: this.handleProgress(event); break;
+            case HttpEventType.Response: this.handleUploadCompleted(); break;
         }
     }
 
@@ -151,12 +147,23 @@ export class FileUpload {
      * upload has been completed
      */
     private handleUploadCompleted() {
-        this.file.state = this.isCanceled ? UploadState.CANCELED : UploadState.UPLOADED;
-        this.notifyObservers();
+        this.file.state = UploadState.UPLOADED;
+        this.completeUpload();
+    }
+
+    /**
+     * complete download, complete streams and delete them
+     * notify observers
+     */
+    private completeUpload() {
 
         this.upload$.complete();
         this.cancel$.complete();
+
+        this.notifyObservers();
+
         this.cancel$ = null;
+        this.upload$ = null;
     }
 
     /**

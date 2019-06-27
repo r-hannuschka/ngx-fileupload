@@ -4,16 +4,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { UploadItemComponent } from './components/upload-item.component';
 import { NgxFileuploadDirective } from './directives/ngx-fileuplad';
 import { UploadComponent } from './components/upload.component';
+import { BytesPipe } from 'angular-pipes';
 
 @NgModule( {
     declarations: [
         NgxFileuploadDirective,
         UploadItemComponent,
-        UploadComponent
+        UploadComponent,
+        BytesPipe
     ],
     imports: [
         CommonModule,
-        HttpClientModule
+        HttpClientModule,
     ],
     exports: [
         NgxFileuploadDirective,

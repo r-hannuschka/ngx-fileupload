@@ -1,36 +1,48 @@
 :host {
     display: block;
-    font-size: .85rem; /** 12px ??? */ 
+    font-size: .85rem;
+    line-height: 1.2rem;
+
+    div {
+        box-sizing: border-box;
+    }
 
     .upload-item {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
     }
 
     .file-info,
     .file-progress {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         flex: 0;
     }
 
     .file-info {
-        flex: 0 0 10rem;
         overflow: hidden;
         flex-wrap: nowrap;
+        justify-content: space-between;
 
         .label {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: 1.2rem;
+        }
+
+        .label.name {
+            font-weight: 600;
         }
     }
 
     .file-progress {
-        flex: 1;
+        display: flex;
 
         .progressbar {
-            height: .5rem;
+            flex: 1;
+            height: .75rem;
+            margin: .25rem 1rem .25rem 0;
             border-radius: .5rem;
             overflow: hidden;
             padding: 1px;
@@ -39,8 +51,16 @@
 
         .progressbar-inner {
             height: 100%;
-            background: rgb(180, 180, 255);
-            border-radius: .3rem;
+            background: #0073B1;
+            border-radius: .5rem;
+        }
+
+        .action {
+            width: .8rem;
+
+            &.stop {
+                cursor: pointer;
+            }
         }
     }
 }

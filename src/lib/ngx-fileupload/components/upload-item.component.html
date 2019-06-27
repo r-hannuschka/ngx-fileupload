@@ -2,21 +2,29 @@
     <div class="upload-item">
         <!-- base file informations -->
         <div class="file-info">
-            <strong class="label">{{file.name}}</strong>
-            <span   class="label">{{file.size}}</span>
+            <span class="label name">{{file.name}}</span>
+            <span class="label size">{{file.size | bytes : 2}}</span>
         </div>
 
         <!-- file progress: current state | progressbar -->
         <div class="file-progress">
-            <div>{{file.state}}</div>
             <div class="progressbar">
                 <div class="progressbar-inner" [ngStyle]="{width: file.progress + '%'}"></div>
             </div>
-        </div>
 
-        <!-- actions (cancel / start)-->
-        <div class="file-actions">
-            <button type="button" (click)="control.stop()" *ngIf="file.state !== 'canceled' || file.state !== 'completed'">stop</button>
+            <!-- success action -->
+            <div class="action stop" (click)="control.stop()" *ngIf="file.state == 'uploaded'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" fill="#4BB543" />
+                </svg>
+            </div>
+
+            <!-- stop action -->
+            <div class="action stop" (click)="control.stop()" *ngIf="file.state !== 'uploaded'">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1216 1312">
+                    <path d="M1202 1066q0 40-28 68l-136 136q-28 28-68 28t-68-28L608 976l-294 294q-28 28-68 28t-68-28L42 1134q-28-28-28-68t28-68l294-294L42 410q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68L880 704l294 294q28 28 28 68z" fill="#D11124" />
+                </svg>
+            </div>
         </div>
     </div>
 </ng-template>

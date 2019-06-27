@@ -24,4 +24,8 @@ $upload_icon: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0
     .file-upload--list {
         flex: 1;
     }
+
+    ngx-fileupload-item {
+        margin: 0 0 .5rem;
+    }
 }

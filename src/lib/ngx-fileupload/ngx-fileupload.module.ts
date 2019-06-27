@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { UploadItemComponent } from './components/upload-item.component';
 import { NgxFileuploadDirective } from './directives/ngx-fileuplad';
+import { UploadComponent } from './components/upload.component';
 
 @NgModule( {
     declarations: [
         NgxFileuploadDirective,
-        UploadItemComponent
+        UploadItemComponent,
+        UploadComponent
     ],
     imports: [
         CommonModule,
@@ -15,7 +17,8 @@ import { NgxFileuploadDirective } from './directives/ngx-fileuplad';
     ],
     exports: [
         NgxFileuploadDirective,
-        UploadItemComponent
+        UploadItemComponent,
+        UploadComponent
     ]
 })
 export class NgxFileuploadModule {}

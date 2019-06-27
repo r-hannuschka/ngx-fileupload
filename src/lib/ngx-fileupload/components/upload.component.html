@@ -1,9 +1,11 @@
-<ng-template #defaultUploadItem>
-    <h1>default upload item</h1>
-</ng-template>
+<div class="fileupload" [ngxFileupload]="url" (add)="onUploadsAdd($event)" #myNgxFileuploadRef='ngxFileuploadRef'>
 
-<div class="upload-container" style="background: red; height: 200px; width: 100%;">
-    <ng-container *ngFor="let item of items">
-        <ng-container *ngTemplateOutlet="itemTpl"></ng-container>
-    </ng-container>
+    <button class="btn-upload" type="button" (click)="myNgxFileuploadRef.upload()" *ngIf="uploads.length">Upload</button>
+
+    <div class="file-upload--list"> 
+        <ng-container *ngFor="let item of uploads">
+            <ngx-fileupload-item [upload]="item" [template]="itemTemplate"></ngx-fileupload-item>
+        </ng-container>
+    </div>
+
 </div>

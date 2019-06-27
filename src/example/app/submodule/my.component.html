@@ -1,10 +1,3 @@
-<h1>my component</h1>
+<h1>Simple Fileupload</h1>
 
-<div>
-    <ngx-fileupload-item  *ngFor="let upload of uploads" [upload]="upload"></ngx-fileupload-item>
-</div>
-<button type="button" (click)="fileUpload.upload()">upload all</button>
-
-<div class="fileupload-drop" [ngxFileupload]="'http://localhost:3000/upload'" (add)="onUploadsAdd($event)" #fileUpload='fileupload'>
-    <h1>drop files here to upload</h1>
-</div>
+<ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>

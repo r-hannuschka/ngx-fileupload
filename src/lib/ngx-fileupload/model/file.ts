@@ -1,4 +1,4 @@
-export enum FileState {
+export enum UploadState {
     QUEUED    = 'queued',
     START     = 'start',
     PROGRESS  = 'progress',
@@ -15,7 +15,7 @@ export class FileModel {
 
     private uploadedSize = 0;
 
-    private uploadedState: FileState = FileState.QUEUED;
+    private uploadedState: UploadState = UploadState.QUEUED;
 
     /**
      * Creates an instance of UploadFile.
@@ -55,14 +55,14 @@ export class FileModel {
     /**
      * set current upload state
      */
-    public set state(state: FileState) {
+    public set state(state: UploadState) {
         this.uploadedState = state;
     }
 
     /**
      * get current upload state
      */
-    public get state(): FileState {
+    public get state(): UploadState {
         return this.uploadedState;
     }
 

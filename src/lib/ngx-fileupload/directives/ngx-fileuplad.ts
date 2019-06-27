@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
  */
 @Directive({
   selector: '[ngxFileupload]',
-  exportAs: 'fileupload'
+  exportAs: 'ngxFileuploadRef'
 })
 export class NgxFileuploadDirective implements OnDestroy {
 

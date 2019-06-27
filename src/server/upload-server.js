@@ -1,6 +1,5 @@
 // call all the required packages
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const app = express();
 
 app.use(function(req, res, next) {
@@ -9,14 +8,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-// default options
-app.use(fileUpload({}));
-
 app.post('/upload', function(req, res) {
-    res.status(202);
-    res.send({
-        success: true
-    });
+    res.status(200);
+    res.send({success: true});
 });
 
 app.listen(3000, () => console.log('Server started on port 3000'));

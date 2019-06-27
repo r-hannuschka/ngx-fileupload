@@ -11,7 +11,7 @@ export class UploadComponent {
 
     public items: FileUpload[] = [];
 
-    @ViewChild('defaultUploadItem', { static: true})
+    @ViewChild('defaultUploadItem', {static: true})
     @Input()
     public set itemTemplate(tpl: TemplateRef<any>) {
         this.itemTpl = tpl || this.itemTpl;

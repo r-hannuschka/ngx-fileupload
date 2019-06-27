@@ -4,6 +4,7 @@ import { FileUpload } from 'lib/public-api';
 @Component({
   selector: 'app-my-component',
   templateUrl: './my.component.html',
+  styleUrls: ['./my.component.scss']
 })
 export class MyComponent {
 

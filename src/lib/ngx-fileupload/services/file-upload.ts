@@ -1,4 +1,4 @@
-import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent } from '@angular/common/http';
 import { FileModel, FileState } from '../model/file';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
@@ -89,6 +89,10 @@ export class FileUpload {
         return this.fileModel;
     }
 
+    /**
+     * return file upload data
+     * @todo move to model
+     */
     public toJson(): FileData {
 
         const progress = this.file.uploaded * 100 / this.file.fileSize;

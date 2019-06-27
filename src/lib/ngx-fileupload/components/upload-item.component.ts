@@ -3,6 +3,9 @@ import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core'
 import { FileUpload, FileData } from '../services/file-upload';
 import { UploadControl } from '../services/upload-control';
 
+/**
+ * view for upload
+ */
 @Component({
     selector: 'ngx-fileupload-item',
     templateUrl: 'upload-item.component.html',
@@ -56,7 +59,11 @@ export class UploadItemComponent implements OnInit {
     ngOnInit(): void {
         this.fileUpload.change
             .subscribe({
-                next: () => this.context.file = this.fileUpload.toJson()
+                next: () => {
+                    this.context.file = this.fileUpload.toJson();
+                },
+                complete: () => {
+                }
             });
     }
 }

@@ -2,8 +2,8 @@
     <div class="upload-item">
         <div class="item-header">
             <strong>{{file.name}}</strong>
-            <button type="button" (click)="control.stop()"  *ngIf="file.state !== 'queued'">stop</button>
-            <button type="button" (click)="control.start()" *ngIf="file.state === 'queued'">start</button>
+            <button type="button" (click)="control.start()">start</button>
+            <button type="button" (click)="control.stop()">stop</button>
         </div>
         <div class="item-progress">
             <div class="progress-info">

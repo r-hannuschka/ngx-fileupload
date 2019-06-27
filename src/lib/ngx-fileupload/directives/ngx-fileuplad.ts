@@ -1,43 +1,105 @@
-import { Directive, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FileModel } from '../model/file';
 import { FileUpload } from '../services/file-upload';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
+/**
+ * directive to add uploads with drag / drop
+ *
+ * @example
+ *
+ * <div [ngxFileupload]="'URL'" (add)="onUploadAdd($event)" #fileUpload='fileupload'></div>
+ */
 @Directive({
-  selector: '[ngxFileupload]'
+  selector: '[ngxFileupload]',
+  exportAs: 'fileupload'
 })
-export class NgxFileuploadDirective {
+export class NgxFileuploadDirective implements OnDestroy {
+
+    /**
+     * upload file queue
+     */
+    private uploads: FileUpload[] = [];
+
+    /**
+     * remove from subscribtions if component gets destroyed
+     */
+    private destroyed$: Subject<boolean> = new Subject();
 
     @Input('ngxFileupload')
     public url: string;
 
     @Output()
-    public addUploads: EventEmitter<FileUpload[]>;
+    public add: EventEmitter<FileUpload[]>;
 
-    constructor(
-        private httpClient: HttpClient
-    ) {
-        this.addUploads = new EventEmitter();
+    constructor(private httpClient: HttpClient) {
+        this.add = new EventEmitter();
     }
 
+    /**
+     * handle drag over event
+     */
     @HostListener('dragover', ['$event'])
     public onFileDragOver(event: DragEvent) {
         event.preventDefault();
         event.stopPropagation();
     }
 
+    /**
+     * handle drop event
+     */
     @HostListener('drop', ['$event'])
     public onFileDrop(event: DragEvent) {
         event.preventDefault();
 
         const files   = Array.from(event.dataTransfer.files);
+        const uploads = files.map((file) => this.createUpload(file));
 
-        // convert upload files to file uploads
-        const uploads = files.map((file) => {
-            const fileModel  = new FileModel(file);
-            return new FileUpload(this.httpClient, fileModel, this.url);
-        });
+        this.add.emit(uploads);
+    }
 
-        this.addUploads.emit(uploads);
+    /**
+     * directive gets destroyed
+     */
+    public ngOnDestroy() {
+        this.destroyed$.next(true);
+        this.uploads = [];
+        this.destroyed$.complete();
+    }
+
+    /**
+     * begin all uploads at once
+     */
+    public upload() {
+        this.uploads.forEach((upload: FileUpload) => upload.start());
+    }
+
+    /**
+     * cancel all uploads at once
+     */
+    public cancel() {
+        this.uploads.forEach((upload: FileUpload) => upload.cancel());
+    }
+
+    /**
+     * create upload from file, listen to complete
+     * to remove upload from uploads list
+     *
+     * remove uplaod from uploads repository if upload completed
+     * or canceled
+     */
+    private createUpload(file: File): FileUpload {
+        const fileModel = new FileModel(file);
+        const upload    = new FileUpload(this.httpClient, fileModel, this.url);
+        this.uploads.push(upload);
+
+        upload.change
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe({
+                complete: () => this.uploads.splice(this.uploads.indexOf(upload), 1)
+            });
+        return upload;
     }
 }

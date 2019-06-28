@@ -1,0 +1,37 @@
+:host {
+
+    .fileupload {
+        height: 300px;
+        max-width: 50vw;
+        overflow: auto;
+        display: flex;
+        flex-direction: row-reverse;
+        border: 1px solid #D2D2D2;
+    }
+
+    .btn-upload {
+        border: 1px solid #2E2E2E;
+        background: #3E3E3E;
+        padding: .4rem .8rem;
+        border-radius: .2rem;
+        color: #FFF;
+        align-self: flex-start;
+        flex-grow: 0;
+        flex-shrink: 1;
+        margin: 0 0 0 8rem;
+    }
+
+    .file-upload--list {
+        box-sizing: border-box;
+        flex: 1;
+        overflow-x: hidden;
+        flex-shrink: 0;
+        flex-grow: 0;
+        flex-basis: 100%;
+        padding: .5rem 1rem;
+    }
+
+    ngx-fileupload-item {
+        margin: 0 0 .5rem;
+    }
+}

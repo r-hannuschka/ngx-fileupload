@@ -1,0 +1,66 @@
+:host {
+    display: block;
+    font-size: .85rem;
+    line-height: 1.2rem;
+
+    div {
+        box-sizing: border-box;
+    }
+
+    .upload-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .file-info,
+    .file-progress {
+        display: flex;
+        flex-direction: row;
+        flex: 0;
+    }
+
+    .file-info {
+        overflow: hidden;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+
+        .label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2rem;
+        }
+
+        .label.name {
+            font-weight: 600;
+        }
+    }
+
+    .file-progress {
+        display: flex;
+
+        .progressbar {
+            flex: 1;
+            height: .75rem;
+            margin: .25rem 1rem .25rem 0;
+            border-radius: .5rem;
+            overflow: hidden;
+            padding: 1px;
+            border: 1px solid #E4E4E4;
+        }
+
+        .progressbar-inner {
+            height: 100%;
+            background: #0073B1;
+            border-radius: .5rem;
+        }
+
+        .action {
+            width: .8rem;
+
+            &.stop {
+                cursor: pointer;
+            }
+        }
+    }
+}

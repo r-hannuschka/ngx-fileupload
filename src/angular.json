@@ -103,8 +103,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "lib/ngx-fileupload/tsconfig.lib.json",
-              "lib/ngx-fileupload/tsconfig.spec.json"
+              "lib/tsconfig.lib.json",
+              "lib/tests/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

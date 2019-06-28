@@ -1,5 +1,5 @@
 import { FileModel } from 'lib/public-api';
-import { FileState } from 'lib/ngx-fileupload/model/file';
+import { UploadState } from 'lib/ngx-fileupload/model/upload';
 
 describe('Model: UploadFile', () => {
 
@@ -27,12 +27,12 @@ describe('Model: UploadFile', () => {
     });
 
     it('should set by default to queued', () => {
-        expect(model.state).toBe(FileState.QUEUED);
+        expect(model.state).toBe(UploadState.QUEUED);
     });
 
     it('should set new state', () => {
-        model.state = FileState.PROGRESS;
-        expect(model.state).toBe(FileState.PROGRESS);
+        model.state = UploadState.PROGRESS;
+        expect(model.state).toBe(UploadState.PROGRESS);
     });
 
     it('should return uploaded size: 0 by default', () => {

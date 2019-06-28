@@ -10,7 +10,7 @@ import { UploadModel, UploadData } from '../model/upload';
 @Component({
     selector: 'ngx-fileupload-item',
     templateUrl: 'upload-item.component.html',
-    styleUrls: ['./upload-item.component.scss']
+    styleUrls: ['./upload-item.component.scss'],
 })
 export class UploadItemComponent implements OnInit {
 
@@ -66,6 +66,7 @@ export class UploadItemComponent implements OnInit {
         this.fileUpload.change.subscribe({
             next: (upload: UploadModel) => {
                 this.context.data = upload.toJson();
+                this.changed.emit(upload);
             }
         });
     }

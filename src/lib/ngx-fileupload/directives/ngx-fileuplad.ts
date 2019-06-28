@@ -1,9 +1,9 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UploadModel } from '../model/upload';
 import { FileUpload } from '../services/file-upload';
 import { takeUntil } from 'rxjs/operators';
-import { Subject, fromEvent } from 'rxjs';
+import { Subject } from 'rxjs';
 
 /**
  * directive to add uploads with drag / drop

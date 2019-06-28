@@ -2,8 +2,8 @@ import { Component, TemplateRef, Input } from '@angular/core';
 import { trigger, state, style, animate, transition, AnimationEvent } from '@angular/animations';
 import { FileUpload } from '../services/file-upload';
 import { UploadModel, UploadState } from '../model/upload';
-import { Subject, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { take, delay, switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'ngx-fileupload',
@@ -11,9 +11,9 @@ import { take } from 'rxjs/operators';
     templateUrl: 'upload.component.html',
     animations: [
         trigger('removeUpload', [
-            state('visible', style({opacity: 1})),
+            state('visible', style({ opacity: 1 })),
             transition(':leave' , [
-                animate('.6s ease-out', style({opacity: 0}))
+                animate('2s ease-out', style({ opacity: 0 }))
             ])
         ])
     ],
@@ -37,18 +37,6 @@ export class UploadComponent {
      * all file uploades, which will be added to upload-item view
      */
     public uploads: FileUpload[] = [];
-
-    /**
-     * flag we currently remove items from list, if this is true
-     * all new items which should removed will pushed into current
-     * processing queue
-     */
-    private isRemoving = false;
-
-    /**
-     * current queue for removeable fileuploads
-     */
-    private removeQueue: FileUpload[] = [];
 
     /**
      * subjects sends true if an animation has been done
@@ -82,11 +70,7 @@ export class UploadComponent {
      */
     public handleUploadChange(upload: UploadModel, fileUpload: FileUpload) {
         if (upload.state === UploadState.CANCELED || upload.state === UploadState.UPLOADED) {
-            this.removeQueue.push(fileUpload);
-            if (this.isRemoving === false) {
-                this.isRemoving = true;
-                this.removeQueuedUploads();
-            }
+            this.removeUpload(fileUpload);
         }
     }
 
@@ -94,28 +78,15 @@ export class UploadComponent {
      * remove upload from list, this causes rerendering of the view
      * which emits true after animation has been done.
      */
-    private removeUpload(upload: FileUpload): Promise<boolean> {
-        const idx = this.uploads.indexOf(upload);
-        this.uploads.splice(idx, 1);
-
-        return new Observable<any>((observer) => {
-            this.animation$.subscribe(observer);
-            return observer;
-        }).pipe(take(1)).toPromise();
-    }
-
-    /**
-     * remove uploads in queue, if multiple uploads finish in same time
-     * we want to remove them in sequence, loop all queued items
-     * and wait until one has removed (animation done) and remove the next
-     * one.
-     */
-    private async removeQueuedUploads() {
-        let queuedUpload = this.removeQueue.shift();
-        while (queuedUpload) {
-            await this.removeUpload(queuedUpload);
-            queuedUpload = this.removeQueue.shift();
-        }
-        this.isRemoving = false;
+    private removeUpload(upload: FileUpload) {
+        of(upload).pipe(
+            delay(200),
+            switchMap(() => {
+                const idx = this.uploads.indexOf(upload);
+                this.uploads.splice(idx, 1);
+                return this.animation$.pipe(take(1));
+            })
+        )
+        .subscribe();
     }
 }

@@ -156,12 +156,9 @@ export class FileUpload {
      * notify observers
      */
     private completeUpload() {
-
+        this.notifyObservers();
         this.upload$.complete();
         this.cancel$.complete();
-
-        this.notifyObservers();
-
         this.cancel$ = null;
         this.upload$ = null;
     }

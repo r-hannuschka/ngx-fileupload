@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpProgressEvent, HttpEventType } from '@angular/common/http';
 import { Type } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FileState } from 'lib/ngx-fileupload/model/file';
+import { UploadState } from 'lib/ngx-fileupload/model/file';
 import { tap } from 'rxjs/operators';
 
 describe('Model: UploadFile', () => {
@@ -29,7 +29,7 @@ describe('Model: UploadFile', () => {
         const httpClient = injector.get(HttpClient as Type<HttpClient>);
         const model = new FileModel(uploadFile);
 
-        fileupload = new FileUpload(httpClient, model, { url });
+        fileupload = new FileUpload(httpClient, model, url);
     });
 
     afterEach(() => {
@@ -55,14 +55,14 @@ describe('Model: UploadFile', () => {
     });
 
     it('should complete upload', (done) => {
-        const states: FileState[] = [];
+        const states: UploadState[] = [];
         fileupload.change
             .pipe(tap({
                 next: (file: FileModel) => states.push(file.state),
             }))
             .subscribe({
                 complete: () => {
-                    expect(states).toEqual([FileState.QUEUED, FileState.START, FileState.PROGRESS, FileState.UPLOADED]);
+                    expect(states).toEqual([UploadState.QUEUED, UploadState.START, UploadState.PROGRESS, UploadState.UPLOADED]);
                     done();
                 }
             });
@@ -77,7 +77,7 @@ describe('Model: UploadFile', () => {
         fileupload.change
             .subscribe({
                 complete: () => {
-                    expect(fileupload.file.state).toBe(FileState.CANCELED);
+                    expect(fileupload.file.state).toBe(UploadState.CANCELED);
                     done();
                 }
             });
@@ -90,7 +90,7 @@ describe('Model: UploadFile', () => {
 
     it('should not start upload if allready running', () => {
         const file = fileupload.file;
-        file.state = FileState.PROGRESS;
+        file.state = UploadState.PROGRESS;
         fileupload.start();
         httpMock.expectNone(url);
     });
@@ -100,6 +100,6 @@ describe('Model: UploadFile', () => {
         const mockReq = httpMock.expectOne(url);
         mockReq.flush('');
         fileupload.cancel();
-        expect(fileupload.file.state).toBe(FileState.UPLOADED);
+        expect(fileupload.file.state).toBe(UploadState.UPLOADED);
     });
 });

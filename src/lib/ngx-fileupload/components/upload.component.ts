@@ -25,4 +25,9 @@ export class UploadComponent {
     public onUploadsAdd(uploads: FileUpload[]) {
         this.uploads.push(...uploads);
     }
+
+    public onUploadCompleted(upload: FileUpload) {
+        const uploadIdx = this.uploads.indexOf(upload);
+        this.uploads.splice(uploadIdx, 1);
+    }
 }

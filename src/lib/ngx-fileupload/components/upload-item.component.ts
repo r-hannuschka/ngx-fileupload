@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
 import { FileUpload, FileData } from '../services/file-upload';
 import { UploadControl } from '../services/upload-control';
 
@@ -17,6 +17,9 @@ export class UploadItemComponent implements OnInit {
      * item template which should used to render upload data
      */
     public itemTpl: TemplateRef<any>;
+
+    @Output()
+    public completed: EventEmitter<any> = new EventEmitter();
 
     /**
      * template context which is bound to rendered template
@@ -63,6 +66,7 @@ export class UploadItemComponent implements OnInit {
                     this.context.file = this.fileUpload.toJson();
                 },
                 complete: () => {
+                    this.completed.emit(this.fileUpload);
                 }
             });
     }

@@ -2,7 +2,9 @@
     <button class="btn-upload" type="button" (click)="myNgxFileuploadRef.upload()" [disabled]="!uploads.length">Upload</button>
     <div class="file-upload--list">
         <ng-container *ngFor="let item of uploads">
-            <ngx-fileupload-item [upload]="item" [template]="itemTemplate" (changed)="handleUploadChange($event, item)" [@removeUpload]="'visible'"></ngx-fileupload-item>
+            <ngx-fileupload-item 
+                [upload]="item" [template]="itemTemplate" (changed)="handleUploadChange($event, item)" 
+                [@removeUpload]="'visible'" (@removeUpload.done)="animationEnd($event)"></ngx-fileupload-item>
         </ng-container>
     </div>
 </div>

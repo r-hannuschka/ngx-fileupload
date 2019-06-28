@@ -1,9 +1,9 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UploadModel } from '../model/upload';
 import { FileUpload } from '../services/file-upload';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 
 /**
  * directive to add uploads with drag / drop
@@ -34,7 +34,9 @@ export class NgxFileuploadDirective implements OnDestroy {
     @Output()
     public add: EventEmitter<FileUpload[]>;
 
-    constructor(private httpClient: HttpClient) {
+    constructor(
+        private httpClient: HttpClient
+    ) {
         this.add = new EventEmitter();
     }
 
@@ -52,11 +54,12 @@ export class NgxFileuploadDirective implements OnDestroy {
      */
     @HostListener('drop', ['$event'])
     public onFileDrop(event: DragEvent) {
+
+        event.stopPropagation();
         event.preventDefault();
 
         const files   = Array.from(event.dataTransfer.files);
         const uploads = files.map((file) => this.createUpload(file));
-
         this.add.emit(uploads);
     }
 
@@ -91,6 +94,7 @@ export class NgxFileuploadDirective implements OnDestroy {
      * or canceled
      */
     private createUpload(file: File): FileUpload {
+
         const fileModel = new UploadModel(file);
         const upload    = new FileUpload(this.httpClient, fileModel, this.url);
         this.uploads.push(upload);
@@ -100,6 +104,7 @@ export class NgxFileuploadDirective implements OnDestroy {
             .subscribe({
                 complete: () => this.uploads.splice(this.uploads.indexOf(upload), 1)
             });
+
         return upload;
     }
 }

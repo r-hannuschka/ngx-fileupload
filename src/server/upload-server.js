@@ -9,8 +9,10 @@ app.use(function(req, res, next) {
 });
 
 app.post('/upload', function(req, res) {
-    res.status(403);
-    res.send("forbidden");
+    res.status(200);
+    res.send({
+        message: "hat super geklappt"
+    });
 });
 
 app.listen(3000, () => console.log('Server started on port 3000'));

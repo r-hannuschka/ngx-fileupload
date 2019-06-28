@@ -94,6 +94,7 @@ export class FileUpload {
     }
 
     private handleHttpError(error: HttpErrorResponse) {
+        console.log(error);
         this.upload.state = UploadState.ERROR;
         this.upload.error = error.message;
         this.notifyObservers();
@@ -122,6 +123,7 @@ export class FileUpload {
      */
     private handleResponse(res: HttpResponse<any>) {
         this.upload.state = UploadState.UPLOADED;
+        console.log(this.upload.state);
         this.notifyObservers();
         this.completeUpload();
     }

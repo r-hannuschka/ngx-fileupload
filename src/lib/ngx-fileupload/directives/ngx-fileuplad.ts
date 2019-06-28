@@ -1,6 +1,6 @@
 import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FileModel } from '../model/file';
+import { UploadModel } from '../model/upload';
 import { FileUpload } from '../services/file-upload';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -91,7 +91,7 @@ export class NgxFileuploadDirective implements OnDestroy {
      * or canceled
      */
     private createUpload(file: File): FileUpload {
-        const fileModel = new FileModel(file);
+        const fileModel = new UploadModel(file);
         const upload    = new FileUpload(this.httpClient, fileModel, this.url);
         this.uploads.push(upload);
 

@@ -1,27 +1,35 @@
-<ng-template #defaultUploadItem let-file="file" let-control="ctrl">
+<ng-template #defaultUploadItem let-uploadData="data" let-control="ctrl">
 
     <div class="upload-item">
         <!-- base file informations -->
         <div class="file-info">
-            <span class="label name">{{file.name}}</span>
-            <span class="label size">{{file.size | bytes : 2}}</span>
+            <span class="label name">{{uploadData.name}}</span>
+            <span class="label size">{{uploadData.size | bytes : 2}}</span>
         </div>
 
         <!-- file progress: current state | progressbar -->
         <div class="file-progress">
             <div class="progressbar">
-                <div class="progressbar-inner" [ngStyle]="{width: file.progress + '%'}"></div>
+                <div class="progressbar-inner" [ngStyle]="{width: uploadData.progress + '%'}"></div>
             </div>
 
-            <!-- success action -->
-            <div class="action stop" (click)="control.stop()" *ngIf="file.state === 'uploaded'">
+            <!-- error icon -->
+            <div class="action" *ngIf="uploadData.state === 'error'">
+                <svg  viewBox="0 0 30 30"xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="26" cy="24" r="2"/><path d="M17,5c0,1.105-0.895,1-2,1s-2,0.105-2-1s0.895-2,2-2S17,3.895,17,5z"/><circle cx="4" cy="24" r="2"/>
+                    <path d="M16.836,4.21L15,4l-1.836,0.21L2.3,22.948L4.144,26H15h10.856l1.844-3.052L16.836,4.21z M16.212,11.36l-0.2,6.473h-2.024  l-0.2-6.473H16.212z M15.003,22.189c-0.828,0-1.323-0.441-1.323-1.182c0-0.755,0.494-1.196,1.323-1.196  c0.822,0,1.316,0.441,1.316,1.196C16.319,21.748,15.825,22.189,15.003,22.189z"/>
+                </svg>
+            </div>
+
+            <!-- success icon -->
+            <div class="action" *ngIf="uploadData.state === 'uploaded'">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" fill="#4BB543" />
                 </svg>
             </div>
 
-            <!-- stop action -->
-            <div class="action stop" (click)="control.stop()" *ngIf="file.state !== 'uploaded'">
+            <!-- stop icon -->
+            <div class="action stop" (click)="control.stop()" *ngIf="uploadData.state !== 'uploaded' && uploadData.state !== 'error'">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1216 1312">
                     <path d="M1202 1066q0 40-28 68l-136 136q-28 28-68 28t-68-28L608 976l-294 294q-28 28-68 28t-68-28L42 1134q-28-28-28-68t28-68l294-294L42 410q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68L880 704l294 294q28 28 28 68z" fill="#D11124" />
                 </svg>

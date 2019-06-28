@@ -1,15 +1,7 @@
-import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
-import { tap, takeUntil, filter } from 'rxjs/operators';
-import { FileModel, UploadState } from '../model/file';
-
-export interface FileData {
-    state: UploadState;
-    uploaded: number;
-    size: number;
-    name: string;
-    progress: number;
-}
+import { takeUntil, filter } from 'rxjs/operators';
+import { UploadModel, UploadState} from '../model/upload';
 
 /**
  * represents a single fileupload
@@ -24,17 +16,17 @@ export class FileUpload {
     /**
      * upload stream to notify observers if something has been changed
      */
-    private upload$: BehaviorSubject<FileModel>;
+    private upload$: BehaviorSubject<UploadModel>;
 
     /**
      * create FileUpload service
      */
     public constructor(
         private http: HttpClient,
-        private fileModel: FileModel,
+        private upload: UploadModel,
         private url: string
     ) {
-        this.upload$ = new BehaviorSubject(this.fileModel);
+        this.upload$ = new BehaviorSubject(this.upload);
     }
 
     /**
@@ -43,13 +35,14 @@ export class FileUpload {
      */
     public start() {
         /** only start upload if state is not queued */
-        if (this.file.state === UploadState.QUEUED) {
+        if (this.upload.state === UploadState.QUEUED) {
             this.uploadFile().pipe(
                 takeUntil(this.cancel$),
-                filter(() => this.file.state !== UploadState.CANCELED)
+                filter(() => this.upload.state !== UploadState.CANCELED)
             )
             .subscribe({
-                next: (event: HttpEvent<string>) => this.handleHttpEvent(event)
+                next: (event: HttpEvent<string>) => this.handleHttpEvent(event),
+                error: (error: HttpErrorResponse) => this.handleHttpError(error)
             });
         }
     }
@@ -58,12 +51,12 @@ export class FileUpload {
      * cancel current file upload, this will complete change subject
      */
     public cancel() {
-
-        let isCancelAble = this.file.state !== UploadState.CANCELED;
-        isCancelAble     = isCancelAble && this.file.state !== UploadState.UPLOADED;
+        let isCancelAble = this.upload.state !== UploadState.CANCELED;
+        isCancelAble     = isCancelAble && this.upload.state !== UploadState.UPLOADED;
 
         if (isCancelAble) {
-            this.file.state = UploadState.CANCELED;
+            this.upload.state = UploadState.CANCELED;
+            this.notifyObservers();
             this.cancel$.next(true);
             this.completeUpload();
         }
@@ -73,42 +66,16 @@ export class FileUpload {
      * returns observable which notify if file upload state
      * has been changed
      */
-    public get change(): Observable<FileModel> {
+    public get change(): Observable<UploadModel> {
         return this.upload$.asObservable();
-    }
-
-    /**
-     * get file which should uploaded
-     */
-    public get file(): FileModel {
-        return this.fileModel;
-    }
-
-    /**
-     * return file upload data
-     * @todo move to model
-     */
-    public toJson(): FileData {
-
-        const progress = this.file.uploaded * 100 / this.file.fileSize;
-
-        return {
-            state    : this.file.state,
-            uploaded : this.file.uploaded,
-            size     : this.file.fileSize,
-            name     : this.file.fileName,
-            progress : Math.round(progress > 100 ? 100 : progress)
-        };
     }
 
     /**
      * build form data and send request to server
      */
     private uploadFile(): Observable<HttpEvent<string>> {
-
         const formData = new FormData();
-        formData.append('file', this.file.blob, this.file.fileName);
-
+        formData.append('file', this.upload.blob, this.upload.fileName);
         return this.http.post<string>(this.url, formData, {
             reportProgress: true,
             observe: 'events'
@@ -122,16 +89,23 @@ export class FileUpload {
         switch (event.type) {
             case HttpEventType.Sent: this.handleSent(); break;
             case HttpEventType.UploadProgress: this.handleProgress(event); break;
-            case HttpEventType.Response: this.handleUploadCompleted(); break;
+            case HttpEventType.Response: this.handleResponse(event); break;
         }
+    }
+
+    private handleHttpError(error: HttpErrorResponse) {
+        this.upload.state = UploadState.ERROR;
+        this.upload.error = error.message;
+        this.notifyObservers();
+        this.completeUpload();
     }
 
     /**
      * handle file upload in progress
      */
     private handleProgress(event: HttpProgressEvent) {
-        this.file.state = UploadState.PROGRESS;
-        this.file.uploaded = event.loaded;
+        this.upload.state = UploadState.PROGRESS;
+        this.upload.uploaded = event.loaded;
         this.notifyObservers();
     }
 
@@ -139,15 +113,16 @@ export class FileUpload {
      * upload has been started
      */
     private handleSent() {
-        this.file.state = UploadState.START;
+        this.upload.state = UploadState.START;
         this.notifyObservers();
     }
 
     /**
      * upload has been completed
      */
-    private handleUploadCompleted() {
-        this.file.state = UploadState.UPLOADED;
+    private handleResponse(res: HttpResponse<any>) {
+        this.upload.state = UploadState.UPLOADED;
+        this.notifyObservers();
         this.completeUpload();
     }
 
@@ -156,7 +131,6 @@ export class FileUpload {
      * notify observers
      */
     private completeUpload() {
-        this.notifyObservers();
         this.upload$.complete();
         this.cancel$.complete();
         this.cancel$ = null;
@@ -167,6 +141,6 @@ export class FileUpload {
      * send notification to observers
      */
     private notifyObservers() {
-        this.upload$.next(this.file);
+        this.upload$.next(this.upload);
     }
 }

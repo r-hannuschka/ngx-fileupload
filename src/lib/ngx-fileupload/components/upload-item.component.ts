@@ -1,7 +1,8 @@
 
 import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
-import { FileUpload, FileData } from '../services/file-upload';
+import { FileUpload } from '../services/file-upload';
 import { UploadControl } from '../services/upload-control';
+import { UploadModel, UploadData } from '../model/upload';
 
 /**
  * view for upload
@@ -18,14 +19,17 @@ export class UploadItemComponent implements OnInit {
      */
     public itemTpl: TemplateRef<any>;
 
+    /**
+     * upload state has been changed
+     */
     @Output()
-    public completed: EventEmitter<any> = new EventEmitter();
+    public changed: EventEmitter<any> = new EventEmitter();
 
     /**
      * template context which is bound to rendered template
      */
     public context: {
-        file: FileData,
+        data: UploadData,
         ctrl: UploadControl
     };
 
@@ -40,9 +44,8 @@ export class UploadItemComponent implements OnInit {
     @Input()
     public set upload(fileUpload: FileUpload) {
         this.fileUpload = fileUpload;
-        const fileContext: FileData = this.fileUpload.toJson();
         this.context = {
-            file: fileContext,
+            data: null,
             ctrl: new UploadControl(fileUpload)
         };
     }
@@ -60,14 +63,10 @@ export class UploadItemComponent implements OnInit {
      * @inheritdoc
      */
     ngOnInit(): void {
-        this.fileUpload.change
-            .subscribe({
-                next: () => {
-                    this.context.file = this.fileUpload.toJson();
-                },
-                complete: () => {
-                    this.completed.emit(this.fileUpload);
-                }
-            });
+        this.fileUpload.change.subscribe({
+            next: (upload: UploadModel) => {
+                this.context.data = upload.toJson();
+            }
+        });
     }
 }

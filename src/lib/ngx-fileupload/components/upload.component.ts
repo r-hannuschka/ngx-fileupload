@@ -1,5 +1,6 @@
 import { Component, TemplateRef, Input } from '@angular/core';
 import { FileUpload } from '../services/file-upload';
+import { UploadModel } from '../model/upload';
 
 @Component({
     selector: 'ngx-fileupload',
@@ -26,8 +27,12 @@ export class UploadComponent {
         this.uploads.push(...uploads);
     }
 
-    public onUploadCompleted(upload: FileUpload) {
-        const uploadIdx = this.uploads.indexOf(upload);
-        this.uploads.splice(uploadIdx, 1);
+    public handleUploadChange(upload: UploadModel, fileUpload: FileUpload) {
+        /*
+        if (response.file.state === UploadState.UPLOADED || response.file.state === UploadState.CANCELED) {
+            const uploadListIdx = this.uploads.indexOf(fileUpload);
+            this.uploads.splice(uploadListIdx, 1);
+        }
+        */
     }
 }

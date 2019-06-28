@@ -1,9 +1,8 @@
 <div class="fileupload" [ngxFileupload]="url" (add)="onUploadsAdd($event)" #myNgxFileuploadRef='ngxFileuploadRef'>
     <button class="btn-upload" type="button" (click)="myNgxFileuploadRef.upload()" *ngIf="uploads.length">Upload</button>
-
-    <div class="file-upload--list"> 
+    <div class="file-upload--list">
         <ng-container *ngFor="let item of uploads">
-            <ngx-fileupload-item [upload]="item" [template]="itemTemplate" (completed)="onUploadCompleted($event)"></ngx-fileupload-item>
+            <ngx-fileupload-item [upload]="item" [template]="itemTemplate" (changed)="handleUploadChange($event, item)"></ngx-fileupload-item>
         </ng-container>
     </div>
 </div>

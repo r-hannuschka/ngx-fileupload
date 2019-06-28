@@ -3,15 +3,28 @@ export enum UploadState {
     START     = 'start',
     PROGRESS  = 'progress',
     UPLOADED  = 'uploaded',
-    CANCELED  = 'canceled'
+    CANCELED  = 'canceled',
+    ERROR     = 'error'
+}
+
+export interface UploadData {
+    state: UploadState;
+    uploaded: number;
+    size: number;
+    name: string;
+    progress: number;
+    hasError: boolean;
+    error: string;
 }
 
 /**
  * Represents a file which will be uploaded
  */
-export class FileModel {
+export class UploadModel {
 
     private file: File;
+
+    private uploadError = '';
 
     private uploadedSize = 0;
 
@@ -52,6 +65,14 @@ export class FileModel {
         return this.file.type;
     }
 
+    public set error(message: string) {
+        this.uploadError = message;
+    }
+
+    public get error(): string {
+        return this.uploadError;
+    }
+
     /**
      * set current upload state
      */
@@ -78,5 +99,22 @@ export class FileModel {
      */
     public get uploaded(): number {
         return this.uploadedSize;
+    }
+
+    /**
+     * return file upload data
+     * @todo move to model
+     */
+    public toJson(): UploadData {
+        const progress = this.uploaded * 100 / this.fileSize;
+        return {
+            state    : this.state,
+            uploaded : this.uploaded,
+            size     : this.fileSize,
+            name     : this.fileName,
+            progress : Math.round(progress > 100 ? 100 : progress),
+            hasError : this.error.length > 0,
+            error    : this.error
+        };
     }
 }

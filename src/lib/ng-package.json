@@ -3,5 +3,9 @@
   "dest": "../dist/ngx-fileupload",
   "lib": {
     "entryFile": "public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+      "tslib",
+      "angular-pipes"
+  ]
 }

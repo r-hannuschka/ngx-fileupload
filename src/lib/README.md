@@ -1,10 +1,10 @@
-# NgxFileupload
+# @r-hannuschka/ngx-fileupload
 
 [![npm](https://img.shields.io/npm/v/@r-hannuschka/ngx-fileupload.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@r-hannuschka/ngx-fileupload)
 
 Angular 8+ async fileupload with progressbar
 
-![ngx-fileupload.gif](https://github.com/r-hannuschka/ngx-fileupload/docs/ngx-fileupload.gif)
+![ngx-fileupload.gif](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/ngx-fileupload.gif)
 ___
 
 ## Table of Contents

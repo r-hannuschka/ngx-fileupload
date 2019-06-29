@@ -1,3 +1,9 @@
+$ngx-fileupload-icons--font-path: '../assets/fonts' !default;
+$ngx-fileupload-icons--font-size:   1.25rem;
+$ngx-fileupload-icons--line-height: 1.25rem;
+
+@import '../assets/scss/icons';
+
 :host {
     display: block;
     font-size: .85rem;

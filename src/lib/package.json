@@ -18,7 +18,8 @@
   },
   "peerDependencies": {
     "@angular/common": "^8.0.1",
-    "@angular/core": "^8.0.1"
+    "@angular/core": "^8.0.1",
+    "@fortawesome/angular-fontawesome": "^0.4.0"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
   "bugs": {

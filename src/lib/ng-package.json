@@ -7,7 +7,6 @@
     "styleIncludePaths": ["./ngx-fileupload/assets"]
   },
   "whitelistedNonPeerDependencies": [
-      "tslib",
-      "angular-pipes"
+      "tslib"
   ]
 }

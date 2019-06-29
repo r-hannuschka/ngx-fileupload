@@ -2,70 +2,100 @@ $ngx-fileupload-icons--font-path: '../assets/fonts' !default;
 $ngx-fileupload-icons--font-size:   1.25rem;
 $ngx-fileupload-icons--line-height: 1.25rem;
 
+@import '../assets//scss/variables';
 @import '../assets/scss/icons';
 
 :host {
-    display: block;
-    font-size: .85rem;
-    line-height: 1.2rem;
 
-    div {
-        box-sizing: border-box;
-    }
+    display: block;
+    color: map-get($colors, 'dark');
 
     .upload-item {
         display: flex;
         flex-direction: column;
+        padding: .25rem .5rem;
+        border-radius: .4rem;
+        border: 1px solid #E4E4E4;
+
+        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+50,f7f7f7+100 */
+        background: #FDFDFD; /* Old browsers */
+        background: -moz-linear-gradient(top,  #FDFDFD 50%, #F7F7F7 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #FDFDFD 50%,#F7F7F7 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #FDFDFD 50%,#F7F7F7 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     }
 
-    .file-info,
-    .file-progress {
+    /*
+       general settings
+    */
+    .upload-item--body,
+    .upload-item--header {
         display: flex;
         flex-direction: row;
+    }
+
+    /*
+       Upload Item Body        
+    */
+    .upload-item--body {
+        align-items: center;
+    }
+
+    .upload-item--actions,
+    .upload-item--state {
         flex: 0;
     }
 
-    .file-info {
-        overflow: hidden;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-
-        .label {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1.2rem;
-        }
-
-        .label.name {
-            font-weight: 600;
-        }
-    }
-
-    .file-progress {
+    .upload-item--progress {
+        flex: 1;
         display: flex;
+        margin: 0 .5rem;
+        padding: 0 .5rem;
+        border: 1px solid #E4E4E4;
+        border-width: 0 1px;
 
         .progressbar {
             flex: 1;
             height: .75rem;
-            margin: .25rem 1rem .25rem 0;
             border-radius: .5rem;
             overflow: hidden;
             padding: 1px;
             border: 1px solid #E4E4E4;
+            position: relative;
+        }
+
+        .label-size {
+            position: absolute;
+            z-index: 5;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: .8rem;
         }
 
         .progressbar-inner {
             height: 100%;
-            background: #0073B1;
+            background: map-get($colors, 'progress');
             border-radius: .5rem;
         }
+    }
 
-        .action {
-            width: .8rem;
+    .upload-item--actions {
 
-            &.stop {
-                cursor: pointer;
+        padding: .25rem;
+
+        button {
+            margin: 0;
+            padding: 0;
+            background: lighten(map-get($colors, 'dark'), 25%);
+            color: map-get($colors, 'white');
+            border-radius: 50%;
+            border: 0;
+            height: 1.25rem; 
+            width: 1.25rem; 
+            cursor: pointer;
+
+            i {
+                font-size: 1rem;
+                line-height: 1rem;
             }
         }
     }

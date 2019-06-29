@@ -13,7 +13,7 @@ import { take, delay, switchMap } from 'rxjs/operators';
         trigger('removeUpload', [
             state('visible', style({ opacity: 1 })),
             transition(':leave' , [
-                animate('2s ease-out', style({ opacity: 0 }))
+                animate('1s ease-out', style({ opacity: 0 }))
             ])
         ])
     ],
@@ -80,7 +80,7 @@ export class UploadComponent {
      */
     private removeUpload(upload: FileUpload) {
         of(upload).pipe(
-            delay(200),
+            delay(1500),
             switchMap(() => {
                 const idx = this.uploads.indexOf(upload);
                 this.uploads.splice(idx, 1);

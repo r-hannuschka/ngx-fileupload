@@ -13,13 +13,10 @@
     "upload",
     "fileupload"
   ],
-  "dependencies": {
-    "angular-pipes": "^9.0.2"
-  },
   "peerDependencies": {
     "@angular/common": "^8.0.1",
     "@angular/core": "^8.0.1",
-    "@fortawesome/angular-fontawesome": "^0.4.0"
+    "angular-pipes": "^9.0.2"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
   "bugs": {

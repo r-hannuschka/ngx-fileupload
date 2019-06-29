@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 
 @Injectable()
 export class ChildUploadInterceptor implements HttpInterceptor {
-
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req);
     }

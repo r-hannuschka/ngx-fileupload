@@ -1,36 +1,34 @@
 <ng-template #defaultUploadItem let-uploadData="data" let-control="ctrl">
 
     <div class="upload-item">
-
-        <div class="ngx-fileupload-icon">
-            <i class="fa fa-anchor"></i>
-        </div>
-
-        <!-- base file informations -->
-        <div class="file-info">
+        <div class="upload-item--header">
             <span class="label name">{{uploadData.name}}</span>
-            <span class="label size">{{uploadData.size | bytes : 2}}</span>
         </div>
 
-        <!-- upload state -->
-        <div>
-            <i [ngClass]="['ngx-fileupload-icon--' + uploadData.state]">
-            </i>
-        </div>
+        <div class="upload-item--body">
 
-        <!-- file progress: current state | progressbar -->
-        <div class="file-progress">
-            <div class="progressbar">
-                <div class="progressbar-inner" [ngStyle]="{width: uploadData.progress + '%'}"></div>
+            <!-- upload state -->
+            <div class="upload-item--state">
+                <i [ngClass]="['ngx-fileupload-icon--' + uploadData.state]">
+                </i>
             </div>
-        </div>
 
-        <div>
-            <button type="button" class="action stop" (click)="control.stop()" *ngIf="uploadData.state !== 'uploaded' && uploadData.state !== 'error'">
-                <i class="ngx-fileupload-icon--cancel"></i>
-            </button>
-        </div>
+            <!-- file progress: current state | progressbar -->
+            <div class="upload-item--progress">
+                <div class="progressbar">
+                    <span class="label-size">{{uploadData.size | bytes : 2}}</span>
+                    <div class="progressbar-inner" [ngStyle]="{width: uploadData.progress + '%'}"></div>
+                </div>
+            </div>
 
+            <!-- upload actions: cancel | retry -->
+            <div class="upload-item--actions">
+                <button type="button" class="action stop" (click)="control.stop()">
+                    <i class="ngx-fileupload-icon--cancel"></i>
+                </button>
+            </div>
+
+        </div>
     </div>
 </ng-template>
 

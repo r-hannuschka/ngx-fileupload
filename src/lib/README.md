@@ -4,7 +4,7 @@
 
 Angular 8+ async fileupload with progressbar
 
-![ngx-fileupload.gif](./docs/ngx-fileupload.gif)
+![ngx-fileupload.gif](https://github.com/r-hannuschka/ngx-fileupload/docs/ngx-fileupload.gif)
 ___
 
 ## Table of Contents
@@ -194,3 +194,4 @@ Ralf Hannuschka [Github](https://github.com/r-hannuschka)
 ## Other Modules
 
 - [ngx-responsivemenu](https://github.com/r-hannuschka/ngx-responsivemenu)
+

@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { MyModule } from './submodule/my.module';
+import { NgxFileuploadModule } from 'lib/public-api';
 
 @NgModule( {
     declarations: [
@@ -10,7 +10,7 @@ import { MyModule } from './submodule/my.module';
     ],
     imports: [
         BrowserModule,
-        MyModule
+        NgxFileuploadModule
     ],
     bootstrap: [AppComponent]
 } )

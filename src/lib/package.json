@@ -1,6 +1,6 @@
 {
   "name": "@r-hannuschka/ngx-fileupload",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "angular fileupload library",
   "repository": {
     "url": "git+https://github.com/r-hannuschka/ngx-fileupload.git",
@@ -13,12 +13,10 @@
     "upload",
     "fileupload"
   ],
-  "dependencies": {
-    "angular-pipes": "^9.0.2"
-  },
   "peerDependencies": {
     "@angular/common": "^8.0.1",
-    "@angular/core": "^8.0.1"
+    "@angular/core": "^8.0.1",
+    "angular-pipes": "^9.0.2"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
   "bugs": {

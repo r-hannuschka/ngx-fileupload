@@ -2,10 +2,11 @@
   "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../dist/ngx-fileupload",
   "lib": {
-    "entryFile": "public-api.ts"
+    "entryFile": "public-api.ts",
+    "cssUrl": "inline",
+    "styleIncludePaths": ["./ngx-fileupload/assets"]
   },
   "whitelistedNonPeerDependencies": [
-      "tslib",
-      "angular-pipes"
+      "tslib"
   ]
 }

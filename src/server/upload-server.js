@@ -11,7 +11,7 @@ app.use(function(req, res, next) {
 app.post('/upload', function(req, res) {
     res.status(200);
     res.send({
-        message: "hat super geklappt"
+        message: "das lief prima"
     });
 });
 

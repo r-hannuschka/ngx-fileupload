@@ -23,7 +23,19 @@
 
             <!-- upload actions: cancel | retry -->
             <div class="upload-item--actions">
-                <button type="button" class="action stop" (click)="control.stop()">
+
+                <!-- start button dont show on error, should be disabled if progress -->
+                <button type="button" (click)="control.start()" *ngIf="!uploadData.hasError" [disabled]="uploadData.state !== 'queued'">
+                    <i class="ngx-fileupload-icon--upload"></i>
+                </button>
+
+                <!-- retry download but only if it has an error -->
+                <button type="button" (click)="control.retry()" *ngIf="uploadData.hasError">
+                    <i class="ngx-fileupload-icon--retry"></i>
+                </button>
+
+                <!-- only if running -->
+                <button type="button" (click)="control.stop()">
                     <i class="ngx-fileupload-icon--cancel"></i>
                 </button>
             </div>

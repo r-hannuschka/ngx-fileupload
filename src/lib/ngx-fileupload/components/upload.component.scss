@@ -1,22 +1,14 @@
 :host {
 
+    display: flex;
+    flex-direction: column;
+
     .fileupload {
-        height: 100%;
         overflow: auto;
         display: flex;
         flex-direction: row-reverse;
+        flex: 1;
         border: 1px solid #D2D2D2;
-    }
-
-    .btn-upload {
-        display: block;
-        border: 1px solid #2E2E2E;
-        background: #3E3E3E;
-        padding: .4rem .8rem;
-        border-radius: .2rem;
-        color: #FFF;
-        margin-left: auto;
-        cursor: pointer;
     }
 
     .file-upload--list {
@@ -34,6 +26,26 @@
 
         &:last-child {
             margin-bottom: 0;
+        }
+    }
+
+    .upload--footer {
+        display: flex;
+        flex-direction: row-reverse;
+
+        .upload-action {
+            display: block;
+            border: 1px solid #2E2E2E;
+            background: #3E3E3E;
+            padding: .4rem .8rem;
+            border-radius: .2rem;
+            color: #FFF;
+            cursor: pointer;
+            margin: 0 0 0 .5rem;
+
+            &:last-child {
+                margin: 0;
+            }
         }
     }
 }

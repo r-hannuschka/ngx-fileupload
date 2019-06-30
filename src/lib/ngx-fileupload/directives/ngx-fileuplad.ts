@@ -10,7 +10,8 @@ import { Subject } from 'rxjs';
  *
  * @example
  *
- * <div [ngxFileupload]="'URL'" (add)="onUploadAdd($event)" #fileUpload='fileupload'></div>
+ * <div [ngxFileupload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileuploadRef='ngxFileuploadRef'></div>
+ * <button (click)="myNgxFileuploadRef.upload()">Upload</button>
  */
 @Directive({
   selector: '[ngxFileupload]',
@@ -28,15 +29,30 @@ export class NgxFileuploadDirective implements OnDestroy {
      */
     private destroyed$: Subject<boolean> = new Subject();
 
+    /**
+     * url which should be used as endpoint for the file upload
+     * this field is mandatory
+     *
+     * @example
+     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     */
     @Input('ngxFileupload')
     public url: string;
 
+    /**
+     * upload has been added
+     *
+     * @example
+     *
+     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     */
     @Output()
     public add: EventEmitter<FileUpload[]>;
 
-    constructor(
-        private httpClient: HttpClient
-    ) {
+    /**
+     * Creates an instance of NgxFileuploadDirective.
+     */
+    constructor(private httpClient: HttpClient) {
         this.add = new EventEmitter();
     }
 
@@ -75,15 +91,17 @@ export class NgxFileuploadDirective implements OnDestroy {
     /**
      * begin all uploads at once
      */
-    public upload() {
+    public uploadAll() {
         this.uploads.forEach((upload: FileUpload) => upload.start());
     }
 
     /**
-     * cancel all uploads at once
+     * cancel all downloads at once
      */
-    public cancel() {
-        this.uploads.forEach((upload: FileUpload) => upload.cancel());
+    public cancelAll() {
+        for ( let i = this.uploads.length - 1; i >= 0; i --) {
+            this.uploads[i].cancel();
+        }
     }
 
     /**
@@ -99,10 +117,13 @@ export class NgxFileuploadDirective implements OnDestroy {
         const upload    = new FileUpload(this.httpClient, fileModel, this.url);
         this.uploads.push(upload);
 
-        upload.change
+        const sub = upload.change
             .pipe(takeUntil(this.destroyed$))
             .subscribe({
-                complete: () => this.uploads.splice(this.uploads.indexOf(upload), 1)
+                complete: () => {
+                    this.uploads.splice(this.uploads.indexOf(upload), 1);
+                    sub.unsubscribe();
+                }
             });
 
         return upload;

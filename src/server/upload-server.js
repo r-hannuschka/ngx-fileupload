@@ -9,7 +9,7 @@ app.use(function(req, res, next) {
 });
 
 app.post('/upload', function(req, res) {
-    res.status(200);
+    res.status(201);
     res.send({
         message: "das lief prima"
     });

@@ -4,7 +4,7 @@
 
 Angular 8+ async fileupload with progressbar
 
-![ngx-fileupload.gif](./docs/ngx-fileupload.gif)
+![ngx-fileupload.gif](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/ngx-fileupload.gif)
 ___
 
 ## Table of Contents
@@ -164,7 +164,7 @@ cool.component.html
 </div>
 
 <!-- button, on click use myNgxFileuploadRef to upload all files at once -->
-<button class="btn-upload" type="button" (click)="myNgxFileuploadRef.upload()">Upload</button>
+<button class="btn-upload" type="button" (click)="myNgxFileuploadRef.uploadAll()">Upload</button>
 ```
 
 ## Development
@@ -185,6 +185,11 @@ npm start
 
 ## Changelog
 
+**0.2.1**  
+
+- __bugfixes__
+  - fixed docs
+
 **0.2.0**  
 
 - __breaking changes__:  
@@ -196,7 +201,7 @@ npm start
 
   ```html
   <!-- insert own retry button in custom template -->
-  <ng-template data-uploadData="data" data-uploadCtrl="ctrl">
+  <ng-template let-uploadData="data" let-uploadCtrl="ctrl">
       <button *ngIf="data.hasError" (click)="uploadCtrl.retry()">retry</button>
   </ng-template>
   ```

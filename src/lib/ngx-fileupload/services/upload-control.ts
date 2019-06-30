@@ -6,6 +6,10 @@ export class UploadControl {
         private fileUpload: FileUpload
     ) {}
 
+    public retry() {
+        this.fileUpload.retry();
+    }
+
     public start() {
         this.fileUpload.start();
     }

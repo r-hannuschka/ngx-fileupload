@@ -23,7 +23,14 @@
 
             <!-- upload actions: cancel | retry -->
             <div class="upload-item--actions">
-                <button type="button" class="action stop" (click)="control.stop()">
+
+                <!-- retry download but only if it has an error -->
+                <button type="button" (click)="control.retry()" *ngIf="uploadData.state === 'error'">
+                    <i class="ngx-fileupload-icon--retry"></i>
+                </button>
+
+                <!-- only if running -->
+                <button type="button" (click)="control.stop()">
                     <i class="ngx-fileupload-icon--cancel"></i>
                 </button>
             </div>

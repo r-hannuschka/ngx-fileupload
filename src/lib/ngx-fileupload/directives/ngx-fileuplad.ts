@@ -10,7 +10,8 @@ import { Subject } from 'rxjs';
  *
  * @example
  *
- * <div [ngxFileupload]="'URL'" (add)="onUploadAdd($event)" #fileUpload='fileupload'></div>
+ * <div [ngxFileupload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileuploadRef='ngxFileuploadRef'></div>
+ * <button (click)="myNgxFileuploadRef.upload()">Upload</button>
  */
 @Directive({
   selector: '[ngxFileupload]',
@@ -28,15 +29,30 @@ export class NgxFileuploadDirective implements OnDestroy {
      */
     private destroyed$: Subject<boolean> = new Subject();
 
+    /**
+     * url which should be used as endpoint for the file upload
+     * this field is mandatory
+     *
+     * @example
+     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     */
     @Input('ngxFileupload')
     public url: string;
 
+    /**
+     * upload has been added
+     *
+     * @example
+     *
+     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     */
     @Output()
     public add: EventEmitter<FileUpload[]>;
 
-    constructor(
-        private httpClient: HttpClient
-    ) {
+    /**
+     * Creates an instance of NgxFileuploadDirective.
+     */
+    constructor(private httpClient: HttpClient) {
         this.add = new EventEmitter();
     }
 
@@ -80,9 +96,7 @@ export class NgxFileuploadDirective implements OnDestroy {
     }
 
     /**
-     * cancel all downloads at once, start from end since the upload
-     * completes we it will removed from uploads array which changes the index.
-     * if the last elment will removed we dont care since we go into the other direction
+     * cancel all downloads at once
      */
     public cancel() {
         for ( let i = this.uploads.length - 1; i >= 0; i --) {

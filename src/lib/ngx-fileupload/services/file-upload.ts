@@ -47,6 +47,11 @@ export class FileUpload {
         }
     }
 
+    public retry() {
+        this.upload.state = UploadState.QUEUED;
+        this.start();
+    }
+
     /**
      * cancel current file upload, this will complete change subject
      */
@@ -93,11 +98,14 @@ export class FileUpload {
         }
     }
 
+    /**
+     * got http error, this not completes the upload
+     * since the user can try do the same upload again
+     */
     private handleHttpError(error: HttpErrorResponse) {
         this.upload.state = UploadState.ERROR;
         this.upload.error = error.message;
         this.notifyObservers();
-        this.completeUpload();
     }
 
     /**

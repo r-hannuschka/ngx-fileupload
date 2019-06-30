@@ -4,6 +4,11 @@ import { FileUpload } from '../services/file-upload';
 import { UploadControl } from '../services/upload-control';
 import { UploadModel, UploadData } from '../model/upload';
 
+export interface UploadContext {
+    data: UploadData;
+    ctrl: UploadControl;
+}
+
 /**
  * view for upload
  */
@@ -17,21 +22,18 @@ export class UploadItemComponent implements OnInit {
     /**
      * item template which should used to render upload data
      */
-    public itemTpl: TemplateRef<any>;
+    public itemTpl: TemplateRef<UploadContext>;
 
     /**
      * upload state has been changed
      */
     @Output()
-    public changed: EventEmitter<any> = new EventEmitter();
+    public changed: EventEmitter<UploadModel> = new EventEmitter();
 
     /**
      * template context which is bound to rendered template
      */
-    public context: {
-        data: UploadData,
-        ctrl: UploadControl
-    };
+    public context: UploadContext;
 
     /**
      * file upload which should bound to this view

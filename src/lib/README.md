@@ -1,10 +1,10 @@
-# NgxFileupload
+# @r-hannuschka/ngx-fileupload
 
 [![npm](https://img.shields.io/npm/v/@r-hannuschka/ngx-fileupload.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@r-hannuschka/ngx-fileupload)
 
 Angular 8+ async fileupload with progressbar
 
-![ngx-fileupload.gif](https://github.com/r-hannuschka/ngx-fileupload/docs/ngx-fileupload.gif)
+![ngx-fileupload.gif](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/ngx-fileupload.gif)
 ___
 
 ## Table of Contents
@@ -17,7 +17,7 @@ ___
 npm
 
 ```bash
-npm i --save @r-hannuschka/ngx-fileupload
+npm i --save @r-hannuschka/ngx-fileupload angular-pipes
 ```
 
 ## Usage
@@ -109,21 +109,21 @@ export class MyCoolComponent {
     /**
      * new uploads added with drag and drop
      */
-    public onUploadsAdd(uploads: FileUpload[]) {
-        this.uploads.push(...uploads);
+    public onUploadsAdd( uploads: FileUpload[] ) {
+        this.uploads.push( ...uploads );
     }
 
     /**
      * handle upload change event,
      * if upload has been completed or canceled remove it from list
      */
-    public handleUploadChange(upload: UploadModel, fileUpload: FileUpload) {
-        let completed = upload.state === UploadState.CANCELD;
-            completed = completed || UploadState.UPLOADED;
+    public handleUploadChange( upload: UploadModel, fileUpload: FileUpload ) {
+        let completed = upload.state === UploadState.CANCELED;
+        completed = completed || upload.state === UploadState.UPLOADED;
 
-        if (completed) {
-            const idx = this.uploads.indexOf(upload);
-            this.uploads.splice(idx, 1);
+        if ( completed ) {
+            const idx = this.uploads.indexOf(fileUpload);
+            this.uploads.splice( idx, 1 );
         }
     }
 }

@@ -17,7 +17,7 @@ ___
 npm
 
 ```bash
-npm i --save @r-hannuschka/ngx-fileupload
+npm i --save @r-hannuschka/ngx-fileupload angular-pipes
 ```
 
 ## Usage
@@ -109,21 +109,21 @@ export class MyCoolComponent {
     /**
      * new uploads added with drag and drop
      */
-    public onUploadsAdd(uploads: FileUpload[]) {
-        this.uploads.push(...uploads);
+    public onUploadsAdd( uploads: FileUpload[] ) {
+        this.uploads.push( ...uploads );
     }
 
     /**
      * handle upload change event,
      * if upload has been completed or canceled remove it from list
      */
-    public handleUploadChange(upload: UploadModel, fileUpload: FileUpload) {
-        let completed = upload.state === UploadState.CANCELD;
-            completed = completed || UploadState.UPLOADED;
+    public handleUploadChange( upload: UploadModel, fileUpload: FileUpload ) {
+        let completed = upload.state === UploadState.CANCELED;
+        completed = completed || upload.state === UploadState.UPLOADED;
 
-        if (completed) {
-            const idx = this.uploads.indexOf(upload);
-            this.uploads.splice(idx, 1);
+        if ( completed ) {
+            const idx = this.uploads.indexOf(fileUpload);
+            this.uploads.splice( idx, 1 );
         }
     }
 }

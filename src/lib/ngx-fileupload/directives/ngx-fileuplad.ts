@@ -80,10 +80,14 @@ export class NgxFileuploadDirective implements OnDestroy {
     }
 
     /**
-     * cancel all uploads at once
+     * cancel all downloads at once, start from end since the upload
+     * completes we it will removed from uploads array which changes the index.
+     * if the last elment will removed we dont care since we go into the other direction
      */
     public cancel() {
-        this.uploads.forEach((upload: FileUpload) => upload.cancel());
+        for ( let i = this.uploads.length - 1; i >= 0; i --) {
+            this.uploads[i].cancel();
+        }
     }
 
     /**
@@ -99,10 +103,13 @@ export class NgxFileuploadDirective implements OnDestroy {
         const upload    = new FileUpload(this.httpClient, fileModel, this.url);
         this.uploads.push(upload);
 
-        upload.change
+        const sub = upload.change
             .pipe(takeUntil(this.destroyed$))
             .subscribe({
-                complete: () => this.uploads.splice(this.uploads.indexOf(upload), 1)
+                complete: () => {
+                    this.uploads.splice(this.uploads.indexOf(upload), 1);
+                    sub.unsubscribe();
+                }
             });
 
         return upload;

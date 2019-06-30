@@ -47,8 +47,13 @@ export class FileUpload {
         }
     }
 
+    /**
+     * restart download again
+     * reset state, and reset errors
+     */
     public retry() {
         this.upload.state = UploadState.QUEUED;
+        this.upload.error = '';
         this.start();
     }
 

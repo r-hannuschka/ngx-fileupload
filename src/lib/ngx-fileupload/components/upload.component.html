@@ -7,5 +7,5 @@
         </ng-container>
     </div>
 </div>
-<button class="btn-upload" type="button" (click)="myNgxFileuploadRef.cancel()" [disabled]="!uploads.length">Cancel</button>
-<button class="btn-upload" type="button" (click)="myNgxFileuploadRef.upload()" [disabled]="!uploads.length">Upload</button>
+<button class="btn-upload" type="button" (click)="myNgxFileuploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>
+<button class="btn-upload" type="button" (click)="myNgxFileuploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button>

@@ -91,14 +91,14 @@ export class NgxFileuploadDirective implements OnDestroy {
     /**
      * begin all uploads at once
      */
-    public upload() {
+    public uploadAll() {
         this.uploads.forEach((upload: FileUpload) => upload.start());
     }
 
     /**
      * cancel all downloads at once
      */
-    public cancel() {
+    public cancelAll() {
         for ( let i = this.uploads.length - 1; i >= 0; i --) {
             this.uploads[i].cancel();
         }

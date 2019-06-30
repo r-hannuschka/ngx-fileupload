@@ -9,8 +9,9 @@ ___
 
 ## Table of Contents
 
--[Installation](#installation)  
--[Usage](#usage)  
+[Installation](#installation)  
+[Usage](#usage)  
+[Changelog](#Changelog)  
 
 ## Installation
 
@@ -74,14 +75,17 @@ informations arround the uploaded file
 
 *ctrl*
 
-remote control to start stop a download
+remote control to start stop a single upload
 
 ```html
 <ng-template #customItemTemplate ... let-uploadCtrl="ctrl">
-    <!-- start current download -->
-    <button type="button" (click)="uploadCtrl.start()">start</button>
+    <!-- retry failed upload -->
+    <button type="button" *ngIf="data.hasError" (click)="uploadCtrl.retry()">retry</button>
 
-    <!-- stop current download -->
+    <!-- start current upload -->
+    <button type="button" *ngIf="!data.hasError" (click)="uploadCtrl.start()">start</button>
+
+    <!-- cancel / remove current upload -->
     <button type="button" (click)="uploadCtrl.cancel()">stop</button>
 </ng-template>
 ```
@@ -178,6 +182,31 @@ node src\server\upload-server.js
 # listen on localhost:4200
 npm start
 ```
+
+## Changelog
+
+**0.2.0**  
+
+- __breaking changes__:  
+  - ngxFileUploadDirective, upload renamed to uploadAll, cancel renamed to cancelAll
+
+- __features__:
+  - on error, upload will not completed anymore instead a retry button will shown
+  - add UploadControl.retry(), if upload failed it could be uploaded
+
+  ```html
+  <!-- insert own retry button in custom template -->
+  <ng-template data-uploadData="data" data-uploadCtrl="ctrl">
+      <button *ngIf="data.hasError" (click)="uploadCtrl.retry()">retry</button>
+  </ng-template>
+  ```
+
+  - update item template, add new button upload (@see uploadCtrl.start())
+  - css changes
+  - add more documentaion
+
+- __bugfixes__
+  - ngxFileuploadDirective cancel(All) not working correctly
 
 ## @Progress
 

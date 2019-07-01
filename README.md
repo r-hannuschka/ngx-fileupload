@@ -7,12 +7,18 @@ Angular 8+ async fileupload with progressbar
 ![ngx-fileupload.gif](./docs/ngx-fileupload.gif)
 ___
 
-## Table of Contents
-
-[Installation](#installation)  
-[Usage](#usage)  
-[Examples](#Examples)
-[Changelog](#Changelog)  
+- [NgxFileupload](#NgxFileupload)
+  - [Installation](#Installation)
+  - [Usage](#Usage)
+  - [Examples](#Examples)
+    - [Custom Item Template](#Custom-Item-Template)
+    - [Full Customize](#Full-Customize)
+    - [Validators](#Validators)
+  - [Development](#Development)
+  - [Changelog](#Changelog)
+  - [@Progress](#Progress)
+  - [Author](#Author)
+  - [Other Modules](#Other-Modules)
 
 ## Installation
 
@@ -47,11 +53,13 @@ app.component.html
 <ngx-fileupload [url]="<URL>"></ngx-fileupload>
 ```
 
-__UploadTemplateContext__
+## Examples
 
-*data*
+### Custom Item Template
 
-informations arround the uploaded file
+if a custom template will be added, it will receive UploadTemplateContext object which contains:  
+
+- *current upload informations: data:UploadData*
 
 | name | type | description | values |
 |---|---|---|---|
@@ -65,9 +73,14 @@ informations arround the uploaded file
 | state | string | current state of upload | canceled, queued, progress, error,  uploaded, invalid|
 | uploaded | number | uploaded size in byte | |
 
-*ctrl*
+```html
+<ng-template #customItemTemplate let-uploadData="data" ...>
+    <h2>{{uploadData.name}}</h2>
+    <div>Progress: {{uplodaData.uploaded}}/{{uploadData.size}}
+</ng-template>
+```
 
-remote control to start stop a single upload
+- *control to start/stop/retry a download: ctrl:UploadControl*
 
 ```html
 <ng-template #customItemTemplate ... let-uploadCtrl="ctrl">
@@ -82,14 +95,11 @@ remote control to start stop a single upload
 </ng-template>
 ```
 
-## Examples
-
-### Custom item template
+simply define a *ng-template* tag and pass it to *ngx-fileupload* component
 
 ```html
 <ng-template #customItemTemplate let-uploadData="data" let-uploadCtrl="ctrl">
-    <h2>{{uploadData.name}}/{{uploadData.state}}</h2>
-    <button type="button" (click)="uploadCtrl.cancel()">stop</button>
+    ...
 </ng-template>
 
 <ngx-fileupload [url]="<URL>" [itemTemplate]='customItemTemplate'></ngx-fileupload>
@@ -201,7 +211,7 @@ We create a own module for validation to keep main module clean, you can add as 
 
 ```ts
 import { NgModule } from '@angular/core';
-import { 
+import {
     NgxFileuploadModule,
     NGX_FILEUPLOAD_VALIDATOR 
 } from '@r-hannuschka/ngx-fileupload/public-api';
@@ -245,6 +255,8 @@ import { AppUploadModule } from './app-upload.module';
 } )
 export class AppModule { }
 ```
+
+
 
 ## Development
 

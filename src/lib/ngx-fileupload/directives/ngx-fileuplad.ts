@@ -1,9 +1,10 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UploadModel } from '../model/upload';
+import { UploadModel, UploadState } from '../model/upload';
 import { FileUpload } from '../services/file-upload';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { NGX_FILEUPLOAD_VALIDATOR, NgxFileuploadValidator } from '../services/validation';
 
 /**
  * directive to add uploads with drag / drop
@@ -20,14 +21,14 @@ import { Subject } from 'rxjs';
 export class NgxFileuploadDirective implements OnDestroy {
 
     /**
-     * upload file queue
+     * upload has been added
+     *
+     * @example
+     *
+     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
      */
-    private uploads: FileUpload[] = [];
-
-    /**
-     * remove from subscribtions if component gets destroyed
-     */
-    private destroyed$: Subject<boolean> = new Subject();
+    @Output()
+    public add: EventEmitter<FileUpload[]>;
 
     /**
      * url which should be used as endpoint for the file upload
@@ -40,19 +41,29 @@ export class NgxFileuploadDirective implements OnDestroy {
     public url: string;
 
     /**
-     * upload has been added
-     *
-     * @example
-     *
-     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     * remove from subscribtions if component gets destroyed
      */
-    @Output()
-    public add: EventEmitter<FileUpload[]>;
+    private destroyed$: Subject<boolean> = new Subject();
+
+    /**
+     * upload file queue
+     */
+    private uploads: FileUpload[] = [];
+
+    private validators: NgxFileuploadValidator[] = [];
 
     /**
      * Creates an instance of NgxFileuploadDirective.
      */
-    constructor(private httpClient: HttpClient) {
+    constructor(
+        private httpClient: HttpClient,
+        @Optional()
+        @Inject(NGX_FILEUPLOAD_VALIDATOR)
+        validation: NgxFileuploadValidator | NgxFileuploadValidator[]
+    ) {
+        if (validation) {
+            this.validators = Array.isArray(validation) ? validation : [validation];
+        }
         this.add = new EventEmitter();
     }
 
@@ -114,7 +125,9 @@ export class NgxFileuploadDirective implements OnDestroy {
     private createUpload(file: File): FileUpload {
 
         const fileModel = new UploadModel(file);
-        const upload    = new FileUpload(this.httpClient, fileModel, this.url);
+        const upload = new FileUpload(this.httpClient, fileModel, this.url);
+
+        this.preValidateUpload(fileModel);
         this.uploads.push(upload);
 
         const sub = upload.change
@@ -127,5 +140,25 @@ export class NgxFileuploadDirective implements OnDestroy {
             });
 
         return upload;
+    }
+
+    /**
+     * pre validate upload, if validation result is invalid
+     * fill could not uploaded anymore
+     */
+    private preValidateUpload(upload: UploadModel) {
+
+        for (let i = 0, ln = this.validators.length; i < ln; i++) {
+            const validator = this.validators[i];
+            const result = validator.validate(upload.file);
+
+            upload.isValid = result.valid;
+            upload.message = !result.valid ? result.error : '';
+
+            if (!upload.isValid) {
+                upload.state   = UploadState.INVALID;
+                break;
+            }
+        }
     }
 }

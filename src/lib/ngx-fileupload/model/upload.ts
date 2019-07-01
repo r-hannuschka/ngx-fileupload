@@ -4,7 +4,8 @@ export enum UploadState {
     PROGRESS  = 'progress',
     UPLOADED  = 'uploaded',
     CANCELED  = 'canceled',
-    ERROR     = 'error'
+    ERROR     = 'error',
+    INVALID   = 'invalid'
 }
 
 export interface UploadData {
@@ -14,7 +15,18 @@ export interface UploadData {
     name: string;
     progress: number;
     hasError: boolean;
-    error: string;
+    isSuccess: boolean;
+    isValid: boolean;
+    message: string;
+}
+
+export interface IDataNode {
+    [key: string]: any;
+}
+
+interface Response {
+    code: number;
+    body: IDataNode;
 }
 
 /**
@@ -22,26 +34,34 @@ export interface UploadData {
  */
 export class UploadModel {
 
-    private file: File;
-
-    private uploadError = '';
+    private uploadFile: File;
 
     private uploadedSize = 0;
 
     private uploadedState: UploadState = UploadState.QUEUED;
 
+    private uploadError = false;
+
+    private uploadSuccess = false;
+
+    private uploadResponse: Response = null;
+
+    private uploadValid = true;
+
+    private uploadMessage = '';
+
     /**
      * Creates an instance of UploadFile.
      */
     public constructor(file: File) {
-        this.file = file;
+        this.uploadFile = file;
     }
 
     /**
      * get raw file
      */
-    public get blob(): Blob {
-        return this.file;
+    public get file(): File {
+        return this.uploadFile;
     }
 
     /**
@@ -65,12 +85,18 @@ export class UploadModel {
         return this.file.type;
     }
 
-    public set error(message: string) {
-        this.uploadError = message;
+    /**
+     * set response data if upload has been completed
+     */
+    public set response(response: Response) {
+        this.uploadResponse = response;
     }
 
-    public get error(): string {
-        return this.uploadError;
+    /**
+     * get response data if upload has been completed
+     */
+    public get response(): Response {
+        return this.uploadResponse;
     }
 
     /**
@@ -102,19 +128,68 @@ export class UploadModel {
     }
 
     /**
+     * set upload was successful
+     */
+    public set error(isError: boolean) {
+        this.uploadError = isError;
+    }
+
+    /**
+     * get upload was successful
+     */
+    public get error(): boolean {
+        return this.uploadError;
+    }
+
+    /**
+     * set upload was successful
+     */
+    public set success(isSuccess: boolean) {
+        this.uploadSuccess = isSuccess;
+    }
+
+    /**
+     * get upload was successful
+     */
+    public get success(): boolean {
+        return this.uploadSuccess;
+    }
+
+    public set isValid(valid: boolean) {
+        this.uploadValid = valid;
+    }
+
+    /**
+     * returns true if upload is valid
+     */
+    public get isValid(): boolean {
+        return this.uploadValid;
+    }
+
+    public set message(msg: string) {
+        this.uploadMessage = msg;
+    }
+
+    public get message(): string {
+        return this.uploadMessage;
+    }
+
+    /**
      * return file upload data
      * @todo move to model
      */
     public toJson(): UploadData {
         const progress = this.uploaded * 100 / this.fileSize;
         return {
-            state    : this.state,
-            uploaded : this.uploaded,
-            size     : this.fileSize,
-            name     : this.fileName,
-            progress : Math.round(progress > 100 ? 100 : progress),
-            hasError : this.error.length > 0,
-            error    : this.error
+            state     : this.state,
+            uploaded  : this.uploaded,
+            size      : this.fileSize,
+            name      : this.fileName,
+            progress  : Math.round(progress > 100 ? 100 : progress),
+            hasError  : this.error,
+            isSuccess : this.success,
+            isValid   : this.isValid,
+            message   : this.message
         };
     }
 }

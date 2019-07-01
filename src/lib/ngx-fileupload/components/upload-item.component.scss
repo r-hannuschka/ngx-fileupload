@@ -23,19 +23,21 @@ $ngx-fileupload-icons--font-path: '../assets/fonts' !default;
     }
 
     /*
-       general settings
+       Upload Item Header
     */
-    .upload-item--body,
     .upload-item--header {
-        display: flex;
-        flex-direction: row;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     /*
-       Upload Item Body        
+       Upload Item Body
     */
     .upload-item--body {
         align-items: center;
+        display: flex;
+        flex-direction: row;
     }
 
     .upload-item--actions,
@@ -103,6 +105,21 @@ $ngx-fileupload-icons--font-path: '../assets/fonts' !default;
                 background: lighten(map-get($colors, 'dark'), 50%);
                 cursor: not-allowed;
             }
+        }
+    }
+
+    /**
+     * Upload Item Footer
+     */
+    .upload-item--notification {
+        font-size: .8rem;
+        color: map-get($map: $colors, $key: 'green');
+        margin-left: 2rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        &.error {
+            color: map-get($map: $colors, $key: 'red');
         }
     }
 }

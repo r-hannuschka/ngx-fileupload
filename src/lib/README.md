@@ -7,11 +7,18 @@ Angular 8+ async fileupload with progressbar
 ![ngx-fileupload.gif](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/ngx-fileupload.gif)
 ___
 
-## Table of Contents
-
-[Installation](#installation)  
-[Usage](#usage)  
-[Changelog](#Changelog)  
+- [NgxFileupload](#NgxFileupload)
+  - [Installation](#Installation)
+  - [Usage](#Usage)
+  - [Examples](#Examples)
+    - [Custom Item Template](#Custom-Item-Template)
+    - [Full Customize](#Full-Customize)
+    - [Validators](#Validators)
+  - [Development](#Development)
+  - [Changelog](#Changelog)
+  - [@Progress](#Progress)
+  - [Author](#Author)
+  - [Other Modules](#Other-Modules)
 
 ## Installation
 
@@ -46,36 +53,34 @@ app.component.html
 <ngx-fileupload [url]="<URL>"></ngx-fileupload>
 ```
 
-### custom item template
+## Examples
 
-```html
-<ng-template #customItemTemplate let-uploadData="data" let-uploadCtrl="ctrl">
-    <h2>{{uploadData.name}}/{{uploadData.state}}</h2>
-    <button type="button" (click)="uploadCtrl.cancel()">stop</button>
-</ng-template>
+### Custom Item Template
 
-<ngx-fileupload [url]="<URL>" [itemTemplate]='customItemTemplate'></ngx-fileupload>
-```
+if a custom template will be added, it will receive UploadTemplateContext object which contains:  
 
-__Scope Variables__
-
-*data*
-
-informations arround the uploaded file
+- *current upload informations: data:UploadData*
 
 | name | type | description | values |
 |---|---|---|---|
-| state | string | current state of upload | canceled, queued, progress, error,  uploaded|
-| uploaded | number | uploaded size in byte | |
-| size | number | size of file | |
+| hasError | boolean | flag upload got error | |
+| isSuccess | boolean | upload was successfully |
+| isValid | boolean | current upload is valid |
+| message | string | current error / validation or success message|
 | name | string | name of file | |
 | progress | number | progress in percent | |
-| hasError | boolean | flag upload got error | |
-| error | string | current error message | |
+| size | number | size of file | |
+| state | string | current state of upload | canceled, queued, progress, error,  uploaded, invalid|
+| uploaded | number | uploaded size in byte | |
 
-*ctrl*
+```html
+<ng-template #customItemTemplate let-uploadData="data" ...>
+    <h2>{{uploadData.name}}</h2>
+    <div>Progress: {{uplodaData.uploaded}}/{{uploadData.size}}
+</ng-template>
+```
 
-remote control to start stop a single upload
+- *control to start/stop/retry a download: ctrl:UploadControl*
 
 ```html
 <ng-template #customItemTemplate ... let-uploadCtrl="ctrl">
@@ -90,7 +95,17 @@ remote control to start stop a single upload
 </ng-template>
 ```
 
-### full customization
+simply define a *ng-template* tag and pass it to *ngx-fileupload* component
+
+```html
+<ng-template #customItemTemplate let-uploadData="data" let-uploadCtrl="ctrl">
+    ...
+</ng-template>
+
+<ngx-fileupload [url]="<URL>" [itemTemplate]='customItemTemplate'></ngx-fileupload>
+```
+
+### Full Customize
 
 cool.component.ts
 
@@ -167,6 +182,82 @@ cool.component.html
 <button class="btn-upload" type="button" (click)="myNgxFileuploadRef.uploadAll()">Upload</button>
 ```
 
+### Validators
+
+*validators/max-size.validator.ts*/
+
+```ts
+import {
+    NgxFileuploadValidation,
+    ValidationResult
+} from '@r-hannuschka/ngx-fileupload/public-api';
+
+export class MaxUploadSizeValidator implements NgxFileuploadValidator {
+
+    /**
+     * validate max upload size to 1MB
+     */
+    public validate(file: File): ValidationResult {
+        const valid = (file.size / (1024 * 1024)) < 1;
+        const error = !valid ? 'Max file size 1MByte' : '';
+        return { valid, error };
+    }
+}
+```
+
+*app-upload.module.ts*
+
+We create a own module for validation to keep main module clean, you can add as many validators you want if needed. If no Validators are passed all files will uploaded to server.
+
+```ts
+import { NgModule } from '@angular/core';
+import {
+    NgxFileuploadModule,
+    NGX_FILEUPLOAD_VALIDATOR 
+} from '@r-hannuschka/ngx-fileupload/public-api';
+import { MaxUploadSizeValidator } from './validators/max-size.validator';
+
+@NgModule({
+    exports: [ NgxFileuploadModule ],
+    imports: [ NgxFileuploadModule ],
+    providers: [{
+        provide: NGX_FILEUPLOAD_VALIDATOR,
+        useClass: MaxUploadSizeValidator,
+        multi: true
+    }, {
+        provide: NGX_FILEUPLOAD_VALIDATOR,
+        useClass: SomeOtherValidator,
+        multi: true
+    }],
+})
+export class AppUploadModule { }
+```
+
+*app.module.ts*
+
+simply import AppUploadModule into main module
+
+```ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { AppUploadModule } from './app-upload.module';
+
+@NgModule( {
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        AppUploadModule,
+        BrowserModule
+    ],
+    bootstrap: [AppComponent],
+} )
+export class AppModule { }
+```
+
+
+
 ## Development
 
 ```bash
@@ -184,6 +275,20 @@ npm start
 ```
 
 ## Changelog
+
+**0.3.0**  
+
+  - __breaking changes__:  
+    - remove *UploadTemplateContext.data.error*, if an error occurs  
+    it is written now to *UploadTemplateContext.data.message*
+
+  - __features__
+    - validation providers could now defined
+    - write upload response data to upload model
+  
+  - __other changes__
+    - show notifications for error / invalid / completed
+    - update scss / upload-item template
 
 **0.2.1**  
 
@@ -215,8 +320,6 @@ npm start
 
 ## @Progress
 
-- validation: max file size
-- validation: allowed files
 - theming
 - unit tests
 - e2e tests

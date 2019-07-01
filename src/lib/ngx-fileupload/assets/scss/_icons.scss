@@ -69,6 +69,7 @@ $line-height: $ngx-fileupload-icons--line-height;
     }
 }
 
+.ngx-fileupload-icon--invalid,
 .ngx-fileupload-icon--error {
     color: map-get($map: $colors, $key: "red");
     &:before {

@@ -34,8 +34,9 @@ export class FileUpload {
      * if file is not queued, abort request on cancel
      */
     public start() {
-        /** only start upload if state is not queued */
-        if (this.upload.state === UploadState.QUEUED) {
+
+        /** only start upload if state is not queued and is valid */
+        if (this.upload.state === UploadState.QUEUED && this.upload.isValid) {
             this.uploadFile().pipe(
                 takeUntil(this.cancel$),
                 filter(() => this.upload.state !== UploadState.CANCELED)
@@ -52,8 +53,10 @@ export class FileUpload {
      * reset state, and reset errors
      */
     public retry() {
-        this.upload.state = UploadState.QUEUED;
-        this.upload.error = '';
+        this.upload.state   = UploadState.QUEUED;
+        this.upload.error   = null;
+        this.upload.success = null;
+        this.upload.message = '';
         this.start();
     }
 
@@ -85,7 +88,7 @@ export class FileUpload {
      */
     private uploadFile(): Observable<HttpEvent<string>> {
         const formData = new FormData();
-        formData.append('file', this.upload.blob, this.upload.fileName);
+        formData.append('file', this.upload.file, this.upload.fileName);
         return this.http.post<string>(this.url, formData, {
             reportProgress: true,
             observe: 'events'
@@ -109,7 +112,8 @@ export class FileUpload {
      */
     private handleHttpError(error: HttpErrorResponse) {
         this.upload.state = UploadState.ERROR;
-        this.upload.error = error.message;
+        this.upload.error = true;
+        this.upload.message = error.message;
         this.notifyObservers();
     }
 
@@ -134,7 +138,14 @@ export class FileUpload {
      * upload has been completed
      */
     private handleResponse(res: HttpResponse<any>) {
-        this.upload.state = UploadState.UPLOADED;
+
+        this.upload.state   = UploadState.UPLOADED;
+        this.upload.success = res.ok;
+        this.upload.response = {
+            code: res.status,
+            body: res.body
+        };
+
         this.notifyObservers();
         this.completeUpload();
     }

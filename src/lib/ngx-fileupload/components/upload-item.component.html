@@ -1,16 +1,12 @@
 <ng-template #defaultUploadItem let-uploadData="data" let-control="ctrl">
 
     <div class="upload-item">
-        <div class="upload-item--header">
-            <span class="label name">{{uploadData.name}}</span>
-        </div>
+        <div class="upload-item--header">{{uploadData.name}}</div>
 
         <div class="upload-item--body">
-
             <!-- upload state -->
             <div class="upload-item--state">
-                <i [ngClass]="['ngx-fileupload-icon--' + uploadData.state]">
-                </i>
+                <i [ngClass]="['ngx-fileupload-icon--' + uploadData.state]"></i>
             </div>
 
             <!-- file progress: current state | progressbar -->
@@ -24,12 +20,13 @@
             <!-- upload actions: cancel | retry -->
             <div class="upload-item--actions">
 
-                <!-- start button dont show on error, should be disabled if progress -->
-                <button type="button" (click)="control.start()" *ngIf="!uploadData.hasError" [disabled]="uploadData.state !== 'queued'">
+                <!-- start upload action -->
+                <button type="button" (click)="control.start()" *ngIf="!uploadData.hasError"
+                    [disabled]="uploadData.state !== 'queued' || !uploadData.isValid">
                     <i class="ngx-fileupload-icon--upload"></i>
                 </button>
 
-                <!-- retry download but only if it has an error -->
+                <!-- retry upload action -->
                 <button type="button" (click)="control.retry()" *ngIf="uploadData.hasError">
                     <i class="ngx-fileupload-icon--retry"></i>
                 </button>
@@ -38,8 +35,12 @@
                 <button type="button" (click)="control.stop()">
                     <i class="ngx-fileupload-icon--cancel"></i>
                 </button>
-            </div>
 
+            </div>
+        </div>
+
+        <div class="upload-item--notification" [ngClass]="{'error': uploadData.hasError || !uploadData.isValid}">
+            {{uploadData.message}}
         </div>
     </div>
 </ng-template>

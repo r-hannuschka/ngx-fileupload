@@ -276,6 +276,17 @@ npm start
 
 ## Changelog
 
+**0.4.0-beta.1**
+
+  - __fixes__
+    - update changelog
+
+**0.4.0-beta.0**
+
+  - __features__
+    - add support on ngx-fileupload directive to open file select window, triggered on click
+    - add clean all action on ngx-fileupload directive to remove only broken downloads
+
 **0.3.0**  
 
   - __breaking changes__:  

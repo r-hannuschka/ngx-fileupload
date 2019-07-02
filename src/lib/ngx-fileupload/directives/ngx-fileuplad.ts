@@ -118,7 +118,7 @@ export class NgxFileuploadDirective implements OnDestroy {
      * handle drag over event
      */
     @HostListener('dragover', ['$event'])
-    protected onFileDragOver(event: DragEvent) {
+    public onFileDragOver(event: DragEvent) {
         event.preventDefault();
         event.stopPropagation();
     }
@@ -127,7 +127,7 @@ export class NgxFileuploadDirective implements OnDestroy {
      * handle drop event
      */
     @HostListener('drop', ['$event'])
-    protected onFileDrop(event: DragEvent) {
+    public onFileDrop(event: DragEvent) {
 
         event.stopPropagation();
         event.preventDefault();
@@ -141,7 +141,7 @@ export class NgxFileuploadDirective implements OnDestroy {
      * to get notified we have a click event
      */
     @HostListener('click', ['$event'])
-    protected onClick(event: MouseEvent) {
+    public onClick(event: MouseEvent) {
         event.stopPropagation();
         event.preventDefault();
 

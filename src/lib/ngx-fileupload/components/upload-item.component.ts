@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener } from '@angular/core';
 import { FileUpload } from '../services/file-upload';
 import { UploadControl } from '../services/upload-control';
 import { UploadModel, UploadData } from '../model/upload';
@@ -39,6 +39,12 @@ export class UploadItemComponent implements OnInit {
      * file upload which should bound to this view
      */
     private fileUpload: FileUpload;
+
+    @HostListener('click', ['$event'])
+    protected handleClick(e: MouseEvent) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
 
     /**
      * sets upload we want to bind with current view

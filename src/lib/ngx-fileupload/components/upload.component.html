@@ -9,5 +9,6 @@
 </div>
 <div class="upload--footer">
     <button class="upload-action upload-action--cancel" type="button" (click)="myNgxFileuploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>
+    <button class="upload-action upload-action--clean"  type="button" (click)="myNgxFileuploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>
     <button class="upload-action upload-action--upload" type="button" (click)="myNgxFileuploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button>
 </div>

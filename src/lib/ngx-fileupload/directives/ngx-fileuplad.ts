@@ -1,21 +1,9 @@
-import {
-    Directive,
-    HostListener,
-    Input,
-    Output,
-    EventEmitter,
-    OnDestroy,
-    Optional,
-    Inject,
-    Renderer2,
-    OnInit,
-    ElementRef
-} from '@angular/core';
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject, Renderer2, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UploadModel, UploadState } from '../model/upload';
-import { FileUpload } from '../services/file-upload';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { UploadModel, UploadState } from '../model/upload';
+import { FileUpload } from '../services/file-upload';
 import { NGX_FILEUPLOAD_VALIDATOR, NgxFileuploadValidator } from '../services/validation';
 
 /**
@@ -30,7 +18,7 @@ import { NGX_FILEUPLOAD_VALIDATOR, NgxFileuploadValidator } from '../services/va
   selector: '[ngxFileupload]',
   exportAs: 'ngxFileuploadRef'
 })
-export class NgxFileuploadDirective implements OnDestroy, OnInit {
+export class NgxFileuploadDirective implements OnDestroy {
 
     /**
      * upload has been added
@@ -67,6 +55,9 @@ export class NgxFileuploadDirective implements OnDestroy, OnInit {
      */
     private validators: NgxFileuploadValidator[] = [];
 
+    /**
+     * input file field to trigger file window
+     */
     private fileSelect: HTMLInputElement;
 
     /**
@@ -82,13 +73,6 @@ export class NgxFileuploadDirective implements OnDestroy, OnInit {
             this.validators = Array.isArray(validation) ? validation : [validation];
         }
         this.add = new EventEmitter();
-    }
-
-    /**
-     * create input type file field, but dont render to dom
-     * keep it as dummy to open file browser
-     */
-    public ngOnInit() {
         this.fileSelect = this.createFieldInputField();
     }
 
@@ -114,6 +98,19 @@ export class NgxFileuploadDirective implements OnDestroy, OnInit {
     public cancelAll() {
         for ( let i = this.uploads.length - 1; i >= 0; i --) {
             this.uploads[i].cancel();
+        }
+    }
+
+    /**
+     * search for broken uploads (error / invalid) and cancel
+     * them
+     */
+    public cleanAll() {
+        for ( let i = this.uploads.length - 1; i >= 0; i --) {
+            const upload = this.uploads[i];
+            if (upload.hasError()) {
+                upload.cancel();
+            }
         }
     }
 
@@ -147,9 +144,16 @@ export class NgxFileuploadDirective implements OnDestroy, OnInit {
     protected onClick(event: MouseEvent) {
         event.stopPropagation();
         event.preventDefault();
-        this.fileSelect.click();
+
+        if (!this.uploads.length) {
+            this.fileSelect.click();
+        }
     }
 
+    /**
+     * files has been selected via drag drop
+     * or with input type="file"
+     */
     private handleFileSelect(files: File[]) {
         const uploads = files.map((file) => this.createUpload(file));
         this.add.emit(uploads);

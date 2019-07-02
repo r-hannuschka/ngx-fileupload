@@ -84,6 +84,13 @@ export class FileUpload {
     }
 
     /**
+     * returns true if upload contains an error or is invalid
+     */
+    public hasError(): boolean {
+        return !this.upload.isValid || this.upload.error;
+    }
+
+    /**
      * build form data and send request to server
      */
     private uploadFile(): Observable<HttpEvent<string>> {

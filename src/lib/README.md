@@ -1,4 +1,4 @@
-# NgxFileupload
+# NgxFileUpload
 
 [![npm](https://img.shields.io/npm/v/@r-hannuschka/ngx-fileupload.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@r-hannuschka/ngx-fileupload)
 
@@ -7,7 +7,7 @@ Angular 8+ async fileupload with progressbar
 ![ngx-fileupload.gif](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/ngx-fileupload.gif)
 ___
 
-- [NgxFileupload](#NgxFileupload)
+- [NgxFileUpload](#NgxFileUpload)
   - [Installation](#Installation)
   - [Usage](#Usage)
   - [Examples](#Examples)
@@ -34,12 +34,12 @@ app.module.ts
 
 ```js
 import { NgModule, Injectable } from '@angular/core';
-import { NgxFileuploadModule } from 'lib/public-api';
+import { NgxFileUploadModule } from 'lib/public-api';
 
 @NgModule({
     imports: [
         ...
-        NgxFileuploadModule
+        NgxFileUploadModule
     ],
     exports: [...],
     declarations: [...]
@@ -69,8 +69,8 @@ if a custom template will be added, it will receive UploadTemplateContext object
 | message | string | current error / validation or success message|
 | name | string | name of file | |
 | progress | number | progress in percent | |
-| size | number | size of file | |
 | state | string | current state of upload | canceled, queued, progress, error,  uploaded, invalid|
+| size | number | size of file | |
 | uploaded | number | uploaded size in byte | |
 
 ```html
@@ -173,13 +173,13 @@ cool.component.html
     been added
 -->
 <div class="fileupload dropzone"
-    [ngxFileupload]="url"
+    [ngxFileUpload]="url"
     (add)="onUploadsAdd($event)"
-    #myNgxFileuploadRef='ngxFileuploadRef'>
+    #myNgxFileUploadRef='ngxFileUploadRef'>
 </div>
 
-<!-- button, on click use myNgxFileuploadRef to upload all files at once -->
-<button class="btn-upload" type="button" (click)="myNgxFileuploadRef.uploadAll()">Upload</button>
+<!-- button, on click use myNgxFileUploadRef to upload all files at once -->
+<button class="btn-upload" type="button" (click)="myNgxFileUploadRef.uploadAll()">Upload</button>
 ```
 
 ### Validators
@@ -188,11 +188,11 @@ cool.component.html
 
 ```ts
 import {
-    NgxFileuploadValidation,
+    NgxFileUploadValidation,
     ValidationResult
 } from '@r-hannuschka/ngx-fileupload/public-api';
 
-export class MaxUploadSizeValidator implements NgxFileuploadValidator {
+export class MaxUploadSizeValidator implements NgxFileUploadValidator {
 
     /**
      * validate max upload size to 1MB
@@ -212,14 +212,14 @@ We create a own module for validation to keep main module clean, you can add as 
 ```ts
 import { NgModule } from '@angular/core';
 import {
-    NgxFileuploadModule,
-    NGX_FILEUPLOAD_VALIDATOR 
+    NgxFileUploadModule,
+    NGX_FILEUPLOAD_VALIDATOR
 } from '@r-hannuschka/ngx-fileupload/public-api';
 import { MaxUploadSizeValidator } from './validators/max-size.validator';
 
 @NgModule({
-    exports: [ NgxFileuploadModule ],
-    imports: [ NgxFileuploadModule ],
+    exports: [ NgxFileUploadModule ],
+    imports: [ NgxFileUploadModule ],
     providers: [{
         provide: NGX_FILEUPLOAD_VALIDATOR,
         useClass: MaxUploadSizeValidator,
@@ -275,6 +275,15 @@ npm start
 ```
 
 ## Changelog
+
+**0.4.0-beta.2**
+
+  - __breaking changes__:
+    - change spelling NgxFileupload... to NgxFileUpload...
+    - NgxFileUploadDirective is now exported as ngxFileUploadRef (before ngxFileuploadRef)
+
+  - __fixes__:  
+    - stop all click events from items, to ensure we dont affect any other parent component
 
 **0.4.0-beta.1**
 

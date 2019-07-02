@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener } from '@angular/core';
 import { FileUpload } from '../services/file-upload';
 import { UploadControl } from '../services/upload-control';
 import { UploadModel, UploadData } from '../model/upload';
@@ -50,6 +50,15 @@ export class UploadItemComponent implements OnInit {
             data: null,
             ctrl: new UploadControl(fileUpload)
         };
+    }
+
+    /**
+     * ensure all click events will canceled
+     * so we dont affect anything other
+     */
+    @HostListener('click', ['$event'])
+    public onItemClick(event: MouseEvent) {
+        event.stopPropagation();
     }
 
     /**

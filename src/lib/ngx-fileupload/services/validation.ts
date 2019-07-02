@@ -7,6 +7,6 @@ export interface ValidationResult {
     error: string;
 }
 
-export interface NgxFileuploadValidator {
+export interface NgxFileUploadValidator {
     validate(file: File): ValidationResult;
 }

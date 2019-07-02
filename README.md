@@ -69,8 +69,8 @@ if a custom template will be added, it will receive UploadTemplateContext object
 | message | string | current error / validation or success message|
 | name | string | name of file | |
 | progress | number | progress in percent | |
-| size | number | size of file | |
 | state | string | current state of upload | canceled, queued, progress, error,  uploaded, invalid|
+| size | number | size of file | |
 | uploaded | number | uploaded size in byte | |
 
 ```html

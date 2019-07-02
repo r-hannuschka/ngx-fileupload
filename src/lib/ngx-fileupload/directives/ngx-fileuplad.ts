@@ -4,28 +4,28 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UploadModel, UploadState } from '../model/upload';
 import { FileUpload } from '../services/file-upload';
-import { NGX_FILEUPLOAD_VALIDATOR, NgxFileuploadValidator } from '../services/validation';
+import { NGX_FILEUPLOAD_VALIDATOR, NgxFileUploadValidator } from '../services/validation';
 
 /**
  * directive to add uploads with drag / drop
  *
  * @example
  *
- * <div [ngxFileupload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileuploadRef='ngxFileuploadRef'></div>
- * <button (click)="myNgxFileuploadRef.upload()">Upload</button>
+ * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileUploadRef='ngxFileUploadRef'></div>
+ * <button (click)="myNgxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: '[ngxFileupload]',
-  exportAs: 'ngxFileuploadRef'
+  selector: '[ngxFileUpload]',
+  exportAs: 'ngxFileUploadRef'
 })
-export class NgxFileuploadDirective implements OnDestroy {
+export class NgxFileUploadDirective implements OnDestroy {
 
     /**
      * upload has been added
      *
      * @example
      *
-     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     * <div [ngxFileUpload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
      */
     @Output()
     public add: EventEmitter<FileUpload[]>;
@@ -35,9 +35,9 @@ export class NgxFileuploadDirective implements OnDestroy {
      * this field is mandatory
      *
      * @example
-     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     * <div [ngxFileUpload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
      */
-    @Input('ngxFileupload')
+    @Input('ngxFileUpload')
     public url: string;
 
     /**
@@ -53,7 +53,7 @@ export class NgxFileuploadDirective implements OnDestroy {
     /**
      * injected validators
      */
-    private validators: NgxFileuploadValidator[] = [];
+    private validators: NgxFileUploadValidator[] = [];
 
     /**
      * input file field to trigger file window
@@ -61,13 +61,13 @@ export class NgxFileuploadDirective implements OnDestroy {
     private fileSelect: HTMLInputElement;
 
     /**
-     * Creates an instance of NgxFileuploadDirective.
+     * Creates an instance of NgxFileUploadDirective.
      */
     constructor(
         private httpClient: HttpClient,
         private renderer: Renderer2,
         private el: ElementRef,
-        @Optional() @Inject(NGX_FILEUPLOAD_VALIDATOR) validation: NgxFileuploadValidator | NgxFileuploadValidator[]
+        @Optional() @Inject(NGX_FILEUPLOAD_VALIDATOR) validation: NgxFileUploadValidator | NgxFileUploadValidator[]
     ) {
         if (validation) {
             this.validators = Array.isArray(validation) ? validation : [validation];

@@ -5,12 +5,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgMathPipesModule } from 'angular-pipes';
 
 import { UploadItemComponent } from './components/upload-item.component';
-import { NgxFileuploadDirective } from './directives/ngx-fileuplad';
+import { NgxFileUploadDirective } from './directives/ngx-fileuplad';
 import { UploadComponent } from './components/upload.component';
 
-@NgModule( {
+@NgModule({
     declarations: [
-        NgxFileuploadDirective,
+        NgxFileUploadDirective,
         UploadItemComponent,
         UploadComponent,
     ],
@@ -21,9 +21,9 @@ import { UploadComponent } from './components/upload.component';
         NgMathPipesModule
     ],
     exports: [
-        NgxFileuploadDirective,
+        NgxFileUploadDirective,
         UploadItemComponent,
         UploadComponent
     ]
 })
-export class NgxFileuploadModule {}
+export class NgxFileUploadModule {}

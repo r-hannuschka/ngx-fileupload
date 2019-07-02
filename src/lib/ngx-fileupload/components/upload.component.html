@@ -1,4 +1,4 @@
-<div class="fileupload" [ngxFileupload]="url" (add)="onUploadsAdd($event)" #myNgxFileuploadRef='ngxFileuploadRef'>
+<div class="fileupload" [ngxFileUpload]="url" (add)="onUploadsAdd($event)" #myNgxFileUploadRef='ngxFileUploadRef'>
     <div class="file-upload--list">
         <ng-container *ngFor="let item of uploads">
             <ngx-fileupload-item 
@@ -8,7 +8,7 @@
     </div>
 </div>
 <div class="upload--footer">
-    <button class="upload-action upload-action--cancel" type="button" (click)="myNgxFileuploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>
-    <button class="upload-action upload-action--clean"  type="button" (click)="myNgxFileuploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>
-    <button class="upload-action upload-action--upload" type="button" (click)="myNgxFileuploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button>
+    <button class="upload-action upload-action--cancel" type="button" (click)="myNgxFileUploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>
+    <button class="upload-action upload-action--clean"  type="button" (click)="myNgxFileUploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>
+    <button class="upload-action upload-action--upload" type="button" (click)="myNgxFileUploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button>
 </div>

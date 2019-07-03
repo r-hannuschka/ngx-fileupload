@@ -1,8 +1,8 @@
 
-import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
-import { FileUpload } from '../services/file-upload';
-import { UploadControl } from '../services/upload-control';
-import { UploadModel, UploadData } from '../model/upload';
+import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener } from "@angular/core";
+import { FileUpload } from "../services/file-upload";
+import { UploadControl } from "../services/upload-control";
+import { UploadModel, UploadData } from "../model/upload";
 
 export interface UploadContext {
     data: UploadData;
@@ -13,9 +13,9 @@ export interface UploadContext {
  * view for upload
  */
 @Component({
-    selector: 'ngx-fileupload-item',
-    templateUrl: 'upload-item.component.html',
-    styleUrls: ['./upload-item.component.scss'],
+    selector: "ngx-fileupload-item",
+    templateUrl: "upload-item.component.html",
+    styleUrls: ["./upload-item.component.scss"],
 })
 export class UploadItemComponent implements OnInit {
 
@@ -53,9 +53,18 @@ export class UploadItemComponent implements OnInit {
     }
 
     /**
+     * ensure all click events will canceled
+     * so we dont affect anything other
+     */
+    @HostListener("click", ["$event"])
+    public onItemClick(event: MouseEvent) {
+        event.stopPropagation();
+    }
+
+    /**
      * sets template which should used to render file data
      */
-    @ViewChild('defaultUploadItem', {static: true})
+    @ViewChild("defaultUploadItem", {static: true})
     @Input()
     public set template(tpl: TemplateRef<any>) {
         this.itemTpl = tpl || this.itemTpl;

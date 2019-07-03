@@ -1,31 +1,31 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { UploadModel, UploadState } from '../model/upload';
-import { FileUpload } from '../services/file-upload';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { NGX_FILEUPLOAD_VALIDATOR, NgxFileuploadValidator } from '../services/validation';
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject, Renderer2, ElementRef } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { UploadModel, UploadState } from "../model/upload";
+import { FileUpload } from "../services/file-upload";
+import { NGX_FILEUPLOAD_VALIDATOR, NgxFileUploadValidator } from "../services/validation";
 
 /**
  * directive to add uploads with drag / drop
  *
  * @example
  *
- * <div [ngxFileupload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileuploadRef='ngxFileuploadRef'></div>
- * <button (click)="myNgxFileuploadRef.upload()">Upload</button>
+ * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileUploadRef="ngxFileUploadRef"></div>
+ * <button (click)="myNgxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: '[ngxFileupload]',
-  exportAs: 'ngxFileuploadRef'
+  selector: "[ngxFileUpload]",
+  exportAs: "ngxFileUploadRef"
 })
-export class NgxFileuploadDirective implements OnDestroy {
+export class NgxFileUploadDirective implements OnDestroy {
 
     /**
      * upload has been added
      *
      * @example
      *
-     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
      */
     @Output()
     public add: EventEmitter<FileUpload[]>;
@@ -35,9 +35,9 @@ export class NgxFileuploadDirective implements OnDestroy {
      * this field is mandatory
      *
      * @example
-     * <div [ngxFileupload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
      */
-    @Input('ngxFileupload')
+    @Input("ngxFileUpload")
     public url: string;
 
     /**
@@ -50,44 +50,30 @@ export class NgxFileuploadDirective implements OnDestroy {
      */
     private uploads: FileUpload[] = [];
 
-    private validators: NgxFileuploadValidator[] = [];
+    /**
+     * injected validators
+     */
+    private validators: NgxFileUploadValidator[] = [];
 
     /**
-     * Creates an instance of NgxFileuploadDirective.
+     * input file field to trigger file window
+     */
+    private fileSelect: HTMLInputElement;
+
+    /**
+     * Creates an instance of NgxFileUploadDirective.
      */
     constructor(
         private httpClient: HttpClient,
-        @Optional()
-        @Inject(NGX_FILEUPLOAD_VALIDATOR)
-        validation: NgxFileuploadValidator | NgxFileuploadValidator[]
+        private renderer: Renderer2,
+        private el: ElementRef,
+        @Optional() @Inject(NGX_FILEUPLOAD_VALIDATOR) validation: NgxFileUploadValidator | NgxFileUploadValidator[]
     ) {
         if (validation) {
             this.validators = Array.isArray(validation) ? validation : [validation];
         }
         this.add = new EventEmitter();
-    }
-
-    /**
-     * handle drag over event
-     */
-    @HostListener('dragover', ['$event'])
-    public onFileDragOver(event: DragEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    /**
-     * handle drop event
-     */
-    @HostListener('drop', ['$event'])
-    public onFileDrop(event: DragEvent) {
-
-        event.stopPropagation();
-        event.preventDefault();
-
-        const files   = Array.from(event.dataTransfer.files);
-        const uploads = files.map((file) => this.createUpload(file));
-        this.add.emit(uploads);
+        this.fileSelect = this.createFieldInputField();
     }
 
     /**
@@ -113,6 +99,64 @@ export class NgxFileuploadDirective implements OnDestroy {
         for ( let i = this.uploads.length - 1; i >= 0; i --) {
             this.uploads[i].cancel();
         }
+    }
+
+    /**
+     * search for broken uploads (error / invalid) and cancel
+     * them
+     */
+    public cleanAll() {
+        for ( let i = this.uploads.length - 1; i >= 0; i --) {
+            const upload = this.uploads[i];
+            if (upload.hasError()) {
+                upload.cancel();
+            }
+        }
+    }
+
+    /**
+     * handle drag over event
+     */
+    @HostListener("dragover", ["$event"])
+    public onFileDragOver(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    /**
+     * handle drop event
+     */
+    @HostListener("drop", ["$event"])
+    public onFileDrop(event: DragEvent) {
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        const files   = Array.from(event.dataTransfer.files);
+        this.handleFileSelect(files);
+    }
+
+    /**
+     * add click host listener
+     * to get notified we have a click event
+     */
+    @HostListener("click", ["$event"])
+    public onClick(event: MouseEvent) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (!this.uploads.length) {
+            this.fileSelect.click();
+        }
+    }
+
+    /**
+     * files has been selected via drag drop
+     * or with input type="file"
+     */
+    private handleFileSelect(files: File[]) {
+        const uploads = files.map((file) => this.createUpload(file));
+        this.add.emit(uploads);
     }
 
     /**
@@ -153,12 +197,38 @@ export class NgxFileuploadDirective implements OnDestroy {
             const result = validator.validate(upload.file);
 
             upload.isValid = result.valid;
-            upload.message = !result.valid ? result.error : '';
+            upload.message = !result.valid ? result.error : "";
 
             if (!upload.isValid) {
                 upload.state   = UploadState.INVALID;
                 break;
             }
         }
+    }
+
+    /**
+     * create dummy input field to select files
+     * for security reasons, we cant trigger a file select window
+     * without it
+     */
+    private createFieldInputField(): HTMLInputElement {
+        const inputField = document.createElement("input");
+        this.renderer.setAttribute(inputField, "type", "file");
+        this.renderer.setAttribute(inputField, "multiple", "multiple");
+        this.renderer.setStyle(inputField, "display", "none");
+        this.renderer.listen(inputField, "change", (e) => this.onFileSelect(e));
+        return inputField;
+    }
+
+    /**
+     * register on change event on input[type="file"] field
+     * and create the uploads
+     */
+    private onFileSelect(event: Event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        const files = Array.from(this.fileSelect.files);
+        this.handleFileSelect(files);
     }
 }

@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
-import { NgxFileuploadModule, NGX_FILEUPLOAD_VALIDATOR } from 'lib/public-api';
-import { MaxUploadSizeValidator } from './validators/max-size.validator';
+import { NgModule } from "@angular/core";
+import { NgxFileUploadModule, NGX_FILEUPLOAD_VALIDATOR } from "lib/public-api";
+import { OnlyZipValidator } from "./validators/only-zip.validator";
 
 @NgModule({
-    exports: [ NgxFileuploadModule ],
-    imports: [ NgxFileuploadModule ],
+    exports: [ NgxFileUploadModule ],
+    imports: [ NgxFileUploadModule ],
     providers: [{
         provide: NGX_FILEUPLOAD_VALIDATOR,
-        useClass: MaxUploadSizeValidator,
+        useClass: OnlyZipValidator,
         multi: true
     }],
 })

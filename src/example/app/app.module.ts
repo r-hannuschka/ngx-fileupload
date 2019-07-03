@@ -1,8 +1,8 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
 
-import { AppComponent } from './app.component';
-import { AppUploadModule } from './app-upload.module';
+import { AppComponent } from "./app.component";
+import { AppUploadModule } from "./app-upload.module";
 
 @NgModule( {
     declarations: [

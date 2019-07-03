@@ -4,7 +4,7 @@
     "directive-selector": [
       true,
       "attribute",
-      "ngxFileupload",
+      "ngxFileUpload",
       "camelCase"
     ],
     "component-selector": [

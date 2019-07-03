@@ -1,7 +1,7 @@
-import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Subject, BehaviorSubject, Observable } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
-import { UploadModel, UploadState} from '../model/upload';
+import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
+import { Subject, BehaviorSubject, Observable } from "rxjs";
+import { takeUntil, filter } from "rxjs/operators";
+import { UploadModel, UploadState} from "../model/upload";
 
 /**
  * represents a single fileupload
@@ -56,7 +56,7 @@ export class FileUpload {
         this.upload.state   = UploadState.QUEUED;
         this.upload.error   = null;
         this.upload.success = null;
-        this.upload.message = '';
+        this.upload.message = "";
         this.start();
     }
 
@@ -84,14 +84,21 @@ export class FileUpload {
     }
 
     /**
+     * returns true if upload contains an error or is invalid
+     */
+    public hasError(): boolean {
+        return !this.upload.isValid || this.upload.error;
+    }
+
+    /**
      * build form data and send request to server
      */
     private uploadFile(): Observable<HttpEvent<string>> {
         const formData = new FormData();
-        formData.append('file', this.upload.file, this.upload.fileName);
+        formData.append("file", this.upload.file, this.upload.fileName);
         return this.http.post<string>(this.url, formData, {
             reportProgress: true,
-            observe: 'events'
+            observe: "events"
         });
     }
 

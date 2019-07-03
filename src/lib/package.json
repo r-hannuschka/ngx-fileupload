@@ -1,6 +1,6 @@
 {
   "name": "@r-hannuschka/ngx-fileupload",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "angular fileupload library",
   "repository": {
     "url": "git+https://github.com/r-hannuschka/ngx-fileupload.git",

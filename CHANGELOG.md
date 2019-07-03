@@ -1,28 +1,26 @@
 # Changelog
 
-## 0.4.0-beta.2
+## 0.4.0
 
 ### breaking changes
 
 - change spelling NgxFileupload... to NgxFileUpload...
 - NgxFileUploadDirective is now exported as ngxFileUploadRef (before ngxFileuploadRef)
 
-### fixes
-
-- stop all click events from items, to ensure we dont affect any other parent component
-
-## 0.4.0-beta.1
-
-### fixes
-
-- update changelog
-
-## 0.4.0-beta.0
-
 ### features
 
 - add support on ngx-fileupload directive to open file select window, triggered on click
 - add clean all action on ngx-fileupload directive to remove only broken downloads
+- add more styling
+
+### fixes
+
+- stop all click events from items, to ensure we dont affect any other parent component
+- update readme files
+
+### other
+
+- update packages to angular 8.1
 
 ## 0.3.0
 

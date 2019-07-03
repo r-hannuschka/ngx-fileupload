@@ -88,3 +88,7 @@ $line-height: $ngx-fileupload-icons--line-height;
 .ngx-fileupload-icon--retry:before {
     content: $ngx-fileupload-icon--replay; 
 }
+
+.ngx-fileupload-icon--add:before {
+    content: $ngx-fileupload-icon--add; 
+}

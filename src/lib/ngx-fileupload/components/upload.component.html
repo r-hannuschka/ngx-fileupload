@@ -1,5 +1,13 @@
 <div class="fileupload" [ngxFileUpload]="url" (add)="onUploadsAdd($event)" #myNgxFileUploadRef='ngxFileUploadRef'>
-    <div class="file-upload--list">
+
+    <div *ngIf="!uploads.length" class="file-upload--info-wrapper">
+        <div class="file-upload--info">
+            <i class="ngx-fileupload-icon--add"></i>
+            <span>Drag/Drop files here or click</span>
+        </div>
+    </div>
+
+    <div *ngIf="uploads.length" class="file-upload--list">
         <ng-container *ngFor="let item of uploads">
             <ngx-fileupload-item 
                 [upload]="item" [template]="itemTemplate" (changed)="handleUploadChange($event, item)" 

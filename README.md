@@ -4,7 +4,8 @@
 
 Angular 8+ async fileupload with progressbar
 
-![ngx-fileupload.gif](./docs/ngx-fileupload.gif)
+![ngx-fileupload.gif](./docs/ngx-fileupload.gif)# NgxFileUpload
+
 ___
 
 - [NgxFileupload](#NgxFileupload)
@@ -14,9 +15,9 @@ ___
     - [Custom Item Template](#Custom-Item-Template)
     - [Full Customize](#Full-Customize)
     - [Validators](#Validators)
+    - [Add Params / Headers to Upload](#Add-Params--Headers-to-Upload)
   - [Development](#Development)
-  - [Changelog](#Changelog)
-  - [@Progress](#Progress)
+  - [Credits](#Credits)
   - [Author](#Author)
   - [Other Modules](#Other-Modules)
 
@@ -34,12 +35,12 @@ app.module.ts
 
 ```js
 import { NgModule, Injectable } from '@angular/core';
-import { NgxFileuploadModule } from 'lib/public-api';
+import { NgxFileUploadModule } from 'lib/public-api';
 
 @NgModule({
     imports: [
         ...
-        NgxFileuploadModule
+        NgxFileUploadModule
     ],
     exports: [...],
     declarations: [...]
@@ -59,7 +60,7 @@ app.component.html
 
 if a custom template will be added, it will receive UploadTemplateContext object which contains:  
 
-- *current upload informations: data:UploadData*
+data:UploadData (current upload informations)
 
 | name | type | description | values |
 |---|---|---|---|
@@ -80,7 +81,7 @@ if a custom template will be added, it will receive UploadTemplateContext object
 </ng-template>
 ```
 
-- *control to start/stop/retry a download: ctrl:UploadControl*
+ctrl:UploadControl (start/stop/retry an upload)
 
 ```html
 <ng-template #customItemTemplate ... let-uploadCtrl="ctrl">
@@ -105,20 +106,22 @@ simply define a *ng-template* tag and pass it to *ngx-fileupload* component
 <ngx-fileupload [url]="<URL>" [itemTemplate]='customItemTemplate'></ngx-fileupload>
 ```
 
+___
+
 ### Full Customize
 
-cool.component.ts
+my.component.ts
 
 ```ts
 import { FileUpload } from '../services/file-upload';
 import { UploadModel, UploadState } from '../model/upload';
 
 @Component({
-    selector: 'my-cool-component',
-    styleUrls: ['./cool.component.scss'],
-    templateUrl: 'cool.component.html',
+    selector: 'my-component',
+    styleUrls: ['./my.component.scss'],
+    templateUrl: 'my.component.html',
 })
-export class MyCoolComponent {
+export class MyComponent {
 
     /**
      * all file uploades, which will be added to upload-item view
@@ -148,17 +151,36 @@ export class MyCoolComponent {
 }
 ```
 
-cool.component.html
+my.component.html
 
 ```html
-<div class="file-upload--list">
-    <!--
-        list to show all current files which should uploaded
-        pass upload container (item) to file upload view ngx-fileupload-item
-        to register on upload changes
+<!-- 
+    define custom item template, if we dont pass a template to 
+    ngx-fileupload-item it will take default template as fallback
+-->
+<ng-template #itemTemplate let-uploadData="data" let-uploadCtrl="ctrl">
 
-        optional: add custom template
-    -->
+    <div class="title">
+        {{uploadData.name}}
+    </div>
+
+    <div class="actions">
+        <button type="button"
+            *ngIf="!uploadData.hasError"
+            [disabled]="uploadData.invalid || uploadData.state !== 'queued'"
+            (click)="uploadCtrl.start()"
+        >
+            start
+        </button>
+        <button type="button" (click)="uploadCtrl.cancel()">
+            stop
+        </button>
+    </div>
+
+</ng-template>
+
+<!-- show all uploads -->
+<div class="file-upload--list">
     <ng-container *ngFor="let item of uploads">
         <ngx-fileupload-item
             [upload]="item"
@@ -167,32 +189,40 @@ cool.component.html
         </ngx-fileupload-item>
     </ng-container>
 </div>
+
 <!--
-    add directive ngxFileUpload to any container, if you drop files here
-    it will generate a file upload container for each file wich has
-    been added
+    add directive ngxFileUpload to create new uploads if files get dropped here
+    or selected from file window.
 -->
 <div class="fileupload dropzone"
-    [ngxFileupload]="url"
+    [ngxFileUpload]="url"
     (add)="onUploadsAdd($event)"
-    #myNgxFileuploadRef='ngxFileuploadRef'>
+    #myNgxFileUploadRef='ngxFileUploadRef'>
+
+    <span>
+        Drop Files or Click to add uploads.
+    </span>
 </div>
 
-<!-- button, on click use myNgxFileuploadRef to upload all files at once -->
-<button class="btn-upload" type="button" (click)="myNgxFileuploadRef.uploadAll()">Upload</button>
+<!-- button, on click use myNgxFileUploadRef to upload all files at once -->
+<button class="btn btn-upload" type="button" (click)="myNgxFileUploadRef.uploadAll()">Upload</button>
+<button class="btn btn-clear"  type="button" (click)="myNgxFileUploadRef.cleanAll()">Clean Up</button>
+<button class="btn btn-cancel" type="button" (click)="myNgxFileUploadRef.cancelAll()">Cancel</button>
 ```
+
+___
 
 ### Validators
 
-*validators/max-size.validator.ts*/
+validators/max-size.validator.ts
 
 ```ts
 import {
-    NgxFileuploadValidation,
+    NgxFileUploadValidation,
     ValidationResult
 } from '@r-hannuschka/ngx-fileupload/public-api';
 
-export class MaxUploadSizeValidator implements NgxFileuploadValidator {
+export class MaxUploadSizeValidator implements NgxFileUploadValidator {
 
     /**
      * validate max upload size to 1MB
@@ -205,21 +235,21 @@ export class MaxUploadSizeValidator implements NgxFileuploadValidator {
 }
 ```
 
-*app-upload.module.ts*
+app-upload.module.ts
 
 We create a own module for validation to keep main module clean, you can add as many validators you want if needed. If no Validators are passed all files will uploaded to server.
 
 ```ts
 import { NgModule } from '@angular/core';
 import {
-    NgxFileuploadModule,
-    NGX_FILEUPLOAD_VALIDATOR 
+    NgxFileUploadModule,
+    NGX_FILEUPLOAD_VALIDATOR
 } from '@r-hannuschka/ngx-fileupload/public-api';
 import { MaxUploadSizeValidator } from './validators/max-size.validator';
 
 @NgModule({
-    exports: [ NgxFileuploadModule ],
-    imports: [ NgxFileuploadModule ],
+    exports: [ NgxFileUploadModule ],
+    imports: [ NgxFileUploadModule ],
     providers: [{
         provide: NGX_FILEUPLOAD_VALIDATOR,
         useClass: MaxUploadSizeValidator,
@@ -233,7 +263,7 @@ import { MaxUploadSizeValidator } from './validators/max-size.validator';
 export class AppUploadModule { }
 ```
 
-*app.module.ts*
+app.module.ts
 
 simply import AppUploadModule into main module
 
@@ -256,7 +286,60 @@ import { AppUploadModule } from './app-upload.module';
 export class AppModule { }
 ```
 
+___
 
+### Add Params / Headers to Upload
+
+To add additional params / headers HTTP Interceptors should be used from angular to modify
+request.
+
+upload.interceptor.ts
+
+```ts
+import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export class UploadInterceptor implements HttpInterceptor {
+
+    public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        const needle = new RegExp('^/lib/upload');
+        if (req.url.match(needle) && req.body.has('file')) {
+            const fileName = req.body.get('file').name;
+            const request: HttpRequest<any> = req.clone({
+                /** add additional params */
+                setParams: {
+                    'fileName': fileName,
+                }
+            });
+            return next.handle(request);
+        }
+        return next.handle(req);
+    }
+}
+```
+
+app-upload.module.ts
+
+```ts
+import { NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgxFileUploadModule } from '@r-hannuschka/ngx-fileupload';
+
+@NgModule({
+    exports: [ NgxFileUploadModule ],
+    imports: [ NgxFileUploadModule ],
+    providers: [{
+        // ... validators
+    }, {
+        provide: HTTP_INTERCEPTORS,
+        useClass: UploadInterceptor,
+        multi: true
+    }],
+})
+export class AppUploadModule { }
+```
+
+___
 
 ## Development
 
@@ -274,55 +357,13 @@ node src\server\upload-server.js
 npm start
 ```
 
-## Changelog
+## Credits
 
-**0.3.0**  
+Special thanks for code reviews, great improvements and ideas to
 
-  - __breaking changes__:  
-    - remove *UploadTemplateContext.data.error*, if an error occurs  
-    it is written now to *UploadTemplateContext.data.message*
-
-  - __features__
-    - validation providers could now defined
-    - write upload response data to upload model
-  
-  - __other changes__
-    - show notifications for error / invalid / completed
-    - update scss / upload-item template
-
-**0.2.1**  
-
-- __bugfixes__
-  - fixed docs
-
-**0.2.0**  
-
-- __breaking changes__:  
-  - ngxFileUploadDirective, upload renamed to uploadAll, cancel renamed to cancelAll
-
-- __features__:
-  - on error, upload will not completed anymore instead a retry button will shown
-  - add UploadControl.retry(), if upload failed it could be uploaded
-
-  ```html
-  <!-- insert own retry button in custom template -->
-  <ng-template let-uploadData="data" let-uploadCtrl="ctrl">
-      <button *ngIf="data.hasError" (click)="uploadCtrl.retry()">retry</button>
-  </ng-template>
-  ```
-
-  - update item template, add new button upload (@see uploadCtrl.start())
-  - css changes
-  - add more documentaion
-
-- __bugfixes__
-  - ngxFileuploadDirective cancel(All) not working correctly
-
-## @Progress
-
-- theming
-- unit tests
-- e2e tests
+||||  
+|:-:|:-:|:-:|
+|[![alt Konrad Mattheis](https://avatars2.githubusercontent.com/u/1100969?s=60&v=4)](https://github.com/konne)<br />Konrad Mattheis| [<img src="https://avatars3.githubusercontent.com/u/17725886?s=60&v=4" width=60 alt="Thomas Haenig" />](https://avatars3.githubusercontent.com/u/17725886?s=60&v=4)<br />Thomas Haenig| [![alt Alexander Görlich](https://avatars0.githubusercontent.com/u/13659581?s=60&v=4)](https://github.com/AlexanderGoerlich)  <br />Alexander Görlich|
 
 ## Author
 
@@ -331,3 +372,4 @@ Ralf Hannuschka [Github](https://github.com/r-hannuschka)
 ## Other Modules
 
 - [ngx-responsivemenu](https://github.com/r-hannuschka/ngx-responsivemenu)
+

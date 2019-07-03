@@ -34,8 +34,8 @@ npm i --save @r-hannuschka/ngx-fileupload angular-pipes
 app.module.ts
 
 ```js
-import { NgModule, Injectable } from '@angular/core';
-import { NgxFileUploadModule } from 'lib/public-api';
+import { NgModule, Injectable } from "@angular/core";
+import { NgxFileUploadModule } from "lib/public-api";
 
 @NgModule({
     imports: [
@@ -103,7 +103,7 @@ simply define a *ng-template* tag and pass it to *ngx-fileupload* component
     ...
 </ng-template>
 
-<ngx-fileupload [url]="<URL>" [itemTemplate]='customItemTemplate'></ngx-fileupload>
+<ngx-fileupload [url]="<URL>" [itemTemplate]="customItemTemplate"></ngx-fileupload>
 ```
 
 ___
@@ -113,13 +113,13 @@ ___
 my.component.ts
 
 ```ts
-import { FileUpload } from '../services/file-upload';
-import { UploadModel, UploadState } from '../model/upload';
+import { FileUpload } from "../services/file-upload";
+import { UploadModel, UploadState } from "../model/upload";
 
 @Component({
-    selector: 'my-component',
-    styleUrls: ['./my.component.scss'],
-    templateUrl: 'my.component.html',
+    selector: "my-component",
+    styleUrls: ["./my.component.scss"],
+    templateUrl: "my.component.html",
 })
 export class MyComponent {
 
@@ -197,7 +197,7 @@ my.component.html
 <div class="fileupload dropzone"
     [ngxFileUpload]="url"
     (add)="onUploadsAdd($event)"
-    #myNgxFileUploadRef='ngxFileUploadRef'>
+    #myNgxFileUploadRef="ngxFileUploadRef">
 
     <span>
         Drop Files or Click to add uploads.
@@ -220,7 +220,7 @@ validators/max-size.validator.ts
 import {
     NgxFileUploadValidation,
     ValidationResult
-} from '@r-hannuschka/ngx-fileupload/public-api';
+} from "@r-hannuschka/ngx-fileupload";
 
 export class MaxUploadSizeValidator implements NgxFileUploadValidator {
 
@@ -229,7 +229,7 @@ export class MaxUploadSizeValidator implements NgxFileUploadValidator {
      */
     public validate(file: File): ValidationResult {
         const valid = (file.size / (1024 * 1024)) < 1;
-        const error = !valid ? 'Max file size 1MByte' : '';
+        const error = !valid ? "Max file size 1MByte" : "";
         return { valid, error };
     }
 }
@@ -240,12 +240,12 @@ app-upload.module.ts
 We create a own module for validation to keep main module clean, you can add as many validators you want if needed. If no Validators are passed all files will uploaded to server.
 
 ```ts
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 import {
     NgxFileUploadModule,
     NGX_FILEUPLOAD_VALIDATOR
-} from '@r-hannuschka/ngx-fileupload/public-api';
-import { MaxUploadSizeValidator } from './validators/max-size.validator';
+} from "@r-hannuschka/ngx-fileupload";
+import { MaxUploadSizeValidator } from "./validators/max-size.validator";
 
 @NgModule({
     exports: [ NgxFileUploadModule ],
@@ -268,10 +268,10 @@ app.module.ts
 simply import AppUploadModule into main module
 
 ```ts
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
-import { AppUploadModule } from './app-upload.module';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { AppComponent } from "./app.component";
+import { AppUploadModule } from "./app-upload.module";
 
 @NgModule( {
     declarations: [
@@ -296,19 +296,19 @@ request.
 upload.interceptor.ts
 
 ```ts
-import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 export class UploadInterceptor implements HttpInterceptor {
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const needle = new RegExp('^/lib/upload');
-        if (req.url.match(needle) && req.body.has('file')) {
-            const fileName = req.body.get('file').name;
+        const needle = new RegExp("^/lib/upload");
+        if (req.url.match(needle) && req.body.has("file")) {
+            const fileName = req.body.get("file").name;
             const request: HttpRequest<any> = req.clone({
                 /** add additional params */
                 setParams: {
-                    'fileName': fileName,
+                    "fileName": fileName,
                 }
             });
             return next.handle(request);
@@ -321,9 +321,9 @@ export class UploadInterceptor implements HttpInterceptor {
 app-upload.module.ts
 
 ```ts
-import { NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgxFileUploadModule } from '@r-hannuschka/ngx-fileupload';
+import { NgModule } from "@angular/core";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 
 @NgModule({
     exports: [ NgxFileUploadModule ],

@@ -9,7 +9,10 @@ Angular 8+ async fileupload with progressbar
 
 ___
 
+## Contents
+
 - [NgxFileupload](#NgxFileupload)
+  - [Contents](#Contents)
   - [Installation](#Installation)
   - [Usage](#Usage)
   - [Examples](#Examples)

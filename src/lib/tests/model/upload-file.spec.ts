@@ -1,45 +1,45 @@
-import { FileModel } from 'lib/public-api';
-import { UploadState } from 'lib/ngx-fileupload/model/upload';
+import { UploadModel } from "lib/public-api";
+import { UploadState } from "lib/ngx-fileupload/model/upload";
 
-describe('Model: UploadFile', () => {
+describe("Model: UploadFile", () => {
 
-    const FILE_CONTENT = 'hello world';
-    const FILE_NAME = 'hello_world.txt';
+    const FILE_CONTENT = "hello world";
+    const FILE_NAME = "hello_world.txt";
 
     let file: File;
-    let model: FileModel;
+    let model: UploadModel;
 
     beforeEach(() => {
-        file = new File([FILE_CONTENT], FILE_NAME, {type: 'text/plain'});
-        model = new FileModel(file);
+        file = new File([FILE_CONTENT], FILE_NAME, {type: "text/plain"});
+        model = new UploadModel(file);
     });
 
-    it('should return filename', () => {
+    it("should return filename", () => {
         expect(model.fileName).toBe(FILE_NAME);
     });
 
-    it('should return filesize', () => {
+    it("should return filesize", () => {
         expect(model.fileSize).toBe(FILE_CONTENT.length);
     });
 
-    it('should return filetype', () => {
-        expect(model.fileType).toBe('text/plain');
+    it("should return filetype", () => {
+        expect(model.fileType).toBe("text/plain");
     });
 
-    it('should set by default to queued', () => {
+    it("should set by default to queued", () => {
         expect(model.state).toBe(UploadState.QUEUED);
     });
 
-    it('should set new state', () => {
+    it("should set new state", () => {
         model.state = UploadState.PROGRESS;
         expect(model.state).toBe(UploadState.PROGRESS);
     });
 
-    it('should return uploaded size: 0 by default', () => {
+    it("should return uploaded size: 0 by default", () => {
         expect(model.uploaded).toBe(0);
     });
 
-    it('should update uploaded size', () => {
+    it("should update uploaded size", () => {
         model.uploaded = 100;
         expect(model.uploaded).toBe(100);
     });

@@ -1,11 +1,11 @@
 export enum UploadState {
-    QUEUED    = 'queued',
-    START     = 'start',
-    PROGRESS  = 'progress',
-    UPLOADED  = 'uploaded',
-    CANCELED  = 'canceled',
-    ERROR     = 'error',
-    INVALID   = 'invalid'
+    QUEUED    = "queued",
+    START     = "start",
+    PROGRESS  = "progress",
+    UPLOADED  = "uploaded",
+    CANCELED  = "canceled",
+    ERROR     = "error",
+    INVALID   = "invalid"
 }
 
 export interface UploadData {
@@ -48,7 +48,7 @@ export class UploadModel {
 
     private uploadValid = true;
 
-    private uploadMessage = '';
+    private uploadMessage = "";
 
     /**
      * Creates an instance of UploadFile.

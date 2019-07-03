@@ -1,4 +1,4 @@
-import { FileUpload } from './file-upload';
+import { FileUpload } from "./file-upload";
 
 export class UploadControl {
 

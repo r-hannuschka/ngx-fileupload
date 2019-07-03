@@ -1,22 +1,22 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject, Renderer2, ElementRef } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { UploadModel, UploadState } from '../model/upload';
-import { FileUpload } from '../services/file-upload';
-import { NGX_FILEUPLOAD_VALIDATOR, NgxFileUploadValidator } from '../services/validation';
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject, Renderer2, ElementRef } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { UploadModel, UploadState } from "../model/upload";
+import { FileUpload } from "../services/file-upload";
+import { NGX_FILEUPLOAD_VALIDATOR, NgxFileUploadValidator } from "../services/validation";
 
 /**
  * directive to add uploads with drag / drop
  *
  * @example
  *
- * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileUploadRef='ngxFileUploadRef'></div>
+ * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileUploadRef="ngxFileUploadRef"></div>
  * <button (click)="myNgxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: '[ngxFileUpload]',
-  exportAs: 'ngxFileUploadRef'
+  selector: "[ngxFileUpload]",
+  exportAs: "ngxFileUploadRef"
 })
 export class NgxFileUploadDirective implements OnDestroy {
 
@@ -25,7 +25,7 @@ export class NgxFileUploadDirective implements OnDestroy {
      *
      * @example
      *
-     * <div [ngxFileUpload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
      */
     @Output()
     public add: EventEmitter<FileUpload[]>;
@@ -35,9 +35,9 @@ export class NgxFileUploadDirective implements OnDestroy {
      * this field is mandatory
      *
      * @example
-     * <div [ngxFileUpload]="'localhost/upload'" (add)="onUploadAdd($event)" ></div>
+     * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
      */
-    @Input('ngxFileUpload')
+    @Input("ngxFileUpload")
     public url: string;
 
     /**
@@ -117,7 +117,7 @@ export class NgxFileUploadDirective implements OnDestroy {
     /**
      * handle drag over event
      */
-    @HostListener('dragover', ['$event'])
+    @HostListener("dragover", ["$event"])
     public onFileDragOver(event: DragEvent) {
         event.preventDefault();
         event.stopPropagation();
@@ -126,7 +126,7 @@ export class NgxFileUploadDirective implements OnDestroy {
     /**
      * handle drop event
      */
-    @HostListener('drop', ['$event'])
+    @HostListener("drop", ["$event"])
     public onFileDrop(event: DragEvent) {
 
         event.stopPropagation();
@@ -140,7 +140,7 @@ export class NgxFileUploadDirective implements OnDestroy {
      * add click host listener
      * to get notified we have a click event
      */
-    @HostListener('click', ['$event'])
+    @HostListener("click", ["$event"])
     public onClick(event: MouseEvent) {
         event.stopPropagation();
         event.preventDefault();
@@ -197,7 +197,7 @@ export class NgxFileUploadDirective implements OnDestroy {
             const result = validator.validate(upload.file);
 
             upload.isValid = result.valid;
-            upload.message = !result.valid ? result.error : '';
+            upload.message = !result.valid ? result.error : "";
 
             if (!upload.isValid) {
                 upload.state   = UploadState.INVALID;
@@ -212,16 +212,16 @@ export class NgxFileUploadDirective implements OnDestroy {
      * without it
      */
     private createFieldInputField(): HTMLInputElement {
-        const inputField = document.createElement('input');
-        this.renderer.setAttribute(inputField, 'type', 'file');
-        this.renderer.setAttribute(inputField, 'multiple', 'multiple');
-        this.renderer.setStyle(inputField, 'display', 'none');
-        this.renderer.listen(inputField, 'change', (e) => this.onFileSelect(e));
+        const inputField = document.createElement("input");
+        this.renderer.setAttribute(inputField, "type", "file");
+        this.renderer.setAttribute(inputField, "multiple", "multiple");
+        this.renderer.setStyle(inputField, "display", "none");
+        this.renderer.listen(inputField, "change", (e) => this.onFileSelect(e));
         return inputField;
     }
 
     /**
-     * register on change event on input[type='file'] field
+     * register on change event on input[type="file"] field
      * and create the uploads
      */
     private onFileSelect(event: Event) {

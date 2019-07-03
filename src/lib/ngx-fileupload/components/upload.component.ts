@@ -1,19 +1,19 @@
-import { Component, TemplateRef, Input } from '@angular/core';
-import { trigger, state, style, animate, transition, AnimationEvent } from '@angular/animations';
-import { FileUpload } from '../services/file-upload';
-import { UploadModel, UploadState } from '../model/upload';
-import { Subject, of } from 'rxjs';
-import { take, delay, switchMap } from 'rxjs/operators';
+import { Component, TemplateRef, Input } from "@angular/core";
+import { trigger, state, style, animate, transition, AnimationEvent } from "@angular/animations";
+import { FileUpload } from "../services/file-upload";
+import { UploadModel, UploadState } from "../model/upload";
+import { Subject, of } from "rxjs";
+import { take, delay, switchMap } from "rxjs/operators";
 
 @Component({
-    selector: 'ngx-fileupload',
-    styleUrls: ['./upload.component.scss'],
-    templateUrl: 'upload.component.html',
+    selector: "ngx-fileupload",
+    styleUrls: ["./upload.component.scss"],
+    templateUrl: "upload.component.html",
     animations: [
-        trigger('removeUpload', [
-            state('visible', style({ opacity: 1 })),
-            transition(':leave' , [
-                animate('.5s ease-out', style({ opacity: 0 }))
+        trigger("removeUpload", [
+            state("visible", style({ opacity: 1 })),
+            transition(":leave" , [
+                animate(".5s ease-out", style({ opacity: 0 }))
             ])
         ])
     ],

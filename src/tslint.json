@@ -70,7 +70,7 @@
     "ordered-imports": false,
     "quotemark": [
       true,
-      "single"
+      "double"
     ],
     "trailing-comma": false,
     "no-conflicting-lifecycle": true,

@@ -41,6 +41,20 @@ export class NgxFileUploadDirective implements OnDestroy {
     public url: string;
 
     /**
+     * if set to false upload post request body will use
+     * plain file object in body
+     */
+    @Input()
+    public useFormData = true;
+
+    /**
+     * form data field name with which form data will be send
+     * by default this will be file
+     */
+    @Input()
+    public formDataName = "file";
+
+    /**
      * remove from subscribtions if component gets destroyed
      */
     private destroyed$: Subject<boolean> = new Subject();
@@ -168,8 +182,16 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     private createUpload(file: File): FileUpload {
 
+        const uploadOptions = {
+            url: this.url,
+            formData: {
+                enabled: this.useFormData,
+                name: this.formDataName
+            }
+        };
+
         const fileModel = new UploadModel(file);
-        const upload = new FileUpload(this.httpClient, fileModel, this.url);
+        const upload    = new FileUpload(this.httpClient, fileModel, uploadOptions);
 
         this.preValidateUpload(fileModel);
         this.uploads.push(upload);

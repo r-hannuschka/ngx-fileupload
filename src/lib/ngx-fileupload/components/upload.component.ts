@@ -34,6 +34,20 @@ export class UploadComponent {
     public url: string;
 
     /**
+     * if set to false upload post request body will use
+     * plain file object in body
+     */
+    @Input()
+    public useFormData = true;
+
+    /**
+     * form data field name with which form data will be send
+     * by default this will be file
+     */
+    @Input()
+    public formDataName = "file";
+
+    /**
      * all file uploades, which will be added to upload-item view
      */
     public uploads: FileUpload[] = [];

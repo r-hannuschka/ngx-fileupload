@@ -3,6 +3,15 @@ import { Subject, BehaviorSubject, Observable } from "rxjs";
 import { takeUntil, filter } from "rxjs/operators";
 import { UploadModel, UploadState} from "../model/upload";
 
+export interface UploadOptions {
+    url: string;
+
+    formData: {
+        enabled: boolean;
+        name: string;
+    };
+}
+
 /**
  * represents a single fileupload
  */
@@ -24,7 +33,7 @@ export class FileUpload {
     public constructor(
         private http: HttpClient,
         private upload: UploadModel,
-        private url: string
+        private options: UploadOptions
     ) {
         this.upload$ = new BehaviorSubject(this.upload);
     }
@@ -94,12 +103,27 @@ export class FileUpload {
      * build form data and send request to server
      */
     private uploadFile(): Observable<HttpEvent<string>> {
-        const formData = new FormData();
-        formData.append("file", this.upload.file, this.upload.fileName);
-        return this.http.post<string>(this.url, formData, {
+
+        const uploadBody = this.createUploadBody();
+        return this.http.post<string>(this.options.url, uploadBody, {
             reportProgress: true,
             observe: "events"
         });
+    }
+
+    /**
+     * create upload body which will should be send
+     */
+    private createUploadBody(): FormData | File {
+        if (this.options.formData.enabled) {
+
+            const formData = new FormData();
+            const label    = this.options.formData.name;
+
+            formData.append(label, this.upload.file, this.upload.fileName);
+            return formData;
+        }
+        return this.upload.file;
     }
 
     /**

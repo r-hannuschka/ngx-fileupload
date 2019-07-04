@@ -1,4 +1,6 @@
-<div class="fileupload" [ngxFileUpload]="url" (add)="onUploadsAdd($event)" #myNgxFileUploadRef='ngxFileUploadRef'>
+<div class="fileupload" [ngxFileUpload]="url" [useFormData]="useFormData" [formDataName]="formDataName" 
+     (add)="onUploadsAdd($event)"
+     #myNgxFileUploadRef='ngxFileUploadRef'>
 
     <div *ngIf="!uploads.length" class="file-upload--info-wrapper">
         <div class="file-upload--info">

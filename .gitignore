@@ -4,7 +4,7 @@
 /src/dist
 /tmp
 /out-tsc
-/code_coverage
+/src/coverage
 /src/documentation
 
 # Only exists if Bazel was run

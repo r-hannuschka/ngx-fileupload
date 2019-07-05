@@ -51,7 +51,7 @@ jobs:
           root: ~/ngx-fileupload
           paths: 
             - ./src/coverage
-  e2e2:
+  e2e:
     <<: *defaults
     steps:
       - attach_workspace:

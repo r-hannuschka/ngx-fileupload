@@ -73,13 +73,14 @@ describe("workspace-project App", () => {
             const uploadAction = uploadItem.element(by.css(".item-action--upload"));
             const retryAction  = uploadItem.element(by.css(".item-action--retry"));
 
+            // click on upload this should fail since no server is running
+            uploadAction.click();
+
             /**
              * dont wait for request to finish
              * so we can interact with the browser
              */
             browser.waitForAngularEnabled(false);
-
-            uploadAction.click();
             expect(uploadAction.isEnabled()).toBeFalsy();
             expect(startIcon.isDisplayed()).toBeTruthy();
 

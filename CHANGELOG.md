@@ -2,16 +2,21 @@
 
 ## 0.5.0-beta.2
 
-### unit tests
+### features
 
-- add tests file upload
-- add tests upload control
-- add tests upload model
+- add css class item-action--(upload, retry, stop) to item action buttons
 
 ### other changes
 
+- add more unit tests
+- add e2e tests
 - fix tslint errors
 - generate docs
+
+### ci
+
+- code coverate
+- e2e tests
 
 ## 0.5.0-beta.1
 

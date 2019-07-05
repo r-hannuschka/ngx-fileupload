@@ -51,6 +51,14 @@ jobs:
           root: ~/ngx-fileupload
           paths: 
             - ./src/coverage
+  e2e2:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/ngx-fileupload
+      - run:
+          name: "run e2e tests"
+          command: cd src && npm run e2e
   coverage:
     <<: *defaults
     steps:
@@ -68,6 +76,9 @@ workflows:
           requires:
             - install
       - test:
+          requires:
+            - install
+      - e2e:
           requires:
             - install
       - coverage:

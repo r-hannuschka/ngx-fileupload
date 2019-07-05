@@ -46,7 +46,18 @@ jobs:
           at: ~/ngx-fileupload
       - run:
           name: "run unit tests"
-          command: cd src && npm run test -- ngx-fileupload --watch=false
+          command: cd src && npm run test -- ngx-fileupload --watch=false --code-coverage
+      - persist_to_workspace:
+          root: ~/ngx-fileupload
+          paths: 
+            - ./src/coverage
+  coverage:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/ngx-fileupload
+      - codecov/upload:
+          file: "./src/coverage/ngx-fileupload/lcov.info"
 
 workflows:
   version: 2.1

@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.5.0-beta.2
+
+### unit tests
+
+- add tests file upload
+- add tests upload control
+- add tests upload model
+
+### other changes
+
+- fix tslint errors
+- generate docs
+
+## 0.5.0-beta.1
+
+### features
+
+- add option useFormData (boolean) if false it will send file as body (default true)
+- add option formDataName (string) if formData is enabled this is the name which will be used for file (default file)
+
 ## 0.4.0
 
 ### breaking changes

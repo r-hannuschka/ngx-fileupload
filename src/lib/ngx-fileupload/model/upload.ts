@@ -174,18 +174,22 @@ export class UploadModel {
         return this.uploadMessage;
     }
 
+    public get progress(): number {
+        const progress = this.uploaded * 100 / this.fileSize;
+        return Math.round(progress > 100 ? 100 : progress);
+    }
+
     /**
      * return file upload data
      * @todo move to model
      */
     public toJson(): UploadData {
-        const progress = this.uploaded * 100 / this.fileSize;
         return {
             state     : this.state,
             uploaded  : this.uploaded,
             size      : this.fileSize,
             name      : this.fileName,
-            progress  : Math.round(progress > 100 ? 100 : progress),
+            progress  : this.progress,
             hasError  : this.error,
             isSuccess : this.success,
             isValid   : this.isValid,

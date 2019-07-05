@@ -6,9 +6,9 @@ import { UploadModel, UploadState} from "../model/upload";
 export interface UploadOptions {
     url: string;
 
-    formData: {
+    formData?: {
         enabled: boolean;
-        name: string;
+        name?: string;
     };
 }
 
@@ -27,15 +27,21 @@ export class FileUpload {
      */
     private upload$: BehaviorSubject<UploadModel>;
 
+    private options: UploadOptions = {
+        url: "",
+        formData: { enabled: true, name: "file" }
+    };
+
     /**
      * create FileUpload service
      */
     public constructor(
         private http: HttpClient,
         private upload: UploadModel,
-        private options: UploadOptions
+        options: UploadOptions
     ) {
         this.upload$ = new BehaviorSubject(this.upload);
+        this.options = {...this.options, ...options};
     }
 
     /**
@@ -43,7 +49,6 @@ export class FileUpload {
      * if file is not queued, abort request on cancel
      */
     public start() {
-
         /** only start upload if state is not queued and is valid */
         if (this.upload.state === UploadState.QUEUED && this.upload.isValid) {
             this.uploadFile().pipe(
@@ -62,11 +67,13 @@ export class FileUpload {
      * reset state, and reset errors
      */
     public retry() {
-        this.upload.state   = UploadState.QUEUED;
-        this.upload.error   = null;
-        this.upload.success = null;
-        this.upload.message = "";
-        this.start();
+        if (this.upload.state === UploadState.ERROR) {
+            this.upload.state   = UploadState.QUEUED;
+            this.upload.error   = null;
+            this.upload.success = null;
+            this.upload.message = "";
+            this.start();
+        }
     }
 
     /**
@@ -116,10 +123,8 @@ export class FileUpload {
      */
     private createUploadBody(): FormData | File {
         if (this.options.formData.enabled) {
-
             const formData = new FormData();
             const label    = this.options.formData.name;
-
             formData.append(label, this.upload.file, this.upload.fileName);
             return formData;
         }

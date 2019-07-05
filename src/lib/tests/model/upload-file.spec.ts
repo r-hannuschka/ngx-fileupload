@@ -1,7 +1,7 @@
 import { UploadModel } from "lib/public-api";
 import { UploadState } from "lib/ngx-fileupload/model/upload";
 
-describe("Model: UploadFile", () => {
+describe("Model: Upload", () => {
 
     const FILE_CONTENT = "hello world";
     const FILE_NAME = "hello_world.txt";

@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "compodoc": "npx compodoc -p lib/tsconfig.lib.json --disablePrivate --disableLifeCycleHooks"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +20,7 @@
     "@angular/platform-browser": "^8.1.0",
     "@angular/platform-browser-dynamic": "^8.1.0",
     "@angular/router": "^8.1.0",
+    "@compodoc/compodoc": "^1.1.9",
     "@r-hannuschka/ngx-fileupload": "file:dist/ngx-fileupload",
     "angular-pipes": "^9.0.2",
     "express": "^4.17.1",

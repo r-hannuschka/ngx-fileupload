@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /code_coverage
+/src/documentation
 
 # Only exists if Bazel was run
 /bazel-out

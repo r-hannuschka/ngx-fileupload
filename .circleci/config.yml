@@ -18,7 +18,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      -run
+      - run
         name: Update Chromedriver
         command: |
           sudo apt-get update

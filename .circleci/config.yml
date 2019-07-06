@@ -19,14 +19,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: #STABLE
-          name: Install Chromedriver latest version
-          command: |
-            sudo apt-get install lsb-release libappindicator3-1
-            curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-            sudo dpkg -i google-chrome.deb
-            sudo sed -i 's|HERE/chrome"|HERE/chrome" --no-sandbox|g' /opt/google/chrome/google-chrome
-            rm google-chrome.deb
       - restore_cache:
           key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
       - run:
@@ -85,9 +77,6 @@ workflows:
           requires:
             - install
       - test:
-          requires:
-            - install
-      - e2e:
           requires:
             - install
       - coverage:

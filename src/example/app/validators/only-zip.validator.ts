@@ -4,9 +4,16 @@ export class OnlyZipValidator implements NgxFileUploadValidator {
 
     public validate(file: File): ValidationResult {
 
-        console.dir(file);
+        const validMime = [
+            "application/zip",
+            "application/octet-stream",
+            "application/x-zip-compressed",
+            "multipart/x-zip"
+        ];
 
-        const valid = file.type === "application/x-zip-compressed";
+        let valid = validMime.some((type) => type === file.type);
+        valid = valid && /\.zip$/.test(file.name);
+
         const error = !valid ? "Only zip files are allowed" : "";
 
         return { valid, error };

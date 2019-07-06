@@ -29,4 +29,8 @@ export class AppPage {
     public getUploadItems() {
         return element.all(by.css("ngx-fileupload-item"));
     }
+
+    public getUploadActionsFromItem() {
+        return element.all(by.css(".item-action--upload"));
+    }
 }

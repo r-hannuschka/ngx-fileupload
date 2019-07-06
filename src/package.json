@@ -7,8 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e --port=4201",
-    "compodoc": "npx compodoc -p lib/tsconfig.lib.json --disablePrivate --disableLifeCycleHooks"
+    "compodoc": "npx compodoc -p lib/tsconfig.lib.json --disablePrivate --disableLifeCycleHooks",
+    "pretest:e2e": "node ./node_modules/protractor/bin/webdriver-manager update",
+    "e2e": "npm run pretest:e2e && ng e2e --port=4201"
   },
   "private": true,
   "dependencies": {

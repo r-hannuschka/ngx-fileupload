@@ -20,10 +20,10 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install Chrome
-        command: |
-          sudo npm i -g webdriver-manager
-          webdrinver-manager update
+          name: Install Chrome
+          command: |
+            sudo npm i -g webdriver-manager
+            webdrinver-manager update
       - restore_cache:
           key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
       - run:

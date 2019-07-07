@@ -61,7 +61,7 @@ jobs:
           replace-existing: true
       - run:
           name: "run e2e tests"
-          command: cd src && npm run pretest:e2e && npm run e2e
+          command: cd src && npm run e2e
   coverage:
     <<: *defaults
     steps:

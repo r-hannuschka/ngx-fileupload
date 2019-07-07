@@ -15,7 +15,6 @@ exports.config = {
   ],
   capabilities: {
     "browserName": "chrome",
-    /*
     "chromeOptions": {
         args: [
             "--headless",
@@ -25,7 +24,6 @@ exports.config = {
             "--log-level=0"
         ]
     },
-    */
   },
   directConnect: true,
   baseUrl: "http://localhost:4201/",

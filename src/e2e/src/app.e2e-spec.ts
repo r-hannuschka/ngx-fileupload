@@ -1,6 +1,9 @@
 import { AppPage } from "./app.po";
 import { simulateDrop } from "../utils/drag-event";
-import { by } from "protractor";
+import { by, browser } from "protractor";
+import { spawn, ChildProcess } from "child_process";
+import { readFileSync, writeFileSync } from "fs";
+import { EOL } from "os";
 
 describe("workspace-project App", () => {
     let page: AppPage;
@@ -84,6 +87,57 @@ describe("workspace-project App", () => {
     });
 
     describe("upload all action, should start all uploads at once", () => {
+
+        let server: ChildProcess;
+
+        /**
+         * start simple upload server
+         */
+        beforeAll((done) => {
+            // clear log files first
+            writeFileSync("./server/upload.log", "", { encoding: "utf8", flag: "w"});
+
+            // start very simple upload server which only logs
+            server = spawn("node", ["./server/upload-server.js" ], {stdio: ["inherit"]});
+            server.stdout.on("data", (data) => {
+                done();
+            });
+
+            server.stderr.on("data", (data) => {
+                process.stderr.write(data);
+                done();
+            });
+        });
+
+        /**
+         * drop file so it can be uploaded
+         */
+        beforeAll(async () => {
+            await simulateDrop(page.getFileUploadField(), "./upload-file.zip");
+            await simulateDrop(page.getFileUploadField(), "./upload-file2.zip");
+        });
+
+        it("should upload all files to server at once", async (done) => {
+            const uploadAction = page.getUploadButton();
+            await uploadAction.click();
+
+            /** wait one second */
+            setTimeout(() => {
+                const logFile = readFileSync("./server/upload.log", {encoding: "utf8"});
+                const logs = logFile.split(EOL).slice(-3, -1);
+
+                expect(logs.length).toBe(2);
+                expect(logs[0]).toBe(`INFO - File uploaded: upload-file.zip\r`);
+                expect(logs[1]).toBe(`INFO - File uploaded: upload-file2.zip\r`);
+                done();
+            }, 1000);
+
+        });
+
+        afterAll(async () => {
+            await page.getCancelButton().click();
+            server.kill("SIGINT");
+        });
     });
 
     describe("add file to upload", () => {

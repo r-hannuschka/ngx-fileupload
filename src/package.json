@@ -8,6 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "compodoc": "npx compodoc -p lib/tsconfig.lib.json --disablePrivate --disableLifeCycleHooks",
+    "pretest:e2e": "node ./node_modules/protractor/bin/webdriver-manager update",
     "e2e": "ng e2e --port=4201"
   },
   "private": true,

@@ -5,6 +5,7 @@
 ### features
 
 - add css class item-action--(upload, retry, stop) to item action buttons
+- add e2e tests
 
 ### other changes
 

@@ -2,17 +2,17 @@ version: 2.1
 
 orbs:
     codecov: codecov/codecov@1.0.5
+    browser_tools: circleci/browser-tools@0.1.3
 
 defaults: &defaults
   working_directory: ~/ngx-fileupload
   docker:
-      - image: circleci/node:10.9.0-browsers
+      - image: circleci/node:10.14.1-browsers
 
 aliases:
   - &filter_master
       branches:
         only: master
-
 
 jobs:
   install:
@@ -23,7 +23,7 @@ jobs:
           key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
       - run:
           name: "install packages"
-          command: cd src && npm install
+          command: cd src && npm install && npm i webdriver-manager
       - save_cache:
           key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
           paths:
@@ -57,9 +57,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/ngx-fileupload
+      - browser_tools/install-chrome: 
+          replace-existing: true
       - run:
           name: "run e2e tests"
-          command: cd src && npm run e2e
+          command: cd src && npm run pretest:e2e && npm run e2e
   coverage:
     <<: *defaults
     steps:
@@ -77,6 +79,9 @@ workflows:
           requires:
             - install
       - test:
+          requires:
+            - install
+      - e2e:
           requires:
             - install
       - coverage:

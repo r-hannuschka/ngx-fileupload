@@ -8,10 +8,12 @@
   },
   "license": "MIT",
   "keywords": [
-    "angular",
+    "ngx",
+    "angular 8",
     "file",
     "upload",
-    "fileupload"
+    "fileupload",
+    "progressbar"
   ],
   "peerDependencies": {
     "@angular/common": "^8.0.1",

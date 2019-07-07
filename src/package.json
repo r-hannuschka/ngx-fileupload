@@ -7,8 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e --port=4201",
-    "compodoc": "npx compodoc -p lib/tsconfig.lib.json --disablePrivate --disableLifeCycleHooks"
+    "compodoc": "npx compodoc -p lib/tsconfig.lib.json --disablePrivate --disableLifeCycleHooks",
+    "pretest:e2e": "node ./node_modules/protractor/bin/webdriver-manager update",
+    "e2e": "ng e2e --port=4201"
   },
   "private": true,
   "dependencies": {
@@ -20,9 +21,7 @@
     "@angular/platform-browser": "^8.1.0",
     "@angular/platform-browser-dynamic": "^8.1.0",
     "@angular/router": "^8.1.0",
-    "@compodoc/compodoc": "^1.1.9",
     "angular-pipes": "^9.0.2",
-    "express": "^4.17.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
@@ -37,6 +36,9 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
+    "@compodoc/compodoc": "^1.1.9",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.5",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
@@ -44,6 +46,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "letslog": "1.0.11",
     "ng-packagr": "^5.1.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",

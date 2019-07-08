@@ -182,11 +182,13 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     private createUpload(file: File): FileUpload {
 
+        const fieldName = this.formDataName || "file";
+
         const uploadOptions = {
             url: this.url,
             formData: {
                 enabled: this.useFormData,
-                name: this.formDataName
+                name   : this.formDataName || "file"
             }
         };
 

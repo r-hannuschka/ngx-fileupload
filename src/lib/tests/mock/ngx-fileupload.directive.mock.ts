@@ -1,5 +1,5 @@
 import { Directive, Output, EventEmitter, Input } from "@angular/core";
-import { FileUpload } from "ngx-fileupload/public-api";
+import { FileUpload } from "lib/public-api";
 
 @Directive({
     selector: "[ngxFileUpload]",

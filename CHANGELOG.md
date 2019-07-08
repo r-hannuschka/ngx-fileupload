@@ -8,6 +8,7 @@
 - change file name components/upload.component.ts to components/ngx-fileupload.component.ts
 - change class name UploadItemComponent to NgxFileUploadItemComponent
 - change file name components/upload-item.component to components/ngx-fileupload-item.component.ts
+- change UploadContext to FileUploadItemContext (ngx-fileupload-item template context)
 
 ### features
 

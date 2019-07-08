@@ -4,7 +4,7 @@ import { Component, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
-import { FileUpload, UploadModel, NgxFileUploadComponent, UploadState } from "lib/public-api";
+import { UploadModel, NgxFileUploadComponent, UploadState } from "lib/public-api";
 import { NgxFileUploadMockDirective } from "../mock/ngx-fileupload.directive.mock";
 import { NgxFileUploadItemMockComponent } from "../mock/ngx-fileupload-item.component.mock";
 import { FileUploadMock } from "../mock/upload-file.mock";
@@ -76,8 +76,8 @@ describe( "Upload Component:", () => {
     });
 
     it("should add uploads", () => {
-        const upload1 = new FileUploadMock() as FileUpload;
-        const upload2 = new FileUploadMock() as FileUpload;
+        const upload1 = new FileUploadMock() as any;
+        const upload2 = new FileUploadMock() as any;
 
         testComponent.ngxFileUploadComponent.onUploadsAdd([upload1, upload2]);
         fixture.detectChanges();
@@ -87,7 +87,7 @@ describe( "Upload Component:", () => {
     });
 
     it("should remove upload if uploaded", () => {
-        const fileUpload  = new FileUploadMock() as FileUpload;
+        const fileUpload  = new FileUploadMock() as any;
         const uploadModel = { state: "uploaded" } as UploadModel;
         testComponent.ngxFileUploadComponent.onUploadsAdd([fileUpload]);
         testComponent.ngxFileUploadComponent.handleUploadChange(uploadModel, fileUpload);
@@ -95,7 +95,7 @@ describe( "Upload Component:", () => {
     });
 
     it("should remove upload if canceled", fakeAsync(() => {
-        const fileUpload  = new FileUploadMock() as FileUpload;
+        const fileUpload  = new FileUploadMock() as any;
         const uploadModel = { state: UploadState.CANCELED } as UploadModel;
 
         testComponent.ngxFileUploadComponent.onUploadsAdd([fileUpload]);
@@ -108,7 +108,7 @@ describe( "Upload Component:", () => {
     }));
 
     it("should not remove upload if queued or progressing", () => {
-        const fileUpload  = new FileUploadMock() as FileUpload;
+        const fileUpload  = new FileUploadMock() as any;
         const uploadModel = { state: UploadState.QUEUED } as UploadModel;
         testComponent.ngxFileUploadComponent.onUploadsAdd([fileUpload]);
         testComponent.ngxFileUploadComponent.handleUploadChange(uploadModel, fileUpload);

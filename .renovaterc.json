@@ -12,7 +12,8 @@
   "assignees": ["r-hannuschka"],
   "automerge": false,
   "extends": [
-    "config:base"
+    "config:base",
+    "schedule:earlyMondays"
   ],
   "timezone": "Europe/Berlin"
 }

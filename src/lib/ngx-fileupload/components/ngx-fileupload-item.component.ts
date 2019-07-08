@@ -14,10 +14,10 @@ export interface UploadContext {
  */
 @Component({
     selector: "ngx-fileupload-item",
-    templateUrl: "upload-item.component.html",
-    styleUrls: ["./upload-item.component.scss"],
+    templateUrl: "ngx-fileupload-item.component.html",
+    styleUrls: ["./ngx-fileupload-item.component.scss"],
 })
-export class UploadItemComponent implements OnInit {
+export class NgxFileUploadItemComponent implements OnInit {
 
     /**
      * item template which should used to render upload data

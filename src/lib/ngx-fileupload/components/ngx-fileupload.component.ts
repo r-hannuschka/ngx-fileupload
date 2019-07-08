@@ -7,8 +7,8 @@ import { take, delay, switchMap } from "rxjs/operators";
 
 @Component({
     selector: "ngx-fileupload",
-    styleUrls: ["./upload.component.scss"],
-    templateUrl: "upload.component.html",
+    styleUrls: ["./ngx-fileupload.component.scss"],
+    templateUrl: "ngx-fileupload.component.html",
     animations: [
         trigger("removeUpload", [
             state("visible", style({ opacity: 1 })),
@@ -18,7 +18,7 @@ import { take, delay, switchMap } from "rxjs/operators";
         ])
     ],
 })
-export class UploadComponent {
+export class NgxFileUploadComponent {
 
     /**
      * optional pass diffrent itemtemplate

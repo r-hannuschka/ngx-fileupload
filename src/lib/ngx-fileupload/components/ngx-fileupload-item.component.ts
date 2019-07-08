@@ -67,7 +67,7 @@ export class NgxFileUploadItemComponent implements OnInit {
     @ViewChild("defaultUploadItem", {static: true})
     @Input()
     public set template(tpl: TemplateRef<any>) {
-        this.itemTpl = tpl;
+        this.itemTpl = tpl || this.itemTpl;
     }
 
     /**

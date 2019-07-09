@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### bugfixes
+
+- fixed bug same file could not uploaded twice with click [#30](https://github.com/r-hannuschka/ngx-fileupload/issues/30)
+
 ## 1.0.0
 
 ### breaking changes

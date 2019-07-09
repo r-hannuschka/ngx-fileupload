@@ -69,6 +69,38 @@ jobs:
           at: ~/ngx-fileupload
       - codecov/upload:
           file: "./src/coverage/ngx-fileupload/lcov.info"
+  build-docs:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/ngx-fileupload
+      - run:
+          name: "generate documentation"
+          command: cd src && npm run compodoc
+      - persist_to_workspace:
+          root: ~/ngx-fileupload
+          paths:
+            - ./src/documentation
+  deploy-docs:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/ngx-fileupload
+      - run:
+          name: Avoid hosts unknown for github
+          command: mkdir -p ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      - run:
+          name: "install dependencies" 
+          command: |
+            sudo npm i -g --silent gh-pages@2.0.1
+            git config user.email "ci-build@ngx-fileupload.net"
+            git config user.name "ci-build:deploy"
+      - add_ssh_keys:
+          fingerprints:
+            - "75:3d:da:0d:c9:ab:a0:76:28:2e:fa:e4:da:0a:75:71"
+      - run:
+          name: "Deploy documentation to gh-pages"
+          command: gh-pages --dotfiles --message "update docs [skip ci]" --dist ./src/documentation --dest documentation
 
 workflows:
   version: 2.1
@@ -84,6 +116,12 @@ workflows:
       - e2e:
           requires:
             - install
+      - build-docs:
+          requires:
+            - install
+      - deploy-docs:
+          requires:
+            - build-docs
       - coverage:
           requires:
             - test

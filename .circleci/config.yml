@@ -119,9 +119,11 @@ workflows:
       - build-docs:
           requires:
             - install
+          filters: *filter_master
       - deploy-docs:
           requires:
             - build-docs
       - coverage:
           requires:
             - test
+          filters: *filter_master

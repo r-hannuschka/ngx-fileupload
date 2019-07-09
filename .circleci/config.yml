@@ -100,7 +100,7 @@ jobs:
             - "4b:28:3e:14:3b:b1:bc:5b:48:17:14:61:6e:20:66:de"
       - run:
           name: "Deploy documentation to gh-pages"
-          command: gh-pages --dotfiles --message "update docs [skip ci]" --dist ./src/documentation --dest documentation
+          command: gh-pages --dotfiles --message "update docs [skip ci]" --dist ./src/documentation --dest .
 
 workflows:
   version: 2.1

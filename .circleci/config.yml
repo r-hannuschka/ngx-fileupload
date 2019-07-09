@@ -93,11 +93,11 @@ jobs:
           name: "install dependencies" 
           command: |
             sudo npm i -g --silent gh-pages@2.0.1
-            git config user.email "ci-build@ngx-fileupload.net"
-            git config user.name "ci-build:deploy"
+            git config user.email "ci-bot@ngx-fileupload.net"
+            git config user.name "ngx-fileupload-bot:deploy"
       - add_ssh_keys:
           fingerprints:
-            - "75:3d:da:0d:c9:ab:a0:76:28:2e:fa:e4:da:0a:75:71"
+            - "4b:28:3e:14:3b:b1:bc:5b:48:17:14:61:6e:20:66:de"
       - run:
           name: "Deploy documentation to gh-pages"
           command: gh-pages --dotfiles --message "update docs [skip ci]" --dist ./src/documentation --dest documentation

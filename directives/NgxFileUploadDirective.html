@@ -902,6 +902,12 @@ export class NgxFileUploadDirective implements OnDestroy {
 
         const files &#x3D; Array.from(this.fileSelect.files);
         this.handleFileSelect(files);
+
+        /**
+         * clear value otherwise change will not trigger again
+         */
+        this.fileSelect.value &#x3D; null;
+        this.fileSelect.files &#x3D; null;
     }
 }
 </code></pre>

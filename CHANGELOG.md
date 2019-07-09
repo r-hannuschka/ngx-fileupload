@@ -1,11 +1,22 @@
 # Changelog
 
-## 0.5.0-beta.2
+## 1.0.0
+
+### breaking changes
+
+- change class name UploadComponent to NgxFileUploadComponent
+- change file name components/upload.component.ts to components/ngx-fileupload.component.ts
+- change class name UploadItemComponent to NgxFileUploadItemComponent
+- change file name components/upload-item.component to components/ngx-fileupload-item.component.ts
+- change UploadContext to FileUploadItemContext (ngx-fileupload-item template context)
+- FileUpload.hasError only return true anymore if upload is invalid, FileUpload.isInvalid() should be used now
 
 ### features
 
 - add css class item-action--(upload, retry, stop) to item action buttons
 - add e2e tests
+- add option useFormData (boolean) if false it will send file as body (default true)
+- add option formDataName (string) if formData is enabled this is the name which will be used for file (default file)
 
 ### other changes
 
@@ -18,13 +29,6 @@
 
 - code coverate
 - e2e tests
-
-## 0.5.0-beta.1
-
-### features
-
-- add option useFormData (boolean) if false it will send file as body (default true)
-- add option formDataName (string) if formData is enabled this is the name which will be used for file (default file)
 
 ## 0.4.0
 

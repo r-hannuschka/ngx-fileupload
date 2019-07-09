@@ -8,9 +8,11 @@
 Angular 8+ async fileupload with progressbar
 
 ![ngx-fileupload.gif](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/ngx-fileupload.gif)
-___
+
+## Contents
 
 - [NgxFileUpload](#NgxFileUpload)
+  - [Contents](#Contents)
   - [Installation](#Installation)
   - [Usage](#Usage)
   - [Examples](#Examples)
@@ -19,6 +21,7 @@ ___
     - [Validators](#Validators)
     - [Add Params / Headers to Upload](#Add-Params--Headers-to-Upload)
   - [Development](#Development)
+  - [Tests](#Tests)
   - [Credits](#Credits)
   - [Author](#Author)
   - [Other Modules](#Other-Modules)
@@ -37,7 +40,7 @@ app.module.ts
 
 ```js
 import { NgModule, Injectable } from "@angular/core";
-import { NgxFileUploadModule } from "lib/public-api";
+import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 
 @NgModule({
     imports: [
@@ -54,6 +57,20 @@ app.component.html
 
 ```html
 <ngx-fileupload [url]="<URL>"></ngx-fileupload>
+```
+
+Upload file directly in post body (no formdata)
+
+```html
+    <!-- file will directly sends with POST and not added to FormData Object default is true-->
+    <ngx-fileupload [url]="<URL>" [useFormData]="false"></ngx-fileupload>
+```
+
+Upload file with form data but custom form data field
+
+```html
+    <!-- file will uploaded via FormData with field name myFileUploadField, (default: 'file') -->
+    <ngx-fileupload [url]="<URL>" [formDataName]="'myFileUploadField'"></ngx-fileupload>
 ```
 
 ## Examples
@@ -115,8 +132,7 @@ ___
 my.component.ts
 
 ```ts
-import { FileUpload } from "../services/file-upload";
-import { UploadModel, UploadState } from "../model/upload";
+import { FileUpload, UploadModel, UploadState } from "@r-hannuschka/ngx-fileupload";
 
 @Component({
     selector: "my-component",
@@ -170,8 +186,7 @@ my.component.html
         <button type="button"
             *ngIf="!uploadData.hasError"
             [disabled]="uploadData.invalid || uploadData.state !== 'queued'"
-            (click)="uploadCtrl.start()"
-        >
+            (click)="uploadCtrl.start()">
             start
         </button>
         <button type="button" (click)="uploadCtrl.cancel()">
@@ -195,9 +210,14 @@ my.component.html
 <!--
     add directive ngxFileUpload to create new uploads if files get dropped here
     or selected from file window.
+
+    optional pass useFormData: boolean (default: true)
+    optional pass formDataName: string (default file)
 -->
 <div class="fileupload dropzone"
     [ngxFileUpload]="url"
+    [useFormData]="true"
+    [formDataName]="'myFileUpload'"
     (add)="onUploadsAdd($event)"
     #myNgxFileUploadRef="ngxFileUploadRef">
 
@@ -359,13 +379,23 @@ node src\server\upload-server.js
 npm start
 ```
 
+## Tests
+
+```bash
+# end to end tests
+ng e2e
+
+# unit tests
+ng test ngx-fileupload
+```
+
 ## Credits
 
 Special thanks for code reviews, great improvements and ideas to
 
 ||||  
 |:-:|:-:|:-:|
-|[![alt Konrad Mattheis](https://avatars2.githubusercontent.com/u/1100969?s=60&v=4)](https://github.com/konne)<br />Konrad Mattheis| [<img src="https://avatars3.githubusercontent.com/u/17725886?s=60&v=4" width=60 alt="Thomas Haenig" />](https://avatars3.githubusercontent.com/u/17725886?s=60&v=4)<br />Thomas Haenig| [![alt Alexander Görlich](https://avatars0.githubusercontent.com/u/13659581?s=60&v=4)](https://github.com/AlexanderGoerlich)  <br />Alexander Görlich|
+|[![alt Konrad Mattheis](https://avatars2.githubusercontent.com/u/1100969?s=60&v=4)](https://github.com/konne)<br />Konrad Mattheis| [<img src="https://avatars3.githubusercontent.com/u/17725886?s=60&v=4" width=60 alt="Thomas Haenig" />](https://github.com/thomashaenig)<br />Thomas Haenig| [![alt Alexander Görlich](https://avatars0.githubusercontent.com/u/13659581?s=60&v=4)](https://github.com/AlexanderGoerlich)  <br />Alexander Görlich|
 
 ## Author
 

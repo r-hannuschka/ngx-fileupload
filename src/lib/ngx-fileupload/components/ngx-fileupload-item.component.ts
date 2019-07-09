@@ -4,7 +4,7 @@ import { FileUpload } from "../services/file-upload";
 import { UploadControl } from "../services/upload-control";
 import { UploadModel, UploadData } from "../model/upload";
 
-export interface UploadContext {
+export interface FileUploadItemContext {
     data: UploadData;
     ctrl: UploadControl;
 }
@@ -14,15 +14,15 @@ export interface UploadContext {
  */
 @Component({
     selector: "ngx-fileupload-item",
-    templateUrl: "upload-item.component.html",
-    styleUrls: ["./upload-item.component.scss"],
+    templateUrl: "ngx-fileupload-item.component.html",
+    styleUrls: ["./ngx-fileupload-item.component.scss"],
 })
-export class UploadItemComponent implements OnInit {
+export class NgxFileUploadItemComponent implements OnInit {
 
     /**
      * item template which should used to render upload data
      */
-    public itemTpl: TemplateRef<UploadContext>;
+    public itemTpl: TemplateRef<FileUploadItemContext>;
 
     /**
      * upload state has been changed
@@ -33,7 +33,7 @@ export class UploadItemComponent implements OnInit {
     /**
      * template context which is bound to rendered template
      */
-    public context: UploadContext;
+    public context: FileUploadItemContext;
 
     /**
      * file upload which should bound to this view
@@ -66,8 +66,10 @@ export class UploadItemComponent implements OnInit {
      */
     @ViewChild("defaultUploadItem", {static: true})
     @Input()
-    public set template(tpl: TemplateRef<any>) {
-        this.itemTpl = tpl || this.itemTpl;
+    public set template(tpl: TemplateRef<FileUploadItemContext>) {
+        if (tpl !== undefined) {
+            this.itemTpl = tpl;
+        }
     }
 
     /**

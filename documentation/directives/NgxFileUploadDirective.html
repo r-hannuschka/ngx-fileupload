@@ -1,0 +1,971 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ngx-fileupload documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">ngx-fileupload documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content directive">
+                   <div class="content-data">
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Directives</li>
+  <li>NgxFileUploadDirective</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>lib/ngx-fileupload/directives/ngx-fileuplad.ts</code>
+        </p>
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>directive to add uploads with drag / drop</p>
+
+            </p>
+
+            <p class="comment">
+                <h3>Implements</h3>
+            </p>
+            <p class="comment">
+                            <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+            </p>
+
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">&lt;div [ngxFileUpload]=&quot;'URL'&quot; (add)=&quot;onUploadAdd($event)&quot; #myNgxFileUploadRef=&quot;ngxFileUploadRef&quot;&gt;&lt;/div&gt;
+&lt;button (click)=&quot;myNgxFileUploadRef.upload()&quot;&gt;Upload&lt;/button&gt;</code></pre>
+                        </div>
+            </div>
+
+        <section>
+            <h3>Metadata</h3>
+            <table class="table table-sm table-hover">
+                <tbody>
+
+                    <tr>
+                        <td class="col-md-3">Selector</td>
+                        <td class="col-md-9"><code>[ngxFileUpload]</code></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </section>
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#cancelAll">cancelAll</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#cleanAll">cleanAll</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#uploadAll">uploadAll</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#formDataName">formDataName</a>
+                            </li>
+                            <li>
+                                <a href="#ngxFileUpload">ngxFileUpload</a>
+                            </li>
+                            <li>
+                                <a href="#useFormData">useFormData</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#add">add</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>HostListeners</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#click">click</a>
+                            </li>
+                            <li>
+                                <a href="#dragover">dragover</a>
+                            </li>
+                            <li>
+                                <a href="#drop">drop</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(httpClient: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, renderer: <a href="https://angular.io/api/core/Renderer2" target="_blank">Renderer2</a>, validation: <a href="../interfaces/NgxFileUploadValidator.html">NgxFileUploadValidator | NgxFileUploadValidator[]</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:75</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates an instance of NgxFileUploadDirective.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>httpClient</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>renderer</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/Renderer2" target="_blank" >Renderer2</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>validation</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/NgxFileUploadValidator.html" target="_self" >NgxFileUploadValidator | NgxFileUploadValidator[]</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="formDataName"></a>
+                        <b>formDataName</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;file&quot;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:55</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>form data field name with which form data will be send
+by default this will be file</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ngxFileUpload"></a>
+                        <b>ngxFileUpload</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:41</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>url which should be used as endpoint for the file upload
+this field is mandatory</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="useFormData"></a>
+                        <b>useFormData</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:48</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>if set to false upload post request body will use
+plain file object in body</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+            <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="add"></a>
+                        <b>add</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/FileUpload.html" target="_self" >EventEmitter&lt;FileUpload[]&gt;</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:31</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>upload has been added</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    <h3>HostListeners</h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="click"></a>
+                    <span class="name">
+                        <b>
+                            click
+                        </b>
+                        <a href="#click"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <i>Arguments : </i><code>'$event' </code>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>click(event: MouseEvent)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="157"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:157</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>add click host listener
+to get notified we have a click event</p>
+</div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dragover"></a>
+                    <span class="name">
+                        <b>
+                            dragover
+                        </b>
+                        <a href="#dragover"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <i>Arguments : </i><code>'$event' </code>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>dragover(event: DragEvent)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:134</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>handle drag over event</p>
+</div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="drop"></a>
+                    <span class="name">
+                        <b>
+                            drop
+                        </b>
+                        <a href="#drop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <i>Arguments : </i><code>'$event' </code>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>drop(event: DragEvent)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="143"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:143</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>handle drop event</p>
+</div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelAll"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            cancelAll
+                        </b>
+                        <a href="#cancelAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cancelAll()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:111</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>cancel all downloads at once</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cleanAll"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            cleanAll
+                        </b>
+                        <a href="#cleanAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cleanAll()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="121"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:121</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>search for broken uploads (error / invalid) and cancel
+them</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="uploadAll"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            uploadAll
+                        </b>
+                        <a href="#uploadAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>uploadAll()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:104</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>begin all uploads at once</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject, Renderer2, ElementRef } from &quot;@angular/core&quot;;
+import { HttpClient } from &quot;@angular/common/http&quot;;
+import { takeUntil } from &quot;rxjs/operators&quot;;
+import { Subject } from &quot;rxjs&quot;;
+import { UploadModel, UploadState } from &quot;../model/upload&quot;;
+import { FileUpload } from &quot;../services/file-upload&quot;;
+import { NGX_FILEUPLOAD_VALIDATOR, NgxFileUploadValidator } from &quot;../services/validation&quot;;
+
+/**
+ * directive to add uploads with drag / drop
+ *
+ * @example
+ *
+ * &lt;div [ngxFileUpload]&#x3D;&quot;&#x27;URL&#x27;&quot; (add)&#x3D;&quot;onUploadAdd($event)&quot; #myNgxFileUploadRef&#x3D;&quot;ngxFileUploadRef&quot;&gt;&lt;/div&gt;
+ * &lt;button (click)&#x3D;&quot;myNgxFileUploadRef.upload()&quot;&gt;Upload&lt;/button&gt;
+ */
+@Directive({
+  selector: &quot;[ngxFileUpload]&quot;,
+  exportAs: &quot;ngxFileUploadRef&quot;
+})
+export class NgxFileUploadDirective implements OnDestroy {
+
+    /**
+     * upload has been added
+     *
+     * @example
+     *
+     * &lt;div [ngxFileUpload]&#x3D;&quot;&quot;localhost/upload&quot;&quot; (add)&#x3D;&quot;onUploadAdd($event)&quot; &gt;&lt;/div&gt;
+     */
+    @Output()
+    public add: EventEmitter&lt;FileUpload[]&gt;;
+
+    /**
+     * url which should be used as endpoint for the file upload
+     * this field is mandatory
+     *
+     * @example
+     * &lt;div [ngxFileUpload]&#x3D;&quot;&quot;localhost/upload&quot;&quot; (add)&#x3D;&quot;onUploadAdd($event)&quot; &gt;&lt;/div&gt;
+     */
+    @Input(&quot;ngxFileUpload&quot;)
+    public url: string;
+
+    /**
+     * if set to false upload post request body will use
+     * plain file object in body
+     */
+    @Input()
+    public useFormData &#x3D; true;
+
+    /**
+     * form data field name with which form data will be send
+     * by default this will be file
+     */
+    @Input()
+    public formDataName &#x3D; &quot;file&quot;;
+
+    /**
+     * remove from subscribtions if component gets destroyed
+     */
+    private destroyed$: Subject&lt;boolean&gt; &#x3D; new Subject();
+
+    /**
+     * upload file queue
+     */
+    private uploads: FileUpload[] &#x3D; [];
+
+    /**
+     * injected validators
+     */
+    private validators: NgxFileUploadValidator[] &#x3D; [];
+
+    /**
+     * input file field to trigger file window
+     */
+    private fileSelect: HTMLInputElement;
+
+    /**
+     * Creates an instance of NgxFileUploadDirective.
+     */
+    constructor(
+        private httpClient: HttpClient,
+        private renderer: Renderer2,
+        @Optional() @Inject(NGX_FILEUPLOAD_VALIDATOR) validation: NgxFileUploadValidator | NgxFileUploadValidator[]
+    ) {
+        if (validation) {
+            this.validators &#x3D; Array.isArray(validation) ? validation : [validation];
+        }
+        this.add &#x3D; new EventEmitter();
+        this.fileSelect &#x3D; this.createFieldInputField();
+    }
+
+    /**
+     * directive gets destroyed
+     */
+    public ngOnDestroy() {
+        this.destroyed$.next(true);
+        this.uploads &#x3D; [];
+        this.destroyed$.complete();
+    }
+
+    /**
+     * begin all uploads at once
+     */
+    public uploadAll() {
+        this.uploads.forEach((upload: FileUpload) &#x3D;&gt; upload.start());
+    }
+
+    /**
+     * cancel all downloads at once
+     */
+    public cancelAll() {
+        for ( let i &#x3D; this.uploads.length - 1; i &gt;&#x3D; 0; i --) {
+            this.uploads[i].cancel();
+        }
+    }
+
+    /**
+     * search for broken uploads (error / invalid) and cancel
+     * them
+     */
+    public cleanAll() {
+        for ( let i &#x3D; this.uploads.length - 1; i &gt;&#x3D; 0; i --) {
+            const upload &#x3D; this.uploads[i];
+            if (upload.isInvalid() || upload.hasError()) {
+                upload.cancel();
+            }
+        }
+    }
+
+    /**
+     * handle drag over event
+     */
+    @HostListener(&quot;dragover&quot;, [&quot;$event&quot;])
+    public onFileDragOver(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    /**
+     * handle drop event
+     */
+    @HostListener(&quot;drop&quot;, [&quot;$event&quot;])
+    public onFileDrop(event: DragEvent) {
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        const files &#x3D; Array.from(event.dataTransfer.files);
+        this.handleFileSelect(files);
+    }
+
+    /**
+     * add click host listener
+     * to get notified we have a click event
+     */
+    @HostListener(&quot;click&quot;, [&quot;$event&quot;])
+    public onClick(event: MouseEvent) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (!this.uploads.length) {
+            this.fileSelect.click();
+        }
+    }
+
+    /**
+     * files has been selected via drag drop
+     * or with input type&#x3D;&quot;file&quot;
+     */
+    private handleFileSelect(files: File[]) {
+        const uploads &#x3D; files.map((file) &#x3D;&gt; this.createUpload(file));
+        this.add.emit(uploads);
+    }
+
+    /**
+     * create upload from file, listen to complete
+     * to remove upload from uploads list
+     *
+     * remove uplaod from uploads repository if upload completed
+     * or canceled
+     */
+    private createUpload(file: File): FileUpload {
+        const uploadOptions &#x3D; {
+            url: this.url,
+            formData: {
+                enabled: this.useFormData,
+                name   : this.formDataName
+            }
+        };
+
+        const fileModel &#x3D; new UploadModel(file);
+        const upload    &#x3D; new FileUpload(this.httpClient, fileModel, uploadOptions);
+
+        this.preValidateUpload(fileModel);
+        this.uploads.push(upload);
+
+        const sub &#x3D; upload.change
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe({
+                complete: () &#x3D;&gt; {
+                    this.uploads.splice(this.uploads.indexOf(upload), 1);
+                    sub.unsubscribe();
+                }
+            });
+
+        return upload;
+    }
+
+    /**
+     * pre validate upload, if validation result is invalid
+     * fill could not uploaded anymore
+     */
+    private preValidateUpload(upload: UploadModel) {
+
+        for (let i &#x3D; 0, ln &#x3D; this.validators.length; i &lt; ln; i++) {
+            const validator &#x3D; this.validators[i];
+            const result &#x3D; validator.validate(upload.file);
+
+            upload.isValid &#x3D; result.valid;
+            upload.message &#x3D; !result.valid ? result.error : &quot;&quot;;
+
+            if (!upload.isValid) {
+                upload.state   &#x3D; UploadState.INVALID;
+                break;
+            }
+        }
+    }
+
+    /**
+     * create dummy input field to select files
+     * for security reasons, we cant trigger a file select window
+     * without it
+     */
+    private createFieldInputField(): HTMLInputElement {
+        const inputField &#x3D; document.createElement(&quot;input&quot;);
+        this.renderer.setAttribute(inputField, &quot;type&quot;, &quot;file&quot;);
+        this.renderer.setAttribute(inputField, &quot;multiple&quot;, &quot;multiple&quot;);
+        this.renderer.setStyle(inputField, &quot;display&quot;, &quot;none&quot;);
+        this.renderer.listen(inputField, &quot;change&quot;, (e) &#x3D;&gt; this.onFileSelect(e));
+        return inputField;
+    }
+
+    /**
+     * register on change event on input[type&#x3D;&quot;file&quot;] field
+     * and create the uploads
+     */
+    private onFileSelect(event: Event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        const files &#x3D; Array.from(this.fileSelect.files);
+        this.handleFileSelect(files);
+    }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'directive';
+            var COMPODOC_CURRENT_PAGE_URL = 'NgxFileUploadDirective.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

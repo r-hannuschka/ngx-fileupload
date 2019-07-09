@@ -1,0 +1,932 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ngx-fileupload documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">ngx-fileupload documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>NgxFileUploadComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>lib/ngx-fileupload/components/ngx-fileupload.component.ts</code>
+</p>
+
+
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>ngx-fileupload</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./ngx-fileupload.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>ngx-fileupload.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#uploads">uploads</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#animationEnd">animationEnd</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#handleUploadChange">handleUploadChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onUploadsAdd">onUploadsAdd</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#formDataName">formDataName</a>
+                            </li>
+                            <li>
+                                <a href="#itemTemplate">itemTemplate</a>
+                            </li>
+                            <li>
+                                <a href="#url">url</a>
+                            </li>
+                            <li>
+                                <a href="#useFormData">useFormData</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="formDataName"></a>
+                        <b>formDataName</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;file&quot;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:48</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>form data field name with which form data will be send
+by default this will be file</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="itemTemplate"></a>
+                        <b>itemTemplate</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TemplateRef&lt;any&gt;</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:27</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>optional pass diffrent itemtemplate</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="url"></a>
+                        <b>url</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:34</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>input which url should be used to upload files,
+this field is mandatory</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="useFormData"></a>
+                        <b>useFormData</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:41</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>if set to false upload post request body will use
+plain file object in body</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="animationEnd"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            animationEnd
+                        </b>
+                        <a href="#animationEnd"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>animationEnd($event: <a href="https://angular.io/api/animations/AnimationEvent" target="_blank">AnimationEvent</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:68</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>triggers on animation done, if time used is 0
+then this is a skipped animation (in this case :enter)
+to avoid this fromState have to be visible to void
+that means component leave animation has been completed</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>$event</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/animations/AnimationEvent" target="_blank" >AnimationEvent</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleUploadChange"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            handleUploadChange
+                        </b>
+                        <a href="#handleUploadChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleUploadChange(upload: <a href="../classes/UploadModel.html">UploadModel</a>, fileUpload: <a href="../classes/FileUpload.html">FileUpload</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:85</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>handle upload change event,
+if upload has been completed or canceled push them into remove queue</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>upload</td>
+                                    <td>
+                                                <code><a href="../classes/UploadModel.html" target="_self" >UploadModel</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>fileUpload</td>
+                                    <td>
+                                                <code><a href="../classes/FileUpload.html" target="_self" >FileUpload</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onUploadsAdd"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            onUploadsAdd
+                        </b>
+                        <a href="#onUploadsAdd"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onUploadsAdd(uploads: <a href="../classes/FileUpload.html">FileUpload[]</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:77</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>new uploads added with drag and drop</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>uploads</td>
+                                    <td>
+                                                <code><a href="../classes/FileUpload.html" target="_self" >FileUpload[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="uploads"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            uploads</b>
+                            <a href="#uploads"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/FileUpload.html" target="_self" >FileUpload[]</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:53</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>all file uploades, which will be added to upload-item view</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, TemplateRef, Input } from &quot;@angular/core&quot;;
+import { trigger, state, style, animate, transition, AnimationEvent } from &quot;@angular/animations&quot;;
+import { FileUpload } from &quot;../services/file-upload&quot;;
+import { UploadModel, UploadState } from &quot;../model/upload&quot;;
+import { Subject, of } from &quot;rxjs&quot;;
+import { take, delay, switchMap } from &quot;rxjs/operators&quot;;
+
+@Component({
+    selector: &quot;ngx-fileupload&quot;,
+    styleUrls: [&quot;./ngx-fileupload.component.scss&quot;],
+    templateUrl: &quot;ngx-fileupload.component.html&quot;,
+    animations: [
+        trigger(&quot;removeUpload&quot;, [
+            state(&quot;visible&quot;, style({ opacity: 1 })),
+            transition(&quot;:leave&quot; , [
+                animate(&quot;.5s ease-out&quot;, style({ opacity: 0 }))
+            ])
+        ])
+    ],
+})
+export class NgxFileUploadComponent {
+
+    /**
+     * optional pass diffrent itemtemplate
+     */
+    @Input()
+    public itemTemplate: TemplateRef&lt;any&gt;;
+
+    /**
+     * input which url should be used to upload files,
+     * this field is mandatory
+     */
+    @Input()
+    public url: string;
+
+    /**
+     * if set to false upload post request body will use
+     * plain file object in body
+     */
+    @Input()
+    public useFormData &#x3D; true;
+
+    /**
+     * form data field name with which form data will be send
+     * by default this will be file
+     */
+    @Input()
+    public formDataName &#x3D; &quot;file&quot;;
+
+    /**
+     * all file uploades, which will be added to upload-item view
+     */
+    public uploads: FileUpload[] &#x3D; [];
+
+    /**
+     * subjects sends true if an animation has been done
+     */
+    private animation$: Subject&lt;boolean&gt; &#x3D; new Subject();
+
+    /**
+     * triggers on animation done, if time used is 0
+     * then this is a skipped animation (in this case :enter)
+     * to avoid this fromState have to be visible to void
+     * that means component leave animation has been completed
+     *
+     * @see https://github.com/angular/angular/issues/23535
+     */
+    public animationEnd($event: AnimationEvent) {
+        if ($event.totalTime !&#x3D;&#x3D; 0) {
+            this.animation$.next(true);
+        }
+    }
+
+    /**
+     * new uploads added with drag and drop
+     */
+    public onUploadsAdd(uploads: FileUpload[]) {
+        this.uploads.push(...uploads);
+    }
+
+    /**
+     * handle upload change event,
+     * if upload has been completed or canceled push them into remove queue
+     */
+    public handleUploadChange(upload: UploadModel, fileUpload: FileUpload) {
+        if (upload.state &#x3D;&#x3D;&#x3D; UploadState.CANCELED || upload.state &#x3D;&#x3D;&#x3D; UploadState.UPLOADED) {
+            this.removeUpload(fileUpload);
+        }
+    }
+
+    /**
+     * remove upload from list, this causes rerendering of the view
+     * which emits true after animation has been done.
+     */
+    private removeUpload(upload: FileUpload) {
+        of(upload).pipe(
+            delay(1500),
+            switchMap(() &#x3D;&gt; {
+                const idx &#x3D; this.uploads.indexOf(upload);
+                this.uploads.splice(idx, 1);
+                return this.animation$.pipe(take(1));
+            })
+        )
+        .subscribe();
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;fileupload&quot; [ngxFileUpload]&#x3D;&quot;url&quot; [useFormData]&#x3D;&quot;useFormData&quot; [formDataName]&#x3D;&quot;formDataName&quot; 
+     (add)&#x3D;&quot;onUploadsAdd($event)&quot;
+     #myNgxFileUploadRef&#x3D;&#x27;ngxFileUploadRef&#x27;&gt;
+
+    &lt;div *ngIf&#x3D;&quot;!uploads.length&quot; class&#x3D;&quot;file-upload--info-wrapper&quot;&gt;
+        &lt;div class&#x3D;&quot;file-upload--info&quot;&gt;
+            &lt;i class&#x3D;&quot;ngx-fileupload-icon--add&quot;&gt;&lt;/i&gt;
+            &lt;span&gt;Drag/Drop files here or click&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div *ngIf&#x3D;&quot;uploads.length&quot; class&#x3D;&quot;file-upload--list&quot;&gt;
+        &lt;ng-container *ngFor&#x3D;&quot;let item of uploads&quot;&gt;
+            &lt;ngx-fileupload-item 
+                [upload]&#x3D;&quot;item&quot; [template]&#x3D;&quot;itemTemplate&quot; (changed)&#x3D;&quot;handleUploadChange($event, item)&quot; 
+                [@removeUpload]&#x3D;&quot;&#x27;visible&#x27;&quot; (@removeUpload.done)&#x3D;&quot;animationEnd($event)&quot;&gt;&lt;/ngx-fileupload-item&gt;
+        &lt;/ng-container&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class&#x3D;&quot;upload--footer&quot;&gt;
+    &lt;button class&#x3D;&quot;upload-action upload-action--cancel&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;myNgxFileUploadRef.cancelAll()&quot; [disabled]&#x3D;&quot;!uploads.length&quot;&gt;Cancel&lt;/button&gt;
+    &lt;button class&#x3D;&quot;upload-action upload-action--clean&quot;  type&#x3D;&quot;button&quot; (click)&#x3D;&quot;myNgxFileUploadRef.cleanAll()&quot;  [disabled]&#x3D;&quot;!uploads.length&quot;&gt;Clean Up&lt;/button&gt;
+    &lt;button class&#x3D;&quot;upload-action upload-action--upload&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;myNgxFileUploadRef.uploadAll()&quot; [disabled]&#x3D;&quot;!uploads.length&quot;&gt;Upload&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./ngx-fileupload.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">$ngx-fileupload-icons--font-path: &#x27;../assets/fonts&#x27; !default;
+
+@import &#x27;../assets//scss/variables&#x27;;
+@import &#x27;../assets/scss/icons&#x27;;
+
+:host {
+
+    display: flex;
+    flex-direction: column;
+
+    .fileupload {
+        overflow: auto;
+        display: flex;
+        flex-direction: row-reverse;
+        flex: 1;
+        border: 1px solid #D2D2D2;
+    }
+
+    .file-upload--list {
+        box-sizing: border-box;
+        flex: 1;
+        overflow-x: hidden;
+        flex-shrink: 0;
+        flex-grow: 0;
+        flex-basis: 100%;
+        padding: .5rem 1rem;
+    }
+
+    ngx-fileupload-item {
+        margin-bottom: .5rem;
+
+        &amp;:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .file-upload--info-wrapper {
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .file-upload--info {
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: map-get($colors, &quot;dark&quot;);
+
+        .ngx-fileupload-icon--add {
+            font-size: 2.5rem;
+            border: 1px dashed lighten(map-get($colors, &quot;dark&quot;), 40%);
+            width: 4rem;
+            line-height: 4rem;
+            text-align: center;
+            border-radius: 50%;
+            margin-bottom: .5rem;
+        }
+    }
+
+    .upload--footer {
+        display: flex;
+        flex-direction: row-reverse;
+
+        .upload-action {
+            display: block;
+            background: map-get($colors, &quot;dark&quot;);
+            padding: .4rem .8rem;
+            border: 1px solid #2E2E2E;
+            border-width: 0 0 1px;
+            color: map-get($map: $colors, $key: &quot;light&quot;);
+            cursor: pointer;
+
+            &amp;:last-child {
+                margin: 0;
+            }
+
+            &amp;:first-child {
+                border-radius: 0  0 .3rem 0;
+                border-width: 0 1px 1px;
+            }
+
+            &amp;:last-child {
+                border-radius: 0  0 0 .3rem;
+                border-width: 0 1px 1px;
+            }
+
+            &amp;[disabled] {
+                border-color: lighten(#2E2E2E, 40%);
+                background: lighten(#3E3E3E, 40%);
+            }
+        }
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="fileupload" [ngxFileUpload]="url" [useFormData]="useFormData" [formDataName]="formDataName"      (add)="onUploadsAdd($event)"     #myNgxFileUploadRef=\'ngxFileUploadRef\'>    <div *ngIf="!uploads.length" class="file-upload--info-wrapper">        <div class="file-upload--info">            <i class="ngx-fileupload-icon--add"></i>            <span>Drag/Drop files here or click</span>        </div>    </div>    <div *ngIf="uploads.length" class="file-upload--list">        <ng-container *ngFor="let item of uploads">            <ngx-fileupload-item                 [upload]="item" [template]="itemTemplate" (changed)="handleUploadChange($event, item)"                 [@removeUpload]="\'visible\'" (@removeUpload.done)="animationEnd($event)"></ngx-fileupload-item>        </ng-container>    </div></div><div class="upload--footer">    <button class="upload-action upload-action--cancel" type="button" (click)="myNgxFileUploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>    <button class="upload-action upload-action--clean"  type="button" (click)="myNgxFileUploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>    <button class="upload-action upload-action--upload" type="button" (click)="myNgxFileUploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button></div></div>'
+    var COMPONENTS = [{'name': 'NgxFileUploadComponent', 'selector': 'ngx-fileupload'},{'name': 'NgxFileUploadItemComponent', 'selector': 'ngx-fileupload-item'}];
+    var DIRECTIVES = [{'name': 'NgxFileUploadDirective', 'selector': '[ngxFileUpload]'}];
+    var ACTUAL_COMPONENT = {'name': 'NgxFileUploadComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'NgxFileUploadComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

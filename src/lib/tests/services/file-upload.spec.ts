@@ -102,7 +102,7 @@ describe("Model: UploadFile", () => {
     it("should have error if upload is invalid", () => {
         const upload = uploadModel;
         upload.isValid = false;
-        expect(fileupload.hasError()).toBeTruthy();
+        expect(fileupload.isInvalid()).toBeTruthy();
     });
 
     it("should not cancel upload if allready canceled", () => {

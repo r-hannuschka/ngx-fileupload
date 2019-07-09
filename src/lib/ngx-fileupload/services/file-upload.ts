@@ -103,7 +103,11 @@ export class FileUpload {
      * returns true if upload contains an error or is invalid
      */
     public hasError(): boolean {
-        return !this.upload.isValid || this.upload.error;
+        return this.upload.error;
+    }
+
+    public isInvalid(): boolean {
+        return this.upload.isValid === false;
     }
 
     /**

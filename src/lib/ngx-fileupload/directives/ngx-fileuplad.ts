@@ -80,7 +80,6 @@ export class NgxFileUploadDirective implements OnDestroy {
     constructor(
         private httpClient: HttpClient,
         private renderer: Renderer2,
-        private el: ElementRef,
         @Optional() @Inject(NGX_FILEUPLOAD_VALIDATOR) validation: NgxFileUploadValidator | NgxFileUploadValidator[]
     ) {
         if (validation) {
@@ -122,7 +121,7 @@ export class NgxFileUploadDirective implements OnDestroy {
     public cleanAll() {
         for ( let i = this.uploads.length - 1; i >= 0; i --) {
             const upload = this.uploads[i];
-            if (upload.hasError()) {
+            if (upload.isInvalid() || upload.hasError()) {
                 upload.cancel();
             }
         }
@@ -146,7 +145,7 @@ export class NgxFileUploadDirective implements OnDestroy {
         event.stopPropagation();
         event.preventDefault();
 
-        const files   = Array.from(event.dataTransfer.files);
+        const files = Array.from(event.dataTransfer.files);
         this.handleFileSelect(files);
     }
 
@@ -181,14 +180,11 @@ export class NgxFileUploadDirective implements OnDestroy {
      * or canceled
      */
     private createUpload(file: File): FileUpload {
-
-        const fieldName = this.formDataName || "file";
-
         const uploadOptions = {
             url: this.url,
             formData: {
                 enabled: this.useFormData,
-                name   : this.formDataName || "file"
+                name   : this.formDataName
             }
         };
 

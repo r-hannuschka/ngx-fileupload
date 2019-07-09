@@ -9,6 +9,7 @@
 - change class name UploadItemComponent to NgxFileUploadItemComponent
 - change file name components/upload-item.component to components/ngx-fileupload-item.component.ts
 - change UploadContext to FileUploadItemContext (ngx-fileupload-item template context)
+- FileUpload.hasError not return true anymore if upload is invalid, FileUpload.isInvalid() should be used now
 
 ### features
 

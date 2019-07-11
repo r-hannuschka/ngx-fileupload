@@ -1,10 +1,34 @@
 import { Component, TemplateRef, Input } from "@angular/core";
-import { trigger, state, style, animate, transition, AnimationEvent } from "@angular/animations";
-import { FileUpload } from "../services/file-upload";
+import { trigger, state, style, animate, transition } from "@angular/animations";
+import { delay } from "rxjs/operators";
+import { of } from "rxjs";
 import { UploadModel, UploadState } from "../model/upload";
-import { Subject, of } from "rxjs";
-import { take, delay, switchMap } from "rxjs/operators";
+import { FileUpload } from "../services/file-upload";
+import { FileUploadItemContext } from "./ngx-fileupload-item.component";
 
+/**
+ * NgxFileUploadComponent is a wrapper contain NgxFileUploadDirective and NgxFileUploadComponent
+ * to setup a upload view very quickly. All options will passed directly to NgxFileUploadDirective
+ * or NgxFileUploadComponent. This component simply handle all events / changes from upload.
+ *
+ * @example
+ * <!-- base implementation //-->
+ * <ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>
+ *
+ *
+ * @example
+ * <!-- define custom template which will be used for visual representation for one upload //-->
+ * <ng-template #myItemTemplate let-uploadData="data" let-uploadCtrl="ctrl">
+ *    <span>{{uploadData.name}}</span>
+ * </ng-template>
+ *
+ * <ngx-fileupload [url]="'...'" [itemTemplate]="myItemTemplate"></ngx-fileupload>
+ *
+ *
+ * @example
+ * <!-- send file without wrapping it into FormData //-->
+ * <ngx-fileupload [url]="'...'" [useFormData]="false"></ngx-fileupload>
+ */
 @Component({
     selector: "ngx-fileupload",
     styleUrls: ["./ngx-fileupload.component.scss"],
@@ -21,10 +45,10 @@ import { take, delay, switchMap } from "rxjs/operators";
 export class NgxFileUploadComponent {
 
     /**
-     * optional pass diffrent itemtemplate
+     * set custom template, will pass through to [NgxFileUploadItem]{@link NgxFileUploadItemComponent.html#itemTpl}
      */
     @Input()
-    public itemTemplate: TemplateRef<any>;
+    public itemTemplate: TemplateRef<FileUploadItemContext>;
 
     /**
      * input which url should be used to upload files,
@@ -34,53 +58,33 @@ export class NgxFileUploadComponent {
     public url: string;
 
     /**
-     * if set to false upload post request body will use
-     * plain file object in body
+     * by default files will send through FormData Object, if set to false file will send plain into
+     * post body
      */
     @Input()
     public useFormData = true;
 
     /**
-     * form data field name with which form data will be send
-     * by default this will be file
+     * set field name for FormData Object where to find the file
      */
     @Input()
     public formDataName = "file";
 
     /**
-     * all file uploades, which will be added to upload-item view
+     * all uploads which has been added in [NgxFileUploadDirective]{@link ../directives/NgxFileUploadDirective.html#add}
      */
     public uploads: FileUpload[] = [];
 
     /**
-     * subjects sends true if an animation has been done
-     */
-    private animation$: Subject<boolean> = new Subject();
-
-    /**
-     * triggers on animation done, if time used is 0
-     * then this is a skipped animation (in this case :enter)
-     * to avoid this fromState have to be visible to void
-     * that means component leave animation has been completed
-     *
-     * @see https://github.com/angular/angular/issues/23535
-     */
-    public animationEnd($event: AnimationEvent) {
-        if ($event.totalTime !== 0) {
-            this.animation$.next(true);
-        }
-    }
-
-    /**
-     * new uploads added with drag and drop
+     * new uploads has been added we need to care about this to remove
+     * finished uploads from list
      */
     public onUploadsAdd(uploads: FileUpload[]) {
         this.uploads.push(...uploads);
     }
 
     /**
-     * handle upload change event,
-     * if upload has been completed or canceled push them into remove queue
+     * if state is canceled or uploaded remove it
      */
     public handleUploadChange(upload: UploadModel, fileUpload: FileUpload) {
         if (upload.state === UploadState.CANCELED || upload.state === UploadState.UPLOADED) {
@@ -89,18 +93,16 @@ export class NgxFileUploadComponent {
     }
 
     /**
-     * remove upload from list, this causes rerendering of the view
-     * which emits true after animation has been done.
+     * remove upload from list but wait for 1 sec before it will be removed
      */
     private removeUpload(upload: FileUpload) {
-        of(upload).pipe(
-            delay(1500),
-            switchMap(() => {
-                const idx = this.uploads.indexOf(upload);
-                this.uploads.splice(idx, 1);
-                return this.animation$.pipe(take(1));
-            })
-        )
-        .subscribe();
+        of(upload)
+            .pipe(delay(1000))
+            .subscribe({
+                next: () => {
+                    const idx = this.uploads.indexOf(upload);
+                    this.uploads.splice(idx, 1);
+                }
+            });
     }
 }

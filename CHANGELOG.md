@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.0.2
+
+### bugfixes
+
+- fixed bug uploads could not started via upload control
+
+### other changes
+
+- improve e2e tests
+- add docs
+
+### dependencies
+
+- update letslog to 1.0.12
+
 ## 1.0.1
 
 ### bugfixes

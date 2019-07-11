@@ -13,7 +13,7 @@
         <ng-container *ngFor="let item of uploads">
             <ngx-fileupload-item 
                 [upload]="item" [template]="itemTemplate" (changed)="handleUploadChange($event, item)" 
-                [@removeUpload]="'visible'" (@removeUpload.done)="animationEnd($event)"></ngx-fileupload-item>
+                [@removeUpload]="'visible'"></ngx-fileupload-item>
         </ng-container>
     </div>
 </div>

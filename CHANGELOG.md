@@ -6,6 +6,7 @@
 
 - fixed bug uploads could not started via upload control
 - fixed bug animation not working if only one upload exists
+- fixed bug cancel action not stop event propagation
 
 ### other changes
 

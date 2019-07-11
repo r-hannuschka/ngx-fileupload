@@ -1,6 +1,6 @@
 import { FileUpload, UploadModel  } from "lib/public-api";
 import { UploadControl } from "lib/ngx-fileupload/services/upload-control";
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, tick } from "@angular/core/testing";
 describe("Model: UploadFile", () => {
 
     let fileUpload: FileUpload;

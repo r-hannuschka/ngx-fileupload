@@ -114,17 +114,4 @@ describe( "Upload Component:", () => {
         testComponent.ngxFileUploadComponent.handleUploadChange(uploadModel, fileUpload);
         fixture.detectChanges();
     });
-
-    afterAll(() => {
-        /** could not test animations for real so just for fun trigger event to get 100% */
-        testComponent.ngxFileUploadComponent.animationEnd({
-            totalTime: 10,
-            triggerName: "",
-            disabled: false,
-            element: null,
-            fromState: null,
-            phaseName: "",
-            toState: ""
-        });
-    });
 });

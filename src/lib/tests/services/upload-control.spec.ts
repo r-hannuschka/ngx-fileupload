@@ -1,5 +1,6 @@
 import { FileUpload, UploadModel  } from "lib/public-api";
 import { UploadControl } from "lib/ngx-fileupload/services/upload-control";
+import { fakeAsync, tick } from "@angular/core/testing";
 describe("Model: UploadFile", () => {
 
     let fileUpload: FileUpload;
@@ -24,8 +25,9 @@ describe("Model: UploadFile", () => {
         expect(fileUpload.start).toHaveBeenCalled();
     });
 
-    it ("should call stop", () => {
+    it ("should call stop", fakeAsync(() => {
         uploadCtrl.stop();
+        tick(0);
         expect(fileUpload.cancel).toHaveBeenCalled();
-    });
+    }));
 });

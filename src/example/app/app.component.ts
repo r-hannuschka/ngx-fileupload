@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { environment } from "../environments/environment";
 
 @Component({
   selector: "app-root",
@@ -7,4 +8,10 @@ import { Component } from "@angular/core";
 })
 export class AppComponent {
   title = "ngx-fileupload";
+
+  public disableAnimations = false;
+
+  constructor() {
+    this.disableAnimations = environment.disableAnimations || false;
+  }
 }

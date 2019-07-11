@@ -1,4 +1,4 @@
-<ng-template #defaultUploadItem let-uploadData="data" let-control="ctrl">
+<ng-template #defaultUploadItem let-uploadData="data" let-uploadCtrl="ctrl">
 
     <div class="upload-item">
         <div class="upload-item--header">{{uploadData.name}}</div>
@@ -21,18 +21,18 @@
             <div class="upload-item--actions">
 
                 <!-- start upload action -->
-                <button type="button" class="item-action--upload" (click)="control.start()" *ngIf="!uploadData.hasError"
+                <button type="button" class="item-action--upload" (click)="uploadCtrl.start()" *ngIf="!uploadData.hasError"
                     [disabled]="uploadData.state !== 'queued' || !uploadData.isValid">
                     <i class="ngx-fileupload-icon--upload"></i>
                 </button>
 
                 <!-- retry upload action -->
-                <button type="button" class="item-action--retry" (click)="control.retry()" *ngIf="uploadData.hasError">
+                <button type="button" class="item-action--retry" (click)="uploadCtrl.retry()" *ngIf="uploadData.hasError">
                     <i class="ngx-fileupload-icon--retry"></i>
                 </button>
 
                 <!-- only if running -->
-                <button type="button" class="item-action--stop" (click)="control.stop()">
+                <button type="button" class="item-action--stop" (click)="uploadCtrl.stop($event);">
                     <i class="ngx-fileupload-icon--cancel"></i>
                 </button>
 

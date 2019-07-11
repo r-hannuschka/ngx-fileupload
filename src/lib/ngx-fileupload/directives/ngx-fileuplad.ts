@@ -155,6 +155,7 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     @HostListener("click", ["$event"])
     public onClick(event: MouseEvent) {
+
         event.stopPropagation();
         event.preventDefault();
 

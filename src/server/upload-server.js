@@ -5,7 +5,6 @@ const resolve = require("path").resolve;
 const dirname = require("path").dirname;
 const letsLog = require("letslog");
 const fileUpload = require('express-fileupload');
- 
 const logger = new letsLog.Logger({
     baseComment: "",
     loglvl: letsLog.ELoglevel.DEBUG,
@@ -23,6 +22,13 @@ const logger = new letsLog.Logger({
     ]
 });
 
+let response = {
+    state: 200,
+    body: {
+        message: "files uploaded"
+    }
+};
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -39,10 +45,15 @@ app.post("/upload", function(req, res) {
     const uploadedFile = req.files.file;
     logger.info(`File uploaded: ${uploadedFile.name}`)
 
-    res.status(201);
-    res.send({
-        message: "das lief prima"
-    });
+    res.status(response.state);
+    res.send(response.body);
 });
 
 app.listen(3000, () => process.stdout.write("Server started on port 3000\n"));
+
+/**
+ * register process messages through ipc
+ */
+process.on("message", (res) => {
+    response = res;
+});

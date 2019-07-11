@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.0.2
+
+### bugfixes
+
+- fixed bug uploads could not started via upload control
+- fixed bug animation not working if only one upload exists
+- fixed bug cancel action not stop event propagation
+
+### other changes
+
+- code clean up
+- improve e2e tests
+- add docs
+
+### dependencies
+
+- update letslog to 1.0.12
+
 ## 1.0.1
 
 ### bugfixes

@@ -20,12 +20,12 @@ export interface FileUploadItemContext {
 export class NgxFileUploadItemComponent implements OnInit {
 
     /**
-     * item template which should used to render upload data
+     * item template which should rendered to display upload data
      */
     public itemTpl: TemplateRef<FileUploadItemContext>;
 
     /**
-     * upload state has been changed
+     * emit event if upload state has been changed
      */
     @Output()
     public changed: EventEmitter<UploadModel> = new EventEmitter();
@@ -59,10 +59,13 @@ export class NgxFileUploadItemComponent implements OnInit {
     @HostListener("click", ["$event"])
     public onItemClick(event: MouseEvent) {
         event.stopPropagation();
+        event.preventDefault();
+        event.stopImmediatePropagation();
     }
 
     /**
-     * sets template which should used to render file data
+     * set template which should be used for upload items, if nothing is passed
+     * it [defaultUploadItem]{@link #template} template will be used
      */
     @ViewChild("defaultUploadItem", {static: true})
     @Input()
@@ -73,6 +76,9 @@ export class NgxFileUploadItemComponent implements OnInit {
     }
 
     /**
+     * register on upload change event to get current informations from upload
+     * and pass to template context to render them
+     *
      * @inheritdoc
      */
     ngOnInit(): void {

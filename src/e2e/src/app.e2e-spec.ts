@@ -1,14 +1,26 @@
 import { AppPage } from "./app.po";
 import { simulateDrop } from "../utils/drag-event";
-import { by, browser } from "protractor";
+import { by, browser, logging, element } from "protractor";
 import { spawn, ChildProcess } from "child_process";
 import { readFileSync, writeFileSync } from "fs";
 import { EOL } from "os";
 
 describe("workspace-project App", () => {
-    let page: AppPage;
 
-    beforeEach(() => {
+    let page: AppPage;
+    let server: ChildProcess;
+
+    beforeAll(() => {
+        // start very simple upload server which only logs
+        server = spawn("node", ["./server/upload-server.js"], {stdio: [
+            "pipe",
+            "pipe",
+            "pipe",
+            "ipc"
+        ]});
+    });
+
+    beforeEach(async () => {
         page = new AppPage();
     });
 
@@ -48,11 +60,12 @@ describe("workspace-project App", () => {
 
         /** add 2 uploads the second one should be invalid */
         beforeAll(async () => {
-            await simulateDrop(page.getFileUploadField(), "./upload-file.zip");
-            await simulateDrop(page.getFileUploadField(), "./upload-file.txt");
+            const uploadfield = page.getFileUploadField();
+            await simulateDrop(uploadfield, "./upload-file.zip");
+            await simulateDrop(uploadfield, "./upload-file.txt");
         });
 
-        it("should contain 2 uploads", () => {
+        it("should contain 2 uploads", async () => {
             expect(page.getUploadItems().count()).toBe(2);
         });
 
@@ -72,6 +85,7 @@ describe("workspace-project App", () => {
          * be uploaded
          */
         it("expect trigger clean button will remove invalid item", async () => {
+
             const uploadItems = page.getUploadItems();
             const cleanAction = page.getCleanButton();
             await cleanAction.click();
@@ -88,25 +102,9 @@ describe("workspace-project App", () => {
 
     describe("upload all action, should start all uploads at once", () => {
 
-        let server: ChildProcess;
-
-        /**
-         * start simple upload server
-         */
-        beforeAll((done) => {
-            // clear log files first
+        /** clear log file first to be sure all is working */
+        beforeAll(() => {
             writeFileSync("./server/upload.log", "", { encoding: "utf8", flag: "w"});
-
-            // start very simple upload server which only logs
-            server = spawn("node", ["./server/upload-server.js" ], {stdio: ["inherit"]});
-            server.stdout.on("data", (data) => {
-                done();
-            });
-
-            server.stderr.on("data", (data) => {
-                process.stderr.write(data);
-                done();
-            });
         });
 
         /**
@@ -127,8 +125,8 @@ describe("workspace-project App", () => {
                 const logs = logFile.split(EOL).slice(-3, -1);
 
                 expect(logs.length).toBe(2);
-                expect(logs[0]).toBe(`INFO - File uploaded: upload-file.zip\r`);
-                expect(logs[1]).toBe(`INFO - File uploaded: upload-file2.zip\r`);
+                expect(logs[0]).toBe(`INFO - File uploaded: upload-file.zip`);
+                expect(logs[1]).toBe(`INFO - File uploaded: upload-file2.zip`);
                 done();
             }, 1000);
 
@@ -136,7 +134,6 @@ describe("workspace-project App", () => {
 
         afterAll(async () => {
             await page.getCancelButton().click();
-            server.kill("SIGINT");
         });
     });
 
@@ -187,6 +184,15 @@ describe("workspace-project App", () => {
          * reached and should display error
          */
         it("should fail since server not running, but show retry", async () => {
+
+            /** tell our server what to response */
+            server.send({
+                state: 401,
+                body: {
+                    message: "forbidden"
+                }
+            });
+
             const uploadItem   = page.getUploadItems().get(0);
             const errorIcon    = uploadItem.element(by.css(".ngx-fileupload-icon--error"));
             const retryAction  = uploadItem.element(by.css(".item-action--retry"));
@@ -195,6 +201,7 @@ describe("workspace-project App", () => {
             await uploadAction.click();
 
             expect(uploadAction.isPresent()).toBeFalsy();
+            expect(retryAction.isPresent()).toBeTruthy();
             expect(retryAction.isDisplayed()).toBeTruthy();
             expect(errorIcon.isDisplayed()).toBeTruthy();
         });
@@ -207,11 +214,17 @@ describe("workspace-project App", () => {
 
     afterEach(async () => {
         // Assert that there are no errors emitted from the browser
-        /*
-        const logs = await browser.manage().logs().get(logging.Type.BROWSER);
-        expect(logs).not.toContain(jasmine.objectContaining({
-        level: logging.Level.SEVERE,
-        } as logging.Entry));
-        */
+        let logs = await browser.manage().logs().get(logging.Type.BROWSER);
+
+        /** we expect an error in browser with state of 401 so we filter this out */
+        const error = "responded with a status of 401 (Unauthorized)";
+        logs = logs.filter((entry: logging.Entry) => !entry.message.endsWith(error));
+
+        expect(logs)
+            .not.toContain(jasmine.objectContaining({ level: logging.Level.SEVERE } as logging.Entry));
+    });
+
+    afterAll(() => {
+        server.kill("SIGINT");
     });
 });

@@ -3,17 +3,36 @@ import { Subject, BehaviorSubject, Observable } from "rxjs";
 import { takeUntil, filter } from "rxjs/operators";
 import { UploadModel, UploadState} from "../model/upload";
 
+/**
+ * Upload Options
+ */
 export interface UploadOptions {
+
+    /**
+     * url which should used to upload file
+     */
     url: string;
 
+    /**
+     * form data options
+     */
     formData?: {
+
+        /**
+         * if set to false, file will send through post body and not wrapped in
+         * FormData Object
+         */
         enabled: boolean;
+        /**
+         * only used if FormData is enabled, defines the name which should used
+         * in FormData
+         */
         name?: string;
     };
 }
 
 /**
- * represents a single fileupload
+ * represents a single file upload
  */
 export class FileUpload {
 
@@ -106,6 +125,9 @@ export class FileUpload {
         return this.upload.error;
     }
 
+    /**
+     * returns true if validators are set and upload not validated
+     */
     public isInvalid(): boolean {
         return this.upload.isValid === false;
     }

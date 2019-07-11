@@ -5,9 +5,11 @@
 ### bugfixes
 
 - fixed bug uploads could not started via upload control
+- fixed bug animation not working if only one upload exists
 
 ### other changes
 
+- code clean up
 - improve e2e tests
 - add docs
 

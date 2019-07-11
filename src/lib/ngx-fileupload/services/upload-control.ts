@@ -1,4 +1,5 @@
 import { FileUpload } from "./file-upload";
+import { timer } from "rxjs";
 
 /**
  * remote control for a single upload, will passed
@@ -30,21 +31,37 @@ export class UploadControl {
      *
      * Give them a chance for a retry
      */
-    public retry() {
+    public retry(event?: MouseEvent) {
+        this.handleEvent(event);
         this.fileUpload.retry();
     }
 
     /**
      * start single upload
      */
-    public start() {
+    public start(event?: MouseEvent) {
+        this.handleEvent(event);
         this.fileUpload.start();
     }
 
     /**
      * cancel / stop single upload
      */
-    public stop() {
-        this.fileUpload.cancel();
+    public stop(event?: MouseEvent) {
+        /**
+         * add delay from 0 before we cancel the event
+         * if we dont it could happen, the element is removed
+         * after fileUpload has been canceled and click event passes
+         * through.
+         */
+        timer(0).subscribe({
+            next: () => this.fileUpload.cancel()
+        });
+    }
+
+    private handleEvent(event?: MouseEvent) {
+        if (event && event instanceof MouseEvent) {
+            event.stopPropagation();
+        }
     }
 }

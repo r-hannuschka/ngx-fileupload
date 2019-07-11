@@ -56,6 +56,14 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "e2e": {
+              "fileReplacements": [
+                {
+                  "replace": "example/environments/environment.ts",
+                  "with": "example/environments/environment.e2e.ts"
+                }
+              ]
             }
           }
         },
@@ -67,6 +75,9 @@
           "configurations": {
             "production": {
               "browserTarget": "ngx-fileupload-example:build:production"
+            },
+            "e2e": {
+              "browserTarget": "ngx-fileupload-example:build:e2e"
             }
           }
         },
@@ -78,7 +89,7 @@
         }
       }
     },
-    "serWebManagement-e2e": {
+    "ngx-fileupload-example-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -91,6 +102,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "ngx-fileupload-example:serve:production"
+            },
+            "e2e": {
+              "devServerTarget": "ngx-fileupload-example:serve:e2e"
             }
           }
         },

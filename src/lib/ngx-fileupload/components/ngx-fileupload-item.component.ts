@@ -59,6 +59,8 @@ export class NgxFileUploadItemComponent implements OnInit {
     @HostListener("click", ["$event"])
     public onItemClick(event: MouseEvent) {
         event.stopPropagation();
+        event.preventDefault();
+        event.stopImmediatePropagation();
     }
 
     /**

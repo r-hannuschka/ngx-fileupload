@@ -34,12 +34,15 @@ import { FileUploadItemContext } from "./ngx-fileupload-item.component";
     styleUrls: ["./ngx-fileupload.component.scss"],
     templateUrl: "ngx-fileupload.component.html",
     animations: [
-        trigger("removeUpload", [
-            state("visible", style({ opacity: 1 })),
-            transition(":leave" , [
-                animate(".5s ease-out", style({ opacity: 0 }))
-            ])
-        ])
+        trigger(
+            "fadeInOut",
+            [
+                state("void", style({
+                    opacity: 0
+                })),
+                transition("void <=> *", animate(5000)),
+            ]
+        ),
     ],
 })
 export class NgxFileUploadComponent {
@@ -76,11 +79,19 @@ export class NgxFileUploadComponent {
     public uploads: FileUpload[] = [];
 
     /**
+     * flag list
+     */
+    public showList = false;
+
+    private itemsTotal = 0;
+
+    /**
      * new uploads has been added we need to care about this to remove
      * finished uploads from list
      */
     public onUploadsAdd(uploads: FileUpload[]) {
         this.uploads.push(...uploads);
+        this.showList = true;
     }
 
     /**
@@ -92,17 +103,23 @@ export class NgxFileUploadComponent {
         }
     }
 
+    public onAnimationDone($event) {
+        this.itemsTotal += $event.toState === "void" ? 1 : -1;
+        if (this.itemsTotal === 0) {
+            this.showList = false;
+        }
+    }
+
     /**
      * remove upload from list but wait for 1 sec before it will be removed
      */
     private removeUpload(upload: FileUpload) {
-        of(upload)
-            .pipe(delay(1000))
-            .subscribe({
-                next: () => {
-                    const idx = this.uploads.indexOf(upload);
-                    this.uploads.splice(idx, 1);
-                }
-            });
+        of(upload).pipe(delay(500))
+        .subscribe({
+            next: () => {
+                const idx = this.uploads.indexOf(upload);
+                this.uploads.splice(idx, 1);
+            }
+        });
     }
 }

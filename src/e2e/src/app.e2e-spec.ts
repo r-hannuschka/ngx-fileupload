@@ -1,6 +1,6 @@
 import { AppPage } from "./app.po";
 import { simulateDrop } from "../utils/drag-event";
-import { by, browser, logging } from "protractor";
+import { by, browser, logging, element } from "protractor";
 import { spawn, ChildProcess } from "child_process";
 import { readFileSync, writeFileSync } from "fs";
 import { EOL } from "os";
@@ -60,11 +60,12 @@ describe("workspace-project App", () => {
 
         /** add 2 uploads the second one should be invalid */
         beforeAll(async () => {
-            await simulateDrop(page.getFileUploadField(), "./upload-file.zip");
-            await simulateDrop(page.getFileUploadField(), "./upload-file.txt");
+            const uploadfield = page.getFileUploadField();
+            await simulateDrop(uploadfield, "./upload-file.zip");
+            await simulateDrop(uploadfield, "./upload-file.txt");
         });
 
-        it("should contain 2 uploads", () => {
+        it("should contain 2 uploads", async () => {
             expect(page.getUploadItems().count()).toBe(2);
         });
 
@@ -84,6 +85,7 @@ describe("workspace-project App", () => {
          * be uploaded
          */
         it("expect trigger clean button will remove invalid item", async () => {
+
             const uploadItems = page.getUploadItems();
             const cleanAction = page.getCleanButton();
             await cleanAction.click();
@@ -213,10 +215,11 @@ describe("workspace-project App", () => {
     afterEach(async () => {
         // Assert that there are no errors emitted from the browser
         let logs = await browser.manage().logs().get(logging.Type.BROWSER);
-        const error = "responded with a status of 401 (Unauthorized)";
 
-        // we expect an error with 401 filter this out
+        /** we expect an error in browser with state of 401 so we filter this out */
+        const error = "responded with a status of 401 (Unauthorized)";
         logs = logs.filter((entry: logging.Entry) => !entry.message.endsWith(error));
+
         expect(logs)
             .not.toContain(jasmine.objectContaining({ level: logging.Level.SEVERE } as logging.Entry));
     });

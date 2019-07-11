@@ -63,9 +63,32 @@
             <code>lib/ngx-fileupload/services/upload-control.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>remote control for a single upload, will passed
+by <a href="../components/NgxFileUploadItem.html">NgxFileUploadItem</a> as context.ctrl
+to the item template.</p>
+
+            </p>
 
 
 
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">&lt;ng-template let-uploadData=&quot;data&quot; let-uploadCtrl=&quot;ctrl&quot;&gt;
+     &lt;button type=&quot;button&quot; *ngIf=&quot;!data.hasError&quot; (click)=&quot;uploadCtrl.start()&quot;&gt;start&lt;/button&gt;
+     &lt;button type=&quot;button&quot; *ngIf=&quot;data.hasError&quot;  (click)=&quot;uploadCtrl.retry()&quot;&gt;retry&lt;/button&gt;
+     &lt;button type=&quot;button&quot;                        (click)=&quot;uploadCtrl.cancel()&quot;&gt;cancel&lt;/button&gt;
+&lt;/ng-template&gt;
+
+&lt;ngx-fileupload-item *ngFor=&quot;item of uploads&quot; [template]=&quot;myItemTemplate&quot; [upload]=&quot;item&quot;&gt;&lt;/ngx-fileUpload-item&gt;</code></pre>
+                        </div>
+            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -116,7 +139,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="3" class="link-to-prism">lib/ngx-fileupload/services/upload-control.ts:3</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">lib/ngx-fileupload/services/upload-control.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -177,25 +200,60 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retry()</code>
+                    <code>retry(event?: MouseEvent)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="9"
-                            class="link-to-prism">lib/ngx-fileupload/services/upload-control.ts:9</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">lib/ngx-fileupload/services/upload-control.ts:34</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>if upload has been failed (http error) it has not completed
+since connection can be broken or something dont has started yet.</p>
+<p>Give them a chance for a retry</p>
+</div>
 
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>MouseEvent</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -218,25 +276,58 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>start()</code>
+                    <code>start(event?: MouseEvent)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="13"
-                            class="link-to-prism">lib/ngx-fileupload/services/upload-control.ts:13</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">lib/ngx-fileupload/services/upload-control.ts:42</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>start single upload</p>
+</div>
 
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>MouseEvent</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -259,25 +350,58 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>stop()</code>
+                    <code>stop(event?: MouseEvent)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">lib/ngx-fileupload/services/upload-control.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">lib/ngx-fileupload/services/upload-control.ts:50</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>cancel / stop single upload</p>
+</div>
 
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>MouseEvent</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -294,23 +418,70 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { FileUpload } from &quot;./file-upload&quot;;
+import { timer } from &quot;rxjs&quot;;
 
+/**
+ * remote control for a single upload, will passed
+ * by [NgxFileUploadItem]{@link ../components/NgxFileUploadItem.html} as context.ctrl
+ * to the item template.
+ *
+ * @example
+ *
+ * &lt;ng-template let-uploadData&#x3D;&quot;data&quot; let-uploadCtrl&#x3D;&quot;ctrl&quot;&gt;
+ *     &lt;button type&#x3D;&quot;button&quot; *ngIf&#x3D;&quot;!data.hasError&quot; (click)&#x3D;&quot;uploadCtrl.start()&quot;&gt;start&lt;/button&gt;
+ *     &lt;button type&#x3D;&quot;button&quot; *ngIf&#x3D;&quot;data.hasError&quot;  (click)&#x3D;&quot;uploadCtrl.retry()&quot;&gt;retry&lt;/button&gt;
+ *     &lt;button type&#x3D;&quot;button&quot;                        (click)&#x3D;&quot;uploadCtrl.cancel()&quot;&gt;cancel&lt;/button&gt;
+ * &lt;/ng-template&gt;
+ *
+ * &lt;ngx-fileupload-item *ngFor&#x3D;&quot;item of uploads&quot; [template]&#x3D;&quot;myItemTemplate&quot; [upload]&#x3D;&quot;item&quot;&gt;&lt;/ngx-fileUpload-item&gt;
+ */
 export class UploadControl {
 
+    /**
+     *
+     */
     public constructor(
         private fileUpload: FileUpload
     ) {}
 
-    public retry() {
+    /**
+     * if upload has been failed (http error) it has not completed
+     * since connection can be broken or something dont has started yet.
+     *
+     * Give them a chance for a retry
+     */
+    public retry(event?: MouseEvent) {
+        this.handleEvent(event);
         this.fileUpload.retry();
     }
 
-    public start() {
+    /**
+     * start single upload
+     */
+    public start(event?: MouseEvent) {
+        this.handleEvent(event);
         this.fileUpload.start();
     }
 
-    public stop() {
-        this.fileUpload.cancel();
+    /**
+     * cancel / stop single upload
+     */
+    public stop(event?: MouseEvent) {
+        /**
+         * add delay from 0 before we cancel the event
+         * if we dont it could happen, the element is removed
+         * after fileUpload has been canceled and click event passes
+         * through.
+         */
+        timer(0).subscribe({
+            next: () &#x3D;&gt; this.fileUpload.cancel()
+        });
+    }
+
+    private handleEvent(event?: MouseEvent) {
+        if (event &amp;&amp; event instanceof MouseEvent) {
+            event.stopPropagation();
+        }
     }
 }
 </code></pre>

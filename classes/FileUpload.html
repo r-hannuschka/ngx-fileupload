@@ -67,7 +67,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>represents a single fileupload</p>
+                <p>represents a single file upload</p>
 
             </p>
 
@@ -145,7 +145,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:33</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:52</a></div>
                             </td>
                         </tr>
 
@@ -239,8 +239,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="82"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:82</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:101</a></div>
                 </td>
             </tr>
 
@@ -282,8 +282,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="105"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:105</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="124"
+                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:124</a></div>
                 </td>
             </tr>
 
@@ -325,14 +325,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="109"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:109</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:131</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>returns true if validators are set and upload not validated</p>
+</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
@@ -366,8 +368,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="69"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:69</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:88</a></div>
                 </td>
             </tr>
 
@@ -410,8 +412,8 @@ reset state, and reset errors</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="51"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:51</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:70</a></div>
                 </td>
             </tr>
 
@@ -456,7 +458,7 @@ if file is not queued, abort request on cancel</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:98</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:117</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -484,17 +486,36 @@ import { Subject, BehaviorSubject, Observable } from &quot;rxjs&quot;;
 import { takeUntil, filter } from &quot;rxjs/operators&quot;;
 import { UploadModel, UploadState} from &quot;../model/upload&quot;;
 
+/**
+ * Upload Options
+ */
 export interface UploadOptions {
+
+    /**
+     * url which should used to upload file
+     */
     url: string;
 
+    /**
+     * form data options
+     */
     formData?: {
+
+        /**
+         * if set to false, file will send through post body and not wrapped in
+         * FormData Object
+         */
         enabled: boolean;
+        /**
+         * only used if FormData is enabled, defines the name which should used
+         * in FormData
+         */
         name?: string;
     };
 }
 
 /**
- * represents a single fileupload
+ * represents a single file upload
  */
 export class FileUpload {
 
@@ -587,6 +608,9 @@ export class FileUpload {
         return this.upload.error;
     }
 
+    /**
+     * returns true if validators are set and upload not validated
+     */
     public isInvalid(): boolean {
         return this.upload.isValid &#x3D;&#x3D;&#x3D; false;
     }

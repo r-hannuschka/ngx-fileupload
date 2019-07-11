@@ -232,12 +232,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:69</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:72</a></div>
                             </td>
                         </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>sets template which should used to render file data</p>
+                        <div class="io-description"><p>set template which should be used for upload items, if nothing is passed
+it <a href="#template">defaultUploadItem</a> template will be used</p>
 </div>
                     </td>
                 </tr>
@@ -288,7 +289,7 @@
                         </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>upload state has been changed</p>
+                        <div class="io-description"><p>emit event if upload state has been changed</p>
 </div>
                     </td>
                 </tr>
@@ -408,7 +409,7 @@ so we dont affect anything other</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>item template which should used to render upload data</p>
+                        <div class="io-description"><p>item template which should rendered to display upload data</p>
 </div>
                     </td>
                 </tr>
@@ -495,12 +496,13 @@ so we dont affect anything other</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:69</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:72</a></div>
                                 </td>
                             </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>sets template which should used to render file data</p>
+                                <div class="io-description"><p>set template which should be used for upload items, if nothing is passed
+it <a href="#template">defaultUploadItem</a> template will be used</p>
 </div>
 
                                 <div class="io-description">
@@ -561,12 +563,12 @@ export interface FileUploadItemContext {
 export class NgxFileUploadItemComponent implements OnInit {
 
     /**
-     * item template which should used to render upload data
+     * item template which should rendered to display upload data
      */
     public itemTpl: TemplateRef&lt;FileUploadItemContext&gt;;
 
     /**
-     * upload state has been changed
+     * emit event if upload state has been changed
      */
     @Output()
     public changed: EventEmitter&lt;UploadModel&gt; &#x3D; new EventEmitter();
@@ -600,10 +602,13 @@ export class NgxFileUploadItemComponent implements OnInit {
     @HostListener(&quot;click&quot;, [&quot;$event&quot;])
     public onItemClick(event: MouseEvent) {
         event.stopPropagation();
+        event.preventDefault();
+        event.stopImmediatePropagation();
     }
 
     /**
-     * sets template which should used to render file data
+     * set template which should be used for upload items, if nothing is passed
+     * it [defaultUploadItem]{@link #template} template will be used
      */
     @ViewChild(&quot;defaultUploadItem&quot;, {static: true})
     @Input()
@@ -614,6 +619,9 @@ export class NgxFileUploadItemComponent implements OnInit {
     }
 
     /**
+     * register on upload change event to get current informations from upload
+     * and pass to template context to render them
+     *
      * @inheritdoc
      */
     ngOnInit(): void {
@@ -629,7 +637,7 @@ export class NgxFileUploadItemComponent implements OnInit {
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;ng-template #defaultUploadItem let-uploadData&#x3D;&quot;data&quot; let-control&#x3D;&quot;ctrl&quot;&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;ng-template #defaultUploadItem let-uploadData&#x3D;&quot;data&quot; let-uploadCtrl&#x3D;&quot;ctrl&quot;&gt;
 
     &lt;div class&#x3D;&quot;upload-item&quot;&gt;
         &lt;div class&#x3D;&quot;upload-item--header&quot;&gt;{{uploadData.name}}&lt;/div&gt;
@@ -652,18 +660,18 @@ export class NgxFileUploadItemComponent implements OnInit {
             &lt;div class&#x3D;&quot;upload-item--actions&quot;&gt;
 
                 &lt;!-- start upload action --&gt;
-                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--upload&quot; (click)&#x3D;&quot;control.start()&quot; *ngIf&#x3D;&quot;!uploadData.hasError&quot;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--upload&quot; (click)&#x3D;&quot;uploadCtrl.start()&quot; *ngIf&#x3D;&quot;!uploadData.hasError&quot;
                     [disabled]&#x3D;&quot;uploadData.state !&#x3D;&#x3D; &#x27;queued&#x27; || !uploadData.isValid&quot;&gt;
                     &lt;i class&#x3D;&quot;ngx-fileupload-icon--upload&quot;&gt;&lt;/i&gt;
                 &lt;/button&gt;
 
                 &lt;!-- retry upload action --&gt;
-                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--retry&quot; (click)&#x3D;&quot;control.retry()&quot; *ngIf&#x3D;&quot;uploadData.hasError&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--retry&quot; (click)&#x3D;&quot;uploadCtrl.retry()&quot; *ngIf&#x3D;&quot;uploadData.hasError&quot;&gt;
                     &lt;i class&#x3D;&quot;ngx-fileupload-icon--retry&quot;&gt;&lt;/i&gt;
                 &lt;/button&gt;
 
                 &lt;!-- only if running --&gt;
-                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--stop&quot; (click)&#x3D;&quot;control.stop()&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--stop&quot; (click)&#x3D;&quot;uploadCtrl.stop($event);&quot;&gt;
                     &lt;i class&#x3D;&quot;ngx-fileupload-icon--cancel&quot;&gt;&lt;/i&gt;
                 &lt;/button&gt;
 
@@ -838,7 +846,7 @@ export class NgxFileUploadItemComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><ng-template #defaultUploadItem let-uploadData="data" let-control="ctrl">    <div class="upload-item">        <div class="upload-item--header">{{uploadData.name}}</div>        <div class="upload-item--body">            <!-- upload state -->            <div class="upload-item--state">                <i [ngClass]="[\'ngx-fileupload-icon--\' + uploadData.state]"></i>            </div>            <!-- file progress: current state | progressbar -->            <div class="upload-item--progress">                <div class="progressbar">                    <span class="label-size">{{uploadData.size | bytes : 2}}</span>                    <div class="progressbar-inner" [ngStyle]="{width: uploadData.progress + \'%\'}"></div>                </div>            </div>            <!-- upload actions: cancel | retry -->            <div class="upload-item--actions">                <!-- start upload action -->                <button type="button" class="item-action--upload" (click)="control.start()" *ngIf="!uploadData.hasError"                    [disabled]="uploadData.state !== \'queued\' || !uploadData.isValid">                    <i class="ngx-fileupload-icon--upload"></i>                </button>                <!-- retry upload action -->                <button type="button" class="item-action--retry" (click)="control.retry()" *ngIf="uploadData.hasError">                    <i class="ngx-fileupload-icon--retry"></i>                </button>                <!-- only if running -->                <button type="button" class="item-action--stop" (click)="control.stop()">                    <i class="ngx-fileupload-icon--cancel"></i>                </button>            </div>        </div>        <div class="upload-item--notification" [ngClass]="{\'error\': uploadData.hasError || !uploadData.isValid}">            {{uploadData.message}}        </div>    </div></ng-template><!-- display item template at this point --><ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context"></ng-container></div>'
+        var COMPONENT_TEMPLATE = '<div><ng-template #defaultUploadItem let-uploadData="data" let-uploadCtrl="ctrl">    <div class="upload-item">        <div class="upload-item--header">{{uploadData.name}}</div>        <div class="upload-item--body">            <!-- upload state -->            <div class="upload-item--state">                <i [ngClass]="[\'ngx-fileupload-icon--\' + uploadData.state]"></i>            </div>            <!-- file progress: current state | progressbar -->            <div class="upload-item--progress">                <div class="progressbar">                    <span class="label-size">{{uploadData.size | bytes : 2}}</span>                    <div class="progressbar-inner" [ngStyle]="{width: uploadData.progress + \'%\'}"></div>                </div>            </div>            <!-- upload actions: cancel | retry -->            <div class="upload-item--actions">                <!-- start upload action -->                <button type="button" class="item-action--upload" (click)="uploadCtrl.start()" *ngIf="!uploadData.hasError"                    [disabled]="uploadData.state !== \'queued\' || !uploadData.isValid">                    <i class="ngx-fileupload-icon--upload"></i>                </button>                <!-- retry upload action -->                <button type="button" class="item-action--retry" (click)="uploadCtrl.retry()" *ngIf="uploadData.hasError">                    <i class="ngx-fileupload-icon--retry"></i>                </button>                <!-- only if running -->                <button type="button" class="item-action--stop" (click)="uploadCtrl.stop($event);">                    <i class="ngx-fileupload-icon--cancel"></i>                </button>            </div>        </div>        <div class="upload-item--notification" [ngClass]="{\'error\': uploadData.hasError || !uploadData.isValid}">            {{uploadData.message}}        </div>    </div></ng-template><!-- display item template at this point --><ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context"></ng-container></div>'
     var COMPONENTS = [{'name': 'NgxFileUploadComponent', 'selector': 'ngx-fileupload'},{'name': 'NgxFileUploadItemComponent', 'selector': 'ngx-fileupload-item'}];
     var DIRECTIVES = [{'name': 'NgxFileUploadDirective', 'selector': '[ngxFileUpload]'}];
     var ACTUAL_COMPONENT = {'name': 'NgxFileUploadItemComponent'};

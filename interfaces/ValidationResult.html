@@ -64,6 +64,13 @@
             <code>lib/ngx-fileupload/services/validation.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>validation result from ngx fileupload validator</p>
+
+            </p>
 
 
         <section>
@@ -122,6 +129,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>if file has not validated, this error message will be shown</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -151,6 +164,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>set to true if upload has been validated</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -160,16 +179,36 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { InjectionToken } from &quot;@angular/core&quot;;
 
-export const NGX_FILEUPLOAD_VALIDATOR &#x3D; new InjectionToken(&quot;Upload validation Service&quot;);
-
+/**
+ * validation result from ngx fileupload validator
+ */
 export interface ValidationResult {
+    /**
+     * set to true if upload has been validated
+     */
     valid: boolean;
+    /**
+     * if file has not validated, this error message will be shown
+     */
     error: string;
 }
 
+/**
+ * interface should implemented from custom validators for ngx-fileupload
+ * provide under NGX_FILEUPLOAD_VALIDATOR token
+ */
 export interface NgxFileUploadValidator {
+
+    /**
+     * called to validate file
+     */
     validate(file: File): ValidationResult;
 }
+
+/**
+ * InjectionToken for ngx file upload validation classes
+ */
+export const NGX_FILEUPLOAD_VALIDATOR &#x3D; new InjectionToken(&quot;Upload validation Service&quot;);
 </code></pre>
     </div>
 </div>

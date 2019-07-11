@@ -64,6 +64,13 @@
             <code>lib/ngx-fileupload/services/file-upload.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Upload Options</p>
+
+            </p>
 
 
         <section>
@@ -128,6 +135,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>form data options</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -157,6 +170,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>url which should used to upload file</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -169,17 +188,36 @@ import { Subject, BehaviorSubject, Observable } from &quot;rxjs&quot;;
 import { takeUntil, filter } from &quot;rxjs/operators&quot;;
 import { UploadModel, UploadState} from &quot;../model/upload&quot;;
 
+/**
+ * Upload Options
+ */
 export interface UploadOptions {
+
+    /**
+     * url which should used to upload file
+     */
     url: string;
 
+    /**
+     * form data options
+     */
     formData?: {
+
+        /**
+         * if set to false, file will send through post body and not wrapped in
+         * FormData Object
+         */
         enabled: boolean;
+        /**
+         * only used if FormData is enabled, defines the name which should used
+         * in FormData
+         */
         name?: string;
     };
 }
 
 /**
- * represents a single fileupload
+ * represents a single file upload
  */
 export class FileUpload {
 
@@ -272,6 +310,9 @@ export class FileUpload {
         return this.upload.error;
     }
 
+    /**
+     * returns true if validators are set and upload not validated
+     */
     public isInvalid(): boolean {
         return this.upload.isValid &#x3D;&#x3D;&#x3D; false;
     }

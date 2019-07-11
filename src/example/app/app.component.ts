@@ -12,7 +12,6 @@ export class AppComponent {
   public disableAnimations = false;
 
   constructor() {
-    console.log(environment);
     this.disableAnimations = environment.disableAnimations || false;
   }
 }

@@ -40,7 +40,7 @@ import { FileUploadItemContext } from "./ngx-fileupload-item.component";
                 state("void", style({
                     opacity: 0
                 })),
-                transition("void <=> *", animate(5000)),
+                transition("void <=> *", animate(250)),
             ]
         ),
     ],
@@ -114,12 +114,12 @@ export class NgxFileUploadComponent {
      * remove upload from list but wait for 1 sec before it will be removed
      */
     private removeUpload(upload: FileUpload) {
-        of(upload).pipe(delay(500))
-        .subscribe({
-            next: () => {
-                const idx = this.uploads.indexOf(upload);
-                this.uploads.splice(idx, 1);
-            }
-        });
+        of(upload).pipe(delay(1000))
+            .subscribe({
+                next: () => {
+                    const idx = this.uploads.indexOf(upload);
+                    this.uploads.splice(idx, 1);
+                }
+            });
     }
 }

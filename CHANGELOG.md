@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.3
+
+### dependencies
+
+- angular 8.1.1
+- angularcli 8.1.1
+- karma 4.2.0
+- karma-chrome-launcher 3.0.0
+- compdoc 1.1.10
+
 ## 1.0.2
 
 ### bugfixes

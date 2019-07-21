@@ -35,7 +35,7 @@
     "@compodoc/compodoc": "1.1.10",
     "@types/jasmine": "3.3.13",
     "@types/jasminewd2": "2.0.6",
-    "@types/node": "8.10.50",
+    "@types/node": "8.10.51",
     "codelyzer": "5.1.0",
     "express": "4.17.1",
     "express-fileupload": "1.1.5",

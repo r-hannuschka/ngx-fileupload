@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.4
+
+### dependencies
+
+- update angular to 8.1.2
+- update angularcli to 8.1.2
+
 ## 1.0.3
 
 ### dependencies

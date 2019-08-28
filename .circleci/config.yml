@@ -7,7 +7,7 @@ orbs:
 defaults: &defaults
   working_directory: ~/ngx-fileupload
   docker:
-      - image: circleci/node:10.16.0-browsers
+      - image: circleci/node:10.16.3-browsers
 
 aliases:
   - &filter_master

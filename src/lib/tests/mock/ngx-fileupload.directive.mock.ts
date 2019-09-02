@@ -1,5 +1,6 @@
 import { Directive, Output, EventEmitter, Input } from "@angular/core";
 import { FileUpload } from "lib/public-api";
+import { Validator } from 'lib/ngx-fileupload/validation/validation';
 
 @Directive({
     selector: "[ngxFileUpload]",
@@ -35,6 +36,9 @@ export class NgxFileUploadMockDirective {
      */
     @Input()
     public useFormData = true;
+
+    @Input()
+    public validator = null;
 
     /**
      * form data field name with which form data will be send

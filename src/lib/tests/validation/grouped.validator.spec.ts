@@ -18,10 +18,7 @@ describe("GroupedValidation", () => {
 
     it ("it should validate with multiple groups", () => {
         group.add(
-            ValidationBuilder.or([
-                Validators.invalid(),
-                Validators.valid()
-            ]),
+            ValidationBuilder.or( Validators.invalid(), Validators.valid()),
             Validators.valid()
         );
         expect(group.validate(uploadFile)).toBeNull();
@@ -30,14 +27,8 @@ describe("GroupedValidation", () => {
     it ("it should validate one of both groups", () => {
         const orGroup = ValidationBuilder.or();
         orGroup.add(
-            ValidationBuilder.and([
-                Validators.invalid(),
-                Validators.valid()
-            ]),
-            ValidationBuilder.and([
-                Validators.valid(),
-                Validators.valid()
-            ]),
+            ValidationBuilder.and(Validators.invalid(), Validators.valid()),
+            ValidationBuilder.and(Validators.valid(), Validators.valid()),
         );
         expect(orGroup.validate(uploadFile)).toBeNull();
     });
@@ -45,14 +36,8 @@ describe("GroupedValidation", () => {
     it ("it should not valid since both groups are invalid", () => {
         const orGroup = ValidationBuilder.or();
         orGroup.add(
-            ValidationBuilder.and([
-                Validators.invalid(),
-                Validators.valid()
-            ]),
-            ValidationBuilder.and([
-                Validators.invalid(),
-                Validators.valid()
-            ]),
+            ValidationBuilder.and(Validators.invalid(), Validators.valid()),
+            ValidationBuilder.and(Validators.invalid(), Validators.valid()),
         );
         expect(orGroup.validate(uploadFile)).not.toBeNull();
     });

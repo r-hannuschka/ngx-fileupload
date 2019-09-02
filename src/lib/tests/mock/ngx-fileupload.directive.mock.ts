@@ -1,6 +1,5 @@
 import { Directive, Output, EventEmitter, Input } from "@angular/core";
 import { FileUpload } from "lib/public-api";
-import { Validator } from 'lib/ngx-fileupload/validation/validation';
 
 @Directive({
     selector: "[ngxFileUpload]",

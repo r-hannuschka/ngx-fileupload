@@ -1,16 +1,12 @@
-import { Validator } from "./validation";
+import { Validator, ValidationErrors } from "./validation";
 
 export abstract class GroupedValidator implements Validator {
 
-    protected validators: Validator[] = [];
+    public constructor(
+        protected validators: Validator[] = []
+    ) {}
 
-    public constructor(validators?: Validator[]) {
-        if (validators !== undefined) {
-            this.validators = validators;
-        }
-    }
-
-    public abstract validate(file: File): any;
+    public abstract validate(file: File): ValidationErrors | null;
 
     public add(...validator: Validator[]) {
         this.validators = this.validators.concat(validator);

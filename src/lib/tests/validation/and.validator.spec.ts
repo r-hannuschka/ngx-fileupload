@@ -17,14 +17,12 @@ describe("GroupedValidation: And", () => {
     it ("it should validate", () => {
         validationGroup.add(Validators.valid());
         validationGroup.add(Validators.valid());
-
-        expect(validationGroup.validate(uploadFile)).toBeTruthy();
+        expect(validationGroup.validate(uploadFile)).toBeNull();
     });
 
     it ("it should not validate", () => {
         validationGroup.add(Validators.valid());
         validationGroup.add(Validators.invalid());
-
-        expect(validationGroup.validate(uploadFile)).toBeFalsy();
+        expect(validationGroup.validate(uploadFile)).not.toBeNull();
     });
 });

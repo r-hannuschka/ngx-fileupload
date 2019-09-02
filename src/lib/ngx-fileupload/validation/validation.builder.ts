@@ -3,7 +3,7 @@ import { GroupedValidator } from "./grouped.validator";
 import { AndValidator } from "./and.validator";
 import { OrValidator } from "./or.validator";
 
-export class ValidationGroup {
+export class ValidationBuilder {
 
     public static and(validators: Validator[] = []): GroupedValidator {
         return new AndValidator(validators);

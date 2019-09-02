@@ -1,10 +1,23 @@
 import { GroupedValidator } from "./grouped.validator";
-import { Validator } from "./validation";
+import { ValidationErrors } from "./validation";
 
 export class OrValidator extends GroupedValidator {
 
-    /** if something not validate i want the fucking message */
-    public validate(file: File) {
-        return this.validators.some((validator: Validator) => validator.validate(file));
+    public validate(file: File): ValidationErrors | null {
+
+        let validationResult: ValidationErrors | null = {};
+        for (const validator of this.validators) {
+            const result = validator.validate(file);
+
+            /** if null at least one has validated and thats enough */
+            if (result === null) {
+                validationResult = null;
+                break;
+            }
+
+            /** map all data to validation result */
+            Object.assign(validationResult, result);
+        }
+        return validationResult;
     }
 }

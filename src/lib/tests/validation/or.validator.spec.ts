@@ -16,11 +16,11 @@ describe("GroupedValidation: Or", () => {
 
     it ("it should validate", () => {
         orValidationGroup.add(Validators.invalid(), Validators.valid());
-        expect(orValidationGroup.validate(uploadFile)).toBeTruthy();
+        expect(orValidationGroup.validate(uploadFile)).toBeNull();
     });
 
     it ("it should not validate", () => {
         orValidationGroup.add(Validators.invalid(), Validators.invalid());
-        expect(orValidationGroup.validate(uploadFile)).toBeFalsy();
+        expect(orValidationGroup.validate(uploadFile)).not.toBeNull();
     });
 });

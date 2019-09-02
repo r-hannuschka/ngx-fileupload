@@ -6,9 +6,6 @@ import { By } from "@angular/platform-browser";
 
 import {
     NgxFileUploadDirective,
-    NgxFileUploadValidator,
-    ValidationResult,
-    NGX_FILEUPLOAD_VALIDATOR,
     FileUpload
 } from "lib/public-api";
 
@@ -25,14 +22,6 @@ class TestItemComponent {
 
     public onUploadsAdd(uploads: FileUpload[]) {
         this.uploads = uploads;
-    }
-}
-
-class NameValidator implements NgxFileUploadValidator {
-
-    validate(file: File): ValidationResult {
-        const valid = file.name !== "upload_invalid.txt";
-        return { valid, error: !valid ? "invalid file uploaded" : ""};
     }
 }
 
@@ -57,11 +46,7 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
             declarations: [
                 TestItemComponent,
                 NgxFileUploadDirective
-            ],
-            providers: [{
-                provide: NGX_FILEUPLOAD_VALIDATOR,
-                useClass: NameValidator
-            }]
+            ]
         }).compileComponents();
     }));
 
@@ -71,22 +56,6 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
     });
 
     it("should set file as invalid and remove it from list on clean all", () => {
-        fixture.detectChanges();
-
-        // drop file to simulate create an upload
-        const dropZone = fixture.debugElement.query(By.directive(NgxFileUploadDirective)).nativeElement;
-        dragDropFile(dropZone, [validFile, invalidFile]);
-
-        // get uploads
-        expect(testComponent.uploads[1].isInvalid()).toBeTruthy();
-
-        const cancelValid   = spyOn(testComponent.uploads[0], "cancel").and.callFake(() => {});
-        const cancelInvalid = spyOn(testComponent.uploads[1], "cancel").and.callFake(() => {});
-        const directive     = fixture.debugElement.query(By.directive(NgxFileUploadDirective)).injector.get(NgxFileUploadDirective);
-        directive.cleanAll();
-
-        expect(cancelInvalid).toHaveBeenCalled();
-        expect(cancelValid).not.toHaveBeenCalled();
     });
 });
 

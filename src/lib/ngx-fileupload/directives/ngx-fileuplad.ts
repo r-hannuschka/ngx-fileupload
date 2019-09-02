@@ -1,10 +1,9 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject, Renderer2, ElementRef } from "@angular/core";
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2 } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { UploadModel, UploadState } from "../model/upload";
 import { FileUpload } from "../services/file-upload";
-import { NGX_FILEUPLOAD_VALIDATOR, NgxFileUploadValidator } from "../services/validation";
 
 /**
  * directive to add uploads with drag / drop
@@ -65,11 +64,6 @@ export class NgxFileUploadDirective implements OnDestroy {
     private uploads: FileUpload[] = [];
 
     /**
-     * injected validators
-     */
-    private validators: NgxFileUploadValidator[] = [];
-
-    /**
      * input file field to trigger file window
      */
     private fileSelect: HTMLInputElement;
@@ -80,11 +74,7 @@ export class NgxFileUploadDirective implements OnDestroy {
     constructor(
         private httpClient: HttpClient,
         private renderer: Renderer2,
-        @Optional() @Inject(NGX_FILEUPLOAD_VALIDATOR) validation: NgxFileUploadValidator | NgxFileUploadValidator[]
     ) {
-        if (validation) {
-            this.validators = Array.isArray(validation) ? validation : [validation];
-        }
         this.add = new EventEmitter();
         this.fileSelect = this.createFieldInputField();
     }
@@ -212,19 +202,6 @@ export class NgxFileUploadDirective implements OnDestroy {
      * fill could not uploaded anymore
      */
     private preValidateUpload(upload: UploadModel) {
-
-        for (let i = 0, ln = this.validators.length; i < ln; i++) {
-            const validator = this.validators[i];
-            const result = validator.validate(upload.file);
-
-            upload.isValid = result.valid;
-            upload.message = !result.valid ? result.error : "";
-
-            if (!upload.isValid) {
-                upload.state   = UploadState.INVALID;
-                break;
-            }
-        }
     }
 
     /**

@@ -1,8 +1,8 @@
-import { NgxFileUploadValidator, ValidationResult } from "lib/public-api";
+import { Validator } from "lib/ngx-fileupload/validation/validation";
 
-export class OnlyZipValidator implements NgxFileUploadValidator {
+export class OnlyZipValidator implements Validator {
 
-    public validate(file: File): ValidationResult {
+    public validate(file: File) {
 
         const validMime = [
             "application/zip",

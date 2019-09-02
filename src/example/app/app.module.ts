@@ -2,15 +2,15 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 
 import { AppComponent } from "./app.component";
-import { AppUploadModule } from "./app-upload.module";
+import { NgxFileUploadModule } from "lib/public-api";
 
 @NgModule( {
     declarations: [
         AppComponent
     ],
     imports: [
-        AppUploadModule,
-        BrowserModule
+        BrowserModule,
+        NgxFileUploadModule
     ],
     bootstrap: [AppComponent],
 } )

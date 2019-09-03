@@ -69,7 +69,7 @@ export class FileUpload {
      */
     public start() {
         /** only start upload if state is not queued and is valid */
-        if (this.upload.state === UploadState.QUEUED && this.upload.isValid) {
+        if (this.upload.state === UploadState.QUEUED) {
             this.uploadFile().pipe(
                 takeUntil(this.cancel$),
                 filter(() => this.upload.state !== UploadState.CANCELED)
@@ -129,7 +129,7 @@ export class FileUpload {
      * returns true if validators are set and upload not validated
      */
     public isInvalid(): boolean {
-        return this.upload.isValid === false;
+        return this.upload.state === UploadState.INVALID;
     }
 
     /**

@@ -22,7 +22,7 @@
 
                 <!-- start upload action -->
                 <button type="button" class="item-action--upload" (click)="uploadCtrl.start()" *ngIf="!uploadData.hasError"
-                    [disabled]="uploadData.state !== 'queued' || !uploadData.isValid">
+                    [disabled]="uploadData.state !== 'queued' || uploadData.validation.errors">
                     <i class="ngx-fileupload-icon--upload"></i>
                 </button>
 
@@ -39,8 +39,16 @@
             </div>
         </div>
 
-        <div class="upload-item--notification" [ngClass]="{'error': uploadData.hasError || !uploadData.isValid}">
+        <div class="upload-item--notification error" *ngIf="uploadData.hasError || uploadData.validation.errors">
+            <!-- this is only the upload error message -->
             {{uploadData.message}}
+
+            <!-- validation errors -->
+            <ul *ngIf="uploadData.validation.errors">
+                <li *ngFor="let error of uploadData.validation.errors | keyvalue : returnZero">
+                    {{error.value}}
+                </li>
+            </ul>
         </div>
     </div>
 </ng-template>

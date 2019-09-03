@@ -89,4 +89,11 @@ export class NgxFileUploadItemComponent implements OnInit {
             }
         });
     }
+
+    /**
+     * just to disable sort for keyvalue pipe
+     */
+    public returnZero() {
+        return 0;
+    }
 }

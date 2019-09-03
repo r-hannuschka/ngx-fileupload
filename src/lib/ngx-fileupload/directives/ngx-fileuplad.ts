@@ -211,9 +211,10 @@ export class NgxFileUploadDirective implements OnDestroy {
     private preValidateUpload(upload: UploadModel) {
         const result = this.validator.validate(upload.file);
         if (result !== null) {
-            upload.isValid = false;
             upload.state = UploadState.INVALID;
         }
+
+        upload.validationErrors = result;
     }
 
     /**

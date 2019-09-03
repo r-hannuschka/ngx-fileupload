@@ -1,3 +1,5 @@
+import { ValidationErrors } from "../validation/validation";
+
 export enum UploadState {
     QUEUED    = "queued",
     START     = "start",
@@ -16,7 +18,9 @@ export interface UploadData {
     progress: number;
     hasError: boolean;
     isSuccess: boolean;
-    isValid: boolean;
+    validation: {
+        errors: ValidationErrors | null;
+    };
     message: string;
 }
 
@@ -47,6 +51,8 @@ export class UploadModel {
     private uploadResponse: Response = null;
 
     private uploadValid = true;
+
+    private uploadValidationErrors = null;
 
     private uploadMessage = "";
 
@@ -155,15 +161,12 @@ export class UploadModel {
         return this.uploadSuccess;
     }
 
-    public set isValid(valid: boolean) {
-        this.uploadValid = valid;
+    public set validationErrors(errors: ValidationErrors | null) {
+        this.uploadValidationErrors = errors;
     }
 
-    /**
-     * returns true if upload is valid
-     */
-    public get isValid(): boolean {
-        return this.uploadValid;
+    public get validationErrors(): ValidationErrors | null {
+        return this.uploadValidationErrors;
     }
 
     public set message(msg: string) {
@@ -192,7 +195,9 @@ export class UploadModel {
             progress  : this.progress,
             hasError  : this.error,
             isSuccess : this.success,
-            isValid   : this.isValid,
+            validation: {
+                errors: this.validationErrors,
+            },
             message   : this.message
         };
     }

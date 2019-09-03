@@ -1,4 +1,4 @@
-import { Validators } from "./validator.factory";
+import { ValidatorMockFactory } from "../mock/validator.factory";
 import { AndValidator } from "lib/ngx-fileupload/validation/and.validator";
 
 describe("GroupedValidation: And", () => {
@@ -15,14 +15,42 @@ describe("GroupedValidation: And", () => {
     });
 
     it ("it should validate", () => {
-        validationGroup.add(Validators.valid());
-        validationGroup.add(Validators.valid());
+        validationGroup.add(ValidatorMockFactory.valid());
+        validationGroup.add(ValidatorMockFactory.valid());
         expect(validationGroup.validate(uploadFile)).toBeNull();
     });
 
     it ("it should not validate", () => {
-        validationGroup.add(Validators.valid());
-        validationGroup.add(Validators.invalid());
+        validationGroup.add(ValidatorMockFactory.valid());
+        validationGroup.add(ValidatorMockFactory.invalid());
         expect(validationGroup.validate(uploadFile)).not.toBeNull();
+    });
+
+    it ("should contain 1 error", () => {
+
+        validationGroup.add(
+            ValidatorMockFactory.valid(),
+            ValidatorMockFactory.invalidFileSize()
+        );
+
+        const validationResult = validationGroup.validate(uploadFile);
+        const validationKeys   = Object.keys(validationResult);
+
+        expect(validationKeys.length).toBe(1);
+        expect(validationKeys).toEqual(["invalidFileSize"]);
+    });
+
+    it ("should contain multiple errors", () => {
+
+        validationGroup.add(
+            ValidatorMockFactory.invalid(),
+            ValidatorMockFactory.invalidFileSize()
+        );
+
+        const validationResult = validationGroup.validate(uploadFile);
+        const validationKeys   = Object.keys(validationResult);
+
+        expect(validationKeys.length).toBe(2);
+        expect(validationKeys).toEqual(["invalid", "invalidFileSize"]);
     });
 });

@@ -2,16 +2,18 @@ import { ComponentFixture, async, TestBed } from "@angular/core/testing";
 import { Component, } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { By } from "@angular/platform-browser";
 
 import {
     NgxFileUploadDirective,
     FileUpload
 } from "lib/public-api";
+import { ValidatorMockFactory } from "../mock/validator.factory";
+import { Validator } from "lib/ngx-fileupload/validation/validation";
+import { By } from "@angular/platform-browser";
 
 @Component({
     template: `
-        <div class="fileupload" [ngxFileUpload]="url" (add)="onUploadsAdd($event)">
+        <div class="fileupload" [ngxFileUpload]="uploadUrl" [validator]="validator" (add)="onUploadsAdd($event)">
     `
 })
 class TestItemComponent {
@@ -19,6 +21,8 @@ class TestItemComponent {
     public uploads: FileUpload[];
 
     public uploadUrl = "http://localhost/files/upload";
+
+    public validator: Validator;
 
     public onUploadsAdd(uploads: FileUpload[]) {
         this.uploads = uploads;
@@ -33,8 +37,8 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
     let invalidFile: File;
 
     beforeAll(() => {
-        validFile   = new File(["hello world"], "upload_valid.txt", { type: "text/plain"});
-        invalidFile = new File(["hello world, this is to much for me"], "upload_invalid.txt", { type: "text/plain"});
+        validFile   = new File(["hello world"], "valid", { type: "text/plain"});
+        invalidFile = new File(["hello world, this is to much for me"], "invalid", { type: "text/plain"});
     });
 
     beforeEach(async(() => {
@@ -56,6 +60,34 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
     });
 
     it("should set file as invalid and remove it from list on clean all", () => {
+        testComponent.validator = ValidatorMockFactory.invalid();
+        fixture.detectChanges();
+
+        // drop file to simulate create an upload
+        const dropZone = fixture.debugElement.query(By.directive(NgxFileUploadDirective)).nativeElement;
+        dragDropFile(dropZone, [validFile]);
+
+        const cancelValid   = spyOn(testComponent.uploads[0], "cancel").and.callFake(() => {});
+        const directive     = fixture.debugElement.query(By.directive(NgxFileUploadDirective)).injector.get(NgxFileUploadDirective);
+        directive.cleanAll();
+        expect(cancelValid).toHaveBeenCalled();
+    });
+
+    it("should not remove valid files on cancel all", () => {
+
+        testComponent.validator = ValidatorMockFactory.byName("valid");
+        fixture.detectChanges();
+
+        // drop file to simulate create an upload
+        const dropZone = fixture.debugElement.query(By.directive(NgxFileUploadDirective)).nativeElement;
+        dragDropFile(dropZone, [validFile, invalidFile]);
+
+        const cancelValid   = spyOn(testComponent.uploads[0], "cancel").and.callFake(() => {});
+
+        const directive     = fixture.debugElement.query(By.directive(NgxFileUploadDirective)).injector.get(NgxFileUploadDirective);
+        directive.cleanAll();
+
+        expect(cancelValid).not.toHaveBeenCalled();
     });
 });
 

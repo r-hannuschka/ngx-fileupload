@@ -57,6 +57,27 @@ You can create Validators in 2 ways:
 
 Both have to return like Angular Validators [ValidationErrors](https://angular.io/api/forms/ValidationErrors) if upload is invalid or NULL if valid. We have just create a own Interface for ValidationErrors since we dont want include @angular/forms module just for a type.
 
+> If you want to use default [Upload Item template](../src/lib/ngx-fileupload/components/ngx-fileupload-item.component.html) ValidationErrors should
+> have following pattern
+>
+> ```json
+> {
+>    VALIDATOR_NAME: ERROR_MESSAGE
+> }
+> ```
+>
+> @example
+>
+> ```ts
+> export function invalid(file: File): ValidationErrors | null {
+>    return {
+>       invalid: "This file seems to be invalid"
+>    }
+> }
+> ```
+>
+> otherwise if u need to use an other ValidationErrors object u have to implement your own upload item component.
+
 @example validation function
 
 ```ts

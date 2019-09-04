@@ -1,4 +1,4 @@
-import { Validator, ValidationErrors } from "lib/ngx-fileupload/validation/validation";
+import { Validator, ValidationErrors, ValidationFn } from "lib/ngx-fileupload/validation/validation";
 
 class InvalidValidation implements Validator {
     validate(file: File): ValidationErrors | null {
@@ -74,5 +74,19 @@ export class ValidatorMockFactory {
 
     public static invalidFileSize(): Validator {
         return new InvalidFileSizeValidator();
+    }
+
+    public static validValidationFn(): ValidationFn {
+        return (file: File) => {
+            return null;
+        };
+    }
+
+    public static invalidValidationFn(): ValidationFn {
+        return (file: File) => {
+            return {
+                invalidValidationFn: "invalid validation function called"
+            };
+        };
     }
 }

@@ -1,47 +1,62 @@
 
 import { ValidatorMockFactory } from "../mock/validator.factory";
-import { ValidationBuilder } from "lib/ngx-fileupload/validation/validation.builder";
 import { GroupedValidator } from "lib/ngx-fileupload/validation/grouped.validator";
+import { ValidationErrors } from "lib/ngx-fileupload/validation/validation";
+
+class ValidatorGroupMock extends GroupedValidator {
+
+    public getValidators() {
+        return this.validators;
+    }
+
+    public validate(file: File ): ValidationErrors {
+        return this.execValidator(this.validators[0], file);
+    }
+}
 
 describe("GroupedValidation", () => {
 
     const uploadFile = new File(["upload testing"], "upload.txt", { type: "text/plain"});
-    let group: GroupedValidator;
+    const validator1 = ValidatorMockFactory.invalid();
+    const validator2 = ValidatorMockFactory.valid();
+    const validator3 = ValidatorMockFactory.validValidationFn();
 
-    beforeAll(() => {
-        group = ValidationBuilder.and();
-    });
+    let group: ValidatorGroupMock;
 
     beforeEach(() => {
+        group = new ValidatorGroupMock([validator1]);
+    });
+
+    it ("it should taken 1 validator with constructor", () => {
+        expect(group.getValidators()).toContain(validator1);
+    });
+
+    it ("it should add more validators", () => {
+        group.add(validator2, validator3);
+        expect(group.getValidators()).toEqual([validator1, validator2, validator3]);
+    });
+
+    it ("should clean all validators", () => {
         group.clean();
+        expect(group.getValidators().length).toBe(0);
     });
 
-    it ("it should validate with multiple groups", () => {
-        group.add(
-            ValidationBuilder.or(ValidatorMockFactory.invalid(), ValidatorMockFactory.valid()),
-            ValidatorMockFactory.valid()
-        );
-        expect(group.validate(uploadFile)).toBeNull();
-    });
+    describe("test validation", () => {
 
-    it ("it should validate one of both groups", () => {
-        const orGroup = ValidationBuilder.or();
-        orGroup.add(
-            ValidationBuilder.and(ValidatorMockFactory.invalid(), ValidatorMockFactory.valid()),
-            ValidationBuilder.and(ValidatorMockFactory.valid(), ValidatorMockFactory.valid()),
-        );
-        expect(orGroup.validate(uploadFile)).toBeNull();
-    });
+        beforeEach(() => {
+            group.clean();
+        });
 
-    it ("it should not valid since both groups are invalid", () => {
-        const orGroup = ValidationBuilder.or();
-        orGroup.add(
-            ValidationBuilder.and(ValidatorMockFactory.invalid(), ValidatorMockFactory.valid()),
-            ValidationBuilder.and(ValidatorMockFactory.invalid(), ValidatorMockFactory.valid()),
-        );
-        expect(orGroup.validate(uploadFile)).not.toBeNull();
-    });
+        it("should validate with validation function", () => {
+            group.add(validator3);
+            const result = group.validate(uploadFile);
+            expect(result).toBe(null);
+        });
 
-    it ("should contain error message", () => {
+        it("should validate with validation class", () => {
+            group.add(validator2);
+            const result = group.validate(uploadFile);
+            expect(result).toBe(null);
+        });
     });
 });

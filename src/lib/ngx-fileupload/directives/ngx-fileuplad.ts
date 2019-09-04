@@ -4,7 +4,7 @@ import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { UploadModel, UploadState } from "../model/upload";
 import { FileUpload } from "../services/file-upload";
-import { Validator } from "../validation/validation";
+import { Validator, ValidationFn } from "../validation/validation";
 
 /**
  * directive to add uploads with drag / drop
@@ -55,7 +55,7 @@ export class NgxFileUploadDirective implements OnDestroy {
     public formDataName = "file";
 
     @Input()
-    public validator: Validator;
+    public validator: Validator | ValidationFn;
 
     /**
      * remove from subscribtions if component gets destroyed
@@ -209,11 +209,10 @@ export class NgxFileUploadDirective implements OnDestroy {
      * fill could not uploaded anymore
      */
     private preValidateUpload(upload: UploadModel) {
-        const result = this.validator.validate(upload.file);
+        const result = "validate" in this.validator ? this.validator.validate(upload.file) : this.validator(upload.file);
         if (result !== null) {
             upload.state = UploadState.INVALID;
         }
-
         upload.validationErrors = result;
     }
 

@@ -6,13 +6,13 @@ This is just a pre validation a file could uploaded or not, for real validation 
 
 ### implement
 
-use __fileupload component__ which is just a wrapper arround the file upload and provides a build in view for fileupload:
+use [Fileupload Component](src/lib/ngx-fileupload/components/ngx-fileupload.component.ts) which is just a wrapper arround the file upload and provides a build in view for fileupload:
 
 ```html
 <ngx-fileupload [url]="url" [validator]="validator"></ngx-fileupload>
 ```
 
-or use __fileupload directive__ if u want to use a customized view
+or use [Fileupload Directive](../src/lib/ngx-fileupload/directives/ngx-fileuplad.ts) if we handle a customized view
 
 ```html
 <div [ngxFileUpload]="url" [validator]="validator" >
@@ -43,19 +43,40 @@ export class AppComponent implements OnInit {
 
 Any file will added to upload queue he will pre validate if we handle a zip file. If this is not the case the Upload will marked as invalid and will not uploaded.
 
+---
+
 ### Validators
 
-All Validators have to implement Validator Interface, and implement a method validate which resolves 1 parameter the uploaded file and returns __NULL__ if valid or [ValidationErrors](https://angular.io/api/forms/ValidationErrors) if not.
-We have created a own interface for that which is pretty much the same as this from __@angular/forms__ but we dont want load a module only for a type.
+By default we dont have default validators since there are infinite possibilities how to validate a file, so you have to create your own validators.
+
+You can create Validators in 2 ways:
+
+1. Validation Functions for example [isImage Validator](../src/example/app/validators/image.validator.ts)
+
+2. Validator Class which have to implement [Validator Interface](../src/lib/ngx-fileupload/validation/validation.ts) for example [Zip File Validator](../src/example/app/validators/only-zip.validator.ts)
+
+Both have to return like Angular Validators [ValidationErrors](https://angular.io/api/forms/ValidationErrors) if upload is invalid or NULL if valid. We have just create a own Interface for ValidationErrors since we dont want include @angular/forms module just for a type.
+
+@example validation function
 
 ```ts
-import { Validator, ValidationErrors } from "@r-hannuschka/ngx-fileupload";
+import {ValidationErrors} from '@r-hannuschka/ngx-fileupload';
 
-export class MaxUploadSizeValidator implements Validator {
+export function customValidationFunction(file: File): ValidationErrors | null {
+    /** @todo validate file informations */
+}
+```
+
+@example validator class
+
+```ts
+import {Validator, ValidationErrors} from '@r-hannuschka/ngx-fileupload';
+
+/** validation class */
+export class CustomValidation implements Validator {
 
     public validate(file: File): ValidationErrors | null {
-        const valid = (file.size / (1024 * 1024)) < 1;
-        return !valid ? { maxFileSizeValidator: "max file size 1MByte" } : null;
+        /** @todo validate file informations */
     }
 }
 ```
@@ -64,94 +85,18 @@ export class MaxUploadSizeValidator implements Validator {
 
 ### Validation Groups
 
-Since version 2.0 validation could be grouped and combined together via [Compositor Design Pattern](https://en.wikipedia.org/wiki/Composite_pattern) . So you can create single validators or a validation group and put them together like you want. All Validation Errors inside a group will merged together if validation fails.
+Validation groups uses multiple validators and return one combined result for validation, there exists allready 2 validation groups
 
-To create Group import __Validation Builder__
+1. [OrValidator](../src/lib/ngx-fileupload/validation/or.validator.ts) validates if at least one Validator has validated
+2. [AndValidator](../src/lib/ngx-fileupload/validation/and.validator.ts) validates if all added Validators validate.
 
-```ts
-import { Validator, ValidationBuilder } from "@r-hannuschka/ngx-fileupload";
-
-class MyUploadComponent implements OnInit {
-
-    public ngOnInit() {
-        // create or group at least one validator have to validate
-        const orGroup  = ValidationBuilder.or(Validator1, Validator2);
-
-        // create and group all validators have to validate
-        const andGroup = ValidationBuilder.and(Validator3, Validator4);
-    }
-}
-```
-
-You can also add groups to other groups
-
-```ts
-import { Validator, ValidationBuilder } from "@r-hannuschka/ngx-fileupload";
-
-class MyUploadComponent implements OnInit {
-
-    ...
-
-    public ngOnInit() {
-        // Validator1 OR Validator2 has to validated so whole group will be valid
-        const innerOrGroup  = ValidationBuilder.or(Validator1, Validator2);
-
-        // only validtes if innerOrGroup AND Validator3 validate
-        const fullValidator = ValidationBuilder.and(innerOrGroup, Validator3);
-    }
-
-    ...
-}
-```
-
----
-
-### OR Validation Group
-
-Assume we want allow Image and Zip files to upload for this we have to create a validation group which validates with OR Operator, since a Image could not be a zip file and a zip file could not be a image.
+GroupedValidations are built in the __Compositor__ design pattern, so you can add a validation group to into another. For example max upload file size should be 1MByte and accepted file types are images and zip files.
 
 ```ts
 import { Component, OnInit } from "@angular/core";
 import { Validator, ValidationBuilder } from "@r-hannuschka/ngx-fileupload";
 import { ZipFileValidator } from "./validators/zip-file.validator";
-import { ImageFileValidator } from "./validators/image-file.validator";
-
-@Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
-})
-export class AppComponent implements OnInit {
-
-    public validator: Validator;
-
-    public ngOnInit() {
-        const fileTypeValidator = ValidationBuilder.or([
-            new ZipFileValidator(),
-            new ImageFileValidator()
-        ]);
-
-        // apply validation group
-        this.validator = fileTypeValidator;
-    }
-}
-```
-
----
-
-### AND Validation Group
-
-As Opposite u can take the AND Operator which validates only if all Validators inside this group validate.
-
-You can compose Validators and Groups together, a Validation Group can contain other Validation Groups. So we could create a group which validates for a zip OR image file and if this group validates it will combined together with an max size validator. If both validates then the file could uploaded.
-
-So for this example we want to allow Image and Zip Files (OR) but both should not greater than 1MByte in size.
-
-```ts
-import { Component, OnInit } from "@angular/core";
-import { Validator, ValidationBuilder } from "@r-hannuschka/ngx-fileupload";
-import { ZipFileValidator } from "./validators/zip-file.validator";
-import { ImageFileValidator } from "./validators/image-file.validator";
+import { isImageFile } from "./validators/image-file.validator";
 import { MaxSizeValidator } from "./validators/max-size.validator";
 
 @Component({
@@ -164,23 +109,46 @@ export class AppComponent implements OnInit {
     public validator: Validator;
 
     public ngOnInit() {
-
         /**
-         * zip file OR image file
+         * create a validator which validates if max
+         * file size is below 1Mbyte AND (file type is a zip OR image file)
          */
-        const fileTypeValidators = ValidationBuilder.or([
-            new ZipFileValidator(),
-            new ImageFileValidator()
-        ]);
-
-        /** max size validator */
-        const maxSizeValidator = new MaxSizeValidator();
-
-        /** bring it together */
         this.validator = ValidationBuilder.and([
-            fileTypeValidators,
-            maxSizeValidator
+            ValidationBuilder.or([
+                new ZipFileValidator(),
+                isImageFile
+            ]),
+            new MaxSizeValidator()
         ]);
+    }
+}
+```
+
+Create your own ValidationGroup you have to extend from [GroupedValidator](../src/lib/ngx-fileupload/validation/grouped.validator.ts) which just implements the Validator Interface.
+
+```ts
+import { GroupedValidator, ValidationErrors } from "@r-hannuschka/ngx-fileupload";
+
+export class CustomValidationGroup extends GroupedValidator {
+
+    public validate(file: File): ValidationErrors | null {
+
+        let validationResult: ValidationErrors | null = {};
+        for (const validator of this.validators) {
+            /**
+             * call helper method to execute the validator, if we handle a
+             * validator class we have to call validate method else call it directly
+             * since we handle a validation function
+             */
+            const result: ValidationErrors | null = this.execValidator(validator, file);
+
+            if (result === null) {
+                // @todo do something if the one validator validates
+            } else {
+                // @todo do something if validator not validate
+            }
+        }
+        return validationResult;
     }
 }
 ```

@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { environment } from "../environments/environment";
 import { MaxUploadSizeValidator } from "./validators/max-size.validator";
 import { OnlyZipValidator } from "./validators/only-zip.validator";
-import { ImageValidator } from "./validators/image.validator";
+import { isImage } from "./validators/image.validator";
 import { Validator, ValidationBuilder } from "lib/public-api";
 
 @Component({
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
     public ngOnInit() {
         this.validator = ValidationBuilder.and(
-            ValidationBuilder.or(new OnlyZipValidator(), new ImageValidator()),
+            ValidationBuilder.or(new OnlyZipValidator(), isImage),
             new MaxUploadSizeValidator()
         );
     }

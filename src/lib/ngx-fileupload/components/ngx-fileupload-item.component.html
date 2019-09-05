@@ -39,16 +39,17 @@
             </div>
         </div>
 
-        <div class="upload-item--notification error" *ngIf="uploadData.hasError || uploadData.validation.errors">
-            <!-- this is only the upload error message -->
-            {{uploadData.message}}
+        <div class="upload-item--footer">
 
-            <!-- validation errors -->
-            <ul *ngIf="uploadData.validation.errors">
-                <li *ngFor="let error of uploadData.validation.errors | keyvalue : returnZero">
+            <ul *ngIf="uploadData.validation.errors" class="upload-item--validation">
+                <li *ngFor="let error of uploadData.validation.errors | keyvalue : returnZero" class="message">
                     {{error.value}}
                 </li>
             </ul>
+
+            <!-- this is only the upload error message -->
+            {{uploadData.message}}
+            <!-- validation errors -->
         </div>
     </div>
 </ng-template>

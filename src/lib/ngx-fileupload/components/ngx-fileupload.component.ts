@@ -5,7 +5,7 @@ import { of } from "rxjs";
 import { UploadModel, UploadState } from "../model/upload";
 import { FileUpload } from "../services/file-upload";
 import { FileUploadItemContext } from "./ngx-fileupload-item.component";
-import { Validator } from "../validation/validation";
+import { Validator, ValidationFn } from "../validation/validation";
 
 /**
  * NgxFileUploadComponent is a wrapper contain NgxFileUploadDirective and NgxFileUploadComponent
@@ -78,7 +78,7 @@ export class NgxFileUploadComponent {
      * set validator
      */
     @Input()
-    public validator: Validator;
+    public validator: Validator | ValidationFn;
 
     /**
      * all uploads which has been added in [NgxFileUploadDirective]{@link ../directives/NgxFileUploadDirective.html#add}

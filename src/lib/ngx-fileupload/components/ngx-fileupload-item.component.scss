@@ -35,6 +35,7 @@ $ngx-fileupload-icons--font-path: '../assets/fonts' !default;
        Upload Item Body
     */
     .upload-item--body {
+        margin: .5rem 0 0;
         align-items: center;
         display: flex;
         flex-direction: row;
@@ -111,15 +112,26 @@ $ngx-fileupload-icons--font-path: '../assets/fonts' !default;
     /**
      * Upload Item Footer
      */
-    .upload-item--notification {
+    .upload-item--footer {
         font-size: .8rem;
-        color: map-get($map: $colors, $key: 'green');
-        margin-left: 2rem;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        // success color: map-get($map: $colors, $key: 'green');
+    }
 
-        &.error {
-            color: map-get($map: $colors, $key: 'red');
+    .upload-item--validation {
+        margin: .5rem 0 0;
+        padding: 0;
+        color: map-get($map: $colors, $key: 'red');
+        list-style-type: none;
+
+        .message {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: 1.1rem;
+
+            &:before {
+                content: 'ERROR:';
+                margin: 0 .2rem 0 0;
+            }
         }
     }
 }

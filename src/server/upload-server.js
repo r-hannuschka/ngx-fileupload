@@ -39,14 +39,17 @@ app.use(fileUpload());
 app.post("/upload", function(req, res) {
 
     if (Object.keys(req.files).length == 0) {
-      return res.status(400).send('No files were uploaded.');
     }
 
     const uploadedFile = req.files.file;
     logger.info(`File uploaded: ${uploadedFile.name}`)
 
+    res.status(400).send(['something went wrong', 'file to big']);
+
+    /*
     res.status(response.state);
     res.send(response.body);
+    */
 });
 
 app.listen(3000, () => process.stdout.write("Server started on port 3000\n"));

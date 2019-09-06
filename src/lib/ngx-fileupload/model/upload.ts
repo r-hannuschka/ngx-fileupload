@@ -24,9 +24,10 @@ export interface IDataNode {
     [key: string]: any;
 }
 
-interface Response {
-    code: number;
-    body: IDataNode;
+export interface UploadResponse {
+    success: boolean;
+    errors: string[];
+    body: any;
 }
 
 /**
@@ -44,9 +45,7 @@ export class UploadModel {
 
     private uploadSuccess = false;
 
-    private uploadResponse: Response = null;
-
-    private uploadValid = true;
+    private uploadResponse: UploadResponse = null;
 
     private uploadMessage = "";
 
@@ -88,14 +87,14 @@ export class UploadModel {
     /**
      * set response data if upload has been completed
      */
-    public set response(response: Response) {
+    public set response(response: UploadResponse) {
         this.uploadResponse = response;
     }
 
     /**
      * get response data if upload has been completed
      */
-    public get response(): Response {
+    public get response(): UploadResponse {
         return this.uploadResponse;
     }
 

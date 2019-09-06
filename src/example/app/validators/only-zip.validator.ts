@@ -1,8 +1,8 @@
-import { NgxFileUploadValidator, ValidationResult } from "lib/public-api";
+import { Validator, ValidationErrors } from "lib/ngx-fileupload/validation/validation";
 
-export class OnlyZipValidator implements NgxFileUploadValidator {
+export class OnlyZipValidator implements Validator {
 
-    public validate(file: File): ValidationResult {
+    public validate(file: File): ValidationErrors | null {
 
         const validMime = [
             "application/zip",
@@ -14,8 +14,8 @@ export class OnlyZipValidator implements NgxFileUploadValidator {
         let valid = validMime.some((type) => type === file.type);
         valid = valid && /\.zip$/.test(file.name);
 
-        const error = !valid ? "Only zip files are allowed" : "";
-
-        return { valid, error };
+        return !valid
+            ? { zipValidator: "not a valid zip file" }
+            : null;
     }
 }

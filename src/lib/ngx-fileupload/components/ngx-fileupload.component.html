@@ -1,4 +1,5 @@
-<div class="fileupload" [ngxFileUpload]="url" [useFormData]="useFormData" [formDataName]="formDataName" 
+<div class="fileupload" 
+     [ngxFileUpload]="url" [useFormData]="useFormData" [formDataName]="formDataName" [validator]="validator"
      (add)="onUploadsAdd($event)"
      #myNgxFileUploadRef='ngxFileUploadRef'>
 

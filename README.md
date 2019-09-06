@@ -13,20 +13,19 @@ ___
 
 ## Contents
 
-- [NgxFileupload](#NgxFileupload)
-  - [Contents](#Contents)
-  - [Installation](#Installation)
-  - [Usage](#Usage)
-  - [Examples](#Examples)
-    - [Custom Item Template](#Custom-Item-Template)
-    - [Full Customize](#Full-Customize)
-    - [Validators](#Validators)
-    - [Add Params / Headers to Upload](#Add-Params--Headers-to-Upload)
-  - [Development](#Development)
-  - [Tests](#Tests)
-  - [Credits](#Credits)
-  - [Author](#Author)
-  - [Other Modules](#Other-Modules)
+- [NgxFileupload](#ngxfileupload)
+  - [Contents](#contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Examples](#examples)
+    - [Custom Item Template](#custom-item-template)
+    - [Full Customize](#full-customize)
+    - [Add Params / Headers to Upload](#add-params--headers-to-upload)
+  - [Development](#development)
+  - [Tests](#tests)
+  - [Credits](#credits)
+  - [Author](#author)
+  - [Other Modules](#other-modules)
 
 ## Installation
 
@@ -232,82 +231,6 @@ my.component.html
 <button class="btn btn-upload" type="button" (click)="myNgxFileUploadRef.uploadAll()">Upload</button>
 <button class="btn btn-clear"  type="button" (click)="myNgxFileUploadRef.cleanAll()">Clean Up</button>
 <button class="btn btn-cancel" type="button" (click)="myNgxFileUploadRef.cancelAll()">Cancel</button>
-```
-
-___
-
-### Validators
-
-validators/max-size.validator.ts
-
-```ts
-import {
-    NgxFileUploadValidation,
-    ValidationResult
-} from "@r-hannuschka/ngx-fileupload";
-
-export class MaxUploadSizeValidator implements NgxFileUploadValidator {
-
-    /**
-     * validate max upload size to 1MB
-     */
-    public validate(file: File): ValidationResult {
-        const valid = (file.size / (1024 * 1024)) < 1;
-        const error = !valid ? "Max file size 1MByte" : "";
-        return { valid, error };
-    }
-}
-```
-
-app-upload.module.ts
-
-We create a own module for validation to keep main module clean, you can add as many validators you want if needed. If no Validators are passed all files will uploaded to server.
-
-```ts
-import { NgModule } from "@angular/core";
-import {
-    NgxFileUploadModule,
-    NGX_FILEUPLOAD_VALIDATOR
-} from "@r-hannuschka/ngx-fileupload";
-import { MaxUploadSizeValidator } from "./validators/max-size.validator";
-
-@NgModule({
-    exports: [ NgxFileUploadModule ],
-    imports: [ NgxFileUploadModule ],
-    providers: [{
-        provide: NGX_FILEUPLOAD_VALIDATOR,
-        useClass: MaxUploadSizeValidator,
-        multi: true
-    }, {
-        provide: NGX_FILEUPLOAD_VALIDATOR,
-        useClass: SomeOtherValidator,
-        multi: true
-    }],
-})
-export class AppUploadModule { }
-```
-
-app.module.ts
-
-simply import AppUploadModule into main module
-
-```ts
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
-import { AppComponent } from "./app.component";
-import { AppUploadModule } from "./app-upload.module";
-
-@NgModule( {
-    declarations: [
-        AppComponent
-    ],
-    imports: [
-        AppUploadModule,
-        BrowserModule
-    ],
-    bootstrap: [AppComponent],
-} )
-export class AppModule { }
 ```
 
 ___

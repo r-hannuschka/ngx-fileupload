@@ -84,7 +84,7 @@ describe("Model: Upload", () => {
             progress  : 0,
             hasError  : false,
             isSuccess : false,
-            isValid   : true,
+            validation: { errors: null },
             message   : ""
         };
         expect(model.toJson()).toEqual(uploadData);

@@ -36,6 +36,9 @@ export class NgxFileUploadMockDirective {
     @Input()
     public useFormData = true;
 
+    @Input()
+    public validator = null;
+
     /**
      * form data field name with which form data will be send
      * by default this will be file

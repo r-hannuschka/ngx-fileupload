@@ -93,15 +93,13 @@ describe("Model: UploadFile", () => {
     });
 
     it("should not start if upload is invalid", () => {
-        const upload = uploadModel;
-        upload.isValid = false;
+        uploadModel.state = UploadState.INVALID;
         fileupload.start();
         httpMock.expectNone(url);
     });
 
     it("should have error if upload is invalid", () => {
-        const upload = uploadModel;
-        upload.isValid = false;
+        uploadModel.state = UploadState.INVALID;
         expect(fileupload.isInvalid()).toBeTruthy();
     });
 
@@ -114,6 +112,7 @@ describe("Model: UploadFile", () => {
     });
 
     it("should not start if upload is invalid", () => {
+
         fileupload.start();
         httpMock.expectOne(url).flush({
             success: false,

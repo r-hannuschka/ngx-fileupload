@@ -12,7 +12,7 @@ import {
 
 @Component({
     template: `
-        <div class="fileupload" [ngxFileUpload]="url" (add)="onUploadsAdd($event)">
+        <div class="fileupload" [ngxFileUpload]="uploadUrl" (add)="onUploadsAdd($event)">
     `
 })
 class TestItemComponent {

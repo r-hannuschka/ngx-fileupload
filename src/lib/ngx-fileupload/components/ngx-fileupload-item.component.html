@@ -37,20 +37,37 @@
             </div>
         </div>
 
+        <!-- footer to display validation / upload errors or success notes -->
         <div class="upload-item--footer">
+
+            <!-- show validation errors -->
             <ul *ngIf="upload.validation.errors" class="upload-item--validation">
                 <li *ngFor="let error of upload.validation.errors | keyvalue : returnZero" class="message">
                     {{error.value}}
                 </li>
             </ul>
 
+            <!-- show upload errors -->
             <ul *ngIf="upload.state === 'error'" class="upload-item--response-errors">
                 <li *ngFor="let error of upload.response.errors | toArray" class="message error">
                     {{error}}
                 </li>
             </ul>
+
+            <p class="message success" *ngIf="upload.state === 'uploaded'">
+                <ng-container *ngIf="upload.response.body && upload.response.body.message; else uploadSuccess">
+                    {{upload.response.body.message}}
+                </ng-container>
+                <ng-template #uploadSuccess>
+                    {{upload.name}} uploaded
+                </ng-template>
+            </p>
         </div>
     </div>
+</ng-template>
+
+<ng-template #successTemplate let-message="message">
+    <p  class="message success">{{message}}</p>
 </ng-template>
 
 <!-- display item template at this point -->

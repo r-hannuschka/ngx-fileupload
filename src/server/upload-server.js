@@ -44,8 +44,14 @@ app.post("/upload", function(req, res) {
     const uploadedFile = req.files.file;
     logger.info(`File uploaded: ${uploadedFile.name}`)
 
-    res.status(401);
-    res.send('not authorized');
+    res.status(200);
+    res.send({
+        file: {
+            id: 0,
+            type: 'any'
+        },
+        message: `File: ${req.files.file.name} uploaded to the cloud`
+    });
 
     /*
     res.status(response.state);

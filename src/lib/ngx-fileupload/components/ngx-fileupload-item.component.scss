@@ -114,24 +114,25 @@ $ngx-fileupload-icons--font-path: '../assets/fonts' !default;
      */
     .upload-item--footer {
         font-size: .8rem;
-        // success color: map-get($map: $colors, $key: 'green');
-    }
-
-    .upload-item--validation {
-        margin: .5rem 0 0;
-        padding: 0;
-        color: map-get($map: $colors, $key: 'red');
-        list-style-type: none;
 
         .message {
             white-space: nowrap;
             text-overflow: ellipsis;
             line-height: 1.1rem;
 
-            &:before {
-                content: 'ERROR:';
-                margin: 0 .2rem 0 0;
+            &.error {
+                color: map-get($map: $colors, $key: 'red');
             }
+
+            &.success {
+                color: map-get($map: $colors, $key: 'green');
+            }
+        }
+
+        ul {
+            margin: .5rem 0 0;
+            padding: 0;
+            list-style-type: none;
         }
     }
 }

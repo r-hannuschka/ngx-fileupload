@@ -195,10 +195,8 @@ export class FileUpload {
             body: res.body,
             errors: null
         };
-
         this.upload.state    = UploadState.UPLOADED;
         this.upload.response = uploadResponse;
-
         this.notifyObservers();
         this.completeUpload();
     }
@@ -223,7 +221,6 @@ export class FileUpload {
             body: null,
             errors: response.error instanceof ProgressEvent ? response.message : response.error
         };
-
         this.upload.state = UploadState.ERROR;
         this.upload.response = uploadResponse;
         this.notifyObservers();

@@ -64,13 +64,13 @@ export class NgxFileUploadItemComponent implements OnInit {
     }
 
     /**
-     * set template which should be used for upload items, if nothing is passed
-     * it [defaultUploadItem]{@link #template} template will be used
+     * set template which should be used for upload items, if no TemplateRef is passed
+     * it will fallback to [defaultUploadItem]{@link #template}
      */
     @ViewChild("defaultUploadItem", {static: true})
     @Input()
     public set template(tpl: TemplateRef<FileUploadItemContext>) {
-        if (tpl !== undefined) {
+        if (tpl instanceof TemplateRef) {
             this.itemTpl = tpl;
         }
     }

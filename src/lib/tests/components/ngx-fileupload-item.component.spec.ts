@@ -22,9 +22,13 @@ class TestItemComponent {
 
     public uploads: FileUploadMock[] = [];
 
-    public itemTemplate: TemplateRef<FileUploadItemContext> = null;
+    /**
+     * we set this to any since i could send anything through template input
+     * decorater even there is a type defined
+     */
+    public itemTemplate: any;
 
-    @ViewChild("itemTemplate", { read: TemplateRef, static: true})
+    @ViewChild("itemTemplate", {read: TemplateRef, static: true})
     public template: TemplateRef<FileUploadItemContext>;
 
     @HostListener("click")
@@ -65,6 +69,19 @@ describe( "NgxFileUploadItemComponent:", () => {
 
     it("should use default item template by default", () => {
         testComponent.uploads = [fileUpload];
+        fixture.detectChanges();
+
+        const uploadItemComponent = fixture.debugElement
+            .query(By.css("ngx-fileupload-item"))
+            .injector.get(NgxFileUploadItemComponent);
+
+        expect(uploadItemComponent.itemTpl).toBeDefined();
+    });
+
+    it("should use default item template if we send true as template", () => {
+
+        testComponent.uploads = [fileUpload];
+        testComponent.itemTemplate = "affe";
         fixture.detectChanges();
 
         const uploadItemComponent = fixture.debugElement

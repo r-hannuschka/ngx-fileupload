@@ -7,12 +7,13 @@ import { NgMathPipesModule } from "angular-pipes";
 import { NgxFileUploadItemComponent, UploadModel, FileUploadItemContext } from "lib/public-api";
 import { FileUploadMock } from "../mock/upload-file.mock";
 import { By } from "@angular/platform-browser";
+import { ToArrayPipe } from "lib/ngx-fileupload/pipes/to-array.pipe";
 
 @Component({
     template: `
-        <ng-template #itemTemplate let-uploadData="data">
-            {{uploadData.name}}
-            {{uploadData.size}}
+        <ng-template #itemTemplate let-upload="data">
+            {{upload.name}}
+            {{upload.size}}
         </ng-template>
         <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate"></ngx-fileupload-item>
     `
@@ -47,11 +48,12 @@ describe( "NgxFileUploadItemComponent:", () => {
         TestBed.configureTestingModule( {
             imports: [
                 CommonModule,
-                NgMathPipesModule
+                NgMathPipesModule,
             ],
             declarations: [
                 TestItemComponent,
-                NgxFileUploadItemComponent
+                NgxFileUploadItemComponent,
+                ToArrayPipe
             ]
         }).compileComponents();
     }));

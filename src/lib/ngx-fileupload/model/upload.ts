@@ -10,28 +10,26 @@ export enum UploadState {
     INVALID   = "invalid"
 }
 
+export interface UploadResponse {
+    success: boolean;
+    errors: any;
+    body: any;
+}
+
 export interface UploadData {
-    state: UploadState;
-    uploaded: number;
-    size: number;
     name: string;
     progress: number;
-    hasError: boolean;
-    isSuccess: boolean;
+    response: UploadResponse;
+    size: number;
+    state: UploadState;
+    uploaded: number;
     validation: {
         errors: ValidationErrors | null;
     };
-    message: string;
 }
 
 export interface IDataNode {
     [key: string]: any;
-}
-
-export interface UploadResponse {
-    success: boolean;
-    errors: string[];
-    body: any;
 }
 
 /**
@@ -45,15 +43,9 @@ export class UploadModel {
 
     private uploadedState: UploadState = UploadState.QUEUED;
 
-    private uploadError = false;
-
-    private uploadSuccess = false;
-
     private uploadResponse: UploadResponse = null;
 
     private uploadValidationErrors = null;
-
-    private uploadMessage = "";
 
     /**
      * Creates an instance of UploadFile.
@@ -132,48 +124,12 @@ export class UploadModel {
         return this.uploadedSize;
     }
 
-    /**
-     * set upload was successful
-     */
-    public set error(isError: boolean) {
-        this.uploadError = isError;
-    }
-
-    /**
-     * get upload was successful
-     */
-    public get error(): boolean {
-        return this.uploadError;
-    }
-
-    /**
-     * set upload was successful
-     */
-    public set success(isSuccess: boolean) {
-        this.uploadSuccess = isSuccess;
-    }
-
-    /**
-     * get upload was successful
-     */
-    public get success(): boolean {
-        return this.uploadSuccess;
-    }
-
     public set validationErrors(errors: ValidationErrors | null) {
         this.uploadValidationErrors = errors;
     }
 
     public get validationErrors(): ValidationErrors | null {
         return this.uploadValidationErrors;
-    }
-
-    public set message(msg: string) {
-        this.uploadMessage = msg;
-    }
-
-    public get message(): string {
-        return this.uploadMessage;
     }
 
     public get progress(): number {
@@ -187,17 +143,15 @@ export class UploadModel {
      */
     public toJson(): UploadData {
         return {
-            state     : this.state,
-            uploaded  : this.uploaded,
-            size      : this.fileSize,
             name      : this.fileName,
             progress  : this.progress,
-            hasError  : this.error,
-            isSuccess : this.success,
+            response  : this.response,
+            size      : this.fileSize,
+            state     : this.state,
+            uploaded  : this.uploaded,
             validation: {
                 errors: this.validationErrors,
-            },
-            message   : this.message
+            }
         };
     }
 }

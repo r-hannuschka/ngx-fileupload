@@ -87,10 +87,8 @@ export class FileUpload {
      */
     public retry() {
         if (this.upload.state === UploadState.ERROR) {
-            this.upload.state   = UploadState.QUEUED;
-            this.upload.error   = null;
-            this.upload.success = null;
-            this.upload.message = "";
+            this.upload.state = UploadState.QUEUED;
+            this.upload.response = {success: false, body: null, errors: null};
             this.start();
         }
     }
@@ -119,10 +117,11 @@ export class FileUpload {
     }
 
     /**
-     * returns true if upload contains an error or is invalid
+     * return true if upload was not completed since the server
+     * sends back an error response
      */
     public hasError(): boolean {
-        return this.upload.error;
+        return this.upload.state === UploadState.ERROR;
     }
 
     /**
@@ -190,13 +189,14 @@ export class FileUpload {
      * status code
      */
     private handleResponse(res: HttpResponse<any>) {
+
         const uploadResponse: UploadResponse = {
             success: res.ok,
             body: res.body,
             errors: null
         };
 
-        this.upload.state    = res.ok ? UploadState.UPLOADED : UploadState.ERROR;
+        this.upload.state    = UploadState.UPLOADED;
         this.upload.response = uploadResponse;
 
         this.notifyObservers();

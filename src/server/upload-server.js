@@ -44,7 +44,8 @@ app.post("/upload", function(req, res) {
     const uploadedFile = req.files.file;
     logger.info(`File uploaded: ${uploadedFile.name}`)
 
-    res.status(400).send(['something went wrong', 'file to big']);
+    res.status(401);
+    res.send('not authorized');
 
     /*
     res.status(response.state);

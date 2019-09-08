@@ -11,8 +11,8 @@ import { Validator, ValidationFn } from "../validation/validation";
  *
  * @example
  *
- * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileUploadRef="ngxFileUploadRef"></div>
- * <button (click)="myNgxFileUploadRef.upload()">Upload</button>
+ * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #ngxFileuploadRef="ngxFileUploadRef"></div>
+ * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
   selector: "[ngxFileUpload]",

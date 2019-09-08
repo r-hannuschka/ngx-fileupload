@@ -16,6 +16,10 @@ export interface UploadResponse {
     body: any;
 }
 
+export interface UploadValidation {
+    errors: ValidationErrors | null;
+}
+
 export interface UploadData {
     name: string;
     progress: number;
@@ -23,9 +27,7 @@ export interface UploadData {
     size: number;
     state: UploadState;
     uploaded: number;
-    validation: {
-        errors: ValidationErrors | null;
-    };
+    validation: UploadValidation;
 }
 
 export interface IDataNode {

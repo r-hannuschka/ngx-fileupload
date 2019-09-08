@@ -308,7 +308,7 @@ npm start
 
 ```bash
 # end to end tests
-ng e2e
+npm run e2e
 
 # unit tests
 ng test ngx-fileupload

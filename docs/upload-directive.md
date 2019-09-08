@@ -1,4 +1,4 @@
-# Ngx Fileupload Directive
+# Upload Directive
 
 This directive has 4 main tasks:
 
@@ -7,7 +7,7 @@ This directive has 4 main tasks:
 3. pre validate if validators has been added
 4. works as controller to cancel / upload / clean over __all__ uploads which has been added
 
-Since the ngxFileUpload Directive provides no own view, you have to add this to any component which should be used as drop zone
+Since the ngxFileUpload directive provides no own view, you have to add this to any component which should be used as drop zone
 and listen to the __add__ event.
 
 @example
@@ -28,12 +28,12 @@ class UploadComponent {
 
     public url: string = "localhost/upload";
 
-    public uploads: NgxFileUpload[];
+    public uploads: FileUpload[];
 
     /**
      * @param uploads:NgxFileUpload which has been created from selected / dropped files
      */
-    public onUploadAdd(uploads: NgxFileUpload[]) {
+    public onUploadAdd(uploads: FileUpload[]) {
         /** @todo something with the uploads which has been added */
     }
 }
@@ -77,7 +77,7 @@ class UploadComponent {
 | @Input | type | description | mandatory |
 |---|---|---|---|
 | url / [ngxFileUpload] | string | set url which should be used for http upload request | true |
-| useFormData | boolean | if set to false upload post request body will use file in body (default true) | false |
+| useFormData | boolean | if set to false upload post request will add file into body (default true) instead of form data | false |
 | formDataName | string | form data field name which will contain file, not used if useFormData is set to false ( default file ) | false |
 | validator | Validator/ValidatorFn | pre validators for all files which will added | false |
 

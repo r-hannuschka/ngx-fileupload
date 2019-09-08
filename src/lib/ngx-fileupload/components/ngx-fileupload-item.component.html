@@ -66,9 +66,5 @@
     </div>
 </ng-template>
 
-<ng-template #successTemplate let-message="message">
-    <p  class="message success">{{message}}</p>
-</ng-template>
-
 <!-- display item template at this point -->
 <ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context"></ng-container>

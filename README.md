@@ -18,10 +18,14 @@ npm
 ```bash
 npm i --save @r-hannuschka/ngx-fileupload angular-pipes
 ```
-___
 
+## Usage
 
-## Docs
+```html
+<ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>
+```
+
+To get more detailed informations please check out the docs
 
 - [Upload Component](./docs/upload-component.md)
 - [Upload Directive](./docs/upload-directive.md)

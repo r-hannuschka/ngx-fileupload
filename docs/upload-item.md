@@ -70,16 +70,16 @@ to fill our template with life there is a context to the template injected, cont
 
 ```html
 <ng-template #customItemTemplate let-upload="data" let-control="ctrl">
-    <!-- upload informations comes here -->
+    <!-- show name and uploaded bytes -->
+    <span>{{data.name}}</span>
+    <span>{{data.uploaded}}></span>
+
+    <!-- add single action to upload a file -->
+    <button (click)="ctrl.start()"></button>
 </ng-template>
 
 <div class="fileupload list">
     <ngx-fileupload-item *ngFor="upload of uploads" [upload]="upload" [template]="customItemTemplate">
-        <span>{{data.name}}</span>
-        <span>{{data.uploaded}}></span>
-
-        <!-- add single action to upload a file -->
-        <button (click)="ctrl.start()"></button>
     </ngx-fileupload-item>
 </div>
 ```

@@ -72,9 +72,9 @@ class UploadComponent {
 | cleanAll | remove all uploads from list which are invalid or got an error |
 | cancelAll | cancel all uploads (even if they running allready) and remove them from list |
 
-## Input parameters
+## @Input
 
-| @Input | type | description | mandatory |
+| name | type | description | mandatory |
 |---|---|---|---|
 | url / [ngxFileUpload] | string | set url which should be used for http upload request | true |
 | useFormData | boolean | if set to false upload post request will add file into body (default true) instead of form data | false |

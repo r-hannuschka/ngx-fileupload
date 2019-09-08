@@ -2,7 +2,7 @@
 # FileUploadItem Component
 
 This Component represents a single upload (view) and gives some control over that upload. It is recommended this will used together
-with [Upload Directive](./ngx-fileupload-directive.md).
+with [Upload Directive](./upload-directive.md).
 
 ## Implement
 
@@ -43,7 +43,7 @@ class UploadComponent {
 ## @Output
 
 | name | type | description |
-|---|---|---|---|
+|---|---|---|
 | changed | EventEmitter<UploadModel> | emits if upload state has been changed |
 
 ## Custom Template
@@ -153,4 +153,4 @@ Since the component could load a custom template we have to provide some data / 
 
 ## Further reading
 
-- [Upload Directive](./ngx-fileupload-directive.md)
+- [Upload Directive](./upload-directive.md)

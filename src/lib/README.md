@@ -27,10 +27,10 @@ npm i --save @r-hannuschka/ngx-fileupload angular-pipes
 
 To get more detailed informations please check out the docs
 
-- [Upload Component](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/upload-component.md)
-- [Upload Directive](.https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/upload-directive.md)
-- [Upload Item](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/upload-item.md)
-- [Validation](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/validation.md)
+- [Upload Component](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-component.md)
+- [Upload Directive](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-directive.md)
+- [Upload Item](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-item.md)
+- [Validation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)
 
 ___
 

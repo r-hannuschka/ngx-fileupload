@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>ValidationResult</li>
+  <li>UploadResponse</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -61,16 +61,9 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/services/validation.ts</code>
+            <code>lib/ngx-fileupload/model/upload.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>validation result from ngx fileupload validator</p>
-
-            </p>
 
 
         <section>
@@ -86,10 +79,13 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#error">error</a>
+                                        <a href="#body">body</a>
                                 </li>
                                 <li>
-                                        <a href="#valid">valid</a>
+                                        <a href="#errors">errors</a>
+                                </li>
+                                <li>
+                                        <a href="#success">success</a>
                                 </li>
                             </ul>
                         </td>
@@ -106,13 +102,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="error"></a>
-                                        <span class="name"><b>error</b><a href="#error"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="body"></a>
+                                        <span class="name"><b>body</b><a href="#body"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>error:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>body:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -120,7 +116,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                                         </td>
                                     </tr>
@@ -129,25 +125,48 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>if file has not validated, this error message will be shown</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="valid"></a>
-                                        <span class="name"><b>valid</b><a href="#valid"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="errors"></a>
+                                        <span class="name"><b>errors</b><a href="#errors"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>valid:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <code>errors:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="success"></a>
+                                        <span class="name"><b>success</b><a href="#success"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>success:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -164,12 +183,6 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>set to true if upload has been validated</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -177,38 +190,165 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { InjectionToken } from &quot;@angular/core&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ValidationErrors } from &quot;../validation/validation&quot;;
 
-/**
- * validation result from ngx fileupload validator
- */
-export interface ValidationResult {
-    /**
-     * set to true if upload has been validated
-     */
-    valid: boolean;
-    /**
-     * if file has not validated, this error message will be shown
-     */
-    error: string;
+export enum UploadState {
+    QUEUED    &#x3D; &quot;queued&quot;,
+    START     &#x3D; &quot;start&quot;,
+    PROGRESS  &#x3D; &quot;progress&quot;,
+    UPLOADED  &#x3D; &quot;uploaded&quot;,
+    CANCELED  &#x3D; &quot;canceled&quot;,
+    ERROR     &#x3D; &quot;error&quot;,
+    INVALID   &#x3D; &quot;invalid&quot;
+}
+
+export interface UploadResponse {
+    success: boolean;
+    errors: any;
+    body: any;
+}
+
+export interface UploadValidation {
+    errors: ValidationErrors | null;
+}
+
+export interface UploadData {
+    name: string;
+    progress: number;
+    response: UploadResponse;
+    size: number;
+    state: UploadState;
+    uploaded: number;
+    validation: UploadValidation;
+}
+
+export interface IDataNode {
+    [key: string]: any;
 }
 
 /**
- * interface should implemented from custom validators for ngx-fileupload
- * provide under NGX_FILEUPLOAD_VALIDATOR token
+ * Represents a file which will be uploaded
  */
-export interface NgxFileUploadValidator {
+export class UploadModel {
+
+    private uploadFile: File;
+
+    private uploadedSize &#x3D; 0;
+
+    private uploadedState: UploadState &#x3D; UploadState.QUEUED;
+
+    private uploadResponse: UploadResponse &#x3D; null;
+
+    private uploadValidationErrors &#x3D; null;
 
     /**
-     * called to validate file
+     * Creates an instance of UploadFile.
      */
-    validate(file: File): ValidationResult;
-}
+    public constructor(file: File) {
+        this.uploadFile &#x3D; file;
+    }
 
-/**
- * InjectionToken for ngx file upload validation classes
- */
-export const NGX_FILEUPLOAD_VALIDATOR &#x3D; new InjectionToken(&quot;Upload validation Service&quot;);
+    /**
+     * get raw file
+     */
+    public get file(): File {
+        return this.uploadFile;
+    }
+
+    /**
+     * returns filesize in byte
+     */
+    public get fileSize(): number {
+        return this.file.size;
+    }
+
+    /**
+     * returns filename
+     */
+    public get fileName(): string {
+        return this.file.name;
+    }
+
+    /**
+     * returns mime type of file
+     */
+    public get fileType(): string {
+        return this.file.type;
+    }
+
+    /**
+     * set response data if upload has been completed
+     */
+    public set response(response: UploadResponse) {
+        this.uploadResponse &#x3D; response;
+    }
+
+    /**
+     * get response data if upload has been completed
+     */
+    public get response(): UploadResponse {
+        return this.uploadResponse;
+    }
+
+    /**
+     * set current upload state
+     */
+    public set state(state: UploadState) {
+        this.uploadedState &#x3D; state;
+    }
+
+    /**
+     * get current upload state
+     */
+    public get state(): UploadState {
+        return this.uploadedState;
+    }
+
+    /**
+     * set uploaded size
+     */
+    public set uploaded(bytes: number) {
+        this.uploadedSize &#x3D; bytes;
+    }
+
+    /**
+     * get uploaded size
+     */
+    public get uploaded(): number {
+        return this.uploadedSize;
+    }
+
+    public set validationErrors(errors: ValidationErrors | null) {
+        this.uploadValidationErrors &#x3D; errors;
+    }
+
+    public get validationErrors(): ValidationErrors | null {
+        return this.uploadValidationErrors;
+    }
+
+    public get progress(): number {
+        const progress &#x3D; this.uploaded * 100 / this.fileSize;
+        return Math.round(progress &gt; 100 ? 100 : progress);
+    }
+
+    /**
+     * return file upload data
+     * @todo move to model
+     */
+    public toJson(): UploadData {
+        return {
+            name      : this.fileName,
+            progress  : this.progress,
+            response  : this.response,
+            size      : this.fileSize,
+            state     : this.state,
+            uploaded  : this.uploaded,
+            validation: {
+                errors: this.validationErrors,
+            }
+        };
+    }
+}
 </code></pre>
     </div>
 </div>
@@ -236,7 +376,7 @@ export const NGX_FILEUPLOAD_VALIDATOR &#x3D; new InjectionToken(&quot;Upload val
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'ValidationResult.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'UploadResponse.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

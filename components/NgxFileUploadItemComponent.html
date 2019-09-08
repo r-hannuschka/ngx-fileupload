@@ -78,6 +78,7 @@
     </p>
     <p class="comment">
                     <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
     </p>
 
 
@@ -148,6 +149,21 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#returnZero">returnZero</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -232,13 +248,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:72</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:80</a></div>
                             </td>
                         </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>set template which should be used for upload items, if nothing is passed
-it <a href="#template">defaultUploadItem</a> template will be used</p>
+                        <div class="io-description"><p>set template which should be used for upload items, if no TemplateRef is passed
+it will fallback to <a href="#template">defaultUploadItem</a></p>
 </div>
                     </td>
                 </tr>
@@ -254,7 +270,7 @@ it <a href="#template">defaultUploadItem</a> template will be used</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:47</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:55</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -284,7 +300,7 @@ it <a href="#template">defaultUploadItem</a> template will be used</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:31</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:32</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -325,8 +341,8 @@ it <a href="#template">defaultUploadItem</a> template will be used</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="60"
-                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:60</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:68</a></div>
                 </td>
             </tr>
 
@@ -342,7 +358,55 @@ so we dont affect anything other</p>
         </tbody>
     </table>
 </section>
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="returnZero"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            returnZero
+                        </b>
+                        <a href="#returnZero"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>returnZero()</code>
+                </td>
+            </tr>
 
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="113"
+                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:113</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>just to disable sort for keyvalue pipe</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
     <section>
     
         <h3 id="inputs">
@@ -369,7 +433,7 @@ so we dont affect anything other</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:36</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:37</a></div>
                             </td>
                         </tr>
 
@@ -403,7 +467,7 @@ so we dont affect anything other</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:25</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:26</a></div>
                             </td>
                         </tr>
 
@@ -439,7 +503,7 @@ so we dont affect anything other</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:47</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:55</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -496,13 +560,13 @@ so we dont affect anything other</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:72</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload-item.component.ts:80</a></div>
                                 </td>
                             </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-description"><p>set template which should be used for upload items, if nothing is passed
-it <a href="#template">defaultUploadItem</a> template will be used</p>
+                                <div class="io-description"><p>set template which should be used for upload items, if no TemplateRef is passed
+it will fallback to <a href="#template">defaultUploadItem</a></p>
 </div>
 
                                 <div class="io-description">
@@ -542,10 +606,11 @@ it <a href="#template">defaultUploadItem</a> template will be used</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener } from &quot;@angular/core&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener, OnDestroy } from &quot;@angular/core&quot;;
 import { FileUpload } from &quot;../services/file-upload&quot;;
 import { UploadControl } from &quot;../services/upload-control&quot;;
 import { UploadModel, UploadData } from &quot;../model/upload&quot;;
+import { Subscription } from &quot;rxjs&quot;;
 
 export interface FileUploadItemContext {
     data: UploadData;
@@ -560,7 +625,7 @@ export interface FileUploadItemContext {
     templateUrl: &quot;ngx-fileupload-item.component.html&quot;,
     styleUrls: [&quot;./ngx-fileupload-item.component.scss&quot;],
 })
-export class NgxFileUploadItemComponent implements OnInit {
+export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
 
     /**
      * item template which should rendered to display upload data
@@ -582,6 +647,13 @@ export class NgxFileUploadItemComponent implements OnInit {
      * file upload which should bound to this view
      */
     private fileUpload: FileUpload;
+
+    /**
+     * save subscription here,  since we have only 1 sub
+     * i think takeUntil and Subject will be to much so we could
+     * unsubscribe directly
+     */
+    private changeSub: Subscription;
 
     /**
      * sets upload we want to bind with current view
@@ -607,13 +679,13 @@ export class NgxFileUploadItemComponent implements OnInit {
     }
 
     /**
-     * set template which should be used for upload items, if nothing is passed
-     * it [defaultUploadItem]{@link #template} template will be used
+     * set template which should be used for upload items, if no TemplateRef is passed
+     * it will fallback to [defaultUploadItem]{@link #template}
      */
     @ViewChild(&quot;defaultUploadItem&quot;, {static: true})
     @Input()
     public set template(tpl: TemplateRef&lt;FileUploadItemContext&gt;) {
-        if (tpl !&#x3D;&#x3D; undefined) {
+        if (tpl instanceof TemplateRef) {
             this.itemTpl &#x3D; tpl;
         }
     }
@@ -625,61 +697,98 @@ export class NgxFileUploadItemComponent implements OnInit {
      * @inheritdoc
      */
     ngOnInit(): void {
-        this.fileUpload.change.subscribe({
-            next: (upload: UploadModel) &#x3D;&gt; {
-                this.context.data &#x3D; upload.toJson();
-                this.changed.emit(upload);
-            }
-        });
+        this.changeSub &#x3D; this.fileUpload.change
+            .subscribe({
+                next: (upload: UploadModel) &#x3D;&gt; {
+                    this.context.data &#x3D; upload.toJson();
+                    this.changed.emit(upload);
+                }
+            });
+    }
+
+    /**
+     * if component gets destroyed remove change subscription
+     */
+    ngOnDestroy() {
+        this.changeSub.unsubscribe();
+        this.changeSub &#x3D; null;
+    }
+
+    /**
+     * just to disable sort for keyvalue pipe
+     */
+    public returnZero() {
+        return 0;
     }
 }
 </code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;ng-template #defaultUploadItem let-uploadData&#x3D;&quot;data&quot; let-uploadCtrl&#x3D;&quot;ctrl&quot;&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;ng-template #defaultUploadItem let-upload&#x3D;&quot;data&quot; let-ctrl&#x3D;&quot;ctrl&quot;&gt;
 
     &lt;div class&#x3D;&quot;upload-item&quot;&gt;
-        &lt;div class&#x3D;&quot;upload-item--header&quot;&gt;{{uploadData.name}}&lt;/div&gt;
+        &lt;div class&#x3D;&quot;upload-item--header&quot;&gt;{{upload.name}}&lt;/div&gt;
 
         &lt;div class&#x3D;&quot;upload-item--body&quot;&gt;
             &lt;!-- upload state --&gt;
             &lt;div class&#x3D;&quot;upload-item--state&quot;&gt;
-                &lt;i [ngClass]&#x3D;&quot;[&#x27;ngx-fileupload-icon--&#x27; + uploadData.state]&quot;&gt;&lt;/i&gt;
+                &lt;i [ngClass]&#x3D;&quot;[&#x27;ngx-fileupload-icon--&#x27; + upload.state]&quot;&gt;&lt;/i&gt;
             &lt;/div&gt;
 
             &lt;!-- file progress: current state | progressbar --&gt;
             &lt;div class&#x3D;&quot;upload-item--progress&quot;&gt;
                 &lt;div class&#x3D;&quot;progressbar&quot;&gt;
-                    &lt;span class&#x3D;&quot;label-size&quot;&gt;{{uploadData.size | bytes : 2}}&lt;/span&gt;
-                    &lt;div class&#x3D;&quot;progressbar-inner&quot; [ngStyle]&#x3D;&quot;{width: uploadData.progress + &#x27;%&#x27;}&quot;&gt;&lt;/div&gt;
+                    &lt;span class&#x3D;&quot;label-size&quot;&gt;{{upload.size | bytes : 2}}&lt;/span&gt;
+                    &lt;div class&#x3D;&quot;progressbar-inner&quot; [ngStyle]&#x3D;&quot;{width: upload.progress + &#x27;%&#x27;}&quot;&gt;&lt;/div&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
 
             &lt;!-- upload actions: cancel | retry --&gt;
             &lt;div class&#x3D;&quot;upload-item--actions&quot;&gt;
-
                 &lt;!-- start upload action --&gt;
-                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--upload&quot; (click)&#x3D;&quot;uploadCtrl.start()&quot; *ngIf&#x3D;&quot;!uploadData.hasError&quot;
-                    [disabled]&#x3D;&quot;uploadData.state !&#x3D;&#x3D; &#x27;queued&#x27; || !uploadData.isValid&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--upload&quot; (click)&#x3D;&quot;ctrl.start()&quot; *ngIf&#x3D;&quot;upload.state !&#x3D;&#x3D; &#x27;error&#x27;&quot;
+                    [disabled]&#x3D;&quot;upload.state !&#x3D;&#x3D; &#x27;queued&#x27; || upload.validation.errors&quot;&gt;
                     &lt;i class&#x3D;&quot;ngx-fileupload-icon--upload&quot;&gt;&lt;/i&gt;
                 &lt;/button&gt;
 
                 &lt;!-- retry upload action --&gt;
-                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--retry&quot; (click)&#x3D;&quot;uploadCtrl.retry()&quot; *ngIf&#x3D;&quot;uploadData.hasError&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--retry&quot; (click)&#x3D;&quot;ctrl.retry()&quot; *ngIf&#x3D;&quot;upload.state &#x3D;&#x3D;&#x3D; &#x27;error&#x27;&quot;&gt;
                     &lt;i class&#x3D;&quot;ngx-fileupload-icon--retry&quot;&gt;&lt;/i&gt;
                 &lt;/button&gt;
 
                 &lt;!-- only if running --&gt;
-                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--stop&quot; (click)&#x3D;&quot;uploadCtrl.stop($event);&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;item-action--stop&quot; (click)&#x3D;&quot;ctrl.stop($event);&quot;&gt;
                     &lt;i class&#x3D;&quot;ngx-fileupload-icon--cancel&quot;&gt;&lt;/i&gt;
                 &lt;/button&gt;
-
             &lt;/div&gt;
         &lt;/div&gt;
 
-        &lt;div class&#x3D;&quot;upload-item--notification&quot; [ngClass]&#x3D;&quot;{&#x27;error&#x27;: uploadData.hasError || !uploadData.isValid}&quot;&gt;
-            {{uploadData.message}}
+        &lt;!-- footer to display validation / upload errors or success notes --&gt;
+        &lt;div class&#x3D;&quot;upload-item--footer&quot;&gt;
+
+            &lt;!-- show validation errors --&gt;
+            &lt;ul *ngIf&#x3D;&quot;upload.validation.errors&quot; class&#x3D;&quot;upload-item--validation&quot;&gt;
+                &lt;li *ngFor&#x3D;&quot;let error of upload.validation.errors | keyvalue : returnZero&quot; class&#x3D;&quot;message&quot;&gt;
+                    {{error.value}}
+                &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;!-- show upload errors --&gt;
+            &lt;ul *ngIf&#x3D;&quot;upload.state &#x3D;&#x3D;&#x3D; &#x27;error&#x27;&quot; class&#x3D;&quot;upload-item--response-errors&quot;&gt;
+                &lt;li *ngFor&#x3D;&quot;let error of upload.response.errors | toArray&quot; class&#x3D;&quot;message error&quot;&gt;
+                    {{error}}
+                &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;p class&#x3D;&quot;message success&quot; *ngIf&#x3D;&quot;upload.state &#x3D;&#x3D;&#x3D; &#x27;uploaded&#x27;&quot;&gt;
+                &lt;ng-container *ngIf&#x3D;&quot;upload.response.body &amp;&amp; upload.response.body.message; else uploadSuccess&quot;&gt;
+                    {{upload.response.body.message}}
+                &lt;/ng-container&gt;
+                &lt;ng-template #uploadSuccess&gt;
+                    {{upload.name}} uploaded
+                &lt;/ng-template&gt;
+            &lt;/p&gt;
         &lt;/div&gt;
     &lt;/div&gt;
 &lt;/ng-template&gt;
@@ -730,6 +839,7 @@ export class NgxFileUploadItemComponent implements OnInit {
        Upload Item Body
     */
     .upload-item--body {
+        margin: .5rem 0 0;
         align-items: center;
         display: flex;
         flex-direction: row;
@@ -806,15 +916,27 @@ export class NgxFileUploadItemComponent implements OnInit {
     /**
      * Upload Item Footer
      */
-    .upload-item--notification {
+    .upload-item--footer {
         font-size: .8rem;
-        color: map-get($map: $colors, $key: &#x27;green&#x27;);
-        margin-left: 2rem;
-        white-space: nowrap;
-        text-overflow: ellipsis;
 
-        &amp;.error {
-            color: map-get($map: $colors, $key: &#x27;red&#x27;);
+        .message {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: 1.1rem;
+
+            &amp;.error {
+                color: map-get($map: $colors, $key: &#x27;red&#x27;);
+            }
+
+            &amp;.success {
+                color: map-get($map: $colors, $key: &#x27;green&#x27;);
+            }
+        }
+
+        ul {
+            margin: .5rem 0 0;
+            padding: 0;
+            list-style-type: none;
         }
     }
 }
@@ -846,7 +968,7 @@ export class NgxFileUploadItemComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><ng-template #defaultUploadItem let-uploadData="data" let-uploadCtrl="ctrl">    <div class="upload-item">        <div class="upload-item--header">{{uploadData.name}}</div>        <div class="upload-item--body">            <!-- upload state -->            <div class="upload-item--state">                <i [ngClass]="[\'ngx-fileupload-icon--\' + uploadData.state]"></i>            </div>            <!-- file progress: current state | progressbar -->            <div class="upload-item--progress">                <div class="progressbar">                    <span class="label-size">{{uploadData.size | bytes : 2}}</span>                    <div class="progressbar-inner" [ngStyle]="{width: uploadData.progress + \'%\'}"></div>                </div>            </div>            <!-- upload actions: cancel | retry -->            <div class="upload-item--actions">                <!-- start upload action -->                <button type="button" class="item-action--upload" (click)="uploadCtrl.start()" *ngIf="!uploadData.hasError"                    [disabled]="uploadData.state !== \'queued\' || !uploadData.isValid">                    <i class="ngx-fileupload-icon--upload"></i>                </button>                <!-- retry upload action -->                <button type="button" class="item-action--retry" (click)="uploadCtrl.retry()" *ngIf="uploadData.hasError">                    <i class="ngx-fileupload-icon--retry"></i>                </button>                <!-- only if running -->                <button type="button" class="item-action--stop" (click)="uploadCtrl.stop($event);">                    <i class="ngx-fileupload-icon--cancel"></i>                </button>            </div>        </div>        <div class="upload-item--notification" [ngClass]="{\'error\': uploadData.hasError || !uploadData.isValid}">            {{uploadData.message}}        </div>    </div></ng-template><!-- display item template at this point --><ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context"></ng-container></div>'
+        var COMPONENT_TEMPLATE = '<div><ng-template #defaultUploadItem let-upload="data" let-ctrl="ctrl">    <div class="upload-item">        <div class="upload-item--header">{{upload.name}}</div>        <div class="upload-item--body">            <!-- upload state -->            <div class="upload-item--state">                <i [ngClass]="[\'ngx-fileupload-icon--\' + upload.state]"></i>            </div>            <!-- file progress: current state | progressbar -->            <div class="upload-item--progress">                <div class="progressbar">                    <span class="label-size">{{upload.size | bytes : 2}}</span>                    <div class="progressbar-inner" [ngStyle]="{width: upload.progress + \'%\'}"></div>                </div>            </div>            <!-- upload actions: cancel | retry -->            <div class="upload-item--actions">                <!-- start upload action -->                <button type="button" class="item-action--upload" (click)="ctrl.start()" *ngIf="upload.state !== \'error\'"                    [disabled]="upload.state !== \'queued\' || upload.validation.errors">                    <i class="ngx-fileupload-icon--upload"></i>                </button>                <!-- retry upload action -->                <button type="button" class="item-action--retry" (click)="ctrl.retry()" *ngIf="upload.state === \'error\'">                    <i class="ngx-fileupload-icon--retry"></i>                </button>                <!-- only if running -->                <button type="button" class="item-action--stop" (click)="ctrl.stop($event);">                    <i class="ngx-fileupload-icon--cancel"></i>                </button>            </div>        </div>        <!-- footer to display validation / upload errors or success notes -->        <div class="upload-item--footer">            <!-- show validation errors -->            <ul *ngIf="upload.validation.errors" class="upload-item--validation">                <li *ngFor="let error of upload.validation.errors | keyvalue : returnZero" class="message">                    {{error.value}}                </li>            </ul>            <!-- show upload errors -->            <ul *ngIf="upload.state === \'error\'" class="upload-item--response-errors">                <li *ngFor="let error of upload.response.errors | toArray" class="message error">                    {{error}}                </li>            </ul>            <p class="message success" *ngIf="upload.state === \'uploaded\'">                <ng-container *ngIf="upload.response.body && upload.response.body.message; else uploadSuccess">                    {{upload.response.body.message}}                </ng-container>                <ng-template #uploadSuccess>                    {{upload.name}} uploaded                </ng-template>            </p>        </div>    </div></ng-template><!-- display item template at this point --><ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context"></ng-container></div>'
     var COMPONENTS = [{'name': 'NgxFileUploadComponent', 'selector': 'ngx-fileupload'},{'name': 'NgxFileUploadItemComponent', 'selector': 'ngx-fileupload-item'}];
     var DIRECTIVES = [{'name': 'NgxFileUploadDirective', 'selector': '[ngxFileUpload]'}];
     var ACTUAL_COMPONENT = {'name': 'NgxFileUploadItemComponent'};

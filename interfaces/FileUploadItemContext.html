@@ -158,10 +158,11 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener } from &quot;@angular/core&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener, OnDestroy } from &quot;@angular/core&quot;;
 import { FileUpload } from &quot;../services/file-upload&quot;;
 import { UploadControl } from &quot;../services/upload-control&quot;;
 import { UploadModel, UploadData } from &quot;../model/upload&quot;;
+import { Subscription } from &quot;rxjs&quot;;
 
 export interface FileUploadItemContext {
     data: UploadData;
@@ -176,7 +177,7 @@ export interface FileUploadItemContext {
     templateUrl: &quot;ngx-fileupload-item.component.html&quot;,
     styleUrls: [&quot;./ngx-fileupload-item.component.scss&quot;],
 })
-export class NgxFileUploadItemComponent implements OnInit {
+export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
 
     /**
      * item template which should rendered to display upload data
@@ -198,6 +199,13 @@ export class NgxFileUploadItemComponent implements OnInit {
      * file upload which should bound to this view
      */
     private fileUpload: FileUpload;
+
+    /**
+     * save subscription here,  since we have only 1 sub
+     * i think takeUntil and Subject will be to much so we could
+     * unsubscribe directly
+     */
+    private changeSub: Subscription;
 
     /**
      * sets upload we want to bind with current view
@@ -223,13 +231,13 @@ export class NgxFileUploadItemComponent implements OnInit {
     }
 
     /**
-     * set template which should be used for upload items, if nothing is passed
-     * it [defaultUploadItem]{@link #template} template will be used
+     * set template which should be used for upload items, if no TemplateRef is passed
+     * it will fallback to [defaultUploadItem]{@link #template}
      */
     @ViewChild(&quot;defaultUploadItem&quot;, {static: true})
     @Input()
     public set template(tpl: TemplateRef&lt;FileUploadItemContext&gt;) {
-        if (tpl !&#x3D;&#x3D; undefined) {
+        if (tpl instanceof TemplateRef) {
             this.itemTpl &#x3D; tpl;
         }
     }
@@ -241,12 +249,28 @@ export class NgxFileUploadItemComponent implements OnInit {
      * @inheritdoc
      */
     ngOnInit(): void {
-        this.fileUpload.change.subscribe({
-            next: (upload: UploadModel) &#x3D;&gt; {
-                this.context.data &#x3D; upload.toJson();
-                this.changed.emit(upload);
-            }
-        });
+        this.changeSub &#x3D; this.fileUpload.change
+            .subscribe({
+                next: (upload: UploadModel) &#x3D;&gt; {
+                    this.context.data &#x3D; upload.toJson();
+                    this.changed.emit(upload);
+                }
+            });
+    }
+
+    /**
+     * if component gets destroyed remove change subscription
+     */
+    ngOnDestroy() {
+        this.changeSub.unsubscribe();
+        this.changeSub &#x3D; null;
+    }
+
+    /**
+     * just to disable sort for keyvalue pipe
+     */
+    public returnZero() {
+        return 0;
     }
 }
 </code></pre>

@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>NgxFileUploadValidator</li>
+  <li>Validator</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -61,17 +61,9 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/services/validation.ts</code>
+            <code>lib/ngx-fileupload/validation/validation.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>interface should implemented from custom validators for ngx-fileupload
-provide under NGX_FILEUPLOAD_VALIDATOR token</p>
-
-            </p>
 
 
         <section>
@@ -123,16 +115,14 @@ provide under NGX_FILEUPLOAD_VALIDATOR token</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">lib/ngx-fileupload/services/validation.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="8"
+                            class="link-to-prism">lib/ngx-fileupload/validation/validation.ts:8</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>called to validate file</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -163,7 +153,7 @@ provide under NGX_FILEUPLOAD_VALIDATOR token</p>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/ValidationResult.html" target="_self" >ValidationResult</a></code>
+                        <b>Returns : </b>        <code><a href="../interfaces/ValidationErrors.html" target="_self" >ValidationErrors | null</a></code>
 
                     </div>
                     <div class="io-description">
@@ -179,38 +169,15 @@ provide under NGX_FILEUPLOAD_VALIDATOR token</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { InjectionToken } from &quot;@angular/core&quot;;
-
-/**
- * validation result from ngx fileupload validator
- */
-export interface ValidationResult {
-    /**
-     * set to true if upload has been validated
-     */
-    valid: boolean;
-    /**
-     * if file has not validated, this error message will be shown
-     */
-    error: string;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface ValidationErrors {
+    [key: string]: any;
 }
 
-/**
- * interface should implemented from custom validators for ngx-fileupload
- * provide under NGX_FILEUPLOAD_VALIDATOR token
- */
-export interface NgxFileUploadValidator {
+export type ValidationFn &#x3D; (file: File) &#x3D;&gt; ValidationErrors | null;
 
-    /**
-     * called to validate file
-     */
-    validate(file: File): ValidationResult;
+export interface Validator {
+    validate(file: File): ValidationErrors | null;
 }
-
-/**
- * InjectionToken for ngx file upload validation classes
- */
-export const NGX_FILEUPLOAD_VALIDATOR &#x3D; new InjectionToken(&quot;Upload validation Service&quot;);
 </code></pre>
     </div>
 </div>
@@ -238,7 +205,7 @@ export const NGX_FILEUPLOAD_VALIDATOR &#x3D; new InjectionToken(&quot;Upload val
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'NgxFileUploadValidator.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'Validator.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

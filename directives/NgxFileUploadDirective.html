@@ -78,8 +78,8 @@
             </p>
             <div class="io-description">
                         <div>
-                            <pre class="line-numbers"><code class="language-html">&lt;div [ngxFileUpload]=&quot;'URL'&quot; (add)=&quot;onUploadAdd($event)&quot; #myNgxFileUploadRef=&quot;ngxFileUploadRef&quot;&gt;&lt;/div&gt;
-&lt;button (click)=&quot;myNgxFileUploadRef.upload()&quot;&gt;Upload&lt;/button&gt;</code></pre>
+                            <pre class="line-numbers"><code class="language-html">&lt;div [ngxFileUpload]=&quot;'URL'&quot; (add)=&quot;onUploadAdd($event)&quot; #ngxFileuploadRef=&quot;ngxFileUploadRef&quot;&gt;&lt;/div&gt;
+&lt;button (click)=&quot;ngxFileUploadRef.upload()&quot;&gt;Upload&lt;/button&gt;</code></pre>
                         </div>
             </div>
 
@@ -143,6 +143,9 @@
                             <li>
                                 <a href="#useFormData">useFormData</a>
                             </li>
+                            <li>
+                                <a href="#validator">validator</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -194,12 +197,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(httpClient: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, renderer: <a href="https://angular.io/api/core/Renderer2" target="_blank">Renderer2</a>, validation: <a href="../interfaces/NgxFileUploadValidator.html">NgxFileUploadValidator | NgxFileUploadValidator[]</a>)</code>
+<code>constructor(httpClient: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, renderer: <a href="https://angular.io/api/core/Renderer2" target="_blank">Renderer2</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:75</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:73</a></div>
                             </td>
                         </tr>
 
@@ -235,18 +238,6 @@
                                                   
                                                         <td>
                                                                         <code><a href="https://angular.io/api/core/Renderer2" target="_blank" >Renderer2</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>validation</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../interfaces/NgxFileUploadValidator.html" target="_self" >NgxFileUploadValidator | NgxFileUploadValidator[]</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -347,6 +338,27 @@ plain file object in body</p>
                 </tr>
             </tbody>
         </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="validator"></a>
+                        <b>validator</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Validator.html" target="_self" >Validator | ValidationFn</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:58</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
 </section>
             <section>
     <h3 id="outputs">Outputs</h3>
@@ -407,8 +419,8 @@ plain file object in body</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="157"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:157</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="151"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:151</a></div>
                 </td>
             </tr>
 
@@ -450,8 +462,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="134"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:134</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:128</a></div>
                 </td>
             </tr>
 
@@ -492,8 +504,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="143"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:143</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="137"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:137</a></div>
                 </td>
             </tr>
 
@@ -537,8 +549,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="111"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:111</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:105</a></div>
                 </td>
             </tr>
 
@@ -580,8 +592,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="121"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:121</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="115"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:115</a></div>
                 </td>
             </tr>
 
@@ -624,8 +636,8 @@ them</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="104"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:104</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="98"
+                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:98</a></div>
                 </td>
             </tr>
 
@@ -650,21 +662,21 @@ them</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject, Renderer2, ElementRef } from &quot;@angular/core&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2 } from &quot;@angular/core&quot;;
 import { HttpClient } from &quot;@angular/common/http&quot;;
 import { takeUntil } from &quot;rxjs/operators&quot;;
 import { Subject } from &quot;rxjs&quot;;
 import { UploadModel, UploadState } from &quot;../model/upload&quot;;
 import { FileUpload } from &quot;../services/file-upload&quot;;
-import { NGX_FILEUPLOAD_VALIDATOR, NgxFileUploadValidator } from &quot;../services/validation&quot;;
+import { Validator, ValidationFn } from &quot;../validation/validation&quot;;
 
 /**
  * directive to add uploads with drag / drop
  *
  * @example
  *
- * &lt;div [ngxFileUpload]&#x3D;&quot;&#x27;URL&#x27;&quot; (add)&#x3D;&quot;onUploadAdd($event)&quot; #myNgxFileUploadRef&#x3D;&quot;ngxFileUploadRef&quot;&gt;&lt;/div&gt;
- * &lt;button (click)&#x3D;&quot;myNgxFileUploadRef.upload()&quot;&gt;Upload&lt;/button&gt;
+ * &lt;div [ngxFileUpload]&#x3D;&quot;&#x27;URL&#x27;&quot; (add)&#x3D;&quot;onUploadAdd($event)&quot; #ngxFileuploadRef&#x3D;&quot;ngxFileUploadRef&quot;&gt;&lt;/div&gt;
+ * &lt;button (click)&#x3D;&quot;ngxFileUploadRef.upload()&quot;&gt;Upload&lt;/button&gt;
  */
 @Directive({
   selector: &quot;[ngxFileUpload]&quot;,
@@ -706,6 +718,9 @@ export class NgxFileUploadDirective implements OnDestroy {
     @Input()
     public formDataName &#x3D; &quot;file&quot;;
 
+    @Input()
+    public validator: Validator | ValidationFn;
+
     /**
      * remove from subscribtions if component gets destroyed
      */
@@ -715,11 +730,6 @@ export class NgxFileUploadDirective implements OnDestroy {
      * upload file queue
      */
     private uploads: FileUpload[] &#x3D; [];
-
-    /**
-     * injected validators
-     */
-    private validators: NgxFileUploadValidator[] &#x3D; [];
 
     /**
      * input file field to trigger file window
@@ -732,11 +742,7 @@ export class NgxFileUploadDirective implements OnDestroy {
     constructor(
         private httpClient: HttpClient,
         private renderer: Renderer2,
-        @Optional() @Inject(NGX_FILEUPLOAD_VALIDATOR) validation: NgxFileUploadValidator | NgxFileUploadValidator[]
     ) {
-        if (validation) {
-            this.validators &#x3D; Array.isArray(validation) ? validation : [validation];
-        }
         this.add &#x3D; new EventEmitter();
         this.fileSelect &#x3D; this.createFieldInputField();
     }
@@ -844,7 +850,10 @@ export class NgxFileUploadDirective implements OnDestroy {
         const fileModel &#x3D; new UploadModel(file);
         const upload    &#x3D; new FileUpload(this.httpClient, fileModel, uploadOptions);
 
-        this.preValidateUpload(fileModel);
+        if (this.validator) {
+            this.preValidateUpload(fileModel);
+        }
+
         this.uploads.push(upload);
 
         const sub &#x3D; upload.change
@@ -864,19 +873,11 @@ export class NgxFileUploadDirective implements OnDestroy {
      * fill could not uploaded anymore
      */
     private preValidateUpload(upload: UploadModel) {
-
-        for (let i &#x3D; 0, ln &#x3D; this.validators.length; i &lt; ln; i++) {
-            const validator &#x3D; this.validators[i];
-            const result &#x3D; validator.validate(upload.file);
-
-            upload.isValid &#x3D; result.valid;
-            upload.message &#x3D; !result.valid ? result.error : &quot;&quot;;
-
-            if (!upload.isValid) {
-                upload.state   &#x3D; UploadState.INVALID;
-                break;
-            }
+        const result &#x3D; &quot;validate&quot; in this.validator ? this.validator.validate(upload.file) : this.validator(upload.file);
+        if (result !&#x3D;&#x3D; null) {
+            upload.state &#x3D; UploadState.INVALID;
         }
+        upload.validationErrors &#x3D; result;
     }
 
     /**

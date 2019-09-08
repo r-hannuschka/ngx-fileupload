@@ -50,13 +50,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/NgxFileUploadModule.html" data-type="entity-link">NgxFileUploadModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-NgxFileUploadModule-e1b8d91d760ea3583f5140d32d9e8782"' : 'data-target="#xs-components-links-module-NgxFileUploadModule-e1b8d91d760ea3583f5140d32d9e8782"' }>
+                                            'data-target="#components-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' : 'data-target="#xs-components-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-NgxFileUploadModule-e1b8d91d760ea3583f5140d32d9e8782"' :
-                                            'id="xs-components-links-module-NgxFileUploadModule-e1b8d91d760ea3583f5140d32d9e8782"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' :
+                                            'id="xs-components-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' }>
                                             <li class="link">
                                                 <a href="components/NgxFileUploadComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">NgxFileUploadComponent</a>
@@ -69,19 +69,34 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     </li>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                        'data-target="#directives-links-module-NgxFileUploadModule-e1b8d91d760ea3583f5140d32d9e8782"' : 'data-target="#xs-directives-links-module-NgxFileUploadModule-e1b8d91d760ea3583f5140d32d9e8782"' }>
+                                        'data-target="#directives-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' : 'data-target="#xs-directives-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' }>
                                         <span class="icon ion-md-code-working"></span>
                                         <span>Directives</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="directives-links-module-NgxFileUploadModule-e1b8d91d760ea3583f5140d32d9e8782"' :
-                                        'id="xs-directives-links-module-NgxFileUploadModule-e1b8d91d760ea3583f5140d32d9e8782"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="directives-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' :
+                                        'id="xs-directives-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' }>
                                         <li class="link">
                                             <a href="directives/NgxFileUploadDirective.html"
                                                 data-type="entity-link" data-context="sub-entity" data-context-id="modules">NgxFileUploadDirective</a>
                                         </li>
                                     </ul>
                                 </li>
+                                    <li class="chapter inner">
+                                        <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
+                                            'data-target="#pipes-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' : 'data-target="#xs-pipes-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' }>
+                                            <span class="icon ion-md-add"></span>
+                                            <span>Pipes</span>
+                                            <span class="icon ion-ios-arrow-down"></span>
+                                        </div>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="pipes-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' :
+                                            'id="xs-pipes-links-module-NgxFileUploadModule-401f373af39ac454591fcd324ff797b2"' }>
+                                            <li class="link">
+                                                <a href="pipes/ToArrayPipe.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">ToArrayPipe</a>
+                                            </li>
+                                        </ul>
+                                    </li>
                             </li>
                 </ul>
                 </li>
@@ -94,13 +109,25 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="classes-links"' : 'id="xs-classes-links"' }>
                             <li class="link">
+                                <a href="classes/AndValidator.html" data-type="entity-link">AndValidator</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/FileUpload.html" data-type="entity-link">FileUpload</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/GroupedValidator.html" data-type="entity-link">GroupedValidator</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/OrValidator.html" data-type="entity-link">OrValidator</a>
                             </li>
                             <li class="link">
                                 <a href="classes/UploadControl.html" data-type="entity-link">UploadControl</a>
                             </li>
                             <li class="link">
                                 <a href="classes/UploadModel.html" data-type="entity-link">UploadModel</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/ValidationBuilder.html" data-type="entity-link">ValidationBuilder</a>
                             </li>
                         </ul>
                     </li>
@@ -119,19 +146,22 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/IDataNode.html" data-type="entity-link">IDataNode</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/NgxFileUploadValidator.html" data-type="entity-link">NgxFileUploadValidator</a>
-                            </li>
-                            <li class="link">
-                                <a href="interfaces/Response.html" data-type="entity-link">Response</a>
-                            </li>
-                            <li class="link">
                                 <a href="interfaces/UploadData.html" data-type="entity-link">UploadData</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/UploadOptions.html" data-type="entity-link">UploadOptions</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/ValidationResult.html" data-type="entity-link">ValidationResult</a>
+                                <a href="interfaces/UploadResponse.html" data-type="entity-link">UploadResponse</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/UploadValidation.html" data-type="entity-link">UploadValidation</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/ValidationErrors.html" data-type="entity-link">ValidationErrors</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/Validator.html" data-type="entity-link">Validator</a>
                             </li>
                         </ul>
                     </li>
@@ -147,7 +177,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="miscellaneous/enumerations.html" data-type="entity-link">Enums</a>
                             </li>
                             <li class="link">
-                                <a href="miscellaneous/variables.html" data-type="entity-link">Variables</a>
+                                <a href="miscellaneous/typealiases.html" data-type="entity-link">Type aliases</a>
                             </li>
                         </ul>
                     </li>

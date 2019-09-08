@@ -186,7 +186,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from &quot;@angular/common/http&quot;;
 import { Subject, BehaviorSubject, Observable } from &quot;rxjs&quot;;
 import { takeUntil, filter } from &quot;rxjs/operators&quot;;
-import { UploadModel, UploadState} from &quot;../model/upload&quot;;
+import { UploadModel, UploadState, UploadResponse} from &quot;../model/upload&quot;;
 
 /**
  * Upload Options
@@ -254,14 +254,14 @@ export class FileUpload {
      */
     public start() {
         /** only start upload if state is not queued and is valid */
-        if (this.upload.state &#x3D;&#x3D;&#x3D; UploadState.QUEUED &amp;&amp; this.upload.isValid) {
+        if (this.upload.state &#x3D;&#x3D;&#x3D; UploadState.QUEUED) {
             this.uploadFile().pipe(
                 takeUntil(this.cancel$),
                 filter(() &#x3D;&gt; this.upload.state !&#x3D;&#x3D; UploadState.CANCELED)
             )
             .subscribe({
                 next: (event: HttpEvent&lt;string&gt;) &#x3D;&gt; this.handleHttpEvent(event),
-                error: (error: HttpErrorResponse) &#x3D;&gt; this.handleHttpError(error)
+                error: (error: HttpErrorResponse) &#x3D;&gt; this.handleError(error)
             });
         }
     }
@@ -272,10 +272,8 @@ export class FileUpload {
      */
     public retry() {
         if (this.upload.state &#x3D;&#x3D;&#x3D; UploadState.ERROR) {
-            this.upload.state   &#x3D; UploadState.QUEUED;
-            this.upload.error   &#x3D; null;
-            this.upload.success &#x3D; null;
-            this.upload.message &#x3D; &quot;&quot;;
+            this.upload.state &#x3D; UploadState.QUEUED;
+            this.upload.response &#x3D; {success: false, body: null, errors: null};
             this.start();
         }
     }
@@ -304,17 +302,18 @@ export class FileUpload {
     }
 
     /**
-     * returns true if upload contains an error or is invalid
+     * return true if upload was not completed since the server
+     * sends back an error response
      */
     public hasError(): boolean {
-        return this.upload.error;
+        return this.upload.state &#x3D;&#x3D;&#x3D; UploadState.ERROR;
     }
 
     /**
      * returns true if validators are set and upload not validated
      */
     public isInvalid(): boolean {
-        return this.upload.isValid &#x3D;&#x3D;&#x3D; false;
+        return this.upload.state &#x3D;&#x3D;&#x3D; UploadState.INVALID;
     }
 
     /**
@@ -354,13 +353,10 @@ export class FileUpload {
     }
 
     /**
-     * got http error, this not completes the upload
-     * since the user can try do the same upload again
+     * upload has been started
      */
-    private handleHttpError(error: HttpErrorResponse) {
-        this.upload.state &#x3D; UploadState.ERROR;
-        this.upload.error &#x3D; true;
-        this.upload.message &#x3D; error.message;
+    private handleSent() {
+        this.upload.state &#x3D; UploadState.START;
         this.notifyObservers();
     }
 
@@ -374,27 +370,45 @@ export class FileUpload {
     }
 
     /**
-     * upload has been started
-     */
-    private handleSent() {
-        this.upload.state &#x3D; UploadState.START;
-        this.notifyObservers();
-    }
-
-    /**
-     * upload has been completed
+     * upload has been completed so server responds within 200 range
+     * status code
      */
     private handleResponse(res: HttpResponse&lt;any&gt;) {
 
-        this.upload.state   &#x3D; UploadState.UPLOADED;
-        this.upload.success &#x3D; res.ok;
-        this.upload.response &#x3D; {
-            code: res.status,
-            body: res.body
+        const uploadResponse: UploadResponse &#x3D; {
+            success: res.ok,
+            body: res.body,
+            errors: null
         };
-
+        this.upload.state    &#x3D; UploadState.UPLOADED;
+        this.upload.response &#x3D; uploadResponse;
         this.notifyObservers();
         this.completeUpload();
+    }
+
+    /**
+     * if server not sends a status code in 2xx range this will
+     * throw an error which will handled here
+     *
+     * but we have sanitize the response message for this assume
+     * server not running ( no chance the server could send any messages )
+     * and response error will be a ProgressEvent instance, if this is the case
+     * fallback to the response.message
+     *
+     * and we could send back diffrent messages for a status like
+     *
+     * res.status(400).send(WHAT YOU WANT) so response.error will contain
+     * this array, or a string or anything else. If not see fallback.
+     */
+    private handleError(response: HttpErrorResponse) {
+        const uploadResponse: UploadResponse &#x3D; {
+            success: false,
+            body: null,
+            errors: response.error instanceof ProgressEvent ? response.message : response.error
+        };
+        this.upload.state &#x3D; UploadState.ERROR;
+        this.upload.response &#x3D; uploadResponse;
+        this.notifyObservers();
     }
 
     /**

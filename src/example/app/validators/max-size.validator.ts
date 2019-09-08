@@ -1,10 +1,9 @@
-import { NgxFileUploadValidator, ValidationResult } from "lib/public-api";
+import { Validator, ValidationErrors } from "lib/public-api";
 
-export class MaxUploadSizeValidator implements NgxFileUploadValidator {
+export class MaxUploadSizeValidator implements Validator {
 
-    public validate(file: File): ValidationResult {
+    public validate(file: File): ValidationErrors | null {
         const valid = (file.size / (1024 * 1024)) < 1;
-        const error = !valid ? "Max file size 1MByte" : "";
-        return { valid, error };
+        return !valid ? { maxFileSizeValidator: "max file size 1MByte" } : null;
     }
 }

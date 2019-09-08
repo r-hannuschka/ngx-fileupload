@@ -39,14 +39,24 @@ app.use(fileUpload());
 app.post("/upload", function(req, res) {
 
     if (Object.keys(req.files).length == 0) {
-      return res.status(400).send('No files were uploaded.');
     }
 
     const uploadedFile = req.files.file;
     logger.info(`File uploaded: ${uploadedFile.name}`)
 
+    res.status(200);
+    res.send({
+        file: {
+            id: 0,
+            type: 'any'
+        },
+        message: `File: ${req.files.file.name} uploaded to the cloud`
+    });
+
+    /*
     res.status(response.state);
     res.send(response.body);
+    */
 });
 
 app.listen(3000, () => process.stdout.write("Server started on port 3000\n"));

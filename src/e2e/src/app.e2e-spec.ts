@@ -69,15 +69,17 @@ describe("workspace-project App", () => {
             expect(page.getUploadItems().count()).toBe(2);
         });
 
-        it("expect second upload is invalid and could not uploaded", () => {
+        it("expect second upload is invalid and could not uploaded", async () => {
             const invalidItem  = page.getUploadItems().get(1);
+
             const uploadAction = invalidItem.element(by.css(".item-action--upload"));
             const errorIcon    = invalidItem.element(by.css(".ngx-fileupload-icon--invalid"));
-            const errorMessage = invalidItem.element(by.css(".upload-item--notification.error"));
+            const errorMessage = invalidItem.element(by.css(".upload-item--validation"));
+            const errors = ["not a valid zip file", "not a valid image file"];
 
-            expect(uploadAction.isEnabled()).toBeFalsy();
-            expect(errorIcon.isDisplayed()).toBeTruthy();
-            expect(errorMessage.getText()).toBe("Only zip files are allowed");
+            expect(await uploadAction.isEnabled()).toBeFalsy();
+            expect(await errorIcon.isDisplayed()).toBeTruthy();
+            expect(await errorMessage.getText()).toBe(errors.join("\n"));
         });
 
         /**

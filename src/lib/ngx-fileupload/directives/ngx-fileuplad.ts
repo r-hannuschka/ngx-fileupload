@@ -1,18 +1,18 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Optional, Inject, Renderer2, ElementRef } from "@angular/core";
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2 } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { UploadModel, UploadState } from "../model/upload";
 import { FileUpload } from "../services/file-upload";
-import { NGX_FILEUPLOAD_VALIDATOR, NgxFileUploadValidator } from "../services/validation";
+import { Validator, ValidationFn } from "../validation/validation";
 
 /**
  * directive to add uploads with drag / drop
  *
  * @example
  *
- * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #myNgxFileUploadRef="ngxFileUploadRef"></div>
- * <button (click)="myNgxFileUploadRef.upload()">Upload</button>
+ * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #ngxFileuploadRef="ngxFileUploadRef"></div>
+ * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
   selector: "[ngxFileUpload]",
@@ -54,6 +54,9 @@ export class NgxFileUploadDirective implements OnDestroy {
     @Input()
     public formDataName = "file";
 
+    @Input()
+    public validator: Validator | ValidationFn;
+
     /**
      * remove from subscribtions if component gets destroyed
      */
@@ -63,11 +66,6 @@ export class NgxFileUploadDirective implements OnDestroy {
      * upload file queue
      */
     private uploads: FileUpload[] = [];
-
-    /**
-     * injected validators
-     */
-    private validators: NgxFileUploadValidator[] = [];
 
     /**
      * input file field to trigger file window
@@ -80,11 +78,7 @@ export class NgxFileUploadDirective implements OnDestroy {
     constructor(
         private httpClient: HttpClient,
         private renderer: Renderer2,
-        @Optional() @Inject(NGX_FILEUPLOAD_VALIDATOR) validation: NgxFileUploadValidator | NgxFileUploadValidator[]
     ) {
-        if (validation) {
-            this.validators = Array.isArray(validation) ? validation : [validation];
-        }
         this.add = new EventEmitter();
         this.fileSelect = this.createFieldInputField();
     }
@@ -192,7 +186,10 @@ export class NgxFileUploadDirective implements OnDestroy {
         const fileModel = new UploadModel(file);
         const upload    = new FileUpload(this.httpClient, fileModel, uploadOptions);
 
-        this.preValidateUpload(fileModel);
+        if (this.validator) {
+            this.preValidateUpload(fileModel);
+        }
+
         this.uploads.push(upload);
 
         const sub = upload.change
@@ -212,19 +209,11 @@ export class NgxFileUploadDirective implements OnDestroy {
      * fill could not uploaded anymore
      */
     private preValidateUpload(upload: UploadModel) {
-
-        for (let i = 0, ln = this.validators.length; i < ln; i++) {
-            const validator = this.validators[i];
-            const result = validator.validate(upload.file);
-
-            upload.isValid = result.valid;
-            upload.message = !result.valid ? result.error : "";
-
-            if (!upload.isValid) {
-                upload.state   = UploadState.INVALID;
-                break;
-            }
+        const result = "validate" in this.validator ? this.validator.validate(upload.file) : this.validator(upload.file);
+        if (result !== null) {
+            upload.state = UploadState.INVALID;
         }
+        upload.validationErrors = result;
     }
 
     /**

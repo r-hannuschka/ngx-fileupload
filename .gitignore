@@ -6,7 +6,7 @@
 /out-tsc
 /src/coverage
 /src/documentation
-/server/upload.log
+/src/server/upload.log
 
 # Only exists if Bazel was run
 /bazel-out

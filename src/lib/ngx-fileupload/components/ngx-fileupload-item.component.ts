@@ -1,8 +1,9 @@
 
-import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener, OnDestroy } from "@angular/core";
 import { FileUpload } from "../services/file-upload";
 import { UploadControl } from "../services/upload-control";
 import { UploadModel, UploadData } from "../model/upload";
+import { Subscription } from "rxjs";
 
 export interface FileUploadItemContext {
     data: UploadData;
@@ -17,7 +18,7 @@ export interface FileUploadItemContext {
     templateUrl: "ngx-fileupload-item.component.html",
     styleUrls: ["./ngx-fileupload-item.component.scss"],
 })
-export class NgxFileUploadItemComponent implements OnInit {
+export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
 
     /**
      * item template which should rendered to display upload data
@@ -39,6 +40,13 @@ export class NgxFileUploadItemComponent implements OnInit {
      * file upload which should bound to this view
      */
     private fileUpload: FileUpload;
+
+    /**
+     * save subscription here,  since we have only 1 sub
+     * i think takeUntil and Subject will be to much so we could
+     * unsubscribe directly
+     */
+    private changeSub: Subscription;
 
     /**
      * sets upload we want to bind with current view
@@ -64,13 +72,13 @@ export class NgxFileUploadItemComponent implements OnInit {
     }
 
     /**
-     * set template which should be used for upload items, if nothing is passed
-     * it [defaultUploadItem]{@link #template} template will be used
+     * set template which should be used for upload items, if no TemplateRef is passed
+     * it will fallback to [defaultUploadItem]{@link #template}
      */
     @ViewChild("defaultUploadItem", {static: true})
     @Input()
     public set template(tpl: TemplateRef<FileUploadItemContext>) {
-        if (tpl !== undefined) {
+        if (tpl instanceof TemplateRef) {
             this.itemTpl = tpl;
         }
     }
@@ -82,11 +90,27 @@ export class NgxFileUploadItemComponent implements OnInit {
      * @inheritdoc
      */
     ngOnInit(): void {
-        this.fileUpload.change.subscribe({
-            next: (upload: UploadModel) => {
-                this.context.data = upload.toJson();
-                this.changed.emit(upload);
-            }
-        });
+        this.changeSub = this.fileUpload.change
+            .subscribe({
+                next: (upload: UploadModel) => {
+                    this.context.data = upload.toJson();
+                    this.changed.emit(upload);
+                }
+            });
+    }
+
+    /**
+     * if component gets destroyed remove change subscription
+     */
+    ngOnDestroy() {
+        this.changeSub.unsubscribe();
+        this.changeSub = null;
+    }
+
+    /**
+     * just to disable sort for keyvalue pipe
+     */
+    public returnZero() {
+        return 0;
     }
 }

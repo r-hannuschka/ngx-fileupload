@@ -7,12 +7,13 @@ import { NgMathPipesModule } from "angular-pipes";
 import { NgxFileUploadItemComponent, UploadModel, FileUploadItemContext } from "lib/public-api";
 import { FileUploadMock } from "../mock/upload-file.mock";
 import { By } from "@angular/platform-browser";
+import { ToArrayPipe } from "lib/ngx-fileupload/pipes/to-array.pipe";
 
 @Component({
     template: `
-        <ng-template #itemTemplate let-uploadData="data">
-            {{uploadData.name}}
-            {{uploadData.size}}
+        <ng-template #itemTemplate let-upload="data">
+            {{upload.name}}
+            {{upload.size}}
         </ng-template>
         <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate"></ngx-fileupload-item>
     `
@@ -21,9 +22,13 @@ class TestItemComponent {
 
     public uploads: FileUploadMock[] = [];
 
-    public itemTemplate: TemplateRef<FileUploadItemContext> = null;
+    /**
+     * we set this to any since i could send anything through template input
+     * decorater even there is a type defined
+     */
+    public itemTemplate: any;
 
-    @ViewChild("itemTemplate", { read: TemplateRef, static: true})
+    @ViewChild("itemTemplate", {read: TemplateRef, static: true})
     public template: TemplateRef<FileUploadItemContext>;
 
     @HostListener("click")
@@ -47,11 +52,12 @@ describe( "NgxFileUploadItemComponent:", () => {
         TestBed.configureTestingModule( {
             imports: [
                 CommonModule,
-                NgMathPipesModule
+                NgMathPipesModule,
             ],
             declarations: [
                 TestItemComponent,
-                NgxFileUploadItemComponent
+                NgxFileUploadItemComponent,
+                ToArrayPipe
             ]
         }).compileComponents();
     }));
@@ -63,6 +69,19 @@ describe( "NgxFileUploadItemComponent:", () => {
 
     it("should use default item template by default", () => {
         testComponent.uploads = [fileUpload];
+        fixture.detectChanges();
+
+        const uploadItemComponent = fixture.debugElement
+            .query(By.css("ngx-fileupload-item"))
+            .injector.get(NgxFileUploadItemComponent);
+
+        expect(uploadItemComponent.itemTpl).toBeDefined();
+    });
+
+    it("should use default item template if we send true as template", () => {
+
+        testComponent.uploads = [fileUpload];
+        testComponent.itemTemplate = "affe";
         fixture.detectChanges();
 
         const uploadItemComponent = fixture.debugElement

@@ -7,12 +7,14 @@ import { NgMathPipesModule } from "angular-pipes";
 import { NgxFileUploadItemComponent } from "./components/ngx-fileupload-item.component";
 import { NgxFileUploadDirective } from "./directives/ngx-fileuplad";
 import { NgxFileUploadComponent } from "./components/ngx-fileupload.component";
+import { ToArrayPipe } from "./pipes/to-array.pipe";
 
 @NgModule({
     declarations: [
         NgxFileUploadDirective,
         NgxFileUploadItemComponent,
         NgxFileUploadComponent,
+        ToArrayPipe,
     ],
     imports: [
         CommonModule,

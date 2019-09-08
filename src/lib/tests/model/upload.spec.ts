@@ -1,5 +1,5 @@
 import { UploadModel } from "lib/public-api";
-import { UploadState } from "lib/ngx-fileupload/model/upload";
+import { UploadState, UploadResponse } from "lib/ngx-fileupload/model/upload";
 
 describe("Model: Upload", () => {
 
@@ -44,22 +44,14 @@ describe("Model: Upload", () => {
         expect(model.uploaded).toBe(100);
     });
 
-    it("should set success", () => {
-        model.success = false;
-        expect(model.success).toBeFalsy();
-    });
-
-    it("should set a message", () => {
-        model.message = "test completed";
-        expect(model.message).toBe("test completed");
-    });
 
     it("should set a response", () => {
-        const response = {
-            code: 202,
+        const response: UploadResponse = {
+            success: true,
             body: {
-                success: true
-            }
+                message: "file was uploaded"
+            },
+            errors: null,
         };
         model.response = response;
         expect(model.response).toEqual(response);
@@ -82,10 +74,10 @@ describe("Model: Upload", () => {
             size      : file.size,
             name      : file.name,
             progress  : 0,
-            hasError  : false,
-            isSuccess : false,
-            isValid   : true,
-            message   : ""
+            response  : null,
+            validation: {
+                errors: null,
+            }
         };
         expect(model.toJson()).toEqual(uploadData);
     });

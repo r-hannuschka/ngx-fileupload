@@ -1,25 +1,43 @@
 <!-- template for each upload -->
-<ng-template #baseItemTemplate let-upload="data" let-ctrl="ctrl">
-    <section>
-
-        <header>
-            <span class="title">File: {{upload.name}} </span>
-            <span class="state">State: {{upload.state}}</span>
-        </header>
-
-        <div class="progress-wrapper">
+<ng-template #uploadCard let-upload="data" let-ctrl="ctrl">
+    <section class="card">
+        <div class="card-header">
             <app-ui--progressbar-circle 
                 [circleData]="{height: 100, width: 100, radius: 40}"
                 [progress]="upload.progress" >
             </app-ui--progressbar-circle>
         </div>
 
-        <footer>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-md-3">Name</dt>
+                <dd class="col-md-9 text-truncate">{{upload.name}}</dd>
+                <dt class="col-md-3">Size</dt>
+                <dd class="col-md-9">{{upload.size}}</dd>
+                <dt class="col-md-3">State</dt>
+                <dd class="col-md-9">{{upload.state}}</dd>
+            </dl>
+        </div>
+
+        <div class="card-footer">
             <app-ui--button (dispatch)="ctrl.start()" [label]="'Upload'"></app-ui--button>
             <app-ui--button (dispatch)="ctrl.stop()"  [label]="'Abort'"></app-ui--button>
-        </footer>
-
+        </div>
     </section>
 </ng-template>
 
-<ngx-fileupload [url]="'http://localhost:3000/upload'" [itemTemplate]="baseItemTemplate"></ngx-fileupload>
+<ngx-fileupload [itemTemplate]="uploadCard" [url]="'http://localhost:3000/upload'"></ngx-fileupload>
+
+<!-- fileuploads goes here -->
+<div class="card-group">
+    <!--
+        no event upload has been completed 
+        no event event has been canceled
+        we dont know upload has finished and should removed from list now
+    -->
+    <ngx-fileupload-item *ngFor="let upload of uploads" [template]="uploadCard" [upload]="upload" (changed)="stateChanged($event)"></ngx-fileupload-item>
+</div>
+
+<div [ngxFileUpload]="'http://localhost:3000/upload'" (add)="onUploadAdd($event)">
+    <p>drop files here or click on me</p>
+</div>

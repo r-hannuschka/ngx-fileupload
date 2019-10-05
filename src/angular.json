@@ -28,6 +28,7 @@
               "example/assets"
             ],
             "styles": [
+              "node_modules/bootstrap-scss/bootstrap.scss",
               "example/styles.scss"
             ],
             "scripts": []

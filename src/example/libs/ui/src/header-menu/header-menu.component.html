@@ -1,6 +1,7 @@
-<ul>
-    <li *ngFor="let item of items">
-        <a [routerLink]="[item.route]" routerLinkActive="router-link-active">
+<ul class="navbar-nav mr-auto">
+    <li class="navbar-brand">Ngx Fileupload</li>
+    <li *ngFor="let item of items" class="nav-item">
+        <a [routerLink]="[item.route]" routerLinkActive="router-link-active" class="nav-link">
             {{item.label}}
         </a>
     </li>

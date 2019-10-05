@@ -55,6 +55,9 @@ export class NgxFileUploadDirective implements OnDestroy {
     public formDataName = "file";
 
     @Input()
+    public disabled = false;
+
+    @Input()
     public validator: Validator | ValidationFn;
 
     /**
@@ -77,7 +80,7 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     constructor(
         private httpClient: HttpClient,
-        private renderer: Renderer2,
+        private renderer: Renderer2
     ) {
         this.add = new EventEmitter();
         this.fileSelect = this.createFieldInputField();
@@ -126,8 +129,8 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     @HostListener("dragover", ["$event"])
     public onFileDragOver(event: DragEvent) {
-        event.preventDefault();
         event.stopPropagation();
+        event.preventDefault();
     }
 
     /**
@@ -135,12 +138,13 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     @HostListener("drop", ["$event"])
     public onFileDrop(event: DragEvent) {
-
         event.stopPropagation();
         event.preventDefault();
 
-        const files = Array.from(event.dataTransfer.files);
-        this.handleFileSelect(files);
+        if (!this.disabled) {
+            const files = Array.from(event.dataTransfer.files);
+            this.handleFileSelect(files);
+        }
     }
 
     /**
@@ -153,7 +157,7 @@ export class NgxFileUploadDirective implements OnDestroy {
         event.stopPropagation();
         event.preventDefault();
 
-        if (!this.uploads.length) {
+        if (!this.disabled) {
             this.fileSelect.click();
         }
     }

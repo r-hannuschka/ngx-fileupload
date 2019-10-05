@@ -76,6 +76,7 @@ to fill our template with life there is a context to the template injected, cont
 
     <!-- add single action to upload a file -->
     <button (click)="ctrl.start()"></button>
+    <button (click)="ctrl.stop()"></button>
 </ng-template>
 
 <div class="fileupload list">
@@ -149,7 +150,7 @@ Since the component could load a custom template we have to provide some data / 
     |---|---|
     | retry | if an uploads failed you could retry upload the file, unless it is simply invalid |
     | start | starts request to upload a file to server |
-    | cancel | cancel upload, if upload is allready running it will stopped |
+    | stop | cancel upload, if upload is allready running it will stopped |
 
 ## Further reading
 

@@ -1,4 +1,4 @@
-import { Validator, ValidationErrors } from "lib/ngx-fileupload/validation/validation";
+import { Validator, ValidationErrors } from "@r-hannuschka/ngx-fileupload";
 
 export class OnlyZipValidator implements Validator {
 

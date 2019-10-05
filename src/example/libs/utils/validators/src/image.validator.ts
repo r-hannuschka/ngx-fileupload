@@ -1,4 +1,4 @@
-import { ValidationErrors } from "lib/ngx-fileupload/validation/validation";
+import { ValidationErrors } from "@r-hannuschka/ngx-fileupload";
 
 export function isImage(file: File): ValidationErrors {
 

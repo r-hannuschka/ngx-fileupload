@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" attr.width="{{data.height}}" attr.height={{data.height}}>
+    <circle class="progress-bar" attr.r="{{data.radius}}" attr.cx="{{data.cx}}" attr.cy="{{data.cy}}" fill="transparent"></circle>
+
+    <!-- progresssbar circle -->
+    <circle class="progress" 
+        attr.r="{{data.radius}}"
+        attr.cx="{{data.cx}}"
+        attr.cy="{{data.cy}}" 
+        attr.stroke-dasharray="{{data.circumferences}}"
+        attr.stroke-dashoffset="{{data.offset}}px"
+        fill="transparent"
+    >
+    </circle>
+    <text attr.x={{data.cx}} attr.y="{{data.cy}}" text-anchor="middle" font-size="16px" fill="black">{{data.progress}} %</text>
+</svg>

@@ -1,0 +1,13 @@
+:host {
+
+    ::ng-deep {
+        svg circle {
+            stroke-width: 1rem;
+            stroke: #666;
+        }
+
+        svg .progress {
+            stroke: #FF9F1E;
+        }
+    }
+}

@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { environment } from "../environments/environment";
-import { MaxUploadSizeValidator } from "./validators/max-size.validator";
-import { OnlyZipValidator } from "./validators/only-zip.validator";
-import { isImage } from "./validators/image.validator";
-import { Validator, ValidationBuilder } from "lib/public-api";
+// import { isImage, MaxUploadSizeValidator, OnlyZipValidator } from "@validation";
+// import { Validator, ValidationBuilder } from "@r-hannuschka/ngx-fileupload";
+import { MenuItem } from "@ngx-fileupload-example/data";
 
 @Component({
   selector: "app-root",
@@ -15,16 +14,16 @@ export class AppComponent implements OnInit {
 
     public disableAnimations = false;
 
-    public validator: Validator;
+    public menuItems: MenuItem[];
 
     constructor() {
         this.disableAnimations = environment.disableAnimations || false;
     }
 
     public ngOnInit() {
-        this.validator = ValidationBuilder.and(
-            ValidationBuilder.or(new OnlyZipValidator(), isImage),
-            new MaxUploadSizeValidator()
-        );
+        this.menuItems = [
+            {label: "Home", route: "dashboard"},
+            {label: "Item Template", route: "item-template" },
+        ];
     }
 }

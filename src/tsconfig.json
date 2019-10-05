@@ -22,20 +22,26 @@
       "@r-hannuschka/ngx-fileupload": [
         "lib/public-api"
       ],
+      "@utils/api/upload": [
+        "example/utils/validators"
+      ],
       "@utils/validators": [
         "example/utils/validators"
       ],
-      "@ngx-fileupload-example/dashboard": [
-        "example/libs/dashboard"
+      "@ngx-fileupload-example/page/dashboard": [
+        "example/libs/pages/dashboard"
       ],
-      "@ngx-fileupload-example/item-template": [
-        "example/libs/item-template"
+      "@ngx-fileupload-example/page/item-template": [
+        "example/libs/pages/item-template"
       ],
       "@ngx-fileupload-example/ui": [
         "example/libs/ui"
       ],
       "@ngx-fileupload-example/data": [
         "example/libs/data"
+      ],
+      "@ngx-fileupload-example/utils/*": [
+        "example/libs/utils/*"
       ]
     }
   }

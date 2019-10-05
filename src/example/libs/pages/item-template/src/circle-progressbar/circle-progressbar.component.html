@@ -1,0 +1,25 @@
+<!-- template for each upload -->
+<ng-template #baseItemTemplate let-upload="data" let-ctrl="ctrl">
+    <section>
+
+        <header>
+            <span class="title">File: {{upload.name}} </span>
+            <span class="state">State: {{upload.state}}</span>
+        </header>
+
+        <div class="progress-wrapper">
+            <app-ui--progressbar-circle 
+                [circleData]="{height: 100, width: 100, radius: 40}"
+                [progress]="upload.progress" >
+            </app-ui--progressbar-circle>
+        </div>
+
+        <footer>
+            <app-ui--button (dispatch)="ctrl.start()" [label]="'Upload'"></app-ui--button>
+            <app-ui--button (dispatch)="ctrl.stop()"  [label]="'Abort'"></app-ui--button>
+        </footer>
+
+    </section>
+</ng-template>
+
+<ngx-fileupload [url]="'http://localhost:3000/upload'" [itemTemplate]="baseItemTemplate"></ngx-fileupload>

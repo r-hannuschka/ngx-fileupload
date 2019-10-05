@@ -1,7 +1,8 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, BehaviorSubject, Observable } from "rxjs";
 import { takeUntil, filter } from "rxjs/operators";
-import { UploadModel, UploadState, UploadResponse} from "../model/upload";
+import { UploadModel, UploadState, UploadResponse, UploadData} from "../model/upload";
+import { Upload } from "../api/upload";
 
 /**
  * Upload Options
@@ -34,7 +35,7 @@ export interface UploadOptions {
 /**
  * represents a single file upload
  */
-export class FileUpload {
+export class FileUpload implements Upload {
 
     /**
      * if cancel$ emits true, current upload will stopped
@@ -114,6 +115,10 @@ export class FileUpload {
      */
     public get change(): Observable<UploadModel> {
         return this.upload$.asObservable();
+    }
+
+    public get data(): UploadData {
+        return this.upload.toJson();
     }
 
     /**

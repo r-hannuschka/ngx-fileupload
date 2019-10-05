@@ -1,10 +1,12 @@
-import { Component, TemplateRef, Input } from "@angular/core";
+import { Component, TemplateRef, Input, ViewChild } from "@angular/core";
 import { trigger, state, style, animate, transition } from "@angular/animations";
 import { delay } from "rxjs/operators";
 import { of } from "rxjs";
-import { UploadModel, UploadState } from "../model/upload";
-import { FileUpload } from "../services/file-upload";
 import { FileUploadItemContext } from "./ngx-fileupload-item.component";
+
+import { Upload } from "../api/upload";
+import { UploadState } from "../model/upload";
+import { NgxFileUploadDirective } from "../directives/ngx-fileuplad";
 import { Validator, ValidationFn } from "../validation/validation";
 
 /**
@@ -48,6 +50,9 @@ import { Validator, ValidationFn } from "../validation/validation";
 })
 export class NgxFileUploadComponent {
 
+    @ViewChild(NgxFileUploadDirective, {read: NgxFileUploadDirective, static: false})
+    private fileUploadDirective: NgxFileUploadDirective;
+
     /**
      * set custom template, will pass through to [NgxFileUploadItem]{@link NgxFileUploadItemComponent.html#itemTpl}
      */
@@ -83,7 +88,7 @@ export class NgxFileUploadComponent {
     /**
      * all uploads which has been added in [NgxFileUploadDirective]{@link ../directives/NgxFileUploadDirective.html#add}
      */
-    public uploads: FileUpload[] = [];
+    public uploads: Upload[] = [];
 
     /**
      * flag list
@@ -96,17 +101,17 @@ export class NgxFileUploadComponent {
      * new uploads has been added we need to care about this to remove
      * finished uploads from list
      */
-    public onUploadsAdd(uploads: FileUpload[]) {
+    public onUploadsAdd(uploads: Upload[]) {
         this.uploads.push(...uploads);
-        this.showList = true;
+        this.showList = this.uploads.length > 0;
     }
 
     /**
      * if state is canceled or uploaded remove it
      */
-    public handleUploadChange(upload: UploadModel, fileUpload: FileUpload) {
-        if (upload.state === UploadState.CANCELED || upload.state === UploadState.UPLOADED) {
-            this.removeUpload(fileUpload);
+    public handleUploadChange(upload: Upload) {
+        if (upload.data.state === UploadState.CANCELED || upload.data.state === UploadState.UPLOADED) {
+            this.removeUpload(upload);
         }
     }
 
@@ -120,7 +125,7 @@ export class NgxFileUploadComponent {
     /**
      * remove upload from list but wait for 1 sec before it will be removed
      */
-    private removeUpload(upload: FileUpload) {
+    private removeUpload(upload: Upload) {
         of(upload).pipe(delay(1000))
             .subscribe({
                 next: () => {

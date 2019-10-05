@@ -4,6 +4,7 @@ import { FileUpload } from "../services/file-upload";
 import { UploadControl } from "../services/upload-control";
 import { UploadModel, UploadData } from "../model/upload";
 import { Subscription } from "rxjs";
+import { Upload } from "../api/upload";
 
 export interface FileUploadItemContext {
     data: UploadData;
@@ -29,7 +30,7 @@ export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
      * emit event if upload state has been changed
      */
     @Output()
-    public changed: EventEmitter<UploadModel> = new EventEmitter();
+    public changed: EventEmitter<Upload> = new EventEmitter();
 
     /**
      * template context which is bound to rendered template
@@ -94,7 +95,7 @@ export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (upload: UploadModel) => {
                     this.context.data = upload.toJson();
-                    this.changed.emit(upload);
+                    this.changed.emit(this.fileUpload);
                 }
             });
     }

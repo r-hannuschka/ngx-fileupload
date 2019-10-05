@@ -10,3 +10,4 @@ export * from "./ngx-fileupload/components/ngx-fileupload.component";
 export * from "./ngx-fileupload/validation/validation";
 export * from "./ngx-fileupload/validation/validation.builder";
 export * from "./ngx-fileupload/validation/grouped.validator";
+export * from "./ngx-fileupload/api/upload";

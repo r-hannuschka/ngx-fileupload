@@ -47,7 +47,6 @@
                 </li>
             </ul>
 
-            <!-- show upload errors -->
             <ul *ngIf="upload.state === 'error'" class="upload-item--response-errors">
                 <li *ngFor="let error of upload.response.errors | toArray" class="message error">
                     {{error}}

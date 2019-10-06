@@ -2,12 +2,10 @@ import { Component } from "@angular/core";
 import { Upload } from "@r-hannuschka/ngx-fileupload";
 
 @Component({
-    selector: "app-item-template--circle-progressbar",
-    templateUrl: "circle-progressbar.component.html",
-    styleUrls: ["./circle-progressbar.component.scss"]
+    selector: "app-item-template--base",
+    templateUrl: "base-item.component.html"
 })
-
-export class CircleProgressbarComponent {
+export class BaseItemComponent {
 
     public uploads: Upload[] = [];
 

@@ -1,13 +1,10 @@
-import { Component, TemplateRef, Input, ViewChild } from "@angular/core";
-import { trigger, state, style, animate, transition } from "@angular/animations";
+import { Component, TemplateRef, Input } from "@angular/core";
 import { delay } from "rxjs/operators";
 import { of } from "rxjs";
-import { FileUploadItemContext } from "./ngx-fileupload-item.component";
 
-import { Upload } from "../api/upload";
-import { UploadState } from "../model/upload";
-import { NgxFileUploadDirective } from "../directives/ngx-fileuplad";
-import { Validator, ValidationFn } from "../validation/validation";
+import { Upload } from "../../data/api/upload";
+import { FileUploadItemContext } from "@lib/ui";
+import { Validator, ValidationFn } from "@lib/data/api/validation";
 
 /**
  * NgxFileUploadComponent is a wrapper contain NgxFileUploadDirective and NgxFileUploadComponent
@@ -34,24 +31,10 @@ import { Validator, ValidationFn } from "../validation/validation";
  */
 @Component({
     selector: "ngx-fileupload",
-    styleUrls: ["./ngx-fileupload.component.scss"],
-    templateUrl: "ngx-fileupload.component.html",
-    animations: [
-        trigger(
-            "fadeInOut",
-            [
-                state("void", style({
-                    opacity: 0
-                })),
-                transition("void <=> *", animate(250)),
-            ]
-        ),
-    ],
+    styleUrls: ["./upload-view.scss"],
+    templateUrl: "upload-view.html"
 })
-export class NgxFileUploadComponent {
-
-    @ViewChild(NgxFileUploadDirective, {read: NgxFileUploadDirective, static: false})
-    private fileUploadDirective: NgxFileUploadDirective;
+export class UploadViewComponent {
 
     /**
      * set custom template, will pass through to [NgxFileUploadItem]{@link NgxFileUploadItemComponent.html#itemTpl}
@@ -95,8 +78,6 @@ export class NgxFileUploadComponent {
      */
     public showList = false;
 
-    private itemsTotal = 0;
-
     /**
      * new uploads has been added we need to care about this to remove
      * finished uploads from list
@@ -109,17 +90,8 @@ export class NgxFileUploadComponent {
     /**
      * if state is canceled or uploaded remove it
      */
-    public handleUploadChange(upload: Upload) {
-        if (upload.data.state === UploadState.CANCELED || upload.data.state === UploadState.UPLOADED) {
-            this.removeUpload(upload);
-        }
-    }
-
-    public onAnimationDone($event) {
-        this.itemsTotal += $event.toState === "void" ? 1 : -1;
-        if (this.itemsTotal === 0) {
-            this.showList = false;
-        }
+    public onUploadCompleted(upload: Upload) {
+        this.removeUpload(upload);
     }
 
     /**
@@ -131,6 +103,7 @@ export class NgxFileUploadComponent {
                 next: () => {
                     const idx = this.uploads.indexOf(upload);
                     this.uploads.splice(idx, 1);
+                    this.showList = this.uploads.length > 0;
                 }
             });
     }

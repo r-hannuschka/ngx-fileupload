@@ -7,7 +7,7 @@ import { NgMathPipesModule } from "angular-pipes";
 import { NgxFileUploadItemComponent, UploadModel, FileUploadItemContext } from "lib/public-api";
 import { FileUploadMock } from "../mock/upload-file.mock";
 import { By } from "@angular/platform-browser";
-import { ToArrayPipe } from "lib/ngx-fileupload/pipes/to-array.pipe";
+import { ToArrayPipe } from "lib/ngx-fileupload/utils/to-array.pipe";
 
 @Component({
     template: `

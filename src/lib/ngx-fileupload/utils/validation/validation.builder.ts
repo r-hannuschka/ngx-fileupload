@@ -1,4 +1,4 @@
-import { Validator, ValidationFn } from "./validation";
+import { Validator, ValidationFn } from "@lib/data/api/validation";
 import { GroupedValidator } from "./grouped.validator";
 import { AndValidator } from "./and.validator";
 import { OrValidator } from "./or.validator";

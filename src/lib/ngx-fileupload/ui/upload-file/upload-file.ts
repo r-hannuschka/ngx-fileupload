@@ -2,9 +2,10 @@ import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Render
 import { HttpClient } from "@angular/common/http";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { UploadModel, UploadState } from "../model/upload";
-import { FileUpload } from "../services/file-upload";
-import { Validator, ValidationFn } from "../validation/validation";
+
+import { Validator, ValidationFn, UploadState } from "@lib/data/api";
+import { UploadModel } from "@lib/data/upload.model";
+import { FileUpload } from "@lib/utils/http/file-upload";
 
 /**
  * directive to add uploads with drag / drop
@@ -15,10 +16,10 @@ import { Validator, ValidationFn } from "../validation/validation";
  * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: "[ngxFileUpload]",
+  selector: "[ngxFileUploadFile], [ngxFileUpload]",
   exportAs: "ngxFileUploadRef"
 })
-export class NgxFileUploadDirective implements OnDestroy {
+export class UploadFileDirective implements OnDestroy {
 
     /**
      * upload has been added
@@ -30,6 +31,11 @@ export class NgxFileUploadDirective implements OnDestroy {
     @Output()
     public add: EventEmitter<FileUpload[]>;
 
+    @Output()
+    public completed: EventEmitter<FileUpload>;
+
+    public url: string;
+
     /**
      * url which should be used as endpoint for the file upload
      * this field is mandatory
@@ -37,8 +43,18 @@ export class NgxFileUploadDirective implements OnDestroy {
      * @example
      * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
      */
+    @Input("ngxFileUploadFile")
+    public set ngxFileUploadFile(url: string) {
+        this.url = url;
+    }
+
+    /**
+     * @deprecated use [ngxFileUploadFile instead]
+     */
     @Input("ngxFileUpload")
-    public url: string;
+    public set ngxFileUpload(url: string) {
+        this.url = url;
+    }
 
     /**
      * if set to false upload post request body will use
@@ -48,7 +64,7 @@ export class NgxFileUploadDirective implements OnDestroy {
     public useFormData = true;
 
     /**
-     * form data field name with which form data will be send
+     * form data field name with which form >data will be send
      * by default this will be file
      */
     @Input()
@@ -83,6 +99,8 @@ export class NgxFileUploadDirective implements OnDestroy {
         private renderer: Renderer2
     ) {
         this.add = new EventEmitter();
+        this.completed = new EventEmitter();
+
         this.fileSelect = this.createFieldInputField();
     }
 
@@ -177,6 +195,8 @@ export class NgxFileUploadDirective implements OnDestroy {
      *
      * remove uplaod from uploads repository if upload completed
      * or canceled
+     *
+     * @todo should be an action
      */
     private createUpload(file: File): FileUpload {
         const uploadOptions = {
@@ -201,6 +221,7 @@ export class NgxFileUploadDirective implements OnDestroy {
             .subscribe({
                 complete: () => {
                     this.uploads.splice(this.uploads.indexOf(upload), 1);
+                    this.completed.emit(upload);
                     sub.unsubscribe();
                 }
             });
@@ -211,6 +232,8 @@ export class NgxFileUploadDirective implements OnDestroy {
     /**
      * pre validate upload, if validation result is invalid
      * fill could not uploaded anymore
+     *
+     * @todo should be an action ?
      */
     private preValidateUpload(upload: UploadModel) {
         const result = "validate" in this.validator ? this.validator.validate(upload.file) : this.validator(upload.file);

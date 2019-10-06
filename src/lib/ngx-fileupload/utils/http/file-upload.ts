@@ -1,8 +1,8 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, BehaviorSubject, Observable } from "rxjs";
 import { takeUntil, filter } from "rxjs/operators";
-import { UploadModel, UploadState, UploadResponse, UploadData} from "../model/upload";
-import { Upload } from "../api/upload";
+import { UploadState, UploadResponse, UploadData, Upload} from "@lib/data/api";
+import { UploadModel } from "@lib/data/upload.model";
 
 /**
  * Upload Options
@@ -114,6 +114,7 @@ export class FileUpload implements Upload {
      * has been changed
      */
     public get change(): Observable<UploadModel> {
+        /** should be written into model or store ? */
         return this.upload$.asObservable();
     }
 
@@ -140,7 +141,6 @@ export class FileUpload implements Upload {
      * build form data and send request to server
      */
     private uploadFile(): Observable<HttpEvent<string>> {
-
         const uploadBody = this.createUploadBody();
         return this.http.post<string>(this.options.url, uploadBody, {
             reportProgress: true,

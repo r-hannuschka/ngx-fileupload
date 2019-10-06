@@ -1,4 +1,4 @@
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpEventType, HttpResponse } from "@angular/common/http";
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpEventType, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Observable, interval } from "rxjs";
 import { Injectable } from "@angular/core";
 import { takeWhile, map, finalize } from "rxjs/operators";
@@ -28,7 +28,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
             observer.next({type: HttpEventType.Sent});
 
             /** start fake upload */
-            const chunkSize = 1024 * 16;
+            const chunkSize = 2048 * 16;
             const upload: FakeUpload = {
                 state: "progress",
                 uploaded: 0,
@@ -54,10 +54,20 @@ export class FakeUploadInterceptor implements HttpInterceptor {
                     }
                 }),
                 finalize(() => {
+
+                    const error: HttpErrorResponse = new HttpErrorResponse({
+                        status: 401,
+                        error: ["no access"],
+                        statusText: "you are not allowed to upload anything."
+                    });
+                    observer.error(error);
+
+                    /*
                     const response = new HttpResponse({
-                        status: 201
+                        status: 401
                     });
                     observer.next(response);
+                    */
                 })
             ).subscribe();
         });

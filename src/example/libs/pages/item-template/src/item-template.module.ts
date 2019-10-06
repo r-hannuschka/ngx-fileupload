@@ -6,6 +6,7 @@ import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 import { CommonModule } from "@angular/common";
 import { UiModule } from "@ngx-fileupload-example/ui";
 
+import { BaseItemComponent } from "./base/base-item.component";
 import { CircleProgressbarComponent } from "./circle-progressbar/circle-progressbar.component";
 
 @NgModule({
@@ -20,7 +21,8 @@ import { CircleProgressbarComponent } from "./circle-progressbar/circle-progress
     ],
     declarations: [
         ItemTemplateComponent,
-        CircleProgressbarComponent
+        CircleProgressbarComponent,
+        BaseItemComponent
     ],
     entryComponents: [
         ItemTemplateComponent

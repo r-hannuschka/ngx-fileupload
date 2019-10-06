@@ -1,4 +1,4 @@
-import { FileUpload } from "./file-upload";
+import { FileUpload } from "./http/file-upload";
 import { timer } from "rxjs";
 
 /**

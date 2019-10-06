@@ -1,0 +1,27 @@
+<div class="btn-toolbar mb-3">
+
+    <div class="input-group ml-auto"
+        [ngxFileUploadFile]="'http://localhost:3000/upload'"
+        (add)="onUploadAdd($event)"
+        (completed)="uploadCompleted($event)" #uploadFileFieldRef="ngxFileUploadRef"
+    >
+        <div class="input-group-prepend">
+            <div class="input-group-text" id="btnGroupAddon">Files</div>
+        </div>
+        <input type="text" class="form-control" disabled="disabled" placeholder="Drag Drop or Click">
+    </div>
+
+    <div class="btn-group ml-3">
+        <button type="button" (click)="uploadFileFieldRef.uploadAll()" class="btn btn-sm btn-secondary">Upload All</button>
+        <button type="button" (click)="uploadFileFieldRef.cancelAll()" class="btn btn-sm btn-secondary">Cancel All</button>
+        <button type="button" (click)="uploadFileFieldRef.cleanAll()"  class="btn btn-sm btn-secondary">Clean Up</button>
+    </div>
+</div>
+
+<!-- fileuploads goes here -->
+<div class="upload-items">
+    <ng-container *ngFor="let upload of uploads">
+        <!-- completed lieber nach oben ziehen -->
+        <ngx-fileupload-item [upload]="upload" class="mb-3"></ngx-fileupload-item>
+    </ng-container>
+</div>

@@ -1,5 +1,36 @@
 import { Observable } from "rxjs";
-import { UploadModel, UploadData } from "../model/upload";
+import { UploadModel } from "../upload.model";
+import { ValidationErrors } from "./validation";
+
+export enum UploadState {
+    QUEUED    = "queued",
+    START     = "start",
+    PROGRESS  = "progress",
+    UPLOADED  = "uploaded",
+    CANCELED  = "canceled",
+    ERROR     = "error",
+    INVALID   = "invalid"
+}
+
+export interface UploadResponse {
+    success: boolean;
+    errors: any;
+    body: any;
+}
+
+export interface UploadValidation {
+    errors: ValidationErrors | null;
+}
+
+export interface UploadData {
+    name: string;
+    progress: number;
+    response: UploadResponse;
+    size: number;
+    state: UploadState;
+    uploaded: number;
+    validation: UploadValidation;
+}
 
 export interface Upload {
 

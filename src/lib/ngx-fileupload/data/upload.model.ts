@@ -1,38 +1,5 @@
-import { ValidationErrors } from "../validation/validation";
-
-export enum UploadState {
-    QUEUED    = "queued",
-    START     = "start",
-    PROGRESS  = "progress",
-    UPLOADED  = "uploaded",
-    CANCELED  = "canceled",
-    ERROR     = "error",
-    INVALID   = "invalid"
-}
-
-export interface UploadResponse {
-    success: boolean;
-    errors: any;
-    body: any;
-}
-
-export interface UploadValidation {
-    errors: ValidationErrors | null;
-}
-
-export interface UploadData {
-    name: string;
-    progress: number;
-    response: UploadResponse;
-    size: number;
-    state: UploadState;
-    uploaded: number;
-    validation: UploadValidation;
-}
-
-export interface IDataNode {
-    [key: string]: any;
-}
+import { ValidationErrors } from "./api/validation";
+import { UploadState, UploadResponse, UploadData } from "./api/upload";
 
 /**
  * Represents a file which will be uploaded

@@ -1,10 +1,10 @@
 
-import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener, OnDestroy } from "@angular/core";
-import { FileUpload } from "../services/file-upload";
-import { UploadControl } from "../services/upload-control";
-import { UploadModel, UploadData, UploadState } from "../model/upload";
+import { Component, OnInit, Input, ViewChild, TemplateRef, HostListener, OnDestroy } from "@angular/core";
+import { FileUpload } from "@lib/utils/http/file-upload";
+import { UploadControl } from "@lib/utils/upload-control";
+import { UploadModel } from "@lib/data/upload.model";
+import { UploadData } from "@lib/data/api";
 import { Subscription } from "rxjs";
-import { Upload } from "../api/upload";
 
 export interface FileUploadItemContext {
     data: UploadData;
@@ -16,27 +16,15 @@ export interface FileUploadItemContext {
  */
 @Component({
     selector: "ngx-fileupload-item",
-    templateUrl: "ngx-fileupload-item.component.html",
-    styleUrls: ["./ngx-fileupload-item.component.scss"],
+    templateUrl: "upload-item.component.html",
+    styleUrls: ["./upload-item.component.scss"],
 })
-export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
+export class UploadItemComponent implements OnInit, OnDestroy {
 
     /**
      * item template which should rendered to display upload data
      */
     public itemTpl: TemplateRef<FileUploadItemContext>;
-
-    /**
-     * emit event if upload state has been changed
-     */
-    @Output()
-    public changed: EventEmitter<Upload> = new EventEmitter();
-
-    /**
-     * emit event if upload state has been changed
-     */
-    @Output()
-    public completed: EventEmitter<Upload> = new EventEmitter();
 
     /**
      * template context which is bound to rendered template
@@ -68,17 +56,6 @@ export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * ensure all click events will canceled
-     * so we dont affect anything other
-     */
-    @HostListener("click", ["$event"])
-    public onItemClick(event: MouseEvent) {
-        event.stopPropagation();
-        event.preventDefault();
-        event.stopImmediatePropagation();
-    }
-
-    /**
      * set template which should be used for upload items, if no TemplateRef is passed
      * it will fallback to [defaultUploadItem]{@link #template}
      */
@@ -91,6 +68,17 @@ export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * ensure all click events will canceled
+     * so we dont affect anything other
+     */
+    @HostListener("click", ["$event"])
+    public onItemClick(event: MouseEvent) {
+        event.stopPropagation();
+        event.preventDefault();
+        event.stopImmediatePropagation();
+    }
+
+    /**
      * register on upload change event to get current informations from upload
      * and pass to template context to render them
      *
@@ -99,15 +87,7 @@ export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.changeSub = this.fileUpload.change
             .subscribe({
-                next: (upload: UploadModel) => {
-                    this.context.data = upload.toJson();
-
-                    this.changed.emit(this.fileUpload);
-
-                    if (upload.state === UploadState.CANCELED || upload.state === UploadState.UPLOADED) {
-                        this.completed.emit(this.fileUpload);
-                    }
-                }
+                next: (upload: UploadModel) => this.context.data = upload.toJson()
             });
     }
 

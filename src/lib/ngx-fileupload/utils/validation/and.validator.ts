@@ -1,5 +1,5 @@
 import { GroupedValidator } from "./grouped.validator";
-import { ValidationErrors } from "./validation";
+import { ValidationErrors } from "@lib/data/api";
 
 export class AndValidator extends GroupedValidator {
 

@@ -1,7 +1,7 @@
-$ngx-fileupload-icons--font-path: '../assets/fonts' !default;
+$ngx-fileupload-icons--font-path: '../../assets/fonts' !default;
 
-@import '../assets//scss/variables';
-@import '../assets/scss/icons';
+@import '../../assets//scss/variables';
+@import '../../assets/scss/icons';
 
 :host {
 
@@ -56,7 +56,7 @@ $ngx-fileupload-icons--font-path: '../assets/fonts' !default;
 
         .progressbar {
             flex: 1;
-            height: .75rem;
+            height: 1rem;
             border-radius: .5rem;
             overflow: hidden;
             padding: 1px;
@@ -68,7 +68,8 @@ $ngx-fileupload-icons--font-path: '../assets/fonts' !default;
             position: absolute;
             z-index: 5;
             left: 50%;
-            transform: translateX(-50%);
+            top: 50%;
+            transform: translate(-50%, -50%);
             font-size: .8rem;
         }
 

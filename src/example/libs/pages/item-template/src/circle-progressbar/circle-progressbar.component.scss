@@ -1,0 +1,40 @@
+:host {
+
+    ngx-fileupload-item {
+        display: block;
+    }
+
+    .upload-items .details {
+
+        dl {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: .8rem;
+        }
+
+        dt {
+            flex: 0 0 4rem;
+        }
+
+        dd {
+            flex: 0 0 calc(100% - 4rem);
+            margin-bottom: 0;
+        }
+    }
+
+    .upload-items .progressbar {
+        display: flex;
+        align-items: center;
+    }
+
+    ngx-fileupload-item::ng-deep .progressbar {
+        svg circle {
+            stroke-width: .2rem;
+        }
+
+        svg text {
+            font-size: .7rem;
+            transform: translateY(.35rem);
+        }
+    }
+}

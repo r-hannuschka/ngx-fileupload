@@ -21,7 +21,8 @@ import { ToArrayPipe } from "./utils/to-array.pipe";
     exports: [
         UploadFileDirective,
         UploadItemComponent,
-        UploadViewComponent
+        UploadViewComponent,
+        ToArrayPipe
     ]
 })
 export class NgxFileUploadModule {}

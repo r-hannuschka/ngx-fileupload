@@ -9,6 +9,9 @@ export class ButtonComponent implements OnInit {
     constructor() { }
 
     @Input()
+    public icon: string;
+
+    @Input()
     public label: string;
 
     @Output()

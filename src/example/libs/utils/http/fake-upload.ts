@@ -28,7 +28,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
             observer.next({type: HttpEventType.Sent});
 
             /** start fake upload */
-            const chunkSize = 2048 * 16;
+            const chunkSize = 12048 * 16;
             const upload: FakeUpload = {
                 state: "progress",
                 uploaded: 0,

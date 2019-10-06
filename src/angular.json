@@ -31,6 +31,12 @@
               "node_modules/bootstrap-scss/bootstrap.scss",
               "example/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "example/assets/scss",
+                "example/assets"
+              ]
+            },
             "scripts": []
           },
           "configurations": {

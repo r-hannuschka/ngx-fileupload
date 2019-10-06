@@ -26,8 +26,6 @@
     </section>
 </ng-template>
 
-<ngx-fileupload [itemTemplate]="uploadCard" [url]="'http://localhost:3000/upload'"></ngx-fileupload>
-
 <!-- fileuploads goes here -->
 <div class="card-group">
     <!--
@@ -35,7 +33,7 @@
         no event event has been canceled
         we dont know upload has finished and should removed from list now
     -->
-    <ngx-fileupload-item *ngFor="let upload of uploads" [template]="uploadCard" [upload]="upload" (changed)="stateChanged($event)"></ngx-fileupload-item>
+    <ngx-fileupload-item *ngFor="let upload of uploads" [template]="uploadCard" [upload]="upload" (completed)="uploadCompleted($event)"></ngx-fileupload-item>
 </div>
 
 <div [ngxFileUpload]="'http://localhost:3000/upload'" (add)="onUploadAdd($event)">

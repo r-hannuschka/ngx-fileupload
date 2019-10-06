@@ -2,7 +2,7 @@
 import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output, HostListener, OnDestroy } from "@angular/core";
 import { FileUpload } from "../services/file-upload";
 import { UploadControl } from "../services/upload-control";
-import { UploadModel, UploadData } from "../model/upload";
+import { UploadModel, UploadData, UploadState } from "../model/upload";
 import { Subscription } from "rxjs";
 import { Upload } from "../api/upload";
 
@@ -31,6 +31,12 @@ export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
      */
     @Output()
     public changed: EventEmitter<Upload> = new EventEmitter();
+
+    /**
+     * emit event if upload state has been changed
+     */
+    @Output()
+    public completed: EventEmitter<Upload> = new EventEmitter();
 
     /**
      * template context which is bound to rendered template
@@ -95,7 +101,12 @@ export class NgxFileUploadItemComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (upload: UploadModel) => {
                     this.context.data = upload.toJson();
+
                     this.changed.emit(this.fileUpload);
+
+                    if (upload.state === UploadState.CANCELED || upload.state === UploadState.UPLOADED) {
+                        this.completed.emit(this.fileUpload);
+                    }
                 }
             });
     }

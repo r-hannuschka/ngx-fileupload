@@ -14,16 +14,7 @@ export class CircleProgressbarComponent {
         this.uploads = [...this.uploads, ...uploads];
     }
 
-    public stateChanged(changedUpload: Upload) {
-
-        let uploadDone = changedUpload.data.state === UploadState.CANCELED;
-        uploadDone     = uploadDone || changedUpload.data.state === UploadState.UPLOADED;
-
-        /**
-         * remove upload from list
-         */
-        if (uploadDone) {
-            this.uploads = this.uploads.filter((upload) => changedUpload !== upload);
-        }
+    public uploadCompleted(completed: Upload) {
+        this.uploads = this.uploads.filter((upload) => completed !== upload);
     }
 }

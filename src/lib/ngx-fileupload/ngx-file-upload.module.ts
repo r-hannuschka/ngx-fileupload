@@ -4,14 +4,12 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgMathPipesModule } from "angular-pipes";
 
 import { UploadViewComponent, UploadFileDirective, UploadItemComponent } from "@lib/ui";
-import { ToArrayPipe } from "./utils/to-array.pipe";
 
 @NgModule({
     declarations: [
         UploadFileDirective,
         UploadItemComponent,
         UploadViewComponent,
-        ToArrayPipe,
     ],
     imports: [
         CommonModule,
@@ -21,8 +19,7 @@ import { ToArrayPipe } from "./utils/to-array.pipe";
     exports: [
         UploadFileDirective,
         UploadItemComponent,
-        UploadViewComponent,
-        ToArrayPipe
+        UploadViewComponent
     ]
 })
 export class NgxFileUploadModule {}

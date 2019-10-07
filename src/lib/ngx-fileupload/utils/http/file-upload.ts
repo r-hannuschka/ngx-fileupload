@@ -221,12 +221,17 @@ export class FileUpload implements Upload {
      * this array, or a string or anything else. If not see fallback.
      */
     private handleError(response: HttpErrorResponse) {
+
+        let errors: any[] = response.error instanceof ProgressEvent ? response.message : response.error;
+        errors = Array.isArray(errors) ? errors : [errors];
+
         const uploadResponse: UploadResponse = {
             success: false,
             body: null,
-            errors: response.error instanceof ProgressEvent ? response.message : response.error
+            errors
         };
-        this.upload.state = UploadState.ERROR;
+
+        this.upload.state    = UploadState.ERROR;
         this.upload.response = uploadResponse;
         this.notifyObservers();
     }

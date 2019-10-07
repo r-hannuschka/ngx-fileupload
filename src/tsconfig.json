@@ -32,7 +32,7 @@
         "example/utils/validators"
       ],
       "@ngx-fileupload-example/utils/validators": [
-        "example/utils/validators"
+        "example/libs/utils/validators"
       ],
       "@ngx-fileupload-example/page/dashboard": [
         "example/libs/pages/dashboard"
@@ -54,6 +54,9 @@
        */
       "@lib/utils/*": [
         "./lib/ngx-fileupload/utils/*"
+      ],
+      "@lib/utils/validation": [
+        "./lib/ngx-fileupload/utils/validation"
       ],
       "@lib/data/*": [
         "./lib/ngx-fileupload/data/*"

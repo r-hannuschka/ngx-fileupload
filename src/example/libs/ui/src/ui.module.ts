@@ -7,6 +7,7 @@ import { ButtonComponent } from "./button/button.component";
 import { ProgressbarCircleComponent } from "./progressbar-circle/progressbar-circle.component";
 import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 import { UploadToolbarComponent } from "./upload-toolbar/upload-toolbar.component";
+import { UploadItemSimpleComponent } from "./upload-item-simple/upload-item-simple.component";
 
 @NgModule({
     imports: [
@@ -19,6 +20,7 @@ import { UploadToolbarComponent } from "./upload-toolbar/upload-toolbar.componen
         HeaderComponent,
         ProgressbarCircleComponent,
         UploadToolbarComponent,
+        UploadItemSimpleComponent
     ],
     declarations: [
         ButtonComponent,
@@ -26,6 +28,7 @@ import { UploadToolbarComponent } from "./upload-toolbar/upload-toolbar.componen
         HeaderMenuComponent,
         ProgressbarCircleComponent,
         UploadToolbarComponent,
+        UploadItemSimpleComponent
     ],
     providers: [],
 })

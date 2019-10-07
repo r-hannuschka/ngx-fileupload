@@ -4,7 +4,6 @@ import { Upload } from "@r-hannuschka/ngx-fileupload";
 @Component({
     selector: "app-item-template--error",
     templateUrl: "error-message.component.html",
-    styleUrls: ["./error-message.component.scss"]
 })
 
 export class ErrorMessageComponent {

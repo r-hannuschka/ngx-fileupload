@@ -2,7 +2,8 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 
-import { UploadViewComponent, UploadFileDirective, UploadItemComponent, FileSizePipe } from "@lib/ui";
+import { UploadViewComponent, UploadFileDirective, UploadItemComponent } from "@lib/ui";
+import { FileSizePipe } from "@lib/utils/ui";
 
 @NgModule({
     declarations: [

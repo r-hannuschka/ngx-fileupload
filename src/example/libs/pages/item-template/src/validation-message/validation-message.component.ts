@@ -5,7 +5,6 @@ import { MaxUploadSizeValidator, OnlyZipValidator } from "@ngx-fileupload-exampl
 @Component({
     selector: "app-item-template--validation",
     templateUrl: "validation-message.component.html",
-    styleUrls: ["./validation-message.component.scss"]
 })
 
 export class ValidationMessageComponent implements OnInit {

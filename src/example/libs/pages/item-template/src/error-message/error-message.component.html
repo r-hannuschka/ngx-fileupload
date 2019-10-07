@@ -1,34 +1,6 @@
 <!-- item template for each upload -->
 <ng-template #uploadCard let-upload="data" let-ctrl="ctrl">
-
-    <div class="row">
-        <div class="col details">
-            <span>{{upload.name}}</span>
-            <span>{{upload.progress}} %</span>
-
-            <!-- display validation errors here -->
-            <ul *ngIf="upload.state === 'error'" class="errors">
-                <li *ngFor="let error of upload.response.errors" class="message error">
-                    {{error}}
-                </li>
-            </ul>
-        </div>
-        <div class="col col-auto actions">
-            <div class="btn-group">
-                <app-ui--button (dispatch)="ctrl.start()" [label]="'Upload'" *ngIf="upload.state !== 'error'">
-                    <i class="icon-left icon-upload"></i>
-                </app-ui--button>
-
-                <app-ui--button (dispatch)="ctrl.retry()" [label]="'Retry'" *ngIf="upload.state === 'error'">
-                    <i class="icon-left icon-arrow-sync"></i>
-                </app-ui--button>
-
-                <app-ui--button (dispatch)="ctrl.stop()" [label]="'Abort'">
-                    <i class="icon-left icon-cancel-outline"></i>
-                </app-ui--button>
-            </div>
-        </div>
-    </div>
+    <app-ui--upload-item-simple [control]="ctrl" [upload]="upload"></app-ui--upload-item-simple>
 </ng-template>
 
 <h3>Display Upload Error Messages</h3>

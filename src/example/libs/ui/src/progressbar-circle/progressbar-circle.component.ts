@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { ProgressbarCircle } from "@ngx-fileupload-example/data";
+import { ProgressbarCircle } from "@ngx-fileupload-example/data/base/data";
 
 @Component({
     selector: "app-ui--progressbar-circle",

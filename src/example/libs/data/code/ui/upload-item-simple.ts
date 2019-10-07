@@ -1,3 +1,4 @@
+export const HTML = `
 <div class="row">
     <div class="col">
         <ul class="details">
@@ -42,3 +43,27 @@
         </div>
     </div>
 </div>
+`;
+
+export const TYPESCRIPT = `
+import { Component, Input } from "@angular/core";
+import { UploadData, UploadControl } from "@r-hannuschka/ngx-fileupload";
+
+@Component({
+    selector: "app-ui--upload-item-simple",
+    templateUrl: "upload-item-simple.component.html",
+    styleUrls: ["./upload-item-simple.component.scss"]
+})
+export class UploadItemSimpleComponent {
+
+    @Input()
+    public upload: UploadData;
+
+    @Input()
+    public control: UploadControl;
+}
+`;
+
+export const SCSS = `
+    /** no scss */
+`;

@@ -9,3 +9,8 @@ export interface ProgressbarCircle {
     /** circle radius */
     radius: number;
 }
+
+export interface MenuItem {
+    label: string;
+    route: string;
+}

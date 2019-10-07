@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { environment } from "../environments/environment";
-// import { isImage, MaxUploadSizeValidator, OnlyZipValidator } from "@validation";
-// import { Validator, ValidationBuilder } from "@r-hannuschka/ngx-fileupload";
-import { MenuItem } from "@ngx-fileupload-example/data";
+import { MenuItem } from "@ngx-fileupload-example/data/base/data";
 
 @Component({
   selector: "app-root",

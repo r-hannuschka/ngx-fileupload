@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { MenuItem } from "@ngx-fileupload-example/data";
+import { MenuItem } from "@ngx-fileupload-example/data/base/data";
 
 @Component({
     selector: "app-ui--header-menu",

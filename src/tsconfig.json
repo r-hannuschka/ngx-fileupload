@@ -43,8 +43,8 @@
       "@ngx-fileupload-example/ui": [
         "example/libs/ui"
       ],
-      "@ngx-fileupload-example/data": [
-        "example/libs/data"
+      "@ngx-fileupload-example/data/*": [
+        "example/libs/data/*"
       ],
       "@ngx-fileupload-example/utils/*": [
         "example/libs/utils/*"

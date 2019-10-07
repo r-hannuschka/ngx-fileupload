@@ -21,6 +21,9 @@
     "@angular/platform-browser": "8.2.8",
     "@angular/platform-browser-dynamic": "8.2.8",
     "@angular/router": "8.2.8",
+    "highlight.js": "^9.15.10",
+    "igniteui-angular": "^8.2.2",
+    "ngx-highlightjs": "^3.0.3",
     "rxjs": "6.5.3",
     "tslib": "1.10.0",
     "zone.js": "0.9.1"

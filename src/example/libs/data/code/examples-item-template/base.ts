@@ -1,18 +1,27 @@
+export const HTML = `
+<app-ui--upload-toolbar
+    (add)="onUploadAdd($event)"
+    (completed)="uploadCompleted($event)"
+    [url]="'http://localhost:3000/upload'"
+></app-ui--upload-toolbar>
+
+<!-- fileuploads goes here -->
+<div class="upload-items">
+    <ng-container *ngFor="let upload of uploads">
+        <ngx-fileupload-item [upload]="upload" class="mb-3"></ngx-fileupload-item>
+    </ng-container>
+</div>
+`;
+
+export const TYPESCRIPT = `
 import { Component } from "@angular/core";
 import { Upload } from "@r-hannuschka/ngx-fileupload";
-import * as BaseCodeData from "@ngx-fileupload-example/data/code/examples-item-template/base";
-import * as uiUploadToolbarData from "@ngx-fileupload-example/data/code/ui/ui-upload-toolbar";
 
 @Component({
     selector: "app-item-template--base",
-    templateUrl: "base-item.component.html",
-    styleUrls: ["./base-item.component.scss"]
+    templateUrl: "base-item.component.html"
 })
 export class BaseItemComponent {
-
-    public code = BaseCodeData;
-
-    public codeUiUploadToolbarData = uiUploadToolbarData;
 
     public uploads: Upload[] = [];
 
@@ -26,3 +35,4 @@ export class BaseItemComponent {
         }
     }
 }
+`;

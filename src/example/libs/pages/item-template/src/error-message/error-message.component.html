@@ -1,21 +1,43 @@
 <!-- item template for each upload -->
-<ng-template #uploadCard let-upload="data" let-ctrl="ctrl">
+<ng-template #uploadTemplate let-upload="data" let-ctrl="ctrl">
     <app-ui--upload-item-simple [control]="ctrl" [upload]="upload"></app-ui--upload-item-simple>
 </ng-template>
 
 <h3>Display Upload Error Messages</h3>
 <p>Display Response Error Messages, add retry button</p>
 
-<app-ui--upload-toolbar
-    (add)="onUploadAdd($event)"
-    (completed)="uploadCompleted($event)"
-    [url]="'http://localhost:3000/upload/error/'">
-</app-ui--upload-toolbar>
+<igx-tabs>
+    <igx-tabs-group label="Example">
+        <div class="mt-3">
+            <app-ui--upload-toolbar
+                (add)="onUploadAdd($event)"
+                (completed)="uploadCompleted($event)"
+                [url]="'http://localhost:3000/upload/error/'">
+            </app-ui--upload-toolbar>
 
-<!-- fileuploads goes here -->
-<div class="upload-items">
-    <ng-container *ngFor="let upload of uploads">
-        <!-- completed lieber nach oben ziehen -->
-        <ngx-fileupload-item [template]="uploadCard" [upload]="upload"></ngx-fileupload-item>
-    </ng-container>
-</div>
+            <!-- fileuploads goes here -->
+            <div class="upload-items">
+                <ng-container *ngFor="let upload of uploads">
+                    <ngx-fileupload-item [template]="uploadTemplate" [upload]="upload"></ngx-fileupload-item>
+                </ng-container>
+            </div>
+        </div>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Html">
+        <pre><code [highlight]="code.HTML"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Typescript">
+        <pre><code [highlight]="code.TYPESCRIPT"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Ui Upload Toolbar Html">
+        <pre><code [highlight]="codeUiUploadToolbarData.HTML"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Ui Upload Toolbar TS">
+        <pre><code [highlight]="codeUiUploadToolbarData.TYPESCRIPT"></code></pre>
+    </igx-tabs-group>
+
+</igx-tabs>

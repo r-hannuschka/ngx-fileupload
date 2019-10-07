@@ -32,8 +32,12 @@
     <div class="col col-auto actions">
 
         <div class="btn-group">
-            <app-ui--button (dispatch)="control.start()" [label]="'Upload'">
+            <app-ui--button (dispatch)="control.start()" [label]="'Upload'" *ngIf="upload.state !== 'error'">
                 <i class="icon-left icon-upload"></i>
+            </app-ui--button>
+
+            <app-ui--button (dispatch)="control.retry()" [label]="'Retry'" *ngIf="upload.state === 'error'">
+                <i class="icon-left icon-arrow-sync"></i>
             </app-ui--button>
 
             <app-ui--button (dispatch)="control.stop()" [label]="'Abort'">

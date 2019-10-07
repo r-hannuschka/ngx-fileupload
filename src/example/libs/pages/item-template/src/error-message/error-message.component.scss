@@ -35,28 +35,6 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
         }
     }
 
-    .upload-items .details {
-
-        dl {
-            display: flex;
-            flex-wrap: wrap;
-            font-size: .8rem;
-            margin-bottom: .5rem;
-        }
-
-        dt {
-            flex: 0 0 4rem;
-        }
-
-        dd {
-            flex: 0 0 calc(100% - 4rem);
-            margin-bottom: 0;
-        }
-    }
-
-    .upload-items .progressbar {
-        display: flex;
-    }
 
     ngx-fileupload-item::ng-deep {
 
@@ -80,22 +58,6 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
             app-ui--button:not(:first-child) .btn {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
-            }
-        }
-
-        .progressbar {
-
-            svg circle {
-                stroke-width: .2rem;
-
-                &.progress {
-                    stroke-width: .25rem;
-                }
-            }
-
-            svg text {
-                font-size: .7rem;
-                transform: translate(0, .35rem);
             }
         }
     }

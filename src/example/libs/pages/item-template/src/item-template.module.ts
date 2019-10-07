@@ -8,6 +8,8 @@ import { UiModule } from "@ngx-fileupload-example/ui";
 
 import { BaseItemComponent } from "./base/base-item.component";
 import { CircleProgressbarComponent } from "./circle-progressbar/circle-progressbar.component";
+import { ValidationMessageComponent } from "./validation-message/validation-message.component";
+import { ErrorMessageComponent } from "./error-message/error-message.component";
 
 @NgModule({
     imports: [
@@ -20,14 +22,15 @@ import { CircleProgressbarComponent } from "./circle-progressbar/circle-progress
         RouterModule
     ],
     declarations: [
+        BaseItemComponent,
         ItemTemplateComponent,
         CircleProgressbarComponent,
-        BaseItemComponent
+        ValidationMessageComponent,
+        ErrorMessageComponent,
     ],
     entryComponents: [
         ItemTemplateComponent
     ],
     providers: [],
 })
-export class ItemTemplateDemo {
-}
+export class ItemTemplateDemo {}

@@ -1,26 +1,26 @@
-<!-- template for each upload -->
+<!-- item template for each upload -->
 <ng-template #uploadCard let-upload="data" let-ctrl="ctrl">
 
     <div class="row">
-        <div class="col col-auto progressbar">
-            <app-ui--progressbar-circle 
-                [circleData]="{height: 45, width: 45, radius: 20}"
-                [progress]="upload.progress" >
-            </app-ui--progressbar-circle>
-        </div>
         <div class="col details">
-            <dl>
-                <dt class="label">Name</dt>
-                <dd class="value text-truncate">{{upload.name}}</dd>
-                <dt class="label">Size</dt>
-                <dd class="value">{{upload.size}}</dd>
-            </dl>
+            <span>{{upload.name}}</span>
+            <span>{{upload.progress}} %</span>
+
+            <!-- display validation errors here -->
+            <ul *ngIf="upload.state === 'error'" class="errors">
+                <li *ngFor="let error of upload.response.errors" class="message error">
+                    {{error}}
+                </li>
+            </ul>
         </div>
         <div class="col col-auto actions">
-
             <div class="btn-group">
                 <app-ui--button (dispatch)="ctrl.start()" [label]="'Upload'" *ngIf="upload.state !== 'error'">
                     <i class="icon-left icon-upload"></i>
+                </app-ui--button>
+
+                <app-ui--button (dispatch)="ctrl.retry()" [label]="'Retry'" *ngIf="upload.state === 'error'">
+                    <i class="icon-left icon-arrow-sync"></i>
                 </app-ui--button>
 
                 <app-ui--button (dispatch)="ctrl.stop()" [label]="'Abort'">
@@ -31,15 +31,17 @@
     </div>
 </ng-template>
 
+<h3>Display Upload Error Messages</h3>
+<p>Display Response Error Messages, add retry button</p>
+
 <app-ui--upload-toolbar
-    (add)="onUploadAdd($event)" 
+    (add)="onUploadAdd($event)"
     (completed)="uploadCompleted($event)"
-    [url]="'http://localhost:3000/upload'"
-></app-ui--upload-toolbar>
+    [url]="'http://localhost:3000/upload/error/'">
+</app-ui--upload-toolbar>
 
 <!-- fileuploads goes here -->
 <div class="upload-items">
-
     <ng-container *ngFor="let upload of uploads">
         <!-- completed lieber nach oben ziehen -->
         <ngx-fileupload-item [template]="uploadCard" [upload]="upload"></ngx-fileupload-item>

@@ -18,10 +18,10 @@ export class FakeUploadInterceptor implements HttpInterceptor {
         }
 
         const file: File = req.body.get("file");
-        return this.createFakeUpload(file);
+        return this.createFakeUpload(file, req.url.indexOf("error") !== -1);
     }
 
-    private createFakeUpload(file: File): Observable<HttpEvent<any>> {
+    private createFakeUpload(file: File, hasError = false): Observable<HttpEvent<any>> {
 
         return new Observable<HttpEvent<any>>((observer) => {
 
@@ -43,6 +43,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
                     const uploadedTotal = tmpUploaded < upload.size ? tmpUploaded : upload.size;
 
                     upload.uploaded = uploadedTotal;
+
                     observer.next({
                         type: HttpEventType.UploadProgress,
                         loaded: upload.uploaded,
@@ -54,20 +55,18 @@ export class FakeUploadInterceptor implements HttpInterceptor {
                     }
                 }),
                 finalize(() => {
-
-                    const error: HttpErrorResponse = new HttpErrorResponse({
-                        status: 401,
-                        error: ["no access"],
-                        statusText: "you are not allowed to upload anything."
-                    });
-                    observer.error(error);
-
-                    /*
-                    const response = new HttpResponse({
-                        status: 401
-                    });
-                    observer.next(response);
-                    */
+                    if (hasError) {
+                        const error: HttpErrorResponse = new HttpErrorResponse({
+                            status: 401,
+                            error: "Not allowed to upload something"
+                        });
+                        observer.error(error);
+                    } else {
+                        const response = new HttpResponse({
+                            status: 201
+                        });
+                        observer.next(response);
+                    }
                 })
             ).subscribe();
         });

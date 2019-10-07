@@ -12,7 +12,7 @@
             <!-- file progress: current state | progressbar -->
             <div class="upload-item--progress">
                 <div class="progressbar">
-                    <span class="label-size">{{upload.size | bytes : 2}}</span>
+                    <span class="label-size">{{upload.size | fileSize}}</span>
                     <div class="progressbar-inner" [ngStyle]="{width: upload.progress + '%'}"></div>
                 </div>
             </div>

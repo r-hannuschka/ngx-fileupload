@@ -37,7 +37,7 @@
 
 <ol class="breadcrumb">
   <li>Directives</li>
-  <li>NgxFileUploadDirective</li>
+  <li>UploadFileDirective</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -55,7 +55,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/directives/ngx-fileuplad.ts</code>
+            <code>lib/ngx-fileupload/ui/upload-file/upload-file.ts</code>
         </p>
 
             <p class="comment">
@@ -90,7 +90,7 @@
 
                     <tr>
                         <td class="col-md-3">Selector</td>
-                        <td class="col-md-9"><code>[ngxFileUpload]</code></td>
+                        <td class="col-md-9"><code>[ngxFileUploadFile], [ngxFileUpload]</code></td>
                     </tr>
 
                 </tbody>
@@ -101,6 +101,21 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#url">url</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -135,10 +150,16 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#disabled">disabled</a>
+                            </li>
+                            <li>
                                 <a href="#formDataName">formDataName</a>
                             </li>
                             <li>
                                 <a href="#ngxFileUpload">ngxFileUpload</a>
+                            </li>
+                            <li>
+                                <a href="#ngxFileUploadFile">ngxFileUploadFile</a>
                             </li>
                             <li>
                                 <a href="#useFormData">useFormData</a>
@@ -160,6 +181,9 @@
                         <ul class="index-list">
                             <li>
                                 <a href="#add">add</a>
+                            </li>
+                            <li>
+                                <a href="#completed">completed</a>
                             </li>
                         </ul>
                     </td>
@@ -187,6 +211,23 @@
                     </td>
                 </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#ngxFileUploadFile">ngxFileUploadFile</a>
+                                </li>
+                                <li>
+                                    <a href="#ngxFileUpload">ngxFileUpload</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
         </tbody>
     </table>
 </section>
@@ -202,7 +243,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:73</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:92</a></div>
                             </td>
                         </tr>
 
@@ -260,6 +301,26 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="disabled"></a>
+                        <b>disabled</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:74</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="formDataName"></a>
                         <b>formDataName</b>
                     </td>
@@ -271,12 +332,12 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:71</a></div>
                             </td>
                         </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>form data field name with which form data will be send
+                        <div class="io-description"><p>form data field name with which form &gt;data will be send
 by default this will be file</p>
 </div>
                     </td>
@@ -299,7 +360,28 @@ by default this will be file</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:41</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:55</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ngxFileUploadFile"></a>
+                        <b>ngxFileUploadFile</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:47</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -326,7 +408,7 @@ this field is mandatory</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:48</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:64</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -354,7 +436,7 @@ plain file object in body</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:58</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:77</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -372,13 +454,13 @@ plain file object in body</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/FileUpload.html" target="_self" >EventEmitter&lt;FileUpload[]&gt;</a></code>
+                        <i>Type : </i>        <code><a href="../interfaces/Upload.html" target="_self" >EventEmitter&lt;FileUpload[]&gt;</a></code>
 
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:31</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:32</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -387,6 +469,27 @@ plain file object in body</p>
 </div>
                     </td>
                 </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="completed"></a>
+                        <b>completed</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Upload.html" target="_self" >EventEmitter&lt;FileUpload&gt;</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:35</a></div>
+                            </td>
+                        </tr>
             </tbody>
         </table>
 </section>
@@ -419,8 +522,8 @@ plain file object in body</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="151"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:151</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:173</a></div>
                 </td>
             </tr>
 
@@ -462,8 +565,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="128"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:128</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="149"
+                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:149</a></div>
                 </td>
             </tr>
 
@@ -504,8 +607,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="137"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:137</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:158</a></div>
                 </td>
             </tr>
 
@@ -549,8 +652,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="105"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:105</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="126"
+                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:126</a></div>
                 </td>
             </tr>
 
@@ -592,8 +695,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="115"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:115</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="136"
+                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:136</a></div>
                 </td>
             </tr>
 
@@ -636,8 +739,8 @@ them</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="98"
-                            class="link-to-prism">lib/ngx-fileupload/directives/ngx-fileuplad.ts:98</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:119</a></div>
                 </td>
             </tr>
 
@@ -656,7 +759,171 @@ them</p>
         </tbody>
     </table>
 </section>
+            <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="url"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            url</b>
+                            <a href="#url"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:37</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ngxFileUploadFile"></a>
+                        <span class="name"><b>ngxFileUploadFile</b><a href="#ngxFileUploadFile"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>ngxFileUploadFile(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:47</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>url which should be used as endpoint for the file upload
+this field is mandatory</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>url</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                        <b>Example :</b>
+                                            <div>
+                                                <pre class="line-numbers"><code class="language-html">&lt;div [ngxFileUpload]=&quot;&quot;localhost/upload&quot;&quot; (add)=&quot;onUploadAdd($event)&quot; &gt;&lt;/div&gt;</code></pre>
+                                            </div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ngxFileUpload"></a>
+                        <span class="name"><b>ngxFileUpload</b><a href="#ngxFileUpload"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>ngxFileUpload(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:55</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>url</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+</section>
 
     </div>
 
@@ -666,9 +933,10 @@ them</p>
 import { HttpClient } from &quot;@angular/common/http&quot;;
 import { takeUntil } from &quot;rxjs/operators&quot;;
 import { Subject } from &quot;rxjs&quot;;
-import { UploadModel, UploadState } from &quot;../model/upload&quot;;
-import { FileUpload } from &quot;../services/file-upload&quot;;
-import { Validator, ValidationFn } from &quot;../validation/validation&quot;;
+
+import { Validator, ValidationFn, UploadState } from &quot;@lib/data/api&quot;;
+import { UploadModel } from &quot;@lib/data/upload.model&quot;;
+import { FileUpload } from &quot;@lib/utils/http/file-upload&quot;;
 
 /**
  * directive to add uploads with drag / drop
@@ -679,10 +947,10 @@ import { Validator, ValidationFn } from &quot;../validation/validation&quot;;
  * &lt;button (click)&#x3D;&quot;ngxFileUploadRef.upload()&quot;&gt;Upload&lt;/button&gt;
  */
 @Directive({
-  selector: &quot;[ngxFileUpload]&quot;,
+  selector: &quot;[ngxFileUploadFile], [ngxFileUpload]&quot;,
   exportAs: &quot;ngxFileUploadRef&quot;
 })
-export class NgxFileUploadDirective implements OnDestroy {
+export class UploadFileDirective implements OnDestroy {
 
     /**
      * upload has been added
@@ -694,6 +962,11 @@ export class NgxFileUploadDirective implements OnDestroy {
     @Output()
     public add: EventEmitter&lt;FileUpload[]&gt;;
 
+    @Output()
+    public completed: EventEmitter&lt;FileUpload&gt;;
+
+    public url: string;
+
     /**
      * url which should be used as endpoint for the file upload
      * this field is mandatory
@@ -701,8 +974,18 @@ export class NgxFileUploadDirective implements OnDestroy {
      * @example
      * &lt;div [ngxFileUpload]&#x3D;&quot;&quot;localhost/upload&quot;&quot; (add)&#x3D;&quot;onUploadAdd($event)&quot; &gt;&lt;/div&gt;
      */
+    @Input(&quot;ngxFileUploadFile&quot;)
+    public set ngxFileUploadFile(url: string) {
+        this.url &#x3D; url;
+    }
+
+    /**
+     * @deprecated use [ngxFileUploadFile instead]
+     */
     @Input(&quot;ngxFileUpload&quot;)
-    public url: string;
+    public set ngxFileUpload(url: string) {
+        this.url &#x3D; url;
+    }
 
     /**
      * if set to false upload post request body will use
@@ -712,11 +995,14 @@ export class NgxFileUploadDirective implements OnDestroy {
     public useFormData &#x3D; true;
 
     /**
-     * form data field name with which form data will be send
+     * form data field name with which form &gt;data will be send
      * by default this will be file
      */
     @Input()
     public formDataName &#x3D; &quot;file&quot;;
+
+    @Input()
+    public disabled &#x3D; false;
 
     @Input()
     public validator: Validator | ValidationFn;
@@ -741,9 +1027,11 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     constructor(
         private httpClient: HttpClient,
-        private renderer: Renderer2,
+        private renderer: Renderer2
     ) {
         this.add &#x3D; new EventEmitter();
+        this.completed &#x3D; new EventEmitter();
+
         this.fileSelect &#x3D; this.createFieldInputField();
     }
 
@@ -790,8 +1078,8 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     @HostListener(&quot;dragover&quot;, [&quot;$event&quot;])
     public onFileDragOver(event: DragEvent) {
-        event.preventDefault();
         event.stopPropagation();
+        event.preventDefault();
     }
 
     /**
@@ -799,12 +1087,13 @@ export class NgxFileUploadDirective implements OnDestroy {
      */
     @HostListener(&quot;drop&quot;, [&quot;$event&quot;])
     public onFileDrop(event: DragEvent) {
-
         event.stopPropagation();
         event.preventDefault();
 
-        const files &#x3D; Array.from(event.dataTransfer.files);
-        this.handleFileSelect(files);
+        if (!this.disabled) {
+            const files &#x3D; Array.from(event.dataTransfer.files);
+            this.handleFileSelect(files);
+        }
     }
 
     /**
@@ -817,7 +1106,7 @@ export class NgxFileUploadDirective implements OnDestroy {
         event.stopPropagation();
         event.preventDefault();
 
-        if (!this.uploads.length) {
+        if (!this.disabled) {
             this.fileSelect.click();
         }
     }
@@ -837,6 +1126,8 @@ export class NgxFileUploadDirective implements OnDestroy {
      *
      * remove uplaod from uploads repository if upload completed
      * or canceled
+     *
+     * @todo should be an action
      */
     private createUpload(file: File): FileUpload {
         const uploadOptions &#x3D; {
@@ -861,6 +1152,7 @@ export class NgxFileUploadDirective implements OnDestroy {
             .subscribe({
                 complete: () &#x3D;&gt; {
                     this.uploads.splice(this.uploads.indexOf(upload), 1);
+                    this.completed.emit(upload);
                     sub.unsubscribe();
                 }
             });
@@ -871,6 +1163,8 @@ export class NgxFileUploadDirective implements OnDestroy {
     /**
      * pre validate upload, if validation result is invalid
      * fill could not uploaded anymore
+     *
+     * @todo should be an action ?
      */
     private preValidateUpload(upload: UploadModel) {
         const result &#x3D; &quot;validate&quot; in this.validator ? this.validator.validate(upload.file) : this.validator(upload.file);
@@ -946,7 +1240,7 @@ export class NgxFileUploadDirective implements OnDestroy {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'directive';
-            var COMPODOC_CURRENT_PAGE_URL = 'NgxFileUploadDirective.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'UploadFileDirective.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

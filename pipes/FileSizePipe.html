@@ -41,7 +41,7 @@
 
 <ol class="breadcrumb">
   <li>Pipes</li>
-  <li>ToArrayPipe</li>
+  <li>FileSizePipe</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -60,21 +60,9 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/pipes/to-array.pipe.ts</code>
+            <code>lib/ngx-fileupload/utils/ui/file-size/file-size.pipe.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>very simple to array pipe to sanitize upload
-error messages to array. By default we expect a single string
-or an array of string to show upload errors to keep  this even
-with validation errors. There could be multiple errors if we upload
-a file and only one (server not responds ProgressEvent.message)
-or maybe res.status(401).(&#39;not authorized to do all the cool things&#39;).</p>
-
-            </p>
 
 
         <section>
@@ -83,7 +71,7 @@ or maybe res.status(401).(&#39;not authorized to do all the cool things&#39;).</
                 <tbody>
                     <tr>
                         <td class="col-md-3">Name</td>
-                        <td class="col-md-9">toArray</td>
+                        <td class="col-md-9">fileSize</td>
                     </tr>
                 </tbody>
             </table>
@@ -109,26 +97,18 @@ or maybe res.status(401).(&#39;not authorized to do all the cool things&#39;).</
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>transform(value: T)</code>
+<code>transform(size: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="13"
-                            class="link-to-prism">lib/ngx-fileupload/pipes/to-array.pipe.ts:13</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="10"
+                            class="link-to-prism">lib/ngx-fileupload/utils/ui/file-size/file-size.pipe.ts:10</a></div>
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Type parameters :</b>
-                    <ul class="type-parameters">
-                        <li>T</li>
-                    </ul>
-                </td>
-            </tr>
 
             <tr>
                 <td class="col-md-4">
@@ -145,9 +125,9 @@ or maybe res.status(401).(&#39;not authorized to do all the cool things&#39;).</
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>value</td>
+                                    <td>size</td>
                                     <td>
-                                            <code>T</code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
 
                                     <td>
@@ -162,7 +142,7 @@ or maybe res.status(401).(&#39;not authorized to do all the cool things&#39;).</
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>[] | T</code>
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                     </div>
                     <div class="io-description">
@@ -180,21 +160,22 @@ or maybe res.status(401).(&#39;not authorized to do all the cool things&#39;).</
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Pipe, PipeTransform } from &quot;@angular/core&quot;;
 
-/**
- * very simple to array pipe to sanitize upload
- * error messages to array. By default we expect a single string
- * or an array of string to show upload errors to keep  this even
- * with validation errors. There could be multiple errors if we upload
- * a file and only one (server not responds ProgressEvent.message)
- * or maybe res.status(401).(&#x27;not authorized to do all the cool things&#x27;).
- */
-@Pipe({name: &quot;toArray&quot;})
-export class ToArrayPipe implements PipeTransform {
-    transform&lt;T&gt;(value: T): T[] | T {
-        if (Array.isArray(value)) {
-            return value;
+@Pipe({
+    name: &quot;fileSize&quot;
+})
+export class FileSizePipe implements PipeTransform {
+
+    private units &#x3D; [&quot;Byte&quot;, &quot;Kb&quot;, &quot;Mb&quot;, &quot;Gb&quot;];
+
+    transform(size: number): string {
+        let bytes &#x3D; isNaN(size) ? parseFloat(size.toString()) : size;
+        let unit  &#x3D; 0;
+
+        while (bytes &gt; 1024 &amp;&amp; this.units.length &gt; unit) {
+            bytes &#x3D; bytes / 1024;
+            unit++;
         }
-        return [value];
+        return &#x60;${bytes.toFixed(2)} ${this.units[unit]}&#x60;;
     }
 }
 </code></pre>
@@ -227,7 +208,7 @@ export class ToArrayPipe implements PipeTransform {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'pipe';
-            var COMPODOC_CURRENT_PAGE_URL = 'ToArrayPipe.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'FileSizePipe.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

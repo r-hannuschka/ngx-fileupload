@@ -61,7 +61,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/model/upload.ts</code>
+            <code>lib/ngx-fileupload/data/api/upload.ts</code>
         </p>
 
 
@@ -126,7 +126,9 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ValidationErrors } from &quot;../validation/validation&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Observable } from &quot;rxjs&quot;;
+import { UploadModel } from &quot;../upload.model&quot;;
+import { ValidationErrors } from &quot;./validation&quot;;
 
 export enum UploadState {
     QUEUED    &#x3D; &quot;queued&quot;,
@@ -158,132 +160,46 @@ export interface UploadData {
     validation: UploadValidation;
 }
 
-export interface IDataNode {
-    [key: string]: any;
-}
-
-/**
- * Represents a file which will be uploaded
- */
-export class UploadModel {
-
-    private uploadFile: File;
-
-    private uploadedSize &#x3D; 0;
-
-    private uploadedState: UploadState &#x3D; UploadState.QUEUED;
-
-    private uploadResponse: UploadResponse &#x3D; null;
-
-    private uploadValidationErrors &#x3D; null;
+export interface Upload {
 
     /**
-     * Creates an instance of UploadFile.
+     * returns observable which notify if file upload state
+     * has been changed
      */
-    public constructor(file: File) {
-        this.uploadFile &#x3D; file;
-    }
+    readonly change: Observable&lt;UploadModel&gt;;
 
     /**
-     * get raw file
+     * get upload data informations
      */
-    public get file(): File {
-        return this.uploadFile;
-    }
+    readonly data: UploadData;
 
     /**
-     * returns filesize in byte
+     * upload file to server but only
+     * if file is not queued, abort request on cancel
      */
-    public get fileSize(): number {
-        return this.file.size;
-    }
+    start(): void;
 
     /**
-     * returns filename
+     * restart download again
+     * reset state, and reset errors
      */
-    public get fileName(): string {
-        return this.file.name;
-    }
+    retry(): void;
 
     /**
-     * returns mime type of file
+     * cancel current file upload, this will complete change subject
      */
-    public get fileType(): string {
-        return this.file.type;
-    }
+    cancel(): void;
 
     /**
-     * set response data if upload has been completed
+     * return true if upload was not completed since the server
+     * sends back an error response
      */
-    public set response(response: UploadResponse) {
-        this.uploadResponse &#x3D; response;
-    }
+    hasError(): boolean;
 
     /**
-     * get response data if upload has been completed
+     * returns true if validators are set and upload not validated
      */
-    public get response(): UploadResponse {
-        return this.uploadResponse;
-    }
-
-    /**
-     * set current upload state
-     */
-    public set state(state: UploadState) {
-        this.uploadedState &#x3D; state;
-    }
-
-    /**
-     * get current upload state
-     */
-    public get state(): UploadState {
-        return this.uploadedState;
-    }
-
-    /**
-     * set uploaded size
-     */
-    public set uploaded(bytes: number) {
-        this.uploadedSize &#x3D; bytes;
-    }
-
-    /**
-     * get uploaded size
-     */
-    public get uploaded(): number {
-        return this.uploadedSize;
-    }
-
-    public set validationErrors(errors: ValidationErrors | null) {
-        this.uploadValidationErrors &#x3D; errors;
-    }
-
-    public get validationErrors(): ValidationErrors | null {
-        return this.uploadValidationErrors;
-    }
-
-    public get progress(): number {
-        const progress &#x3D; this.uploaded * 100 / this.fileSize;
-        return Math.round(progress &gt; 100 ? 100 : progress);
-    }
-
-    /**
-     * return file upload data
-     * @todo move to model
-     */
-    public toJson(): UploadData {
-        return {
-            name      : this.fileName,
-            progress  : this.progress,
-            response  : this.response,
-            size      : this.fileSize,
-            state     : this.state,
-            uploaded  : this.uploaded,
-            validation: {
-                errors: this.validationErrors,
-            }
-        };
-    }
+    isInvalid(): boolean;
 }
 </code></pre>
     </div>

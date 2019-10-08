@@ -61,7 +61,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/services/file-upload.ts</code>
+            <code>lib/ngx-fileupload/utils/http/file-upload.ts</code>
         </p>
 
             <p class="comment">
@@ -186,7 +186,8 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from &quot;@angular/common/http&quot;;
 import { Subject, BehaviorSubject, Observable } from &quot;rxjs&quot;;
 import { takeUntil, filter } from &quot;rxjs/operators&quot;;
-import { UploadModel, UploadState, UploadResponse} from &quot;../model/upload&quot;;
+import { UploadState, UploadResponse, UploadData, Upload} from &quot;@lib/data/api&quot;;
+import { UploadModel } from &quot;@lib/data/upload.model&quot;;
 
 /**
  * Upload Options
@@ -219,7 +220,7 @@ export interface UploadOptions {
 /**
  * represents a single file upload
  */
-export class FileUpload {
+export class FileUpload implements Upload {
 
     /**
      * if cancel$ emits true, current upload will stopped
@@ -298,7 +299,12 @@ export class FileUpload {
      * has been changed
      */
     public get change(): Observable&lt;UploadModel&gt; {
+        /** should be written into model or store ? */
         return this.upload$.asObservable();
+    }
+
+    public get data(): UploadData {
+        return this.upload.toJson();
     }
 
     /**
@@ -320,7 +326,6 @@ export class FileUpload {
      * build form data and send request to server
      */
     private uploadFile(): Observable&lt;HttpEvent&lt;string&gt;&gt; {
-
         const uploadBody &#x3D; this.createUploadBody();
         return this.http.post&lt;string&gt;(this.options.url, uploadBody, {
             reportProgress: true,
@@ -401,12 +406,17 @@ export class FileUpload {
      * this array, or a string or anything else. If not see fallback.
      */
     private handleError(response: HttpErrorResponse) {
+
+        let errors: any[] &#x3D; response.error instanceof ProgressEvent ? response.message : response.error;
+        errors &#x3D; Array.isArray(errors) ? errors : [errors];
+
         const uploadResponse: UploadResponse &#x3D; {
             success: false,
             body: null,
-            errors: response.error instanceof ProgressEvent ? response.message : response.error
+            errors
         };
-        this.upload.state &#x3D; UploadState.ERROR;
+
+        this.upload.state    &#x3D; UploadState.ERROR;
         this.upload.response &#x3D; uploadResponse;
         this.notifyObservers();
     }

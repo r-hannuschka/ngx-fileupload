@@ -60,7 +60,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/services/file-upload.ts</code>
+            <code>lib/ngx-fileupload/utils/http/file-upload.ts</code>
         </p>
 
             <p class="comment">
@@ -72,6 +72,12 @@
             </p>
 
 
+            <p class="comment">
+                <h3>Implements</h3>
+            </p>
+            <p class="comment">
+                            <code><a href="../interfaces/Upload.html" target="_self" >Upload</a></code>
+            </p>
 
 
             <section>
@@ -126,6 +132,9 @@
                                 <li>
                                     <a href="#change">change</a>
                                 </li>
+                                <li>
+                                    <a href="#data">data</a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -140,12 +149,12 @@
                 <tr>
                     <td class="col-md-4">
                                 <span class="modifier">Public</span>
-                        <code>constructor(http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, upload: <a href="../classes/UploadModel.html">UploadModel</a>, options: <a href="../interfaces/UploadOptions.html">UploadOptions</a>)</code>
+                        <code>constructor(http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, upload: <a href="../interfaces/Upload.html">UploadModel</a>, options: <a href="../interfaces/UploadOptions.html">UploadOptions</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:52</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:53</a></div>
                             </td>
                         </tr>
 
@@ -180,7 +189,7 @@
                                                         <td>upload</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../classes/UploadModel.html" target="_self" >UploadModel</a></code>
+                                                                        <code><a href="../interfaces/Upload.html" target="_self" >UploadModel</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -239,8 +248,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="99"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:99</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:100</a></div>
                 </td>
             </tr>
 
@@ -282,8 +291,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="123"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:123</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="129"
+                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:129</a></div>
                 </td>
             </tr>
 
@@ -326,8 +335,8 @@ sends back an error response</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="130"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:130</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="136"
+                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:136</a></div>
                 </td>
             </tr>
 
@@ -369,8 +378,8 @@ sends back an error response</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="88"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:88</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="89"
+                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:89</a></div>
                 </td>
             </tr>
 
@@ -413,8 +422,8 @@ reset state, and reset errors</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="70"
-                            class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:70</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="71"
+                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:71</a></div>
                 </td>
             </tr>
 
@@ -459,7 +468,7 @@ if file is not queued, abort request on cancel</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">lib/ngx-fileupload/services/file-upload.ts:115</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:116</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -469,11 +478,33 @@ has been changed</p>
 </div>
 
                                 <div class="io-description">
-                                    <b>Returns : </b>        <code><a href="../classes/UploadModel.html" target="_self" >Observable&lt;UploadModel&gt;</a></code>
+                                    <b>Returns : </b>        <code><a href="../interfaces/Upload.html" target="_self" >Observable&lt;UploadModel&gt;</a></code>
 
                                 </div>
                         </td>
                     </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="data"></a>
+                        <span class="name"><b>data</b><a href="#data"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>data()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:121</a></div>
+                                </td>
+                            </tr>
 
             </tbody>
         </table>
@@ -485,7 +516,8 @@ has been changed</p>
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from &quot;@angular/common/http&quot;;
 import { Subject, BehaviorSubject, Observable } from &quot;rxjs&quot;;
 import { takeUntil, filter } from &quot;rxjs/operators&quot;;
-import { UploadModel, UploadState, UploadResponse} from &quot;../model/upload&quot;;
+import { UploadState, UploadResponse, UploadData, Upload} from &quot;@lib/data/api&quot;;
+import { UploadModel } from &quot;@lib/data/upload.model&quot;;
 
 /**
  * Upload Options
@@ -518,7 +550,7 @@ export interface UploadOptions {
 /**
  * represents a single file upload
  */
-export class FileUpload {
+export class FileUpload implements Upload {
 
     /**
      * if cancel$ emits true, current upload will stopped
@@ -597,7 +629,12 @@ export class FileUpload {
      * has been changed
      */
     public get change(): Observable&lt;UploadModel&gt; {
+        /** should be written into model or store ? */
         return this.upload$.asObservable();
+    }
+
+    public get data(): UploadData {
+        return this.upload.toJson();
     }
 
     /**
@@ -619,7 +656,6 @@ export class FileUpload {
      * build form data and send request to server
      */
     private uploadFile(): Observable&lt;HttpEvent&lt;string&gt;&gt; {
-
         const uploadBody &#x3D; this.createUploadBody();
         return this.http.post&lt;string&gt;(this.options.url, uploadBody, {
             reportProgress: true,
@@ -700,12 +736,17 @@ export class FileUpload {
      * this array, or a string or anything else. If not see fallback.
      */
     private handleError(response: HttpErrorResponse) {
+
+        let errors: any[] &#x3D; response.error instanceof ProgressEvent ? response.message : response.error;
+        errors &#x3D; Array.isArray(errors) ? errors : [errors];
+
         const uploadResponse: UploadResponse &#x3D; {
             success: false,
             body: null,
-            errors: response.error instanceof ProgressEvent ? response.message : response.error
+            errors
         };
-        this.upload.state &#x3D; UploadState.ERROR;
+
+        this.upload.state    &#x3D; UploadState.ERROR;
         this.upload.response &#x3D; uploadResponse;
         this.notifyObservers();
     }

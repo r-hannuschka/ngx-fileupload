@@ -35,7 +35,7 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>NgxFileUploadComponent</li>
+  <li>UploadViewComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -61,7 +61,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>lib/ngx-fileupload/components/ngx-fileupload.component.ts</code>
+    <code>lib/ngx-fileupload/ui/upload-view/upload-view.ts</code>
 </p>
 
     <p class="comment">
@@ -120,14 +120,14 @@ or NgxFileUploadComponent. This component simply handle all events / changes fro
 
             <tr>
                 <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>./ngx-fileupload.component.scss</code></td>
+                <td class="col-md-9"><code>./upload-view.scss</code></td>
             </tr>
 
 
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>ngx-fileupload.component.html</code></td>
+                <td class="col-md-9"><code>upload-view.html</code></td>
             </tr>
 
 
@@ -175,11 +175,7 @@ or NgxFileUploadComponent. This component simply handle all events / changes fro
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#handleUploadChange">handleUploadChange</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#onAnimationDone">onAnimationDone</a>
+                                <a href="#onUploadCompleted">onUploadCompleted</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -241,7 +237,7 @@ or NgxFileUploadComponent. This component simply handle all events / changes fro
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:75</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:63</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -262,13 +258,13 @@ or NgxFileUploadComponent. This component simply handle all events / changes fro
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../interfaces/FileUploadItemContext.html" target="_self" >TemplateRef&lt;FileUploadItemContext&gt;</a></code>
+                        <i>Type : </i>        <code><a href="../classes/FileUpload.html" target="_self" >TemplateRef&lt;FileUploadItemContext&gt;</a></code>
 
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:43</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -295,7 +291,7 @@ or NgxFileUploadComponent. This component simply handle all events / changes fro
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:62</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:50</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -322,7 +318,7 @@ this field is mandatory</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:69</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:57</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -350,7 +346,7 @@ post body</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:81</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:69</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -374,28 +370,28 @@ post body</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleUploadChange"></a>
+                    <a name="onUploadCompleted"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Public</span>
-                            handleUploadChange
+                            onUploadCompleted
                         </b>
-                        <a href="#handleUploadChange"><span class="icon ion-ios-link"></span></a>
+                        <a href="#onUploadCompleted"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleUploadChange(upload: <a href="../classes/UploadModel.html">UploadModel</a>, fileUpload: <a href="../classes/FileUpload.html">FileUpload</a>)</code>
+                    <code>onUploadCompleted(upload: <a href="../interfaces/Upload.html">Upload</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="107"
-                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:107</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:93</a></div>
                 </td>
             </tr>
 
@@ -419,88 +415,8 @@ post body</p>
                                 <tr>
                                     <td>upload</td>
                                     <td>
-                                                <code><a href="../classes/UploadModel.html" target="_self" >UploadModel</a></code>
+                                                <code><a href="../interfaces/Upload.html" target="_self" >Upload</a></code>
                                     </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>fileUpload</td>
-                                    <td>
-                                                <code><a href="../classes/FileUpload.html" target="_self" >FileUpload</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onAnimationDone"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            onAnimationDone
-                        </b>
-                        <a href="#onAnimationDone"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>onAnimationDone($event)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="113"
-                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:113</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>$event</td>
 
                                     <td>
                                         No
@@ -541,15 +457,15 @@ post body</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>onUploadsAdd(uploads: <a href="../classes/FileUpload.html">FileUpload[]</a>)</code>
+                    <code>onUploadsAdd(uploads: <a href="../interfaces/Upload.html">Upload[]</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="99"
-                            class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:99</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:85</a></div>
                 </td>
             </tr>
 
@@ -574,7 +490,7 @@ finished uploads from list</p>
                                 <tr>
                                     <td>uploads</td>
                                     <td>
-                                                <code><a href="../classes/FileUpload.html" target="_self" >FileUpload[]</a></code>
+                                                <code><a href="../interfaces/Upload.html" target="_self" >Upload[]</a></code>
                                     </td>
 
                                     <td>
@@ -625,7 +541,7 @@ finished uploads from list</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="91" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:91</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:79</a></div>
                             </td>
                         </tr>
 
@@ -653,7 +569,7 @@ finished uploads from list</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="../classes/FileUpload.html" target="_self" >FileUpload[]</a></code>
+                            <i>Type : </i>        <code><a href="../interfaces/Upload.html" target="_self" >Upload[]</a></code>
 
                         </td>
                     </tr>
@@ -664,7 +580,7 @@ finished uploads from list</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">lib/ngx-fileupload/components/ngx-fileupload.component.ts:86</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">lib/ngx-fileupload/ui/upload-view/upload-view.ts:74</a></div>
                             </td>
                         </tr>
 
@@ -684,13 +600,12 @@ finished uploads from list</p>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, TemplateRef, Input } from &quot;@angular/core&quot;;
-import { trigger, state, style, animate, transition } from &quot;@angular/animations&quot;;
 import { delay } from &quot;rxjs/operators&quot;;
 import { of } from &quot;rxjs&quot;;
-import { UploadModel, UploadState } from &quot;../model/upload&quot;;
-import { FileUpload } from &quot;../services/file-upload&quot;;
-import { FileUploadItemContext } from &quot;./ngx-fileupload-item.component&quot;;
-import { Validator, ValidationFn } from &quot;../validation/validation&quot;;
+
+import { Upload } from &quot;../../data/api/upload&quot;;
+import { FileUploadItemContext } from &quot;@lib/ui&quot;;
+import { Validator, ValidationFn } from &quot;@lib/data/api/validation&quot;;
 
 /**
  * NgxFileUploadComponent is a wrapper contain NgxFileUploadDirective and NgxFileUploadComponent
@@ -717,21 +632,10 @@ import { Validator, ValidationFn } from &quot;../validation/validation&quot;;
  */
 @Component({
     selector: &quot;ngx-fileupload&quot;,
-    styleUrls: [&quot;./ngx-fileupload.component.scss&quot;],
-    templateUrl: &quot;ngx-fileupload.component.html&quot;,
-    animations: [
-        trigger(
-            &quot;fadeInOut&quot;,
-            [
-                state(&quot;void&quot;, style({
-                    opacity: 0
-                })),
-                transition(&quot;void &lt;&#x3D;&gt; *&quot;, animate(250)),
-            ]
-        ),
-    ],
+    styleUrls: [&quot;./upload-view.scss&quot;],
+    templateUrl: &quot;upload-view.html&quot;
 })
-export class NgxFileUploadComponent {
+export class UploadViewComponent {
 
     /**
      * set custom template, will pass through to [NgxFileUploadItem]{@link NgxFileUploadItemComponent.html#itemTpl}
@@ -768,49 +672,39 @@ export class NgxFileUploadComponent {
     /**
      * all uploads which has been added in [NgxFileUploadDirective]{@link ../directives/NgxFileUploadDirective.html#add}
      */
-    public uploads: FileUpload[] &#x3D; [];
+    public uploads: Upload[] &#x3D; [];
 
     /**
      * flag list
      */
     public showList &#x3D; false;
 
-    private itemsTotal &#x3D; 0;
-
     /**
      * new uploads has been added we need to care about this to remove
      * finished uploads from list
      */
-    public onUploadsAdd(uploads: FileUpload[]) {
+    public onUploadsAdd(uploads: Upload[]) {
         this.uploads.push(...uploads);
-        this.showList &#x3D; true;
+        this.showList &#x3D; this.uploads.length &gt; 0;
     }
 
     /**
      * if state is canceled or uploaded remove it
      */
-    public handleUploadChange(upload: UploadModel, fileUpload: FileUpload) {
-        if (upload.state &#x3D;&#x3D;&#x3D; UploadState.CANCELED || upload.state &#x3D;&#x3D;&#x3D; UploadState.UPLOADED) {
-            this.removeUpload(fileUpload);
-        }
-    }
-
-    public onAnimationDone($event) {
-        this.itemsTotal +&#x3D; $event.toState &#x3D;&#x3D;&#x3D; &quot;void&quot; ? 1 : -1;
-        if (this.itemsTotal &#x3D;&#x3D;&#x3D; 0) {
-            this.showList &#x3D; false;
-        }
+    public onUploadCompleted(upload: Upload) {
+        this.removeUpload(upload);
     }
 
     /**
      * remove upload from list but wait for 1 sec before it will be removed
      */
-    private removeUpload(upload: FileUpload) {
+    private removeUpload(upload: Upload) {
         of(upload).pipe(delay(1000))
             .subscribe({
                 next: () &#x3D;&gt; {
                     const idx &#x3D; this.uploads.indexOf(upload);
                     this.uploads.splice(idx, 1);
+                    this.showList &#x3D; this.uploads.length &gt; 0;
                 }
             });
     }
@@ -820,8 +714,11 @@ export class NgxFileUploadComponent {
 
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;fileupload&quot; 
-     [ngxFileUpload]&#x3D;&quot;url&quot; [useFormData]&#x3D;&quot;useFormData&quot; [formDataName]&#x3D;&quot;formDataName&quot; [validator]&#x3D;&quot;validator&quot;
+     [ngxFileUpload]&#x3D;&quot;url&quot; 
+     [validator]&#x3D;&quot;validator&quot;
+     [disabled]&#x3D;&quot;showList&quot;
      (add)&#x3D;&quot;onUploadsAdd($event)&quot;
+     (completed)&#x3D;&quot;onUploadCompleted($event)&quot;
      #ngxFileUploadRef&#x3D;&#x27;ngxFileUploadRef&#x27;&gt;
 
     &lt;div *ngIf&#x3D;&quot;!showList&quot; class&#x3D;&quot;file-upload--info-wrapper&quot;&gt;
@@ -832,11 +729,7 @@ export class NgxFileUploadComponent {
     &lt;/div&gt;
 
     &lt;div *ngIf&#x3D;&quot;showList&quot; class&#x3D;&quot;file-upload--list&quot;&gt;
-        &lt;ngx-fileupload-item 
-            *ngFor&#x3D;&quot;let item of uploads&quot;
-            [@fadeInOut] [upload]&#x3D;&quot;item&quot; [template]&#x3D;&quot;itemTemplate&quot;
-            (@fadeInOut.done)&#x3D;&quot;onAnimationDone($event)&quot; (changed)&#x3D;&quot;handleUploadChange($event, item)&quot;
-        &gt;&lt;/ngx-fileupload-item&gt;
+        &lt;ngx-fileupload-item *ngFor&#x3D;&quot;let item of uploads&quot; [upload]&#x3D;&quot;item&quot; [template]&#x3D;&quot;itemTemplate&quot;&gt;&lt;/ngx-fileupload-item&gt;
     &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class&#x3D;&quot;upload--footer&quot;&gt;
@@ -849,12 +742,12 @@ export class NgxFileUploadComponent {
 
     <div class="tab-pane fade " id="c-styleData">
                 <p class="comment">
-                    <code>./ngx-fileupload.component.scss</code>
+                    <code>./upload-view.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">$ngx-fileupload-icons--font-path: &#x27;../assets/fonts&#x27; !default;
+                <pre class="line-numbers"><code class="language-scss">$ngx-fileupload-icons--font-path: &#x27;../../assets/fonts&#x27; !default;
 
-@import &#x27;../assets//scss/variables&#x27;;
-@import &#x27;../assets/scss/icons&#x27;;
+@import &#x27;../../assets//scss/variables&#x27;;
+@import &#x27;../../assets/scss/icons&#x27;;
 
 :host {
 
@@ -975,10 +868,10 @@ export class NgxFileUploadComponent {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="fileupload"      [ngxFileUpload]="url" [useFormData]="useFormData" [formDataName]="formDataName" [validator]="validator"     (add)="onUploadsAdd($event)"     #ngxFileUploadRef=\'ngxFileUploadRef\'>    <div *ngIf="!showList" class="file-upload--info-wrapper">        <div class="file-upload--info">            <i class="ngx-fileupload-icon--add"></i>            <span>Drag/Drop files here or click</span>        </div>    </div>    <div *ngIf="showList" class="file-upload--list">        <ngx-fileupload-item             *ngFor="let item of uploads"            [@fadeInOut] [upload]="item" [template]="itemTemplate"            (@fadeInOut.done)="onAnimationDone($event)" (changed)="handleUploadChange($event, item)"        ></ngx-fileupload-item>    </div></div><div class="upload--footer">    <button class="upload-action upload-action--cancel" type="button" (click)="ngxFileUploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>    <button class="upload-action upload-action--clean"  type="button" (click)="ngxFileUploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>    <button class="upload-action upload-action--upload" type="button" (click)="ngxFileUploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button></div></div>'
-    var COMPONENTS = [{'name': 'NgxFileUploadComponent', 'selector': 'ngx-fileupload'},{'name': 'NgxFileUploadItemComponent', 'selector': 'ngx-fileupload-item'}];
-    var DIRECTIVES = [{'name': 'NgxFileUploadDirective', 'selector': '[ngxFileUpload]'}];
-    var ACTUAL_COMPONENT = {'name': 'NgxFileUploadComponent'};
+        var COMPONENT_TEMPLATE = '<div><div class="fileupload"      [ngxFileUpload]="url"      [validator]="validator"     [disabled]="showList"     (add)="onUploadsAdd($event)"     (completed)="onUploadCompleted($event)"     #ngxFileUploadRef=\'ngxFileUploadRef\'>    <div *ngIf="!showList" class="file-upload--info-wrapper">        <div class="file-upload--info">            <i class="ngx-fileupload-icon--add"></i>            <span>Drag/Drop files here or click</span>        </div>    </div>    <div *ngIf="showList" class="file-upload--list">        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate"></ngx-fileupload-item>    </div></div><div class="upload--footer">    <button class="upload-action upload-action--cancel" type="button" (click)="ngxFileUploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>    <button class="upload-action upload-action--clean"  type="button" (click)="ngxFileUploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>    <button class="upload-action upload-action--upload" type="button" (click)="ngxFileUploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button></div></div>'
+    var COMPONENTS = [{'name': 'UploadItemComponent', 'selector': 'ngx-fileupload-item'},{'name': 'UploadViewComponent', 'selector': 'ngx-fileupload'}];
+    var DIRECTIVES = [{'name': 'UploadFileDirective', 'selector': '[ngxFileUploadFile], [ngxFileUpload]'}];
+    var ACTUAL_COMPONENT = {'name': 'UploadViewComponent'};
 </script>
 <script src="../js/tree.js"></script>
 
@@ -1013,7 +906,7 @@ export class NgxFileUploadComponent {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'NgxFileUploadComponent.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'UploadViewComponent.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

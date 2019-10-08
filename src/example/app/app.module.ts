@@ -40,7 +40,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
         BrowserModule,
         BrowserAnimationsModule,
         NgxFileUploadModule,
-        RouterModule.forRoot([]),
+        RouterModule.forRoot([], {useHash: true}),
         ItemTemplateDemo,
         Dashboard,
         UiModule,

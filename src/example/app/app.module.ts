@@ -1,9 +1,10 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 import { RouterModule } from "@angular/router";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 
+import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { IgxIconModule } from "igniteui-angular";
 import { HighlightModule } from "ngx-highlightjs";
 import xml from "highlight.js/lib/languages/xml";
 import scss from "highlight.js/lib/languages/scss";
@@ -43,6 +44,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
         ItemTemplateDemo,
         Dashboard,
         UiModule,
+        IgxIconModule,
         HighlightModule.forRoot({
             languages: hljsLanguages
         })

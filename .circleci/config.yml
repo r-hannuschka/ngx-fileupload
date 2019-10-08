@@ -101,6 +101,38 @@ jobs:
       - run:
           name: "Deploy documentation to gh-pages"
           command: gh-pages --dotfiles --message "update docs [skip ci]" --dist ./src/documentation --dest .
+  build-demo:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/ngx-responsivemenu
+      - run:
+          name: "build demo page in prod mode"
+          command: cd src && npm run build -- --prod --base-href=/ngx-fileupload-demo/
+      - persist_to_workspace:
+          root: ~/ngx-fileupload-demo
+          paths:
+            - ./src/dist/ngx-fileupload-example
+  deploy-demo:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/ngx-responsivemenu
+      - run:
+          name: Avoid hosts unknown for github
+          command: mkdir -p ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      - run:
+          name: "install dependencies" 
+          command: |
+            sudo npm i -g --silent gh-pages@2.0.1
+            git config user.email "ci-build@ngx-fileupload.net"
+            git config user.name "ci-build:deploy"
+      - add_ssh_keys:
+          fingerprints:
+            - "4b:28:3e:14:3b:b1:bc:5b:48:17:14:61:6e:20:66:de"
+      - run:
+          name: "Deploy demo to gh-pages"
+          command: gh-pages --dotfiles --message "update demo page [skip ci]" --add --dist ./src/dist/ngx-fileupload-example
 
 workflows:
   version: 2.1
@@ -110,19 +142,26 @@ workflows:
       - lint:
           requires:
             - install
+          filters: *filter_master
       - test:
           requires:
             - install
+          filters: *filter_master
       - e2e:
           requires:
             - install
+          filters: *filter_master
       - build-docs:
           requires:
             - install
-          filters: *filter_master
+      - build-demo
       - deploy-docs:
           requires:
             - build-docs
+      - deploy-demo:
+          requires:
+            - build-demo
+            - deploy-docs
       - coverage:
           requires:
             - test

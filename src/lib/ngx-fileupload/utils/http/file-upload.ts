@@ -165,6 +165,9 @@ export class FileUpload implements Upload {
      * handle all http events
      */
     private handleHttpEvent(event: HttpEvent<string>) {
+
+        console.log("upload is running");
+
         switch (event.type) {
             case HttpEventType.Sent: this.handleSent(); break;
             case HttpEventType.UploadProgress: this.handleProgress(event); break;

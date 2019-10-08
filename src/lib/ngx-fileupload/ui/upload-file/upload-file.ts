@@ -109,8 +109,10 @@ export class UploadFileDirective implements OnDestroy {
      */
     public ngOnDestroy() {
         this.destroyed$.next(true);
-        this.uploads = [];
         this.destroyed$.complete();
+
+        this.cancelAll();
+        this.uploads = [];
     }
 
     /**

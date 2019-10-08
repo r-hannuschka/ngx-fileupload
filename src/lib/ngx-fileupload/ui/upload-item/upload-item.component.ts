@@ -95,6 +95,8 @@ export class UploadItemComponent implements OnInit, OnDestroy {
      * if component gets destroyed remove change subscription
      */
     ngOnDestroy() {
+        // cancel file upload if item view is destroyed
+        this.fileUpload.cancel();
         this.changeSub.unsubscribe();
         this.changeSub = null;
     }

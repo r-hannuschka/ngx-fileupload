@@ -14,3 +14,9 @@ export interface MenuItem {
     label: string;
     route: string;
 }
+
+export const MainMenuItems: MenuItem[] = [
+    {label: "Dashboard", route: "dashboard"},
+    {label: "Customize", route: "customize"},
+    {label: "Validation", route: "validation"}
+];

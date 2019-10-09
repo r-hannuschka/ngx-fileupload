@@ -3,15 +3,15 @@ import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { HighlightModule } from "ngx-highlightjs";
 import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
-import { IgxTabsModule, IgxIconModule } from "igniteui-angular";
+import { IgxTabsModule } from "igniteui-angular";
 
 import { UiModule } from "@ngx-fileupload-example/ui";
 import { ItemTemplateRoutes } from "./routes";
 
 import { BaseItemComponent } from "./base/base-item.component";
-import { CircleProgressbarComponent } from "./circle-progressbar/circle-progressbar.component";
-import { ErrorMessageComponent } from "./error-message/error-message.component";
 import { ItemTemplateComponent } from "./item-template/item-template.component";
+import { ErrorMessageComponent } from "./error-message/error-message.component";
+import { CustomizeComponent } from "./customize.component";
 import { ValidationMessageComponent } from "./validation-message/validation-message.component";
 
 @NgModule({
@@ -21,22 +21,21 @@ import { ValidationMessageComponent } from "./validation-message/validation-mess
         NgxFileUploadModule,
         UiModule,
         HighlightModule,
-        IgxTabsModule,
-        IgxIconModule
+        IgxTabsModule
     ],
     exports: [
         RouterModule
     ],
     declarations: [
         BaseItemComponent,
+        CustomizeComponent,
         ItemTemplateComponent,
-        CircleProgressbarComponent,
         ValidationMessageComponent,
         ErrorMessageComponent,
     ],
     entryComponents: [
-        ItemTemplateComponent
+        CustomizeComponent
     ],
     providers: [],
 })
-export class ItemTemplateDemo {}
+export class CustomizePage {}

@@ -24,13 +24,14 @@ export function hljsLanguages() {
   ];
 }
 
+import { AppComponent } from "./app.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+
 import { UiModule } from "@ngx-fileupload-example/ui";
 import { FakeUploadInterceptor } from "@ngx-fileupload-example/utils/http";
-
-import { AppComponent } from "./app.component";
-import { ItemTemplateDemo } from "@ngx-fileupload-example/page/item-template";
+import { CustomizePage } from "@ngx-fileupload-example/page/customize";
 import { Dashboard } from "@ngx-fileupload-example/page/dashboard";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ValidationPage } from "@ngx-fileupload-example/page/validation";
 
 @NgModule({
     declarations: [
@@ -41,8 +42,9 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
         BrowserAnimationsModule,
         NgxFileUploadModule,
         RouterModule.forRoot([], {useHash: true}),
-        ItemTemplateDemo,
+        CustomizePage,
         Dashboard,
+        ValidationPage,
         UiModule,
         IgxIconModule,
         HighlightModule.forRoot({

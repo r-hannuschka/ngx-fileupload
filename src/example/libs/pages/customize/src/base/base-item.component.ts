@@ -1,22 +1,18 @@
 import { Component } from "@angular/core";
 import { Upload } from "@r-hannuschka/ngx-fileupload";
-
-import * as ExampleCodeData from "@ngx-fileupload-example/data/code/examples-item-template/circle-progressbar";
+import * as BaseCodeData from "@ngx-fileupload-example/data/code/customize/base";
 import * as uiUploadToolbarData from "@ngx-fileupload-example/data/code/ui/ui-upload-toolbar";
-import * as uiProgressbarCircleData from "@ngx-fileupload-example/data/code/ui/progressbar-circle";
 
 @Component({
-    selector: "app-item-template--circle-progressbar",
-    templateUrl: "circle-progressbar.component.html",
-    styleUrls: ["./circle-progressbar.component.scss"]
+    selector: "app-item-template--base",
+    templateUrl: "base-item.component.html",
+    styleUrls: ["./base-item.component.scss"]
 })
-export class CircleProgressbarComponent {
+export class BaseItemComponent {
 
-    public code = ExampleCodeData;
+    public code = BaseCodeData;
 
     public codeUiUploadToolbarData = uiUploadToolbarData;
-
-    public codeUiProgressbarCircleData = uiProgressbarCircleData;
 
     public uploads: Upload[] = [];
 

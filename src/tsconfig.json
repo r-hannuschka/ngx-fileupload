@@ -34,11 +34,8 @@
       "@ngx-fileupload-example/utils/validators": [
         "example/libs/utils/validators"
       ],
-      "@ngx-fileupload-example/page/dashboard": [
-        "example/libs/pages/dashboard"
-      ],
-      "@ngx-fileupload-example/page/item-template": [
-        "example/libs/pages/item-template"
+      "@ngx-fileupload-example/page/*": [
+        "example/libs/pages/*"
       ],
       "@ngx-fileupload-example/ui": [
         "example/libs/ui"

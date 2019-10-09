@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Upload } from "@r-hannuschka/ngx-fileupload";
 
-import * as ExampleCodeData from "@ngx-fileupload-example/data/code/examples-item-template/error-message";
+import * as ExampleCodeData from "@ngx-fileupload-example/data/code/customize/error-message";
 import * as uiUploadToolbarData from "@ngx-fileupload-example/data/code/ui/ui-upload-toolbar";
 
 @Component({

@@ -14,6 +14,12 @@ export class ButtonComponent implements OnInit {
     @Input()
     public label: string;
 
+    @Input()
+    public disabled = false;
+
+    @Input()
+    public class = "";
+
     @Output()
     public dispatch: EventEmitter<void> = new EventEmitter();
 

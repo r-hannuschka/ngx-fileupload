@@ -13,6 +13,10 @@
                 <span class="label">Uploaded</span>
                 <span class="value text-truncate">{{upload.progress}} %</span>
             </li>
+            <li>
+                <span class="label">State</span>
+                <span class="value text-truncate">{{upload.state}}</span>
+            </li>
         </ul>
 
         <!-- display validation errors here -->
@@ -32,7 +36,7 @@
     <div class="col col-auto actions">
 
         <div class="btn-group">
-            <app-ui--button (dispatch)="control.start()" [label]="'Upload'" *ngIf="upload.state !== 'error'">
+            <app-ui--button (dispatch)="control.start()" [label]="'Upload'" [disabled]="upload.state !== 'queued'" *ngIf="upload.state !== 'error'">
                 <i class="icon-left icon-upload"></i>
             </app-ui--button>
 

@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-secondary">
+<button type="button" class="btn" [ngClass]="class" [disabled]="disabled">
     <ng-content select="i.icon-left"></ng-content>
-    <span>{{label}}</span>
+    <span *ngIf="label && label !== ''">{{label}}</span>
 </button>

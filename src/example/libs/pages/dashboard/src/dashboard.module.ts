@@ -6,7 +6,8 @@ import { RouterModule } from "@angular/router";
     imports: [RouterModule.forChild([
         {
             path: "",
-            component: DashboardComponent
+            redirectTo: "dashboard",
+            pathMatch: "full"
         },
         {
             path: "dashboard",

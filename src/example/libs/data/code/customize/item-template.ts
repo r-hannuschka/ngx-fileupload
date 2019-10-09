@@ -224,7 +224,7 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
 }
 `;
 
-const ItemTemplateSnippet = `<ng-template #customTemplate let-data="data" let-ctrl="ctrl">
+const ItemTemplateSnippet = `<ng-template #customTemplate let-upload="data" let-control="ctrl">
     <!-- template goes here -->
 </ng-template>
 

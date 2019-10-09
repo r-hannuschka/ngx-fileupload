@@ -1,2 +1,24 @@
+@import '~igniteui-angular/lib/core/styles/themes/index';
+@import "variables";
+
 :host {
+
+    ::ng-deep {
+        @include igx-tabs($dark-tabs);
+
+        section.docs {
+            color: map-get($colors, black);
+
+            .btn {
+                border-radius: 0;
+                background: map-get($colors, darkBlue);
+                color: map-get($colors, text);
+
+                &:focus {
+                    outline: none;
+                    box-shadow: none;
+                }
+            }
+        }
+    }
 }

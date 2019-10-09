@@ -1,0 +1,62 @@
+<h3>Custom File Select / Drop Zone</h3>
+<p>
+    If we dont want to use ngx-fileupload component as default upload view, we could create our own for this.
+    This Example shows how to use ngx-fileupload directive for a custom Dropzone and File Selector and display all upload items.
+</p>
+
+<section class="demo mb-3">
+
+    <igx-tabs>
+
+        <igx-tabs-group label="Demo">
+
+            <div class="mt-3">
+                <app-ui--upload-toolbar (add)="onUploadAdd($event)" [url]="'http://localhost:3000/upload'"></app-ui--upload-toolbar>
+
+                <!-- fileuploads goes here -->
+                <div class="upload-items">
+                    <ng-container *ngFor="let upload of uploads">
+                        <ngx-fileupload-item [upload]="upload" (completed)="uploadCompleted($event)" class="mb-3"></ngx-fileupload-item>
+                    </ng-container>
+                </div>
+            </div>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Html">
+            <pre><code [highlight]="code.HTML"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Typescript">
+            <pre><code [highlight]="code.TYPESCRIPT"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Ui Upload Toolbar Html">
+            <pre><code [highlight]="codeUiUploadToolbarData.HTML"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Ui Upload Toolbar TS">
+            <pre><code [highlight]="codeUiUploadToolbarData.TYPESCRIPT"></code></pre>
+        </igx-tabs-group>
+
+    </igx-tabs>
+</section>
+
+<section class="docs">
+
+    <app-ui--button [label]="'Read More'" (dispatch)="toggleDocs()"></app-ui--button>
+
+    <div *ngIf="showDocs">
+        <p>The <strong>ngx-fileupload-directive</strong> is next to <strong>ngx-fileupload-item</strong> a core component and has 4 main tasks.</p>
+        <ul>
+            <li>Register Events for Drag Drop Files or Mouseclick to open File window </li>
+            <li>Pre Validate Files</li>
+            <li>Create Upload</li>
+            <li>Controller for Upload/Cancel/Clean up uploads</li>
+        </ul>
+        <p>
+            As it is only a directive without a view you can bind this where you want for example a Button or Div container. We register to add event to get notified
+            if new uploads has been added or completed if a download has been done. This is the case if download has been uploaded (error or not) or canceled.
+        </p>
+        <pre><code [highlight]="code.Snippets.Listing1"></code></pre>
+    </div>
+</section>

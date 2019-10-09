@@ -4,7 +4,6 @@
         [ngxFileUploadFile]="url"
         [validator]="validator"
         (add)="onUploadAdd($event)"
-        (completed)="uploadCompleted($event)"
         #uploadFileFieldRef="ngxFileUploadRef"
     >
         <div class="input-group-prepend">

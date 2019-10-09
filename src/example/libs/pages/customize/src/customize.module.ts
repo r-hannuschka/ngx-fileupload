@@ -8,11 +8,9 @@ import { IgxTabsModule } from "igniteui-angular";
 import { UiModule } from "@ngx-fileupload-example/ui";
 import { ItemTemplateRoutes } from "./routes";
 
-import { BaseItemComponent } from "./base/base-item.component";
+import { FileSelectComponent } from "./file-select/file-select.component";
 import { ItemTemplateComponent } from "./item-template/item-template.component";
-import { ErrorMessageComponent } from "./error-message/error-message.component";
 import { CustomizeComponent } from "./customize.component";
-import { ValidationMessageComponent } from "./validation-message/validation-message.component";
 
 @NgModule({
     imports: [
@@ -27,11 +25,9 @@ import { ValidationMessageComponent } from "./validation-message/validation-mess
         RouterModule
     ],
     declarations: [
-        BaseItemComponent,
+        FileSelectComponent,
         CustomizeComponent,
-        ItemTemplateComponent,
-        ValidationMessageComponent,
-        ErrorMessageComponent,
+        ItemTemplateComponent
     ],
     entryComponents: [
         CustomizeComponent

@@ -1,14 +1,9 @@
-@import '~igniteui-angular/lib/core/styles/themes/index';
 $icomoon-font-path: "../../../../../assets/fonts" !default;
 
 @import "variables";
 @import "icons";
 
 :host {
-
-    ::ng-deep {
-        @include igx-tabs($dark-tabs);
-    }
 
     .card-list {
         display: flex;
@@ -136,23 +131,6 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
                         font-size: .7rem;
                         transform: translate(0, .3rem);
                     }
-                }
-            }
-        }
-    }
-
-    .docs {
-        color: map-get($colors, black);
-
-        ::ng-deep {
-            .btn {
-                border-radius: 0;
-                background: map-get($colors, darkBlue);
-                color: map-get($colors, text);
-
-                &:focus {
-                    outline: none;
-                    box-shadow: none;
                 }
             }
         }

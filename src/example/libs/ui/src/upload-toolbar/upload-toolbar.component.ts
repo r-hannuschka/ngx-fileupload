@@ -16,14 +16,7 @@ export class UploadToolbarComponent {
     @Output()
     add: EventEmitter<Upload[]> = new EventEmitter();
 
-    @Output()
-    completed: EventEmitter<Upload> = new EventEmitter();
-
     public onUploadAdd(uploads: Upload[]) {
         this.add.emit(uploads);
-    }
-
-    public uploadCompleted(upload: Upload) {
-        this.completed.emit(upload);
     }
 }

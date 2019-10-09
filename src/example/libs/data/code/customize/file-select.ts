@@ -18,10 +18,10 @@ import { Component } from "@angular/core";
 import { Upload } from "@r-hannuschka/ngx-fileupload";
 
 @Component({
-    selector: "app-item-template--base",
-    templateUrl: "base-item.component.html"
+    selector: "app-customize--file-select",
+    templateUrl: "file-select.component.html"
 })
-export class BaseItemComponent {
+export class FileSelectComponent {
 
     public uploads: Upload[] = [];
 
@@ -36,3 +36,13 @@ export class BaseItemComponent {
     }
 }
 `;
+
+const LISTING_1 = `<button class="btn"
+    [ngxFileUploadFile]="'http://example.url/upload'"
+    (add)="onUploadAdd($event)"
+    (completed)="uploadCompleted($event)"
+>Add Files</button>`;
+
+export const Snippets = {
+    Listing1: LISTING_1
+};

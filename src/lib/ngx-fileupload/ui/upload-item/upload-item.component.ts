@@ -1,9 +1,9 @@
 
-import { Component, OnInit, Input, ViewChild, TemplateRef, HostListener, OnDestroy } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter } from "@angular/core";
 import { FileUpload } from "@lib/utils/http/file-upload";
 import { UploadControl } from "@lib/utils/upload-control";
 import { UploadModel } from "@lib/data/upload.model";
-import { UploadData } from "@lib/data/api";
+import { UploadData, UploadState } from "@lib/data/api";
 import { Subscription } from "rxjs";
 
 export interface FileUploadItemContext {
@@ -55,6 +55,17 @@ export class UploadItemComponent implements OnInit, OnDestroy {
         };
     }
 
+    @Output()
+    public completed: EventEmitter<FileUpload>;
+
+    @Output()
+    public stateChange: EventEmitter<FileUpload>;
+
+    public constructor() {
+        this.completed   = new EventEmitter();
+        this.stateChange = new EventEmitter();
+    }
+
     /**
      * set template which should be used for upload items, if no TemplateRef is passed
      * it will fallback to [defaultUploadItem]{@link #template}
@@ -85,9 +96,22 @@ export class UploadItemComponent implements OnInit, OnDestroy {
      * @inheritdoc
      */
     ngOnInit(): void {
+
+        let state: UploadState = UploadState.QUEUED;
+
         this.changeSub = this.fileUpload.change
             .subscribe({
-                next: (upload: UploadModel) => this.context.data = upload.toJson()
+                next: (upload: UploadModel) => {
+                    this.context.data = upload.toJson();
+
+                    if (state !== upload.state) {
+                        this.stateChange.emit(this.fileUpload);
+                        state = upload.state;
+                    }
+                },
+                complete: () => {
+                    this.completed.emit(this.fileUpload);
+                }
             });
     }
 

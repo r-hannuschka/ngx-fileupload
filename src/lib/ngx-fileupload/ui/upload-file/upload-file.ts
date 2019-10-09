@@ -31,9 +31,6 @@ export class UploadFileDirective implements OnDestroy {
     @Output()
     public add: EventEmitter<FileUpload[]>;
 
-    @Output()
-    public completed: EventEmitter<FileUpload>;
-
     public url: string;
 
     /**
@@ -99,8 +96,6 @@ export class UploadFileDirective implements OnDestroy {
         private renderer: Renderer2
     ) {
         this.add = new EventEmitter();
-        this.completed = new EventEmitter();
-
         this.fileSelect = this.createFieldInputField();
     }
 
@@ -216,18 +211,17 @@ export class UploadFileDirective implements OnDestroy {
             this.preValidateUpload(fileModel);
         }
 
-        this.uploads.push(upload);
-
-        const sub = upload.change
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe({
-                complete: () => {
-                    this.uploads.splice(this.uploads.indexOf(upload), 1);
-                    this.completed.emit(upload);
-                    sub.unsubscribe();
-                }
-            });
-
+        if (!upload.isInvalid()) {
+            this.uploads.push(upload);
+            const sub = upload.change
+                .pipe(takeUntil(this.destroyed$))
+                .subscribe({
+                    complete: () => {
+                        this.uploads.splice(this.uploads.indexOf(upload), 1);
+                        sub.unsubscribe();
+                    }
+                });
+        }
         return upload;
     }
 

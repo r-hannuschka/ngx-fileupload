@@ -3,7 +3,6 @@
      [validator]="validator"
      [disabled]="showList"
      (add)="onUploadsAdd($event)"
-     (completed)="onUploadCompleted($event)"
      #ngxFileUploadRef='ngxFileUploadRef'>
 
     <div *ngIf="!showList" class="file-upload--info-wrapper">
@@ -14,7 +13,8 @@
     </div>
 
     <div *ngIf="showList" class="file-upload--list">
-        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate"></ngx-fileupload-item>
+        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate" (completed)="onUploadCompleted($event)">
+        </ngx-fileupload-item>
     </div>
 </div>
 <div class="upload--footer">

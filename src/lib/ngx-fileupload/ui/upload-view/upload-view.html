@@ -1,0 +1,24 @@
+<div class="fileupload" 
+     [ngxFileUpload]="url" 
+     [validator]="validator"
+     [disabled]="showList"
+     (add)="onUploadsAdd($event)"
+     #ngxFileUploadRef='ngxFileUploadRef'>
+
+    <div *ngIf="!showList" class="file-upload--info-wrapper">
+        <div class="file-upload--info">
+            <i class="ngx-fileupload-icon--add"></i>
+            <span>Drag/Drop files here or click</span>
+        </div>
+    </div>
+
+    <div *ngIf="showList" class="file-upload--list">
+        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate" (completed)="onUploadCompleted($event)">
+        </ngx-fileupload-item>
+    </div>
+</div>
+<div class="upload--footer">
+    <button class="upload-action upload-action--cancel" type="button" (click)="ngxFileUploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>
+    <button class="upload-action upload-action--clean"  type="button" (click)="ngxFileUploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>
+    <button class="upload-action upload-action--upload" type="button" (click)="ngxFileUploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button>
+</div>

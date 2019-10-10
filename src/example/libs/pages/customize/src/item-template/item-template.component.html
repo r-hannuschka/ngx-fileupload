@@ -1,0 +1,213 @@
+<!-- template for each upload -->
+<ng-template #itemTemplate let-upload="data" let-ctrl="ctrl" #custom>
+
+    <div class="card upload">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="title text-truncate">{{upload.name}}</span>
+
+            <div class="actions btn-group">
+                <app-ui--button (dispatch)="ctrl.start()" [class]="'btn-upload btn-secondary btn-sm'" [disabled]="upload.state !== 'queued'" *ngIf="upload.state !== 'error'">
+                    <i class="icon-left icon-upload"></i>
+                </app-ui--button>
+
+                <app-ui--button (dispatch)="ctrl.stop()" [class]="'btn.cancel btn-secondary btn-sm'">
+                    <i class="icon-left icon-cancel-outline"></i>
+                </app-ui--button>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="progressbar">
+                <app-ui--progressbar-circle 
+                    [circleData]="{height: 100, width: 100, radius: 40}"
+                    [progress]="upload.progress" >
+                </app-ui--progressbar-circle>
+            </div>
+
+            <div class="col details col-auto">
+                <dl>
+                    <dt class="label">State</dt>
+                    <dd class="value text-truncate">{{upload.state}}</dd>
+
+                    <dt class="label">Uploaded</dt>
+                    <dd class="value text-truncate">{{upload.uploaded | fileSize}} / {{upload.size | fileSize}}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<h3>Custom Item Template</h3>
+
+<p>This example shows how to define a custom template which will be used for every upload in list.</p>
+
+<section class="demo mb-3">
+    <igx-tabs>
+
+        <igx-tabs-group label="Demo">
+
+            <div class="mt-3 ">
+                <app-ui--upload-toolbar (add)="onUploadAdd($event)" [url]="'http://ngx-fileupload.example/upload'"></app-ui--upload-toolbar>
+
+                <!-- fileuploads goes here -->
+                <div class="card-list">
+                    <ng-container *ngFor="let upload of uploads">
+                        <ngx-fileupload-item
+                            (completed)="uploadCompleted($event)"
+                            [template]="itemTemplate" 
+                            [upload]="upload"
+                        ></ngx-fileupload-item>
+                    </ng-container>
+                </div>
+            </div>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Typescript">
+            <pre><code [highlight]="code.TYPESCRIPT"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Html">
+            <pre><code [highlight]="code.HTML"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Item Template">
+            <pre><code [highlight]="codeUiItemTemplate.TEMPLATE"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="SCSS">
+            <pre><code [highlight]="codeUiItemTemplate.SCSS"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Ui Progressbar Circle TS">
+            <pre><code [highlight]="codeUiProgressbar.TYPESCRIPT"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Ui Progressbar Circle Html">
+            <pre><code [highlight]="codeUiProgressbar.HTML"></code></pre>
+        </igx-tabs-group>
+    </igx-tabs>
+</section>
+
+<section class="docs">
+
+    <app-ui--button [label]="'Read More'" (dispatch)="toggleDocs()">
+    </app-ui--button>
+
+    <div *ngIf="showDocs">
+
+        <pre><code [highlight]="codeUiItemTemplate.SNIPPETS.LISTING1"></code></pre>
+
+        <p>
+            First we define our custom template which gets a <strong>scope</strong> injected which contains 2 properties:
+        </p>
+
+        <dl class="row">
+            <dt class="col-1">
+                data
+            </dt>
+            <dd class="col-11">
+                which holds information for current upload and a control, to <strong>start</strong>, <strong>stop</strong> or <strong>retry</strong> upload
+            </dd>
+            <dt class="col-1">
+                control
+            </dt>
+            <dd class="col-11">
+                a control to start, cancel or retry upload
+            </dd>
+        </dl>
+
+        <p>To use this in our template we have to define 2 internal variables for that in this case data and ctrl.</p>
+        <pre><code [highlight]="'<ng-template ... let-data=&quot;data&quot; let-ctrl=&quot;ctrl&quot;>'"></code></pre>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="property">Context</th>
+                    <th colspan=3 scope="property"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan=9>data</td>
+                </tr>
+                <tr>
+                    <td><strong>Name</strong></td>
+                    <td><strong>Description</strong></td>
+                    <td><strong>Type</strong></td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>name of file</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>progress</td>
+                    <td>uploaded progress in percent</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>response</td>
+                    <td>Server Response</td>
+                    <td>UploadResponse</td>
+                </tr>
+                <tr>
+                    <td>size</td>
+                    <td>total size of file which should uploaded</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>state</td>
+                    <td>current state one of [canceled, queued, progress, error, uploaded, invalid]</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>uploaded</td>
+                    <td>uploaded size in byte</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>validation</td>
+                    <td>holds validation result</td>
+                    <td>UploadValidation</td>
+                </tr>
+
+                <!-- control -->
+                <tr>
+                    <td rowspan=5>ctrl</td>
+                </tr>
+                <tr>
+                    <td><strong>Name</strong></td>
+                    <td><strong>Description</strong></td>
+                    <td><strong>Usage</strong></td>
+                </tr>
+                <tr>
+                    <td>retry</td>
+                    <td>if upload has been failed (not invalidated), for example server not found or server returns an error you can retry upload.</td>
+                    <td>
+                        <pre><code [highlight]="'<button (click)=&quot;ctrl.retry()&quot;>Retry</button>'"></code></pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>start</td>
+                    <td>starts upload</td>
+                    <td>
+                        <pre><code [highlight]="'<button (click)=&quot;ctrl.start()&quot;>Start</button>'"></code></pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>stop</td>
+                    <td>stop current upload, will become state canceled</td>
+                    <td>
+                        <pre><code [highlight]="'<button (click)=&quot;ctrl.stop()&quot;>Stop</button>'"></code></pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>So we can define our own template which injected into ngx-fileupload-item</p>
+        <p><strong>@Example simple upload item template</strong></p>
+
+        <pre><code [highlight]="codeUiItemTemplate.SNIPPETS.LISTING2"></code></pre>
+    </div>
+</section>

@@ -1,5 +1,4 @@
-import { UploadModel } from "lib/public-api";
-import { UploadState, UploadResponse } from "lib/ngx-fileupload/model/upload";
+import { UploadModel, UploadState, UploadResponse } from "@r-hannuschka/ngx-fileupload";
 
 describe("Model: Upload", () => {
 

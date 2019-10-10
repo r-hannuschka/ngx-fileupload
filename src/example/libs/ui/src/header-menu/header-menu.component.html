@@ -1,0 +1,21 @@
+<ul class="navbar-nav mr-auto">
+    <li class="navbar-brand">Ngx Fileupload</li>
+    <li *ngFor="let item of items" class="nav-item">
+        <a [routerLink]="[item.route]"
+           [routerLinkActive]="['route-link-active']"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="nav-link"
+        >
+            {{item.label}}
+        </a>
+    </li>
+</ul>
+<div class="links">
+    <a href="https://github.com/r-hannuschka/ngx-fileupload" class="mr-1 border-right border-light">
+        <igx-icon name="github" fontSet="ngx-fileupload-icons"></igx-icon>
+        GitHub
+    </a>
+    <a href="https://www.npmjs.com/package/@r-hannuschka/ngx-fileupload">
+        npm
+    </a>
+</div>

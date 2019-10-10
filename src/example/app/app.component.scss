@@ -1,11 +1,19 @@
+@import 'variables';
+
 :host {
 
-    ngx-fileupload {
-        height: 300px;
-        width: 480px;
-    }
+    ::ng-deep {
+        app-ui--header .navbar {
+            background-color: map-get($colors, black);
+            color: map-get($colors, text);
 
-    .fileupload-drop {
-        background: plum;
+            .nav-link {
+                color: map-get($colors, textDark);
+            }
+
+            .nav-link.route-link-active {
+                color: inherit;
+            }
+        }
     }
 }

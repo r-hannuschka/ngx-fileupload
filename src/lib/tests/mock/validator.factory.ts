@@ -1,4 +1,4 @@
-import { Validator, ValidationErrors, ValidationFn } from "lib/ngx-fileupload/validation/validation";
+import { Validator, ValidationErrors, ValidationFn } from "lib/ngx-fileupload/utils/validation/validation";
 
 class InvalidValidation implements Validator {
     validate(file: File): ValidationErrors | null {

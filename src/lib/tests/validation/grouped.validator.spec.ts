@@ -1,7 +1,7 @@
 
 import { ValidatorMockFactory } from "../mock/validator.factory";
-import { GroupedValidator } from "lib/ngx-fileupload/validation/grouped.validator";
-import { ValidationErrors } from "lib/ngx-fileupload/validation/validation";
+import { GroupedValidator } from "lib/ngx-fileupload/utils/validation/grouped.validator";
+import { ValidationErrors } from "lib/ngx-fileupload/utils/validation/validation";
 
 class ValidatorGroupMock extends GroupedValidator {
 

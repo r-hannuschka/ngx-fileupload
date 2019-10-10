@@ -1,0 +1,69 @@
+<ng-template #defaultUploadItem let-upload="data" let-ctrl="ctrl">
+
+    <div class="upload-item">
+        <div class="upload-item--header">{{upload.name}}</div>
+
+        <div class="upload-item--body">
+            <!-- upload state -->
+            <div class="upload-item--state">
+                <i [ngClass]="['ngx-fileupload-icon--' + upload.state]"></i>
+            </div>
+
+            <!-- file progress: current state | progressbar -->
+            <div class="upload-item--progress">
+                <div class="progressbar">
+                    <span class="label-size">{{upload.size | fileSize}}</span>
+                    <div class="progressbar-inner" [ngStyle]="{width: upload.progress + '%'}"></div>
+                </div>
+            </div>
+
+            <!-- upload actions: cancel | retry -->
+            <div class="upload-item--actions">
+                <!-- start upload action -->
+                <button type="button" class="item-action--upload" (click)="ctrl.start()" *ngIf="upload.state !== 'error'"
+                    [disabled]="upload.state !== 'queued' || upload.validation.errors">
+                    <i class="ngx-fileupload-icon--upload"></i>
+                </button>
+
+                <!-- retry upload action -->
+                <button type="button" class="item-action--retry" (click)="ctrl.retry()" *ngIf="upload.state === 'error'">
+                    <i class="ngx-fileupload-icon--retry"></i>
+                </button>
+
+                <!-- only if running -->
+                <button type="button" class="item-action--stop" (click)="ctrl.stop($event);">
+                    <i class="ngx-fileupload-icon--cancel"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- footer to display validation / upload errors or success notes -->
+        <div class="upload-item--footer">
+
+            <!-- show validation errors -->
+            <ul *ngIf="upload.validation.errors" class="upload-item--validation">
+                <li *ngFor="let error of upload.validation.errors | keyvalue : returnZero" class="message">
+                    {{error.value}}
+                </li>
+            </ul>
+
+            <ul *ngIf="upload.state === 'error'" class="upload-item--response-errors">
+                <li *ngFor="let error of upload.response.errors" class="message error">
+                    {{error}}
+                </li>
+            </ul>
+
+            <p class="message success" *ngIf="upload.state === 'uploaded'">
+                <ng-container *ngIf="upload.response.body && upload.response.body.message; else uploadSuccess">
+                    {{upload.response.body.message}}
+                </ng-container>
+                <ng-template #uploadSuccess>
+                    {{upload.name}} uploaded
+                </ng-template>
+            </p>
+        </div>
+    </div>
+</ng-template>
+
+<!-- display item template at this point -->
+<ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context"></ng-container>

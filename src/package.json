@@ -21,7 +21,9 @@
     "@angular/platform-browser": "8.2.9",
     "@angular/platform-browser-dynamic": "8.2.9",
     "@angular/router": "8.2.9",
-    "angular-pipes": "9.1.0",
+    "highlight.js": "^9.15.10",
+    "igniteui-angular": "^8.2.2",
+    "ngx-highlightjs": "^3.0.3",
     "rxjs": "6.5.3",
     "tslib": "1.10.0",
     "zone.js": "0.10.2"
@@ -37,6 +39,7 @@
     "@types/jasminewd2": "2.0.8",
     "@types/node": "8.10.54",
     "codelyzer": "5.1.2",
+    "bootstrap-scss": "^4.3.1",
     "express": "4.17.1",
     "express-fileupload": "1.1.5",
     "jasmine-core": "3.5.0",

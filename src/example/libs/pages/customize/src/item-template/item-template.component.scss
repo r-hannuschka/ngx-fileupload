@@ -1,0 +1,138 @@
+$icomoon-font-path: "../../../../../assets/fonts" !default;
+
+@import "variables";
+@import "icons";
+
+:host {
+
+    .card-list {
+        display: flex;
+        flex-wrap: wrap;
+
+        ngx-fileupload-item {
+            width: calc(100% / 3);
+            padding: 0 .5rem;
+            display: block;
+
+            &:nth-child(3n + 1) {
+                padding-left: 0;
+            }
+
+            &:nth-child(3n + 3) {
+                padding-right: 0;
+            }
+
+            &:nth-child(n + 4) {
+                margin-top: 1rem;
+            }
+        }
+
+        ngx-fileupload-item .errors {
+            list-style-type:none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                color: #AF0606;
+                display: flex;
+                align-items: center;
+
+                &:before {
+                    @include icon;
+                    content: $icon-warning;
+                    font-size: 1.1rem;
+                    margin-right: .5rem;
+                }
+            }
+        }
+
+        .card {
+            font-size: .8rem;
+        }
+
+        .card-header {
+            padding: 0;
+            background: lighten(map-get($colors, black), 10%);
+            color: map-get($colors, text);
+
+            .title {
+                padding: 0.5rem 1.25rem;
+            }
+
+            .actions {
+                padding: 0 .5rem;
+                align-self: stretch;
+
+                ::ng-deep {
+                    .btn {
+                        border-top-left-radius: 0;
+                        border-top-right-radius: 0;
+                        font-size: 1.3rem;
+                        padding: 0 .25rem;
+                        background: lighten(map-get($colors, black), 20%);
+                        border-color: lighten(map-get($colors, black), 20%);
+                    }
+
+                    .btn:disabled {
+                        opacity: 1;
+                        color: map-get($colors, textDark);
+                    }
+
+                    app-ui--button:not(:last-child) .btn {
+                        border-bottom-right-radius: 0;
+                        padding: 0 .125rem 0 .25rem;
+                    }
+
+                    app-ui--button:not(:first-child) .btn {
+                        border-bottom-left-radius: 0;
+                        padding: 0 .25rem 0 .125rem;
+                    }
+                }
+            }
+        }
+
+        .card-body {
+
+            display: flex;
+
+            .details {
+                flex: 1;
+
+                dl {
+                    font-size: .8rem;
+                    margin-bottom: .5rem;
+                }
+
+                .label {
+                    font-weight: 900;
+
+                    &:after {
+                        content: ":";
+                        display: "inline-block";
+                        margin-right: .5rem;
+                    }
+                }
+            }
+
+            .progressbar {
+
+                ::ng-deep {
+                    svg circle {
+                        stroke: lighten(map-get($colors, black), 10%);
+                        stroke-width: .75rem;
+
+                        &.progress {
+                            stroke-width: .8rem;
+                            stroke: map-get($colors, blue);
+                        }
+                    }
+
+                    svg text {
+                        font-size: .7rem;
+                        transform: translate(0, .3rem);
+                    }
+                }
+            }
+        }
+    }
+}

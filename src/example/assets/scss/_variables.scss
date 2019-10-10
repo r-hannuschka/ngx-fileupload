@@ -1,0 +1,29 @@
+@import '~igniteui-angular/lib/core/styles/themes/index';
+
+$icomoon-font-family: "icomoon" !default;
+
+$icon-warning: "\e900";
+$icon-upload: "\e901";
+$icon-arrow-sync: "\e902";
+$icon-cancel-outline: "\e903";
+$icon-document-add: "\e904";
+
+$colors : (
+    text: #E2E2E2,
+    textDark: darken(#E2E2E2, 20%),
+    darkBlue: #006494,
+    blue: #0582Ca,
+    lightBlue: #00A6FB,
+    black: #0D1F2D
+);
+
+$dark-tabs: igx-tabs-theme(
+    $item-text-color: map-get($colors, textDark),
+    $item-background: map-get($colors, darkBlue),
+    $item-hover-background: map-get($colors, blue),
+    $item-hover-color: #343a40,
+    $item-active-color: map-get($colors, text),
+    $item-active-icon-color: #FFF,
+    $indicator-color: #F8F8F8,
+    $tab-ripple-color: #F8F8F8
+);

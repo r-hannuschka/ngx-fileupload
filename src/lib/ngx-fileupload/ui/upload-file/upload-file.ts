@@ -16,7 +16,7 @@ import { FileUpload } from "@lib/utils/http/file-upload";
  * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: "[ngxFileUploadFile], [ngxFileUpload]",
+  selector: "[ngxFileUpload]",
   exportAs: "ngxFileUploadRef"
 })
 export class UploadFileDirective implements OnDestroy {
@@ -33,21 +33,6 @@ export class UploadFileDirective implements OnDestroy {
 
     public url: string;
 
-    /**
-     * url which should be used as endpoint for the file upload
-     * this field is mandatory
-     *
-     * @example
-     * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
-     */
-    @Input("ngxFileUploadFile")
-    public set ngxFileUploadFile(url: string) {
-        this.url = url;
-    }
-
-    /**
-     * @deprecated use [ngxFileUploadFile instead]
-     */
     @Input("ngxFileUpload")
     public set ngxFileUpload(url: string) {
         this.url = url;

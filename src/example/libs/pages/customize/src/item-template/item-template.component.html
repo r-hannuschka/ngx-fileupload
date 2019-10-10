@@ -1,5 +1,5 @@
 <!-- template for each upload -->
-<ng-template #itemTemplate let-upload="data" let-ctrl="ctrl">
+<ng-template #itemTemplate let-upload="data" let-ctrl="ctrl" #custom>
 
     <div class="card upload">
 
@@ -48,7 +48,7 @@
         <igx-tabs-group label="Demo">
 
             <div class="mt-3 ">
-                <app-ui--upload-toolbar (add)="onUploadAdd($event)" [url]="'http://ngx-fileupload.example/upload'" [validator]="validator"></app-ui--upload-toolbar>
+                <app-ui--upload-toolbar (add)="onUploadAdd($event)" [url]="'http://ngx-fileupload.example/upload'"></app-ui--upload-toolbar>
 
                 <!-- fileuploads goes here -->
                 <div class="card-list">
@@ -71,12 +71,12 @@
             <pre><code [highlight]="code.HTML"></code></pre>
         </igx-tabs-group>
 
-        <igx-tabs-group label="SCSS">
-            <pre><code [highlight]="codeUiItemTemplate.SCSS"></code></pre>
+        <igx-tabs-group label="Item Template">
+            <pre><code [highlight]="codeUiItemTemplate.TEMPLATE"></code></pre>
         </igx-tabs-group>
 
-        <igx-tabs-group label="Template">
-            <pre><code [highlight]="codeUiItemTemplate.TEMPLATE"></code></pre>
+        <igx-tabs-group label="SCSS">
+            <pre><code [highlight]="codeUiItemTemplate.SCSS"></code></pre>
         </igx-tabs-group>
 
         <igx-tabs-group label="Ui Progressbar Circle TS">

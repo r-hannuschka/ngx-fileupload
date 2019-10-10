@@ -1,7 +1,7 @@
 <div class="btn-toolbar mb-3">
 
     <div class="input-group ml-auto"
-        [ngxFileUploadFile]="url"
+        [ngxFileUpload]="url"
         [validator]="validator"
         (add)="onUploadAdd($event)"
         #uploadFileFieldRef="ngxFileUploadRef"

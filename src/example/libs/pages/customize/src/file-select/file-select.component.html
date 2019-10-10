@@ -46,6 +46,11 @@
     <app-ui--button [label]="'Read More'" (dispatch)="toggleDocs()"></app-ui--button>
 
     <div *ngIf="showDocs">
+
+        <p class="mt-3 mb-3">
+            <strong>Step 1 Implement ngxFileUpload Directive</strong>
+        </p>
+
         <p>The <strong>ngx-fileupload-directive</strong> is next to <strong>ngx-fileupload-item</strong> a core component and has 4 main tasks.</p>
         <ul>
             <li>Register Events for Drag Drop Files or Mouseclick to open File window </li>
@@ -53,10 +58,139 @@
             <li>Create Upload</li>
             <li>Controller for Upload/Cancel/Clean up uploads</li>
         </ul>
+
         <p>
-            As it is only a directive without a view you can bind this where you want for example a Button or Div container. We register to add event to get notified
-            if new uploads has been added or completed if a download has been done. This is the case if download has been uploaded (error or not) or canceled.
+            To implement this is very simple, we have to add <strong>ngxFileUpload Directive</strong> to any html element we want, pass an url which represents our
+            endpoint and listen to <strong>add</strong> event to know when new Uploads has been added.
         </p>
-        <pre><code [highlight]="code.Snippets.Listing1"></code></pre>
+
+        <pre><code [highlight]="code.Snippets.Listing1.Html"></code></pre>
+
+        <p>
+            In our component we store all uploads which has been added into an array, so we can loop them later and show them as list.
+        </p>
+
+        <pre><code [highlight]="code.Snippets.Listing1.TS"></code></pre>
+
+        <p>
+            Finally render all uploads which has been added with <strong>ngx-filupload-item.component</strong>. If no template is passed to ngx-fileupload-item
+            it will use internal default template to render an upload.
+
+            If you need a custom template for an item <strong>@see Custom Item Template</strong> for more informations.
+        </p>
+
+        <pre><code [highlight]="code.Snippets.Listing1.FULL_HTML"></code></pre>
+
+        <p>The Result</p>
+        <igx-tabs>
+            <igx-tabs-group label="Listing 1">
+                <ng-container *ngFor="let upload of listing1Uploads">
+                    <ngx-fileupload-item [upload]="upload"></ngx-fileupload-item>
+                </ng-container>
+
+                <button class="btn btn-secondary" [ngxFileUpload]="'http://ngx-fileupload.example/upload'" (add)="listing1Add($event)">
+                    Add Files
+                </button>
+            </igx-tabs-group>
+
+            <igx-tabs-group label="Html">
+                <pre><code [highlight]="code.Snippets.Listing1.FULL_HTML"></code></pre>
+            </igx-tabs-group>
+
+            <igx-tabs-group label="Typescript">
+                <pre><code [highlight]="code.Snippets.Listing1.TS"></code></pre>
+            </igx-tabs-group>
+        </igx-tabs>
+
+        <p class="mt-3 mb-3">
+            <strong>Step 2 add some more Control</strong>
+        </p>
+        <p>You will see you have to trigger all uploads manually, so lets add a button to upload all uploads which has been added to list at once. We can solve this and use <strong>ngxFileUpload Directive</strong> for this, since this is exported as <strong>ngxFileUploadRef</strong> we can save this into template internal variable and use the controls.</p>
+        <pre><code [highlight]="code.Snippets.Listing2.applyRef"></code></pre>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="name">Name</th>
+                    <th scope="code">Example Code</th>
+                    <th scope="description">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>uploadAll</td>
+                    <td><pre><code [highlight]="'<button ... (click)=&quot;uploadRef.uploadAll()&quot;'"></code></pre></td>
+                    <td>starts upload for all items if not invalid or allready completed</td>
+                </tr>
+
+                <tr>
+                    <td>cancelAll</td>
+                    <td><pre><code [highlight]="'<button ... (click)=&quot;uploadRef.cancelAll()&quot;'"></code></pre></td>
+                    <td>Cancel all uploads in list which has not completed allready. This will change state for all active uploads to canceled.</td>
+                </tr>
+
+                <tr>
+                    <td>cleanAll</td>
+                    <td><pre><code [highlight]="'<button ... (click)=&quot;uploadRef.cleanAll()&quot;'"></code></pre></td>
+                    <td>Cancel all uploads which has been invalidated or upload failed (server error). This will change state from invalid /error to canceled.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Putting this all together we ends up into this</p>
+        <igx-tabs>
+            <igx-tabs-group label="Listing 1">
+
+                <ng-container *ngFor="let upload of listing2Uploads">
+                    <ngx-fileupload-item [upload]="upload"></ngx-fileupload-item>
+                </ng-container>
+
+                <button class="btn btn-secondary" [ngxFileUpload]="'http://ngx-fileupload.example/upload/error'" (add)="listing2Add($event)" #uploadRef2="ngxFileUploadRef">Add Files</button>
+                <button class="btn btn-secondary" (click)="uploadRef2.uploadAll()">Upload all</button>
+                <button class="btn btn-secondary" (click)="uploadRef2.cancelAll()">Cancel all</button>
+                <button class="btn btn-secondary" (click)="uploadRef2.cleanAll()">Clean Up</button>
+            </igx-tabs-group>
+
+            <igx-tabs-group label="Html">
+                <pre><code [highlight]="code.Snippets.Listing2.exampleHtml"></code></pre>
+            </igx-tabs-group>
+        </igx-tabs>
+
+        <p class="mt-3 mb-3">
+            <strong>Step 3 remove completed uploads</strong>
+        </p>
+        <p>This is not directly a part of the directive, but as you can see all uploads (completed/canceled) stay in list. To solve that problem we can listen to <strong>completed</strong> event on <strong>upload item</strong> to get notified an upload has been completed (this includes canceled). So we have to extend our template by adding this to <strong>ngx-fileupload-item</strong></p>
+        <p class="p-3 bg-info">Completed will not called if an upload got an Response Error from Server (maybe u want to retry) or it has been invalid through Validators.</p>
+        <pre><code [highlight]="'<ngx-fileupload-item ... (completed)=&quot;uploadCompleted($event);&quot;'"></code></pre>
+
+        <p>And our Component to remove upload from list</p>
+        <pre><code [highlight]="'
+public uploadCompleted(completed: Upload) {
+    this.uploads = this.uploads.filter((upload) => completed !== upload);
+}'"
+        ></code></pre>
+
+        <p>The final result</p>
+        <igx-tabs>
+            <igx-tabs-group label="Final Result">
+
+                <ng-container *ngFor="let upload of listingFinalUploads">
+                    <ngx-fileupload-item [upload]="upload" (completed)='uploadCompletedFinal($event);'></ngx-fileupload-item>
+                </ng-container>
+
+                <button class="btn btn-secondary" [ngxFileUpload]="'http://ngx-fileupload.example/upload'" (add)="listingFinalAdd($event)" #uploadFinalRef="ngxFileUploadRef">Add Files</button>
+                <button class="btn btn-secondary" (click)="uploadFinalRef.uploadAll()">Upload all</button>
+                <button class="btn btn-secondary" (click)="uploadFinalRef.cancelAll()">Cancel all</button>
+                <button class="btn btn-secondary" (click)="uploadFinalRef.cleanAll()">Clean Up</button>
+            </igx-tabs-group>
+
+            <igx-tabs-group label="TS">
+                <pre><code [highlight]="code.Snippets.ListingFinal.ts"></code></pre>
+            </igx-tabs-group>
+
+            <igx-tabs-group label="Html">
+                <pre><code [highlight]="code.Snippets.ListingFinal.html"></code></pre>
+            </igx-tabs-group>
+        </igx-tabs>
     </div>
 </section>

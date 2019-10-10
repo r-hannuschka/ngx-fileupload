@@ -2,10 +2,9 @@ export const HTML = `
 <div class="btn-toolbar mb-3">
 
     <div class="input-group ml-auto"
-        [ngxFileUploadFile]="url"
+        [ngxFileUpload]="url"
         [validator]="validator"
         (add)="onUploadAdd($event)"
-        (completed)="uploadCompleted($event)"
         #uploadFileFieldRef="ngxFileUploadRef"
     >
         <div class="input-group-prepend">

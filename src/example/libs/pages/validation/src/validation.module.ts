@@ -7,7 +7,10 @@ import { HighlightModule } from "ngx-highlightjs";
 import { IgxTabsModule } from "igniteui-angular";
 
 import { ValidationPageComponent } from "./validation-page/validation-page.component";
-import { BaseComponent } from "./base/base.component";
+import { IsImageValidationComponent } from "./is-image/is-image.component";
+import { GroupAndComponent } from "./group-and/group-and.component";
+import { GroupOrComponent } from "./group-or/group-or.component";
+import { GroupMultipleComponent } from "./group-multiple/group-multiple.component";
 
 @NgModule({
     imports: [
@@ -25,7 +28,10 @@ import { BaseComponent } from "./base/base.component";
     ],
     declarations: [
         ValidationPageComponent,
-        BaseComponent
+        IsImageValidationComponent,
+        GroupAndComponent,
+        GroupOrComponent,
+        GroupMultipleComponent
     ],
     entryComponents: [
         ValidationPageComponent

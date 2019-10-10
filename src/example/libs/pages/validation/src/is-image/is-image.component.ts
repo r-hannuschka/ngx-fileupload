@@ -1,14 +1,14 @@
 import { Component } from "@angular/core";
 import { isImage } from "@ngx-fileupload-example/utils/validators";
 import { ValidationFn } from "@r-hannuschka/ngx-fileupload";
-import * as ExampleCode from "@ngx-fileupload-example/data/code/examples-validation/base";
+import * as ExampleCode from "@ngx-fileupload-example/data/code/validation/is-image";
 import * as Validators from "@ngx-fileupload-example/data/code/utils/validators";
 
 @Component({
-    selector: "app-validation--base",
-    templateUrl: "base.component.html"
+    selector: "app-validation--is-image",
+    templateUrl: "is-image.component.html"
 })
-export class BaseComponent {
+export class IsImageValidationComponent {
 
     public validator: ValidationFn = isImage;
 

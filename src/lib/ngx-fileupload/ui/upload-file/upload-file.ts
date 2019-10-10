@@ -195,9 +195,7 @@ export class UploadFileDirective implements OnDestroy {
         if (this.validator) {
             this.preValidateUpload(fileModel);
         }
-
         if (!upload.isInvalid()) {
-            this.uploads.push(upload);
             const sub = upload.change
                 .pipe(takeUntil(this.destroyed$))
                 .subscribe({
@@ -207,6 +205,8 @@ export class UploadFileDirective implements OnDestroy {
                     }
                 });
         }
+
+        this.uploads.push(upload);
         return upload;
     }
 

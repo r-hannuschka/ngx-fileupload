@@ -121,6 +121,7 @@ $ngx-fileupload-icons--font-path: '../../assets/fonts' !default;
             white-space: nowrap;
             text-overflow: ellipsis;
             line-height: 1.1rem;
+            text-align: left;
 
             &.error {
                 color: map-get($map: $colors, $key: 'red');

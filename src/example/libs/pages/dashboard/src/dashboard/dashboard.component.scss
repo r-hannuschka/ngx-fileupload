@@ -1,0 +1,17 @@
+$icomoon-font-path: "../../../../../assets/fonts" !default;
+
+@import "variables";
+@import "icons";
+
+:host {
+
+    .header {
+
+        background: map-get($colors, darkBlue);
+        color: map-get($colors, text);
+
+        i {
+            font-size: 12rem;
+        }
+    }
+}

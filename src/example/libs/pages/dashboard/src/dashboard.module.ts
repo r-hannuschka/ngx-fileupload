@@ -1,9 +1,12 @@
 import { NgModule } from "@angular/core";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { RouterModule } from "@angular/router";
+import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 
 @NgModule({
-    imports: [RouterModule.forChild([
+    imports: [
+        NgxFileUploadModule,
+        RouterModule.forChild([
         {
             path: "",
             redirectTo: "dashboard",

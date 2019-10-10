@@ -8,12 +8,15 @@ import { ProgressbarCircleComponent } from "./progressbar-circle/progressbar-cir
 import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 import { UploadToolbarComponent } from "./upload-toolbar/upload-toolbar.component";
 import { UploadItemSimpleComponent } from "./upload-item-simple/upload-item-simple.component";
+import { IgxIconModule, IgxIconService } from "igniteui-angular";
+import * as Icons from "@ngx-fileupload-example/data/ui/icons";
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
-        NgxFileUploadModule
+        NgxFileUploadModule,
+        IgxIconModule
     ],
     exports: [
         ButtonComponent,
@@ -32,4 +35,10 @@ import { UploadItemSimpleComponent } from "./upload-item-simple/upload-item-simp
     ],
     providers: [],
 })
-export class UiModule { }
+export class UiModule {
+
+    public constructor(iconService: IgxIconService) {
+        iconService.addSvgIconFromText("github", Icons.GITHUB, "ngx-fileupload-icons");
+        iconService.addSvgIconFromText("npm", Icons.NPM, "ngx-fileupload-icons");
+    }
+}

@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.1.0
+
+### features
+
+- add demo page for more examples (customize / validators)
+- remove angular pipes dependecy and replace with internal fileSize pipe to show file size formatted
+- add output completed to ngx-fileupload-item to get notified upload for file has been completed
+- response errors now allways sanitized to be an array, remove toArray pipe
+
+### bugfixes
+
+- fixed bug all uploads stay alive even component gets destroyed
+- fixed bug could not add any files anymore after there are files in list
+- fixed style issues
+
+## 2.0.1
+
+- update dependencies
+
+## 2.0.0
+
+- reworking validation
+
+# Changelog
+
 ## 1.0.4
 
 ### dependencies

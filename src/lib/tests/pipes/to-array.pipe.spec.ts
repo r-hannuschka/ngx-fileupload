@@ -1,4 +1,4 @@
-import { ToArrayPipe } from "lib/ngx-fileupload/pipes/to-array.pipe";
+import { ToArrayPipe } from "lib/ngx-fileupload/utils/to-array.pipe";
 
 describe("Pipe: ToArray", () => {
     let pipe: ToArrayPipe;

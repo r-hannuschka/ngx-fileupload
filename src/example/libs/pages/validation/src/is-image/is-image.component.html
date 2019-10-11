@@ -1,0 +1,24 @@
+<h3>Add single Validator</h3>
+
+<igx-tabs>
+    <igx-tabs-group label="Demo">
+        <!-- 
+            pass validator directly into standard ngx-fileupload view
+            internally validator will directed to ngx fileupload directive
+        -->
+        <ngx-fileupload [url]="'http://somewhere/upload'" [validator]="validator"></ngx-fileupload>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Typescript">
+        <pre><code [highlight]="exampleCode.TYPESCRIPT"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Html">
+        <pre><code [highlight]="exampleCode.HTML"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Validator: isImage">
+        <pre><code [highlight]="codeValidator"></code></pre>
+    </igx-tabs-group>
+
+</igx-tabs>

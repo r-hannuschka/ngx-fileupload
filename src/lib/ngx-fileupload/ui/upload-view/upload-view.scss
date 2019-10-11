@@ -1,0 +1,97 @@
+$ngx-fileupload-icons--font-path: '../../assets/fonts' !default;
+
+@import '../../assets//scss/variables';
+@import '../../assets/scss/icons';
+
+:host {
+
+    display: flex;
+    flex-direction: column;
+
+    .fileupload {
+        overflow: auto;
+        display: flex;
+        flex-direction: row-reverse;
+        flex: 1;
+        border: 1px solid #D2D2D2;
+        padding: 1rem 0;
+    }
+
+    .file-upload--list {
+        box-sizing: border-box;
+        flex: 1;
+        overflow-x: hidden;
+        flex-shrink: 0;
+        flex-grow: 0;
+        flex-basis: 100%;
+        padding: .5rem 1rem;
+    }
+
+    ngx-fileupload-item {
+        margin-bottom: .5rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .file-upload--info-wrapper {
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .file-upload--info {
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: map-get($colors, "dark");
+
+        .ngx-fileupload-icon--add {
+            font-size: 2.5rem;
+            border: 1px dashed lighten(map-get($colors, "dark"), 40%);
+            width: 4rem;
+            line-height: 4rem;
+            text-align: center;
+            border-radius: 50%;
+            margin-bottom: .5rem;
+        }
+    }
+
+    .upload--footer {
+        display: flex;
+        flex-direction: row-reverse;
+
+        .upload-action {
+            display: block;
+            background: map-get($colors, "dark");
+            padding: .4rem .8rem;
+            border: 1px solid #2E2E2E;
+            border-width: 0 0 1px;
+            color: map-get($map: $colors, $key: "light");
+            cursor: pointer;
+
+            &:last-child {
+                margin: 0;
+            }
+
+            &:first-child {
+                border-radius: 0  0 .3rem 0;
+                border-width: 0 1px 1px;
+            }
+
+            &:last-child {
+                border-radius: 0  0 0 .3rem;
+                border-width: 0 1px 1px;
+            }
+
+            &[disabled] {
+                border-color: lighten(#2E2E2E, 40%);
+                background: lighten(#3E3E3E, 40%);
+            }
+        }
+    }
+}

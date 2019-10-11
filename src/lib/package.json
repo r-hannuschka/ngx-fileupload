@@ -17,8 +17,7 @@
   ],
   "peerDependencies": {
     "@angular/common": "^8.0.1",
-    "@angular/core": "^8.0.1",
-    "angular-pipes": "^9.0.2"
+    "@angular/core": "^8.0.1"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
   "bugs": {

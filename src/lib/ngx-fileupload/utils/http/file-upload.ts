@@ -1,8 +1,8 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, BehaviorSubject, Observable } from "rxjs";
 import { takeUntil, filter } from "rxjs/operators";
-import { UploadState, UploadResponse, UploadData, Upload} from "@lib/data/api";
-import { UploadModel } from "@lib/data/upload.model";
+import { UploadState, UploadResponse, UploadData, Upload} from "../../data/api";
+import { UploadModel } from "../../data/upload.model";
 
 /**
  * Upload Options
@@ -198,7 +198,6 @@ export class FileUpload implements Upload {
      * status code
      */
     private handleResponse(res: HttpResponse<any>) {
-
         const uploadResponse: UploadResponse = {
             success: res.ok,
             body: res.body,
@@ -226,7 +225,7 @@ export class FileUpload implements Upload {
      */
     private handleError(response: HttpErrorResponse) {
 
-        let errors: any[] = response.error instanceof ProgressEvent ? response.message : response.error;
+        let errors: any[] = response.error instanceof ProgressEvent || response.status === 404 ? response.message : response.error;
         errors = Array.isArray(errors) ? errors : [errors];
 
         const uploadResponse: UploadResponse = {

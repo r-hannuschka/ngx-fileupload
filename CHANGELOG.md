@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.1.1
+
+### bugfixes
+
+- fixed bug peer dependency angular-pipes still exists
+- fixed bug tsconfig paths not working in lib package
+- fixed bug response 404 show html source from 404 page
+
+# Changelog
+
 ## 2.1.0
 
 ### features

@@ -3,8 +3,8 @@ import { delay } from "rxjs/operators";
 import { of } from "rxjs";
 
 import { Upload } from "../../data/api/upload";
-import { FileUploadItemContext } from "@lib/ui";
-import { Validator, ValidationFn } from "@lib/data/api/validation";
+import { FileUploadItemContext } from "../../ui";
+import { Validator, ValidationFn } from "../../data/api/validation";
 
 /**
  * NgxFileUploadComponent is a wrapper contain NgxFileUploadDirective and NgxFileUploadComponent

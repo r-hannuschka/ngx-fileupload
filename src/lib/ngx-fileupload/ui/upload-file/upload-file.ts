@@ -3,9 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 
-import { Validator, ValidationFn, UploadState } from "@lib/data/api";
-import { UploadModel } from "@lib/data/upload.model";
-import { FileUpload } from "@lib/utils/http/file-upload";
+import { Validator, ValidationFn, UploadState } from "../../data/api";
+import { UploadModel } from "../../data/upload.model";
+import { FileUpload } from "../../utils/http/file-upload";
 
 /**
  * directive to add uploads with drag / drop

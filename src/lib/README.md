@@ -14,7 +14,7 @@ ___
 npm
 
 ```bash
-npm i --save @r-hannuschka/ngx-fileupload angular-pipes
+npm i --save @r-hannuschka/ngx-fileupload
 ```
 
 ## Demo

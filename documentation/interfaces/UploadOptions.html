@@ -186,8 +186,8 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from &quot;@angular/common/http&quot;;
 import { Subject, BehaviorSubject, Observable } from &quot;rxjs&quot;;
 import { takeUntil, filter } from &quot;rxjs/operators&quot;;
-import { UploadState, UploadResponse, UploadData, Upload} from &quot;@lib/data/api&quot;;
-import { UploadModel } from &quot;@lib/data/upload.model&quot;;
+import { UploadState, UploadResponse, UploadData, Upload} from &quot;../../data/api&quot;;
+import { UploadModel } from &quot;../../data/upload.model&quot;;
 
 /**
  * Upload Options
@@ -383,7 +383,6 @@ export class FileUpload implements Upload {
      * status code
      */
     private handleResponse(res: HttpResponse&lt;any&gt;) {
-
         const uploadResponse: UploadResponse &#x3D; {
             success: res.ok,
             body: res.body,
@@ -411,7 +410,7 @@ export class FileUpload implements Upload {
      */
     private handleError(response: HttpErrorResponse) {
 
-        let errors: any[] &#x3D; response.error instanceof ProgressEvent ? response.message : response.error;
+        let errors: any[] &#x3D; response.error instanceof ProgressEvent || response.status &#x3D;&#x3D;&#x3D; 404 ? response.message : response.error;
         errors &#x3D; Array.isArray(errors) ? errors : [errors];
 
         const uploadResponse: UploadResponse &#x3D; {

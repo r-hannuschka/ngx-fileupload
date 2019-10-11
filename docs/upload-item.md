@@ -44,7 +44,9 @@ class UploadComponent {
 
 | name | type | description |
 |---|---|---|
-| changed | EventEmitter<UploadModel> | emits if upload state has been changed |
+| changed | EventEmitter:UploadModel | @deprecated emits if upload state has been changed |
+| completed | EventEmitter:FileUpload | emits if upload has been completed, this not includes file upload contains errors (ServerResponse Error) or invalidated |
+| stateChange | EventEmitter:FileUpload | emits if upload state has been changed |
 
 ## Custom Template
 
@@ -150,7 +152,7 @@ Since the component could load a custom template we have to provide some data / 
     |---|---|
     | retry | if an uploads failed you could retry upload the file, unless it is simply invalid |
     | start | starts request to upload a file to server |
-    | stop | cancel upload, if upload is allready running it will stopped |
+    | stop | cancel upload, this will set state of upload to canceled and trigger completed event |
 
 ## Further reading
 

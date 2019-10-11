@@ -3,7 +3,7 @@ import { Component, OnInit, Input, ViewChild, TemplateRef, HostListener, OnDestr
 import { FileUpload } from "@lib/utils/http/file-upload";
 import { UploadControl } from "@lib/utils/upload-control";
 import { UploadModel } from "@lib/data/upload.model";
-import { UploadData, UploadState } from "@lib/data/api";
+import { UploadData, UploadState, Upload } from "@lib/data/api";
 import { Subscription } from "rxjs";
 
 export interface FileUploadItemContext {
@@ -61,9 +61,14 @@ export class UploadItemComponent implements OnInit, OnDestroy {
     @Output()
     public stateChange: EventEmitter<FileUpload>;
 
+    /** @deprecated use stateChange now */
+    @Output()
+    public changed: EventEmitter<UploadModel>;
+
     public constructor() {
         this.completed   = new EventEmitter();
         this.stateChange = new EventEmitter();
+        this.changed     = new EventEmitter();
     }
 
     /**
@@ -106,6 +111,7 @@ export class UploadItemComponent implements OnInit, OnDestroy {
 
                     if (state !== upload.state) {
                         this.stateChange.emit(this.fileUpload);
+                        this.changed.emit(upload);
                         state = upload.state;
                     }
                 },

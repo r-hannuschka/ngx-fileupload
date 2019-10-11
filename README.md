@@ -19,6 +19,10 @@ npm
 npm i --save @r-hannuschka/ngx-fileupload angular-pipes
 ```
 
+## Demo
+
+Watch [Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) to see ngx fileupload in action, customizing views and add validations.
+
 ## Usage
 
 ```html
@@ -59,6 +63,13 @@ npm run e2e
 # unit tests
 ng test ngx-fileupload
 ```
+
+## Roadmap
+
+- reimplement e2e tests
+- reimplement unit tests
+- better state management for uploads
+- add option to limit processing max uploads at once
 
 ## Credits
 

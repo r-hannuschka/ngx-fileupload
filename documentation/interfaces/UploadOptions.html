@@ -303,6 +303,10 @@ export class FileUpload implements Upload {
         return this.upload$.asObservable();
     }
 
+    public get model(): UploadModel {
+        return this.upload;
+    }
+
     public get data(): UploadData {
         return this.upload.toJson();
     }

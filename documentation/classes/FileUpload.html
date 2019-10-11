@@ -133,6 +133,9 @@
                                     <a href="#change">change</a>
                                 </li>
                                 <li>
+                                    <a href="#model">model</a>
+                                </li>
+                                <li>
                                     <a href="#data">data</a>
                                 </li>
                             </ul>
@@ -291,8 +294,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="129"
-                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:129</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="133"
+                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:133</a></div>
                 </td>
             </tr>
 
@@ -335,8 +338,8 @@ sends back an error response</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="136"
-                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:136</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="140"
+                            class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:140</a></div>
                 </td>
             </tr>
 
@@ -490,6 +493,28 @@ has been changed</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="model"></a>
+                        <span class="name"><b>model</b><a href="#model"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>model()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:121</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="data"></a>
                         <span class="name"><b>data</b><a href="#data"><span class="icon ion-ios-link"></span></a></span>
                     </td>
@@ -502,7 +527,7 @@ has been changed</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:121</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="125" class="link-to-prism">lib/ngx-fileupload/utils/http/file-upload.ts:125</a></div>
                                 </td>
                             </tr>
 
@@ -631,6 +656,10 @@ export class FileUpload implements Upload {
     public get change(): Observable&lt;UploadModel&gt; {
         /** should be written into model or store ? */
         return this.upload$.asObservable();
+    }
+
+    public get model(): UploadModel {
+        return this.upload;
     }
 
     public get data(): UploadData {

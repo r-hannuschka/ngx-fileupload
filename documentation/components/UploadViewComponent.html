@@ -718,7 +718,6 @@ export class UploadViewComponent {
      [validator]&#x3D;&quot;validator&quot;
      [disabled]&#x3D;&quot;showList&quot;
      (add)&#x3D;&quot;onUploadsAdd($event)&quot;
-     (completed)&#x3D;&quot;onUploadCompleted($event)&quot;
      #ngxFileUploadRef&#x3D;&#x27;ngxFileUploadRef&#x27;&gt;
 
     &lt;div *ngIf&#x3D;&quot;!showList&quot; class&#x3D;&quot;file-upload--info-wrapper&quot;&gt;
@@ -729,7 +728,8 @@ export class UploadViewComponent {
     &lt;/div&gt;
 
     &lt;div *ngIf&#x3D;&quot;showList&quot; class&#x3D;&quot;file-upload--list&quot;&gt;
-        &lt;ngx-fileupload-item *ngFor&#x3D;&quot;let item of uploads&quot; [upload]&#x3D;&quot;item&quot; [template]&#x3D;&quot;itemTemplate&quot;&gt;&lt;/ngx-fileupload-item&gt;
+        &lt;ngx-fileupload-item *ngFor&#x3D;&quot;let item of uploads&quot; [upload]&#x3D;&quot;item&quot; [template]&#x3D;&quot;itemTemplate&quot; (completed)&#x3D;&quot;onUploadCompleted($event)&quot;&gt;
+        &lt;/ngx-fileupload-item&gt;
     &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class&#x3D;&quot;upload--footer&quot;&gt;
@@ -760,6 +760,7 @@ export class UploadViewComponent {
         flex-direction: row-reverse;
         flex: 1;
         border: 1px solid #D2D2D2;
+        padding: 1rem 0;
     }
 
     .file-upload--list {
@@ -868,9 +869,9 @@ export class UploadViewComponent {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="fileupload"      [ngxFileUpload]="url"      [validator]="validator"     [disabled]="showList"     (add)="onUploadsAdd($event)"     (completed)="onUploadCompleted($event)"     #ngxFileUploadRef=\'ngxFileUploadRef\'>    <div *ngIf="!showList" class="file-upload--info-wrapper">        <div class="file-upload--info">            <i class="ngx-fileupload-icon--add"></i>            <span>Drag/Drop files here or click</span>        </div>    </div>    <div *ngIf="showList" class="file-upload--list">        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate"></ngx-fileupload-item>    </div></div><div class="upload--footer">    <button class="upload-action upload-action--cancel" type="button" (click)="ngxFileUploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>    <button class="upload-action upload-action--clean"  type="button" (click)="ngxFileUploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>    <button class="upload-action upload-action--upload" type="button" (click)="ngxFileUploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="fileupload"      [ngxFileUpload]="url"      [validator]="validator"     [disabled]="showList"     (add)="onUploadsAdd($event)"     #ngxFileUploadRef=\'ngxFileUploadRef\'>    <div *ngIf="!showList" class="file-upload--info-wrapper">        <div class="file-upload--info">            <i class="ngx-fileupload-icon--add"></i>            <span>Drag/Drop files here or click</span>        </div>    </div>    <div *ngIf="showList" class="file-upload--list">        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate" (completed)="onUploadCompleted($event)">        </ngx-fileupload-item>    </div></div><div class="upload--footer">    <button class="upload-action upload-action--cancel" type="button" (click)="ngxFileUploadRef.cancelAll()" [disabled]="!uploads.length">Cancel</button>    <button class="upload-action upload-action--clean"  type="button" (click)="ngxFileUploadRef.cleanAll()"  [disabled]="!uploads.length">Clean Up</button>    <button class="upload-action upload-action--upload" type="button" (click)="ngxFileUploadRef.uploadAll()" [disabled]="!uploads.length">Upload</button></div></div>'
     var COMPONENTS = [{'name': 'UploadItemComponent', 'selector': 'ngx-fileupload-item'},{'name': 'UploadViewComponent', 'selector': 'ngx-fileupload'}];
-    var DIRECTIVES = [{'name': 'UploadFileDirective', 'selector': '[ngxFileUploadFile], [ngxFileUpload]'}];
+    var DIRECTIVES = [{'name': 'UploadFileDirective', 'selector': '[ngxFileUpload]'}];
     var ACTUAL_COMPONENT = {'name': 'UploadViewComponent'};
 </script>
 <script src="../js/tree.js"></script>

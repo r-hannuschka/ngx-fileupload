@@ -2,12 +2,13 @@ version: 2.1
 
 orbs:
     codecov: codecov/codecov@1.0.5
+    cypress: cypress-io/cypress@1.8.0
     browser_tools: circleci/browser-tools@0.1.3
 
 defaults: &defaults
   working_directory: ~/ngx-fileupload
   docker:
-      - image: circleci/node:10.16.3-browsers
+    - image: circleci/node:10.16.3-browsers
 
 aliases:
   - &filter_master
@@ -20,14 +21,14 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
+          key: ngx-fileupload-{{ .Branch }}-{{ checksum "./src/package.json" }}
       - run:
           name: "install packages"
-          command: cd src && npm install && npm i webdriver-manager
+          command: cd src && npm ci
       - save_cache:
-          key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
+          key: ngx-fileupload-{{ .Branch }}-{{ checksum "./src/package.json" }}
           paths:
-            - "src/node_modules"
+            - ~/.cache
       - persist_to_workspace:
           root: ~/ngx-fileupload
           paths:
@@ -52,16 +53,16 @@ jobs:
           root: ~/ngx-fileupload
           paths: 
             - ./src/coverage
-  e2e:
+  cypress-e2e:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/ngx-fileupload
-      - browser_tools/install-chrome: 
-          replace-existing: true
+      - restore_cache:
+          key: ngx-fileupload-{{ .Branch }}-{{ checksum "./src/package.json" }}
       - run:
-          name: "run e2e tests"
-          command: cd src && npm run pretest:e2e && npm run e2e
+          name: "cypress e2e"
+          command: cd src && npm run e2e
   coverage:
     <<: *defaults
     steps:
@@ -143,10 +144,7 @@ workflows:
       - lint:
           requires:
             - install
-      - test:
-          requires:
-            - install
-      - e2e:
+      - cypress-e2e:
           requires:
             - install
       - build-docs:
@@ -164,7 +162,3 @@ workflows:
           requires:
             - build-demo
             - deploy-docs
-      - coverage:
-          requires:
-            - test
-          filters: *filter_master

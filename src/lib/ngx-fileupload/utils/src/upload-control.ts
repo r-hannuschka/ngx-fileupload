@@ -19,7 +19,6 @@ import { timer } from "rxjs";
 export class UploadControl {
 
     /**
-     *
      */
     public constructor(
         private fileUpload: FileUpload

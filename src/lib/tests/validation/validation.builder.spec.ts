@@ -1,6 +1,6 @@
-import { ValidationBuilder } from "lib/ngx-fileupload/utils/validation/validation.builder";
-import { OrValidator } from "lib/ngx-fileupload/utils/validation/or.validator";
-import { AndValidator } from "lib/ngx-fileupload/utils/validation/and.validator";
+import { ValidationBuilder } from "@lib/utils/src/validation/validation.builder";
+import { OrValidator } from "@lib/utils/src/validation/or.validator";
+import { AndValidator } from "@lib/utils/src/validation/and.validator";
 
 describe("ValidationBuilder", () => {
 

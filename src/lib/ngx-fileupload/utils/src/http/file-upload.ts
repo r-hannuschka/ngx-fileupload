@@ -1,8 +1,8 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, BehaviorSubject, Observable } from "rxjs";
 import { takeUntil, filter } from "rxjs/operators";
-import { UploadState, UploadResponse, UploadData, Upload} from "../../data/api";
-import { UploadModel } from "../../data/upload.model";
+import { UploadState, UploadResponse, UploadData, Upload, Validator, ValidationFn} from "../../../data/api";
+import { UploadModel } from "../../../data/upload.model";
 
 /**
  * Upload Options
@@ -62,6 +62,17 @@ export class FileUpload implements Upload {
     ) {
         this.upload$ = new BehaviorSubject(this.upload);
         this.options = {...this.options, ...options};
+    }
+
+    public validate(validator: Validator | ValidationFn) {
+        const result = "validate" in validator
+            ? validator.validate(this.upload.file)
+            : validator(this.upload.file);
+
+        if (result !== null) {
+            this.upload.state = UploadState.INVALID;
+        }
+        this.upload.validationErrors = result;
     }
 
     /**

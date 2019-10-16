@@ -2,12 +2,12 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 
-import { UploadViewComponent, UploadFileDirective, UploadItemComponent } from "./ui";
-import { FileSizePipe } from "./utils/ui";
+import { UploadViewComponent, FileBrowserDirective, UploadItemComponent } from "./ui";
+import { FileSizePipe } from "./ui/src/file-size.pipe";
 
 @NgModule({
     declarations: [
-        UploadFileDirective,
+        FileBrowserDirective,
         UploadItemComponent,
         UploadViewComponent,
         FileSizePipe
@@ -17,7 +17,7 @@ import { FileSizePipe } from "./utils/ui";
         HttpClientModule,
     ],
     exports: [
-        UploadFileDirective,
+        FileBrowserDirective,
         UploadItemComponent,
         UploadViewComponent,
         FileSizePipe

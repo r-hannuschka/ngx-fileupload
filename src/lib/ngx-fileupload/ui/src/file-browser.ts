@@ -1,11 +1,10 @@
 import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2 } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 
-import { Validator, ValidationFn, UploadState } from "../../data/api";
-import { UploadModel } from "../../data/upload.model";
-import { FileUpload } from "../../utils/http/file-upload";
+import { Validator, ValidationFn } from "../../data/api/validation";
+import { FileUpload } from "../../utils/src/http/file-upload";
+import { FileUploadFactory } from "../../utils/src/factory";
+import { FileUploadStore } from "../../utils/src/store/upload.store";
 
 /**
  * directive to add uploads with drag / drop
@@ -16,10 +15,9 @@ import { FileUpload } from "../../utils/http/file-upload";
  * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: "[ngxFileUpload]",
-  exportAs: "ngxFileUploadRef"
+  selector: "[ngxFileUpload]"
 })
-export class UploadFileDirective implements OnDestroy {
+export class FileBrowserDirective implements OnDestroy {
 
     /**
      * upload has been added
@@ -31,12 +29,16 @@ export class UploadFileDirective implements OnDestroy {
     @Output()
     public add: EventEmitter<FileUpload[]>;
 
-    public url: string;
+    @Input()
+    public store: FileUploadStore;
 
     @Input("ngxFileUpload")
     public set ngxFileUpload(url: string) {
         this.url = url;
     }
+
+    @Input()
+    public validator: Validator | ValidationFn;
 
     /**
      * if set to false upload post request body will use
@@ -55,18 +57,12 @@ export class UploadFileDirective implements OnDestroy {
     @Input()
     public disabled = false;
 
-    @Input()
-    public validator: Validator | ValidationFn;
+    private url: string;
 
     /**
      * remove from subscribtions if component gets destroyed
      */
     private destroyed$: Subject<boolean> = new Subject();
-
-    /**
-     * upload file queue
-     */
-    private uploads: FileUpload[] = [];
 
     /**
      * input file field to trigger file window
@@ -77,8 +73,8 @@ export class UploadFileDirective implements OnDestroy {
      * Creates an instance of NgxFileUploadDirective.
      */
     constructor(
-        private httpClient: HttpClient,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private uploadFactory: FileUploadFactory,
     ) {
         this.add = new EventEmitter();
         this.fileSelect = this.createFieldInputField();
@@ -90,38 +86,6 @@ export class UploadFileDirective implements OnDestroy {
     public ngOnDestroy() {
         this.destroyed$.next(true);
         this.destroyed$.complete();
-
-        this.cancelAll();
-        this.uploads = [];
-    }
-
-    /**
-     * begin all uploads at once
-     */
-    public uploadAll() {
-        this.uploads.forEach((upload: FileUpload) => upload.start());
-    }
-
-    /**
-     * cancel all downloads at once
-     */
-    public cancelAll() {
-        for ( let i = this.uploads.length - 1; i >= 0; i --) {
-            this.uploads[i].cancel();
-        }
-    }
-
-    /**
-     * search for broken uploads (error / invalid) and cancel
-     * them
-     */
-    public cleanAll() {
-        for ( let i = this.uploads.length - 1; i >= 0; i --) {
-            const upload = this.uploads[i];
-            if (upload.isInvalid() || upload.hasError()) {
-                upload.cancel();
-            }
-        }
     }
 
     /**
@@ -167,61 +131,13 @@ export class UploadFileDirective implements OnDestroy {
      * or with input type="file"
      */
     private handleFileSelect(files: File[]) {
-        const uploads = files.map((file) => this.createUpload(file));
-        this.add.emit(uploads);
-    }
-
-    /**
-     * create upload from file, listen to complete
-     * to remove upload from uploads list
-     *
-     * remove uplaod from uploads repository if upload completed
-     * or canceled
-     *
-     * @todo should be an action
-     */
-    private createUpload(file: File): FileUpload {
-        const uploadOptions = {
-            url: this.url,
-            formData: {
-                enabled: this.useFormData,
-                name   : this.formDataName
+        files.forEach((file: File) => {
+            const upload = this.uploadFactory.createUpload(file, {url: this.url});
+            if (this.validator) {
+                upload.validate(this.validator);
             }
-        };
-
-        const fileModel = new UploadModel(file);
-        const upload    = new FileUpload(this.httpClient, fileModel, uploadOptions);
-
-        if (this.validator) {
-            this.preValidateUpload(fileModel);
-        }
-        if (!upload.isInvalid()) {
-            const sub = upload.change
-                .pipe(takeUntil(this.destroyed$))
-                .subscribe({
-                    complete: () => {
-                        this.uploads.splice(this.uploads.indexOf(upload), 1);
-                        sub.unsubscribe();
-                    }
-                });
-        }
-
-        this.uploads.push(upload);
-        return upload;
-    }
-
-    /**
-     * pre validate upload, if validation result is invalid
-     * fill could not uploaded anymore
-     *
-     * @todo should be an action ?
-     */
-    private preValidateUpload(upload: UploadModel) {
-        const result = "validate" in this.validator ? this.validator.validate(upload.file) : this.validator(upload.file);
-        if (result !== null) {
-            upload.state = UploadState.INVALID;
-        }
-        upload.validationErrors = result;
+            this.store.add(upload);
+        });
     }
 
     /**

@@ -145,10 +145,7 @@
                     <ngx-fileupload-item [upload]="upload"></ngx-fileupload-item>
                 </ng-container>
 
-                <button class="btn btn-secondary" [ngxFileUpload]="'http://ngx-fileupload.example/upload/error'" (add)="listing2Add($event)" #uploadRef2="ngxFileUploadRef">Add Files</button>
-                <button class="btn btn-secondary" (click)="uploadRef2.uploadAll()">Upload all</button>
-                <button class="btn btn-secondary" (click)="uploadRef2.cancelAll()">Cancel all</button>
-                <button class="btn btn-secondary" (click)="uploadRef2.cleanAll()">Clean Up</button>
+                <button class="btn btn-secondary" [ngxFileUpload]="'http://ngx-fileupload.example/upload/error'" (add)="listing2Add($event)">Add Files</button>
             </igx-tabs-group>
 
             <igx-tabs-group label="Html">
@@ -178,10 +175,7 @@ public uploadCompleted(completed: Upload) {
                     <ngx-fileupload-item [upload]="upload" (completed)='uploadCompletedFinal($event);'></ngx-fileupload-item>
                 </ng-container>
 
-                <button class="btn btn-secondary" [ngxFileUpload]="'http://ngx-fileupload.example/upload'" (add)="listingFinalAdd($event)" #uploadFinalRef="ngxFileUploadRef">Add Files</button>
-                <button class="btn btn-secondary" (click)="uploadFinalRef.uploadAll()">Upload all</button>
-                <button class="btn btn-secondary" (click)="uploadFinalRef.cancelAll()">Cancel all</button>
-                <button class="btn btn-secondary" (click)="uploadFinalRef.cleanAll()">Clean Up</button>
+                <button class="btn btn-secondary" [ngxFileUpload]="'http://ngx-fileupload.example/upload'">Add Files</button>
             </igx-tabs-group>
 
             <igx-tabs-group label="TS">

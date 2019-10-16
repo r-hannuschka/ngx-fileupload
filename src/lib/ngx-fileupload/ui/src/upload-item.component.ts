@@ -1,9 +1,9 @@
 
 import { Component, OnInit, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter } from "@angular/core";
-import { FileUpload } from "../../utils/http/file-upload";
-import { UploadControl } from "../../utils/upload-control";
+import { FileUpload } from "../../utils/src/http/file-upload";
+import { UploadControl } from "../../utils/src/upload-control";
 import { UploadModel } from "../../data/upload.model";
-import { UploadData, UploadState, Upload } from "../../data/api";
+import { UploadData, UploadState } from "../../data/api";
 import { Subscription } from "rxjs";
 
 export interface FileUploadItemContext {
@@ -61,14 +61,9 @@ export class UploadItemComponent implements OnInit, OnDestroy {
     @Output()
     public stateChange: EventEmitter<FileUpload>;
 
-    /** @deprecated use stateChange now */
-    @Output()
-    public changed: EventEmitter<UploadModel>;
-
     public constructor() {
         this.completed   = new EventEmitter();
         this.stateChange = new EventEmitter();
-        this.changed     = new EventEmitter();
     }
 
     /**
@@ -111,7 +106,6 @@ export class UploadItemComponent implements OnInit, OnDestroy {
 
                     if (state !== upload.state) {
                         this.stateChange.emit(this.fileUpload);
-                        this.changed.emit(upload);
                         state = upload.state;
                     }
                 },
@@ -126,7 +120,6 @@ export class UploadItemComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy() {
         // cancel file upload if item view is destroyed
-        this.fileUpload.cancel();
         this.changeSub.unsubscribe();
         this.changeSub = null;
     }

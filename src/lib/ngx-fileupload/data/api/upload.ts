@@ -3,14 +3,45 @@ import { UploadModel } from "../upload.model";
 import { ValidationErrors } from "./validation";
 
 export enum UploadState {
+    /**
+     * upload has been added not means it is added to queue
+     */
     QUEUED    = "queued",
-    START     = "start",
+    /**
+     * upload starts xhr request
+     */
+    START = "start",
+    /**
+     * upload is running
+     */
     PROGRESS  = "progress",
+    /**
+     * upload has completed with success
+     * @todo check we could remove this @see REQUEST_COMPLETED
+     */
     UPLOADED  = "uploaded",
+    /**
+     * upload was canceled
+     */
     CANCELED  = "canceled",
+    /**
+     * upload has completed with an error
+     * @todo check we could remove this @see REQUEST_COMPLETED
+     */
     ERROR     = "error",
+    /**
+     * state invalid
+     * @todo check we could remove this one
+     */
     INVALID   = "invalid",
+    /**
+     * upload is completed
+     * @todo check we could remove this
+     */
     COMPLETED = "completed",
+    /**
+     * upload xhr request has been completed
+     */
     REQUEST_COMPLETED = "[NgxFileUploadRequest] completed"
 }
 
@@ -25,15 +56,47 @@ export interface UploadValidation {
 }
 
 export interface UploadData {
+    /**
+     * name of upload
+     */
     name: string;
+    /**
+     * progress in percent
+     */
     progress: number;
+    /**
+     * upload finishes request with a succes, holds success informations
+     */
     response: UploadResponse;
+    /**
+     * total size of upload
+     */
     size: number;
+    /**
+     * current state of upload
+     */
     state: UploadState;
+    /**
+     * uploaded size
+     */
     uploaded: number;
+    /**
+     * contains validation results
+     */
     validation: UploadValidation;
+    /**
+     * returns true if upload request was finished with an error
+     */
     hasError: boolean;
+    /**
+     * returns true if upload is invalid
+     */
     isInvalid: boolean;
+    /**
+     * upload is marked for start but still in upload queue
+     * and not running currently
+     */
+    isPending: boolean;
 }
 
 export interface Upload {

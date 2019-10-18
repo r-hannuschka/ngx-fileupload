@@ -1,7 +1,7 @@
 import { UploadState } from "../../../data/api";
 import { UploadRequest } from "./upload.request";
 import { merge } from "rxjs";
-import { filter } from "rxjs/operators";
+import { filter, take } from "rxjs/operators";
 
 export class UploadQueue {
 
@@ -10,6 +10,8 @@ export class UploadQueue {
     private queuedUploads: UploadRequest[] = [];
 
     private concurrentCount = -1;
+
+    private registeredUploads: WeakSet<UploadRequest> = new WeakSet();
 
     public set concurrent(count: number) {
         this.concurrentCount = count;
@@ -22,32 +24,45 @@ export class UploadQueue {
             return;
         }
 
+        this.registeredUploads.add(upload);
+        upload.model.isPending = true;
+
         if (this.active >= this.concurrentCount) {
             this.queuedUploads = [...this.queuedUploads, upload];
             return;
         }
-
         this.startUpload(upload);
+    }
+
+    /**
+     * checks for upload is in queue
+     */
+    public isQueued(upload): boolean {
+        const inQueue = this.queuedUploads.indexOf(upload) > -1;
+        return this.registeredUploads.has(upload) && !inQueue;
     }
 
     /**
      * starts new upload
      */
-    public startUpload(upload: UploadRequest) {
+    private startUpload(upload: UploadRequest) {
         this.active += 1;
+        upload.model.isPending = false;
 
         const uploadChange$ = upload.change
             .pipe(filter((request) => request.state === UploadState.REQUEST_COMPLETED));
 
-        const sub = merge(uploadChange$, upload.complete)
+        merge(uploadChange$, upload.complete)
+            .pipe(take(1))
             .subscribe({
                 next: () => {
                     this.active -= 1;
+                    this.registeredUploads.delete(upload);
+
                     const nextUpload = this.getNextFromQueue();
                     if (nextUpload) {
                         this.startUpload(nextUpload);
                     }
-                    sub.unsubscribe();
                 }
             });
 
@@ -60,10 +75,12 @@ export class UploadQueue {
     private getNextFromQueue(): UploadRequest {
         let nextUploadReq = null;
         do {
-            /** get next possible upload from queue */
             const nextUpload = this.queuedUploads.shift();
-            /** if upload is queued we can take it */
             nextUploadReq = nextUpload && nextUpload.state === UploadState.QUEUED ? nextUpload : null;
+
+            if (!nextUploadReq) {
+                this.registeredUploads.delete(nextUpload);
+            }
         } while (nextUploadReq === null && this.queuedUploads.length);
 
         return nextUploadReq;

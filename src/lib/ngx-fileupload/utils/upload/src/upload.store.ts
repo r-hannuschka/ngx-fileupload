@@ -1,5 +1,6 @@
 import { UploadRequest } from "./upload.request";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { tap, map } from "rxjs/operators";
 import { UploadQueue } from "./upload.queue";
 import { UploadState } from "../../../data/api";
 
@@ -15,9 +16,14 @@ export class UploadStore {
 
     private queue: UploadQueue;
 
+    private hooks: {
+        beforeStart: Observable<boolean>[];
+    };
+
     public constructor() {
         this.change$ = new BehaviorSubject([]);
         this.queue   = new UploadQueue();
+        this.queue.concurrent = 1;
     }
 
     public change(): Observable<UploadRequest[]> {
@@ -26,6 +32,17 @@ export class UploadStore {
 
     public add(upload: UploadRequest) {
         this.uploads = [...this.uploads, upload];
+
+        const beforeStart$ = of(true)
+            .pipe(
+                // we cant add this to of since this will called instant
+                // and not as expected if we subscribe
+                map(() => this.queue.isQueued(upload)),
+                tap(() => this.queue.run(upload)),
+            );
+
+        upload.beforeStart(() => beforeStart$);
+
         this.notifyObserver();
     }
 
@@ -63,15 +80,8 @@ export class UploadStore {
      * starts all queued uploads
      */
     public startAll(limit: number) {
-
         const uploads = this.uploads.filter((upload) => upload.data.state === UploadState.QUEUED);
-
-        if (limit) {
-            this.queue.concurrent = limit;
-            uploads.forEach(upload => this.queue.run(upload));
-        } else {
-            uploads.forEach(upload => upload.start());
-        }
+        uploads.forEach(upload => upload.start());
     }
 
     /**

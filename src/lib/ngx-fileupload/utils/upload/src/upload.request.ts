@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
-import { Subject, BehaviorSubject, Observable } from "rxjs";
-import { takeUntil, filter } from "rxjs/operators";
+import { Subject, BehaviorSubject, Observable, of, forkJoin } from "rxjs";
+import { takeUntil, filter, switchMap, map, tap } from "rxjs/operators";
 import { UploadState, UploadResponse, UploadData, Upload, Validator, ValidationFn} from "../../../data/api";
 import { UploadModel } from "../../../data/upload.model";
 
@@ -54,77 +54,7 @@ export class UploadRequest implements Upload {
         formData: { enabled: true, name: "file" }
     };
 
-    /**
-     * create UploadRequest service
-     */
-    public constructor(
-        private http: HttpClient,
-        private upload: UploadModel,
-        options: UploadOptions
-    ) {
-        this.upload$ = new BehaviorSubject(this.upload);
-        this.options = {...this.options, ...options};
-    }
-
-    public validate(validator: Validator | ValidationFn) {
-        const result = "validate" in validator
-            ? validator.validate(this.upload.file)
-            : validator(this.upload.file);
-
-        this.upload.invalid = false;
-
-        if (result !== null) {
-            this.upload.state = UploadState.INVALID;
-            this.upload.invalid = true;
-        }
-        this.upload.validationErrors = result;
-    }
-
-    /**
-     * upload file to server but only
-     * if file is not queued, abort request on cancel
-     */
-    public start() {
-        /** only start upload if state is not queued and is valid */
-        if (this.upload.state === UploadState.QUEUED) {
-            this.uploadFile().pipe(
-                takeUntil(this.cancel$),
-                filter(() => this.upload.state !== UploadState.CANCELED)
-            )
-            .subscribe({
-                next: (event: HttpEvent<string>) => this.handleHttpEvent(event),
-                error: (error: HttpErrorResponse) => this.handleError(error)
-            });
-        }
-    }
-
-    public destroy() {
-        this.upload$.complete();
-        this.upload$ = null;
-    }
-
-    /**
-     * restart download again
-     * reset state, and reset errors
-     */
-    public retry() {
-        if (this.upload.state === UploadState.ERROR) {
-            this.upload.state = UploadState.QUEUED;
-            this.upload.response = {success: false, body: null, errors: null};
-            this.start();
-        }
-    }
-
-    /**
-     * cancel current file upload, this will complete change subject
-     */
-    public cancel() {
-        if (this.upload.state !== UploadState.CANCELED) {
-            this.upload.state = UploadState.CANCELED;
-            this.cancel$.next(true);
-            this.completeUpload();
-        }
-    }
+    private hooks: { beforeStart: Array<() => Observable<boolean>>} = { beforeStart: [] };
 
     /**
      * returns observable which notify if file upload state
@@ -151,11 +81,38 @@ export class UploadRequest implements Upload {
     }
 
     /**
-     * return true if upload was not completed since the server
-     * sends back an error response
+     * create UploadRequest service
      */
-    public hasError(): boolean {
-        return this.upload.state === UploadState.ERROR;
+    public constructor(
+        private http: HttpClient,
+        private upload: UploadModel,
+        options: UploadOptions
+    ) {
+        this.upload$ = new BehaviorSubject(this.upload);
+        this.options = {...this.options, ...options};
+    }
+
+    public beforeStart(hook: () => Observable<boolean>) {
+        this.hooks.beforeStart = [
+            ...this.hooks.beforeStart,
+            hook
+        ];
+    }
+
+    /**
+     * cancel current file upload, this will complete change subject
+     */
+    public cancel() {
+        if (this.upload.state !== UploadState.CANCELED) {
+            this.upload.state = UploadState.CANCELED;
+            this.cancel$.next(true);
+            this.completeUpload();
+        }
+    }
+
+    public destroy() {
+        this.upload$.complete();
+        this.upload$ = null;
     }
 
     /**
@@ -166,11 +123,75 @@ export class UploadRequest implements Upload {
     }
 
     public isCompleted(): boolean {
-        return this.upload.state === UploadState.UPLOADED || this.upload.state === UploadState.CANCELED;
+        return this.upload.state === UploadState.CANCELED;
     }
 
     public isRequestCompleted() {
         return this.upload.state === UploadState.UPLOADED || this.upload.state === UploadState.ERROR;
+    }
+
+    /**
+     * restart download again
+     * reset state, and reset errors
+     */
+    public retry() {
+        if (this.upload.state === UploadState.ERROR) {
+            this.upload.state = UploadState.QUEUED;
+            this.upload.response = {success: false, body: null, errors: null};
+            this.start();
+        }
+    }
+
+    /**
+     * upload file to server but only
+     * if file is not queued, abort request on cancel
+     */
+    public start() {
+
+        /** call beforeStart hooks, if one returns false upload will not started */
+        const beforeStartHooks$ = of(true).pipe(
+            switchMap(() => forkJoin(this.hooks.beforeStart.map((hook) => hook()))),
+            map((result: boolean[]) => result.reduce((prev, cur) => prev && cur, true)),
+            tap(() => {
+                if (this.upload.isPending) {
+                    this.notifyObservers();
+                }
+            }),
+            filter(result => result)
+        );
+
+        if (this.upload.state === UploadState.QUEUED) {
+            of(true).pipe(
+                switchMap(() => beforeStartHooks$),
+                switchMap(() => this.uploadFile()),
+                takeUntil(this.cancel$),
+            ).subscribe({
+                next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
+                error: (error: HttpErrorResponse) => this.handleError(error)
+            });
+        }
+    }
+
+    public validate(validator: Validator | ValidationFn) {
+        const result = "validate" in validator
+            ? validator.validate(this.upload.file)
+            : validator(this.upload.file);
+
+        this.upload.invalid = false;
+
+        if (result !== null) {
+            this.upload.state = UploadState.INVALID;
+            this.upload.invalid = true;
+        }
+        this.upload.validationErrors = result;
+    }
+
+    /**
+     * return true if upload was not completed since the server
+     * sends back an error response
+     */
+    public hasError(): boolean {
+        return this.upload.state === UploadState.ERROR;
     }
 
     /**
@@ -198,6 +219,27 @@ export class UploadRequest implements Upload {
     }
 
     /**
+     * if server not sends a status code in 2xx range this will
+     * throw an error which will handled here
+     */
+    private handleError(response: HttpErrorResponse) {
+
+        let errors: any[] = response.error instanceof ProgressEvent || response.status === 404 ? response.message : response.error;
+        errors = Array.isArray(errors) ? errors : [errors];
+
+        const uploadResponse: UploadResponse = {
+            success: false,
+            body: null,
+            errors
+        };
+
+        /** not completed since we could retry */
+        this.upload.state    = UploadState.REQUEST_COMPLETED;
+        this.upload.response = uploadResponse;
+        this.notifyObservers();
+    }
+
+    /**
      * handle all http events
      */
     private handleHttpEvent(event: HttpEvent<string>) {
@@ -206,14 +248,6 @@ export class UploadRequest implements Upload {
             case HttpEventType.UploadProgress: this.handleProgress(event); break;
             case HttpEventType.Response: this.handleResponse(event); break;
         }
-    }
-
-    /**
-     * upload has been started
-     */
-    private handleSent() {
-        this.upload.state = UploadState.START;
-        this.notifyObservers();
     }
 
     /**
@@ -241,23 +275,10 @@ export class UploadRequest implements Upload {
     }
 
     /**
-     * if server not sends a status code in 2xx range this will
-     * throw an error which will handled here
+     * upload has been started
      */
-    private handleError(response: HttpErrorResponse) {
-
-        let errors: any[] = response.error instanceof ProgressEvent || response.status === 404 ? response.message : response.error;
-        errors = Array.isArray(errors) ? errors : [errors];
-
-        const uploadResponse: UploadResponse = {
-            success: false,
-            body: null,
-            errors
-        };
-
-        /** not completed since we could retry */
-        this.upload.state    = UploadState.REQUEST_COMPLETED;
-        this.upload.response = uploadResponse;
+    private handleSent() {
+        this.upload.state = UploadState.START;
         this.notifyObservers();
     }
 

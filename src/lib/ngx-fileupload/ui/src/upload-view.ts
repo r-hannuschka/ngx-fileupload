@@ -70,7 +70,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     }
 
     public uploadAll() {
-        this.store.startAll(5);
+        this.store.startAll(2);
     }
 
     public stopAll() {

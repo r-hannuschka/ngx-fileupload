@@ -18,6 +18,8 @@ export class UploadModel {
 
     private uploadInvalid = false;
 
+    private uploadPending = false;
+
     /**
      * Creates an instance of UploadFile.
      */
@@ -65,6 +67,14 @@ export class UploadModel {
      */
     public get response(): UploadResponse {
         return this.uploadResponse;
+    }
+
+    public set isPending(pending: boolean) {
+        this.uploadPending = pending;
+    }
+
+    public get isPending(): boolean {
+        return this.uploadPending;
     }
 
     public set invalid(invalid: boolean) {
@@ -132,7 +142,8 @@ export class UploadModel {
                 errors: this.validationErrors,
             },
             hasError:  this.uploadResponse && this.uploadResponse.errors ? true : false,
-            isInvalid: this.uploadInvalid
+            isInvalid: this.uploadInvalid,
+            isPending: this.uploadPending
         };
     }
 }

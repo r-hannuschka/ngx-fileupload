@@ -22,7 +22,7 @@
                 <!-- start upload action -->
                 <button type="button" class="item-action--upload" (click)="ctrl.start()"
                     *ngIf="!upload.hasError"
-                    [disabled]="upload.state !== uploadState.QUEUED">
+                    [disabled]="upload.state !== uploadState.QUEUED || upload.isPending">
                     <i class="ngx-fileupload-icon--upload"></i>
                 </button>
 

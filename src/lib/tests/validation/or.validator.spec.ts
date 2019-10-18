@@ -1,4 +1,4 @@
-import { OrValidator } from "@lib/utils/src/validation/or.validator";
+import { OrValidator } from "@lib/utils/validation/src/or.validator";
 import { ValidatorMockFactory } from "../mock/validator.factory";
 
 describe("GroupedValidation: Or", () => {

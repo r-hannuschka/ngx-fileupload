@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { FileUploadStore } from "./upload.store";
+import { UploadStore } from "./upload.store";
 
 @Injectable({ providedIn: "root"})
 export class UploadStoreManager {
@@ -7,22 +7,20 @@ export class UploadStoreManager {
     /**
      * type injection token
      */
-    private stores: WeakMap<any, FileUploadStore> = new WeakMap();
+    private stores: WeakMap<any, UploadStore> = new WeakMap();
 
-    public createStore(token?: object): FileUploadStore {
-        const store = new FileUploadStore();
-
+    public createStore(token?: object): UploadStore {
+        const store = new UploadStore();
         if (token) {
             this.register(store, token);
         }
-
         return store;
     }
 
     /**
      * factory to create a new store instance
      */
-    public register(store: FileUploadStore, token: object): boolean {
+    public register(store: UploadStore, token: object): boolean {
         if (!this.stores.has(token)) {
             this.stores.set(token, store);
         }
@@ -38,7 +36,7 @@ export class UploadStoreManager {
         return false;
     }
 
-    public get(token: object): FileUploadStore | null {
+    public get(token: object): UploadStore | null {
         if (this.stores.has(token)) {
             return this.stores.get(token);
         }

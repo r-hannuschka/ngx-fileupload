@@ -1,10 +1,12 @@
 
-import { Component, OnInit, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter } from "@angular/core";
-import { FileUpload } from "../../utils/src/http/file-upload";
-import { UploadControl } from "../../utils/src/upload-control";
+import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from "@angular/core";
+import { UploadRequest } from "../../utils/upload/src/upload.request";
+import { UploadControl } from "../../utils/common/upload-control";
 import { UploadModel } from "../../data/upload.model";
 import { UploadData, UploadState } from "../../data/api";
-import { Subscription } from "rxjs";
+import {  Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import * as UploadAPI from "../../data/api/upload";
 
 export interface FileUploadItemContext {
     data: UploadData;
@@ -19,7 +21,9 @@ export interface FileUploadItemContext {
     templateUrl: "upload-item.component.html",
     styleUrls: ["./upload-item.component.scss"],
 })
-export class UploadItemComponent implements OnInit, OnDestroy {
+export class UploadItemComponent implements AfterViewInit, OnDestroy {
+
+    public uploadState = UploadAPI.UploadState;
 
     /**
      * item template which should rendered to display upload data
@@ -34,32 +38,32 @@ export class UploadItemComponent implements OnInit, OnDestroy {
     /**
      * file upload which should bound to this view
      */
-    private fileUpload: FileUpload;
+    private fileUpload: UploadRequest;
 
     /**
      * save subscription here,  since we have only 1 sub
      * i think takeUntil and Subject will be to much so we could
      * unsubscribe directly
      */
-    private changeSub: Subscription;
+    private destroyed: Subject<boolean> = new Subject();
 
     /**
      * sets upload we want to bind with current view
      */
     @Input()
-    public set upload(fileUpload: FileUpload) {
+    public set upload(fileUpload: UploadRequest) {
         this.fileUpload = fileUpload;
         this.context = {
-            data: null,
+            data: this.fileUpload.data,
             ctrl: new UploadControl(fileUpload)
         };
     }
 
     @Output()
-    public completed: EventEmitter<FileUpload>;
+    public completed: EventEmitter<UploadRequest>;
 
     @Output()
-    public stateChange: EventEmitter<FileUpload>;
+    public stateChange: EventEmitter<UploadRequest>;
 
     public constructor() {
         this.completed   = new EventEmitter();
@@ -95,22 +99,26 @@ export class UploadItemComponent implements OnInit, OnDestroy {
      *
      * @inheritdoc
      */
-    ngOnInit(): void {
+    ngAfterViewInit(): void {
 
         let state: UploadState = UploadState.QUEUED;
 
-        this.changeSub = this.fileUpload.change
+        this.fileUpload.change
+            .pipe(
+                takeUntil(this.destroyed)
+            )
             .subscribe({
                 next: (upload: UploadModel) => {
-                    this.context.data = upload.toJson();
 
+                    this.context.data = upload.toJson();
                     if (state !== upload.state) {
-                        this.stateChange.emit(this.fileUpload);
                         state = upload.state;
+                        this.stateChange.emit(this.fileUpload);
+
+                        if (this.fileUpload.isCompleted()) {
+                            this.completed.emit(this.fileUpload);
+                        }
                     }
-                },
-                complete: () => {
-                    this.completed.emit(this.fileUpload);
                 }
             });
     }
@@ -119,9 +127,7 @@ export class UploadItemComponent implements OnInit, OnDestroy {
      * if component gets destroyed remove change subscription
      */
     ngOnDestroy() {
-        // cancel file upload if item view is destroyed
-        this.changeSub.unsubscribe();
-        this.changeSub = null;
+        this.destroyed.next(true);
     }
 
     /**

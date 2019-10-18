@@ -9,7 +9,9 @@ export enum UploadState {
     UPLOADED  = "uploaded",
     CANCELED  = "canceled",
     ERROR     = "error",
-    INVALID   = "invalid"
+    INVALID   = "invalid",
+    COMPLETED = "completed",
+    REQUEST_COMPLETED = "[NgxFileUploadRequest] completed"
 }
 
 export interface UploadResponse {
@@ -30,6 +32,8 @@ export interface UploadData {
     state: UploadState;
     uploaded: number;
     validation: UploadValidation;
+    hasError: boolean;
+    isInvalid: boolean;
 }
 
 export interface Upload {

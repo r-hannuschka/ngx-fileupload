@@ -6,7 +6,7 @@ import { By } from "@angular/platform-browser";
 
 import {
     NgxFileUploadDirective,
-    FileUpload,
+    UploadRequest,
     UploadModel
 } from "lib/public-api";
 
@@ -59,11 +59,11 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
     });
 
     it("should create upload with file", () => {
-        const uploads: FileUpload[] = [];
+        const uploads: UploadRequest[] = [];
         fixture.detectChanges();
 
         // add spy on uploads add to get arguments
-        spyOn(testComponent, "onUploadsAdd").and.callFake((...args: FileUpload[][]) => {
+        spyOn(testComponent, "onUploadsAdd").and.callFake((...args: UploadRequest[][]) => {
             uploads.push(...args[0]);
         });
 
@@ -79,11 +79,11 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
     });
 
     it("should start all uploads", () => {
-        const uploads: FileUpload[] = [];
+        const uploads: UploadRequest[] = [];
         fixture.detectChanges();
 
         // add spy on uploads add to get arguments
-        spyOn(testComponent, "onUploadsAdd").and.callFake((...args: FileUpload[][]) => {
+        spyOn(testComponent, "onUploadsAdd").and.callFake((...args: UploadRequest[][]) => {
             uploads.push(...args[0]);
         });
 
@@ -100,11 +100,11 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
     });
 
     it("should cancel all uploads", () => {
-        const uploads: FileUpload[] = [];
+        const uploads: UploadRequest[] = [];
         fixture.detectChanges();
 
         // add spy on uploads add to get arguments
-        spyOn(testComponent, "onUploadsAdd").and.callFake((...args: FileUpload[][]) => {
+        spyOn(testComponent, "onUploadsAdd").and.callFake((...args: UploadRequest[][]) => {
             uploads.push(...args[0]);
         });
 

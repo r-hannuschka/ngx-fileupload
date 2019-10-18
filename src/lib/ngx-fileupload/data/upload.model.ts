@@ -16,6 +16,8 @@ export class UploadModel {
 
     private uploadValidationErrors = null;
 
+    private uploadInvalid = false;
+
     /**
      * Creates an instance of UploadFile.
      */
@@ -63,6 +65,14 @@ export class UploadModel {
      */
     public get response(): UploadResponse {
         return this.uploadResponse;
+    }
+
+    public set invalid(invalid: boolean) {
+        this.uploadInvalid = invalid;
+    }
+
+    public get invalid(): boolean {
+        return this.uploadInvalid;
     }
 
     /**
@@ -120,7 +130,9 @@ export class UploadModel {
             uploaded  : this.uploaded,
             validation: {
                 errors: this.validationErrors,
-            }
+            },
+            hasError:  this.uploadResponse && this.uploadResponse.errors ? true : false,
+            isInvalid: this.uploadInvalid
         };
     }
 }

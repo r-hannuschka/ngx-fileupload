@@ -1,4 +1,10 @@
-<div class="fileupload" [ngxFileUpload]="url" [disabled]="showList" [store]="store" >
+<div class="upload--footer">
+    <button (click)="uploadAll()">upload all</button>
+    <button (click)="stopAll()">remove all</button>
+    <button (click)="cleanAll()">Clean Uploads</button>
+</div>
+
+<div class="fileupload" [ngxFileUpload]="url" [store]="store" >
 
     <div *ngIf="!uploads.length" class="file-upload--info-wrapper">
         <div class="file-upload--info">
@@ -15,5 +21,4 @@
         </ngx-fileupload-item>
     </div>
 </div>
-<div class="upload--footer">
-</div>
+

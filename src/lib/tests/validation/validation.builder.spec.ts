@@ -1,6 +1,6 @@
-import { ValidationBuilder } from "@lib/utils/src/validation/validation.builder";
-import { OrValidator } from "@lib/utils/src/validation/or.validator";
-import { AndValidator } from "@lib/utils/src/validation/and.validator";
+import { ValidationBuilder } from "@lib/utils/validation/src/validation.builder";
+import { OrValidator } from "@lib/utils/validation/src/or.validator";
+import { AndValidator } from "@lib/utils/validation/src/and.validator";
 
 describe("ValidationBuilder", () => {
 

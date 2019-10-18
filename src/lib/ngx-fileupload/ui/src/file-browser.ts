@@ -2,9 +2,9 @@ import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Render
 import { Subject } from "rxjs";
 
 import { Validator, ValidationFn } from "../../data/api/validation";
-import { FileUpload } from "../../utils/src/http/file-upload";
-import { FileUploadFactory } from "../../utils/src/factory";
-import { FileUploadStore } from "../../utils/src/store/upload.store";
+import { UploadRequest } from "../../utils/upload/src/upload.request";
+import { FileUploadFactory } from "../../utils/common/factory";
+import { UploadStore } from "../../utils/upload/src/upload.store";
 
 /**
  * directive to add uploads with drag / drop
@@ -27,10 +27,10 @@ export class FileBrowserDirective implements OnDestroy {
      * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
      */
     @Output()
-    public add: EventEmitter<FileUpload[]>;
+    public add: EventEmitter<UploadRequest[]>;
 
     @Input()
-    public store: FileUploadStore;
+    public store: UploadStore;
 
     @Input("ngxFileUpload")
     public set ngxFileUpload(url: string) {

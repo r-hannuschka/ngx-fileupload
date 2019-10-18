@@ -1,4 +1,4 @@
-import { FileUpload } from "./http/file-upload";
+import { UploadRequest } from "../upload/src/upload.request";
 import { timer } from "rxjs";
 
 /**
@@ -21,7 +21,7 @@ export class UploadControl {
     /**
      */
     public constructor(
-        private fileUpload: FileUpload
+        private fileUpload: UploadRequest
     ) {}
 
     /**

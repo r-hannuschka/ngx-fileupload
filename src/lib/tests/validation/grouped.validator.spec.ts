@@ -1,7 +1,7 @@
 
 import { ValidatorMockFactory } from "../mock/validator.factory";
-import { GroupedValidator } from "@lib/utils/src/validation/grouped.validator";
-import { ValidationErrors } from "@lib/utils/src/validation/validation";
+import { GroupedValidator } from "@lib/utils/validation/src/grouped.validator";
+import { ValidationErrors } from "@lib/utils/validation/validation";
 
 class ValidatorGroupMock extends GroupedValidator {
 

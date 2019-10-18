@@ -1,13 +1,13 @@
-import { FileUpload, UploadModel  } from "lib/public-api";
-import { UploadControl } from "@lib/utils/src/upload-control";
+import { UploadRequest, UploadModel  } from "lib/public-api";
+import { UploadControl } from "@lib/utils/common/upload-control";
 import { fakeAsync, tick } from "@angular/core/testing";
 describe("Model: UploadFile", () => {
 
-    let fileUpload: FileUpload;
+    let fileUpload: UploadRequest;
     let uploadCtrl: UploadControl;
 
     beforeEach(() => {
-        fileUpload = jasmine.createSpyObj("FileUpload", {
+        fileUpload = jasmine.createSpyObj("UploadRequest", {
             retry: () => {},
             start: () => {},
             cancel: () => {}

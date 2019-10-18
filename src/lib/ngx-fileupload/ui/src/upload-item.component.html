@@ -20,13 +20,14 @@
             <!-- upload actions: cancel | retry -->
             <div class="upload-item--actions">
                 <!-- start upload action -->
-                <button type="button" class="item-action--upload" (click)="ctrl.start()" *ngIf="upload.state !== 'error'"
-                    [disabled]="upload.state !== 'queued' || upload.validation.errors">
+                <button type="button" class="item-action--upload" (click)="ctrl.start()"
+                    *ngIf="!upload.hasError"
+                    [disabled]="upload.state !== uploadState.QUEUED">
                     <i class="ngx-fileupload-icon--upload"></i>
                 </button>
 
                 <!-- retry upload action -->
-                <button type="button" class="item-action--retry" (click)="ctrl.retry()" *ngIf="upload.state === 'error'">
+                <button type="button" class="item-action--retry" (click)="ctrl.retry()" *ngIf="upload.hasError">
                     <i class="ngx-fileupload-icon--retry"></i>
                 </button>
 
@@ -47,20 +48,23 @@
                 </li>
             </ul>
 
-            <ul *ngIf="upload.state === 'error'" class="upload-item--response-errors">
-                <li *ngFor="let error of upload.response.errors" class="message error">
-                    {{error}}
-                </li>
-            </ul>
+            <ng-container *ngIf="upload.state === uploadState.REQUEST_COMPLETED">
+                <ul *ngIf="upload.response.errors" class="upload-item--response-errors">
+                    <li *ngFor="let error of upload.response.errors" class="message error">
+                        {{error}}
+                    </li>
+                </ul>
 
-            <p class="message success" *ngIf="upload.state === 'uploaded'">
-                <ng-container *ngIf="upload.response.body && upload.response.body.message; else uploadSuccess">
-                    {{upload.response.body.message}}
-                </ng-container>
-                <ng-template #uploadSuccess>
-                    {{upload.name}} uploaded
-                </ng-template>
-            </p>
+                <p class="message success" *ngIf="!upload.response.errors">
+                    <ng-container *ngIf="upload.response.body && upload.response.body.message; else uploadSuccess">
+                        {{upload.response.body.message}}
+                    </ng-container>
+                    <ng-template #uploadSuccess>
+                        {{upload.name}} uploaded
+                    </ng-template>
+                </p>
+            </ng-container>
+
         </div>
     </div>
 </ng-template>

@@ -1,4 +1,4 @@
-import { Validator, ValidationErrors, ValidationFn } from "@lib/utils/src/validation/validation";
+import { Validator, ValidationErrors, ValidationFn } from "@lib/utils/validation/validation";
 
 class InvalidValidation implements Validator {
     validate(file: File): ValidationErrors | null {

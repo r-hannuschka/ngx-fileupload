@@ -35,12 +35,14 @@ export interface UploadOptions {
 /**
  * represents a single file upload
  */
-export class FileUpload implements Upload {
+export class UploadRequest implements Upload {
 
     /**
      * if cancel$ emits true, current upload will stopped
      */
     private cancel$: Subject<boolean> = new Subject();
+
+    private complete$: Subject<boolean> = new Subject();
 
     /**
      * upload stream to notify observers if something has been changed
@@ -53,7 +55,7 @@ export class FileUpload implements Upload {
     };
 
     /**
-     * create FileUpload service
+     * create UploadRequest service
      */
     public constructor(
         private http: HttpClient,
@@ -69,8 +71,11 @@ export class FileUpload implements Upload {
             ? validator.validate(this.upload.file)
             : validator(this.upload.file);
 
+        this.upload.invalid = false;
+
         if (result !== null) {
             this.upload.state = UploadState.INVALID;
+            this.upload.invalid = true;
         }
         this.upload.validationErrors = result;
     }
@@ -93,6 +98,11 @@ export class FileUpload implements Upload {
         }
     }
 
+    public destroy() {
+        this.upload$.complete();
+        this.upload$ = null;
+    }
+
     /**
      * restart download again
      * reset state, and reset errors
@@ -109,12 +119,8 @@ export class FileUpload implements Upload {
      * cancel current file upload, this will complete change subject
      */
     public cancel() {
-        let isCancelAble = this.upload.state !== UploadState.CANCELED;
-        isCancelAble     = isCancelAble && this.upload.state !== UploadState.UPLOADED;
-
-        if (isCancelAble) {
+        if (this.upload.state !== UploadState.CANCELED) {
             this.upload.state = UploadState.CANCELED;
-            this.notifyObservers();
             this.cancel$.next(true);
             this.completeUpload();
         }
@@ -125,8 +131,11 @@ export class FileUpload implements Upload {
      * has been changed
      */
     public get change(): Observable<UploadModel> {
-        /** should be written into model or store ? */
         return this.upload$.asObservable();
+    }
+
+    public get complete(): Observable<boolean> {
+        return this.complete$.asObservable();
     }
 
     public get model(): UploadModel {
@@ -135,6 +144,10 @@ export class FileUpload implements Upload {
 
     public get data(): UploadData {
         return this.upload.toJson();
+    }
+
+    public get state() {
+        return this.model.state;
     }
 
     /**
@@ -150,6 +163,14 @@ export class FileUpload implements Upload {
      */
     public isInvalid(): boolean {
         return this.upload.state === UploadState.INVALID;
+    }
+
+    public isCompleted(): boolean {
+        return this.upload.state === UploadState.UPLOADED || this.upload.state === UploadState.CANCELED;
+    }
+
+    public isRequestCompleted() {
+        return this.upload.state === UploadState.UPLOADED || this.upload.state === UploadState.ERROR;
     }
 
     /**
@@ -214,25 +235,14 @@ export class FileUpload implements Upload {
             body: res.body,
             errors: null
         };
-        this.upload.state    = UploadState.UPLOADED;
         this.upload.response = uploadResponse;
+        this.upload.state    = UploadState.REQUEST_COMPLETED;
         this.notifyObservers();
-        this.completeUpload();
     }
 
     /**
      * if server not sends a status code in 2xx range this will
      * throw an error which will handled here
-     *
-     * but we have sanitize the response message for this assume
-     * server not running ( no chance the server could send any messages )
-     * and response error will be a ProgressEvent instance, if this is the case
-     * fallback to the response.message
-     *
-     * and we could send back diffrent messages for a status like
-     *
-     * res.status(400).send(WHAT YOU WANT) so response.error will contain
-     * this array, or a string or anything else. If not see fallback.
      */
     private handleError(response: HttpErrorResponse) {
 
@@ -245,20 +255,21 @@ export class FileUpload implements Upload {
             errors
         };
 
-        this.upload.state    = UploadState.ERROR;
+        /** not completed since we could retry */
+        this.upload.state    = UploadState.REQUEST_COMPLETED;
         this.upload.response = uploadResponse;
         this.notifyObservers();
     }
 
     /**
-     * complete download, complete streams and delete them
-     * notify observers
+     * emit upload has been completed
      */
     private completeUpload() {
-        this.upload$.complete();
+        this.notifyObservers();
+        this.complete$.next(true);
+
         this.cancel$.complete();
-        this.cancel$ = null;
-        this.upload$ = null;
+        this.complete$.complete();
     }
 
     /**

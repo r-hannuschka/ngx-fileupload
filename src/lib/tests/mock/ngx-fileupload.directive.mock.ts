@@ -1,5 +1,5 @@
 import { Directive, Output, EventEmitter, Input } from "@angular/core";
-import { FileUpload } from "lib/public-api";
+import { UploadRequest } from "lib/public-api";
 
 @Directive({
     selector: "[ngxFileUpload]",
@@ -17,7 +17,7 @@ export class NgxFileUploadMockDirective {
      * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
      */
     @Output()
-    public add: EventEmitter<FileUpload[]> = new EventEmitter();
+    public add: EventEmitter<UploadRequest[]> = new EventEmitter();
 
     /**
      * url which should be used as endpoint for the file upload

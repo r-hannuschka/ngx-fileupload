@@ -1,41 +1,16 @@
 import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core";
-import { takeUntil, tap } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../data/api/validation";
-
-import { FileUploadStore } from "../../utils/src/store/upload.store";
-import { FileUpload } from "../../utils/src/http/file-upload";
-import { UploadStoreManager } from "../../utils/src/store/store.manager";
+import { UploadRequest, UploadStore, UploadStoreManager } from "../../utils/upload";
 import { FileUploadItemContext } from "./upload-item.component";
-
-/**
- * NgxFileUploadComponent is a wrapper contain NgxFileUploadDirective and NgxFileUploadComponent
- * to setup a upload view very quickly. All options will passed directly to NgxFileUploadDirective
- * or NgxFileUploadComponent. This component simply handle all events / changes from upload.
- *
- * @example
- * <!-- base implementation //-->
- * <ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>
- *
- * @example
- * <!-- define custom template which will be used for visual representation for one upload //-->
- * <ng-template #myItemTemplate let-uploadData="data" let-uploadCtrl="ctrl">
- *    <span>{{uploadData.name}}</span>
- * </ng-template>
- *
- * <ngx-fileupload [url]="'...'" [itemTemplate]="myItemTemplate"></ngx-fileupload>
- *
- * @example
- * <!-- send file without wrapping it into FormData //-->
- * <ngx-fileupload [url]="'...'" [useFormData]="false"></ngx-fileupload>
- */
 
 const UploadViewStoreToken = { name: "UploadStoreToken" };
 
 @Component({
     selector: "ngx-fileupload",
     styleUrls: ["./upload-view.scss"],
-    templateUrl: "upload-view.html"
+    templateUrl: "upload-view.html",
 })
 export class UploadViewComponent implements OnInit, OnDestroy {
 
@@ -57,25 +32,26 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     @Input()
     public validator: Validator | ValidationFn;
 
-    public uploads: FileUpload[] = [];
+    public uploads: UploadRequest[] = [];
 
-    public store: FileUploadStore;
+    public store: UploadStore;
 
     private destroyed$: Subject<boolean>;
 
     public constructor(
-        private storeManager: UploadStoreManager,
+        private storeManager: UploadStoreManager
     ) {
         this.store = this.storeManager.get(UploadViewStoreToken) || this.storeManager.createStore(UploadViewStoreToken);
         this.destroyed$ = new Subject();
     }
 
     public ngOnInit() {
-
         this.store.change()
             .pipe(takeUntil(this.destroyed$))
             .subscribe({
-                next: (uploads) => this.uploads = uploads
+                next: (uploads) => {
+                    this.uploads = uploads;
+                }
             });
     }
 
@@ -85,8 +61,23 @@ export class UploadViewComponent implements OnInit, OnDestroy {
 
     /**
      * if state is canceled or uploaded remove it
+     * if we enter the site again, it will instant trigger
+     * store change, and this will throw an change detection error since we
+     * modify data view has not been complete in change detection
      */
-    public onUploadCompleted(upload: FileUpload) {
-        this.store.delete(upload);
+    public onUploadCompleted(upload: UploadRequest) {
+        // this.store.remove(upload);
+    }
+
+    public uploadAll() {
+        this.store.startAll(5);
+    }
+
+    public stopAll() {
+        this.store.stopAll();
+    }
+
+    public cleanAll() {
+        this.store.purge();
     }
 }

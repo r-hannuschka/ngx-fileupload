@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 
 import { UploadViewComponent, FileBrowserDirective, UploadItemComponent } from "./ui";
-import { FileSizePipe } from "./ui/src/file-size.pipe";
+import { FileSizePipe } from "./utils/ui/file-size.pipe";
 
 @NgModule({
     declarations: [

@@ -34,12 +34,15 @@ export class UploadQueue {
         this.startUpload(upload);
     }
 
+    public isRegistered(upload): boolean {
+        return this.registeredUploads.has(upload);
+    }
+
     /**
      * checks for upload is in queue
      */
     public isQueued(upload): boolean {
-        const inQueue = this.queuedUploads.indexOf(upload) > -1;
-        return this.registeredUploads.has(upload) && !inQueue;
+        return this.queuedUploads.indexOf(upload) > -1;
     }
 
     /**

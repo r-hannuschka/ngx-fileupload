@@ -10,15 +10,21 @@ import { UploadState } from "../../../data/api";
  */
 export class UploadStore {
 
+    /**
+     * change stream if uploads has been changed,
+     * add, remove
+     */
     private change$: BehaviorSubject<UploadRequest[]>;
 
+    /**
+     * all uploads in list
+     */
     private uploads: UploadRequest[] = [];
 
+    /**
+     * upload queue to prevent to many uploads at the same time
+     */
     private queue: UploadQueue;
-
-    private hooks: {
-        beforeStart: Observable<boolean>[];
-    };
 
     public constructor() {
         this.change$ = new BehaviorSubject([]);
@@ -30,18 +36,14 @@ export class UploadStore {
         return this.change$.asObservable();
     }
 
+    /**
+     * add new upload to store
+     */
     public add(upload: UploadRequest) {
         this.uploads = [...this.uploads, upload];
 
-        const beforeStart$ = of(true)
-            .pipe(
-                // we cant add this to of since this will called instant
-                // and not as expected if we subscribe
-                map(() => this.queue.isQueued(upload)),
-                tap(() => this.queue.run(upload)),
-            );
-
-        upload.beforeStart(() => beforeStart$);
+        /** register hook before upload starts */
+        upload.beforeStart(() => this.createBeforeStartHook(upload));
 
         this.notifyObserver();
     }
@@ -79,7 +81,7 @@ export class UploadStore {
     /**
      * starts all queued uploads
      */
-    public startAll(limit: number) {
+    public startAll() {
         const uploads = this.uploads.filter((upload) => upload.data.state === UploadState.QUEUED);
         uploads.forEach(upload => upload.start());
     }
@@ -109,6 +111,32 @@ export class UploadStore {
         this.notifyObserver();
     }
 
+    /**
+     * create before start hook, if any upload wants to start we have to check
+     *
+     * 1. upload is registered in queue
+     * 2. upload is currently not queued
+     *
+     * otherwise this will return false and prevent upload to start
+     */
+    private createBeforeStartHook(upload: UploadRequest): Observable<boolean> {
+        return of(true).pipe(
+            map(() => {
+                const isRegistered = this.queue.isRegistered(upload);
+                const isQueued     = this.queue.isQueued(upload);
+                return isRegistered && !isQueued;
+            }),
+            tap(() => {
+                if (this.queue.isRegistered(upload)) {
+                    this.queue.run(upload);
+                }
+            })
+        );
+    }
+
+    /**
+     * notify observer store data has been changed
+     */
     private notifyObserver() {
         this.change$.next(this.uploads);
     }

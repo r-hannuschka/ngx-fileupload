@@ -1,7 +1,23 @@
 import { UploadState } from "../../../data/api";
 import { UploadRequest } from "./upload.request";
-import { merge } from "rxjs";
+import { merge, Subject, Observable } from "rxjs";
 import { filter, take } from "rxjs/operators";
+
+export interface QueueChange {
+    /**
+     * new upload was added to queue
+     */
+    add: UploadRequest[];
+    /**
+     * upload starts
+     */
+    start: UploadRequest[];
+    /**
+     * upload has finish uploading, canceled
+     * and not registered in queue anymore
+     */
+    removed: UploadRequest[];
+}
 
 export class UploadQueue {
 
@@ -17,6 +33,11 @@ export class UploadQueue {
         this.concurrentCount = count;
     }
 
+    /**
+     * subscribe to get notified queue has been changed
+     */
+    private queueChange$: Subject<QueueChange> = new Subject();
+
     public run(upload: UploadRequest) {
 
         /** dont add uploads which are allredy in queue or running */
@@ -25,13 +46,20 @@ export class UploadQueue {
         }
 
         this.registeredUploads.add(upload);
+
+        // should not access the model directly
         upload.model.isPending = true;
 
         if (this.active >= this.concurrentCount) {
-            this.queuedUploads = [...this.queuedUploads, upload];
+            this.addToQueue(upload);
             return;
         }
+
         this.startUpload(upload);
+    }
+
+    public get change(): Observable<QueueChange> {
+        return this.queueChange$.asObservable();
     }
 
     public isRegistered(upload): boolean {
@@ -50,6 +78,8 @@ export class UploadQueue {
      */
     private startUpload(upload: UploadRequest) {
         this.active += 1;
+
+        /** @todo should not access model directly */
         upload.model.isPending = false;
 
         const uploadChange$ = upload.change
@@ -60,7 +90,7 @@ export class UploadQueue {
             .subscribe({
                 next: () => {
                     this.active -= 1;
-                    this.registeredUploads.delete(upload);
+                    this.removeFromQueue(upload);
 
                     const nextUpload = this.getNextFromQueue();
                     if (nextUpload) {
@@ -70,6 +100,12 @@ export class UploadQueue {
             });
 
         upload.start();
+        this.queueChange$.next({add: [], removed: [], start: [upload]});
+    }
+
+    private addToQueue(upload: UploadRequest) {
+        this.queuedUploads = [...this.queuedUploads, upload];
+        this.queueChange$.next({add: [upload], removed: [], start: []});
     }
 
     /**
@@ -77,15 +113,23 @@ export class UploadQueue {
      */
     private getNextFromQueue(): UploadRequest {
         let nextUploadReq = null;
-        do {
+        while (nextUploadReq === null && this.queuedUploads.length) {
             const nextUpload = this.queuedUploads.shift();
             nextUploadReq = nextUpload && nextUpload.state === UploadState.QUEUED ? nextUpload : null;
 
             if (!nextUploadReq) {
                 this.registeredUploads.delete(nextUpload);
+                this.removeFromQueue(nextUpload);
             }
-        } while (nextUploadReq === null && this.queuedUploads.length);
-
+        }
         return nextUploadReq;
+    }
+
+    /**
+     * remove upload from queue
+     */
+    private removeFromQueue(upload: UploadRequest) {
+        this.registeredUploads.delete(upload);
+        this.queueChange$.next({add: [], removed: [upload], start: []});
     }
 }

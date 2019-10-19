@@ -126,6 +126,10 @@ export class UploadModel {
         return Math.round(progress > 100 ? 100 : progress);
     }
 
+    public get hasError() {
+        return this.uploadResponse && this.uploadResponse.errors ? true : false;
+    }
+
     /**
      * return file upload data
      * @todo move to model
@@ -141,7 +145,7 @@ export class UploadModel {
             validation: {
                 errors: this.validationErrors,
             },
-            hasError:  this.uploadResponse && this.uploadResponse.errors ? true : false,
+            hasError:  this.hasError,
             isInvalid: this.uploadInvalid,
             isPending: this.uploadPending
         };

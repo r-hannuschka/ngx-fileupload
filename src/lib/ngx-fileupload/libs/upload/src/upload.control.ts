@@ -1,4 +1,4 @@
-import { UploadRequest } from "../upload/src/upload.request";
+import { UploadRequest } from "./upload.request";
 import { timer } from "rxjs";
 
 /**

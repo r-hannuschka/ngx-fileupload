@@ -1,10 +1,10 @@
 import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2 } from "@angular/core";
 import { Subject } from "rxjs";
 
-import { Validator, ValidationFn } from "../../data/api/validation";
-import { UploadRequest } from "../../utils/upload/src/upload.request";
-import { FileUploadFactory } from "../../utils/common/factory";
-import { UploadStore } from "../../utils/upload/src/upload.store";
+import { Validator, ValidationFn } from "../../../data/api/validation";
+import { UploadRequest } from "../../upload/src/upload.request";
+import { FileUploadFactory } from "../../../utils/factory";
+import { UploadStore } from "../../upload/src/upload.store";
 
 /**
  * directive to add uploads with drag / drop

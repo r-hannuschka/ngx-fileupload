@@ -27,6 +27,9 @@ export class UploadStoreManager {
         return false;
     }
 
+    /**
+     * remove upload store
+     */
     public remove(token): boolean {
         const store = this.get(token);
         if (store !== null) {
@@ -36,6 +39,9 @@ export class UploadStoreManager {
         return false;
     }
 
+    /**
+     * get upload store
+     */
     public get(token: object): UploadStore | null {
         if (this.stores.has(token)) {
             return this.stores.get(token);

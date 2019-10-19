@@ -54,7 +54,7 @@ export class UploadRequest implements Upload {
         formData: { enabled: true, name: "file" }
     };
 
-    private hooks: { beforeStart: Array<() => Observable<boolean>>} = { beforeStart: [] };
+    private hooks: {beforeStart: Array<() => Observable<boolean>>} = { beforeStart: [] };
 
     /**
      * returns observable which notify if file upload state
@@ -119,15 +119,23 @@ export class UploadRequest implements Upload {
      * returns true if validators are set and upload not validated
      */
     public isInvalid(): boolean {
-        return this.upload.state === UploadState.INVALID;
+        return this.model.invalid;
     }
 
     public isCompleted(): boolean {
-        return this.upload.state === UploadState.CANCELED;
+        return this.upload.state === UploadState.CANCELED || this.isRequestCompleted();
+    }
+
+    public isProgress(): boolean {
+        return this.upload.state === UploadState.PROGRESS || this.upload.state === UploadState.START;
+    }
+
+    public isPending(): boolean {
+        return this.model.isPending;
     }
 
     public isRequestCompleted() {
-        return this.upload.state === UploadState.UPLOADED || this.upload.state === UploadState.ERROR;
+        return this.upload.state === UploadState.REQUEST_COMPLETED;
     }
 
     /**
@@ -135,9 +143,8 @@ export class UploadRequest implements Upload {
      * reset state, and reset errors
      */
     public retry() {
-        if (this.upload.state === UploadState.ERROR) {
-            this.upload.state = UploadState.QUEUED;
-            this.upload.response = {success: false, body: null, errors: null};
+        if (this.state === UploadState.REQUEST_COMPLETED && this.upload.hasError) {
+            this.resetUpload();
             this.start();
         }
     }
@@ -180,7 +187,6 @@ export class UploadRequest implements Upload {
         this.upload.invalid = false;
 
         if (result !== null) {
-            this.upload.state = UploadState.INVALID;
             this.upload.invalid = true;
         }
         this.upload.validationErrors = result;
@@ -191,7 +197,7 @@ export class UploadRequest implements Upload {
      * sends back an error response
      */
     public hasError(): boolean {
-        return this.upload.state === UploadState.ERROR;
+        return this.upload.hasError;
     }
 
     /**
@@ -298,5 +304,12 @@ export class UploadRequest implements Upload {
      */
     private notifyObservers() {
         this.upload$.next(this.upload);
+    }
+
+    private resetUpload() {
+        this.upload.state     = UploadState.QUEUED;
+        this.upload.response  = {success: false, body: null, errors: null};
+        this.upload.uploaded  = 0;
+        this.upload.isPending = false;
     }
 }

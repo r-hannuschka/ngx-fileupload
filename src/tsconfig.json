@@ -53,13 +53,13 @@
         "./lib/ngx-fileupload/utils/*"
       ],
       "@lib/utils/validation": [
-        "lib/ngx-fileupload/utils/validation"
+        "lib/ngx-fileupload/libs/validation"
       ],
       "@lib/data/*": [
         "./lib/ngx-fileupload/data/*"
       ],
       "@lib/ui": [
-        "./lib/ngx-fileupload/ui"
+        "lib/ngx-fileupload/libs/ui"
       ],
       "@lib/data/api": [
         "./lib/ngx-fileupload/data/api"

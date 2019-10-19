@@ -8,7 +8,7 @@ import {
     UploadRequest
 } from "lib/public-api";
 import { ValidatorMockFactory } from "../mock/validator.factory";
-import { Validator } from "@lib/utils/validation/validation";
+import { Validator } from "lib/ngx-fileupload/libs/validation/validation";
 import { By } from "@angular/platform-browser";
 
 @Component({

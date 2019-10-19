@@ -1,5 +1,5 @@
 import { ValidatorMockFactory } from "../mock/validator.factory";
-import { AndValidator } from "@lib/utils/validation/src/and.validator";
+import { AndValidator } from "lib/ngx-fileupload/libs/validation/src/and.validator";
 
 describe("GroupedValidation: And", () => {
 

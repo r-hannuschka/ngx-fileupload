@@ -1,8 +1,8 @@
 import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { Validator, ValidationFn } from "../../data/api/validation";
-import { UploadRequest, UploadStore, UploadStoreManager } from "../../utils/upload";
+import { Validator, ValidationFn } from "../../../data/api/validation";
+import { UploadRequest, UploadStore, UploadStoreManager } from "../../upload";
 import { FileUploadItemContext } from "./upload-item.component";
 
 const UploadViewStoreToken = { name: "UploadStoreToken" };
@@ -70,7 +70,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     }
 
     public uploadAll() {
-        this.store.startAll(2);
+        this.store.startAll();
     }
 
     public stopAll() {

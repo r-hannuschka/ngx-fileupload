@@ -1,12 +1,11 @@
 
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from "@angular/core";
-import { UploadRequest } from "../../utils/upload/src/upload.request";
-import { UploadControl } from "../../utils/common/upload-control";
-import { UploadModel } from "../../data/upload.model";
-import { UploadData, UploadState } from "../../data/api";
+import { UploadRequest, UploadControl } from "../../upload";
+import { UploadModel } from "../../../data/upload.model";
+import { UploadData, UploadState } from "../../../data/api";
 import {  Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import * as UploadAPI from "../../data/api/upload";
+import * as UploadAPI from "../../../data/api/upload";
 
 export interface FileUploadItemContext {
     data: UploadData;

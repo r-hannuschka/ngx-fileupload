@@ -16,29 +16,9 @@ export enum UploadState {
      */
     PROGRESS  = "progress",
     /**
-     * upload has completed with success
-     * @todo check we could remove this @see REQUEST_COMPLETED
-     */
-    UPLOADED  = "uploaded",
-    /**
      * upload was canceled
      */
     CANCELED  = "canceled",
-    /**
-     * upload has completed with an error
-     * @todo check we could remove this @see REQUEST_COMPLETED
-     */
-    ERROR     = "error",
-    /**
-     * state invalid
-     * @todo check we could remove this one
-     */
-    INVALID   = "invalid",
-    /**
-     * upload is completed
-     * @todo check we could remove this
-     */
-    COMPLETED = "completed",
     /**
      * upload xhr request has been completed
      */

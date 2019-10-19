@@ -1,5 +1,5 @@
 import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core";
-import { takeUntil, buffer, debounceTime } from "rxjs/operators";
+import { takeUntil, tap } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../../data/api/validation";
 import { UploadRequest, UploadStore, UploadStoreManager } from "../../upload";
@@ -66,14 +66,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      * register for queue changes
      */
     private registerQueueEvents() {
-        const change$ = this.store.queue.change;
-        change$
-            /* buffer queue changes since this will called multiple times
-             *  - add upload to queue
-             *  - start upload in queue
-             *  - remove upload from queue (uploaded or canceled)
-             */
-            .pipe(buffer(change$.pipe(debounceTime(20))))
+        this.store.queueChange
             .subscribe({
                 next: () => this.handleQueueChange()
             });

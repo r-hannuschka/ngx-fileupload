@@ -1,7 +1,7 @@
 import { UploadRequest } from "./upload.request";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import { tap, map } from "rxjs/operators";
-import { UploadQueue } from "./upload.queue";
+import { tap, map, buffer, debounceTime, takeUntil, takeWhile } from "rxjs/operators";
+import { UploadQueue, QueueChange } from "./upload.queue";
 import { UploadState } from "../../../data/api";
 
 /**
@@ -13,19 +13,33 @@ export class UploadStore {
     private change$: BehaviorSubject<UploadRequest[]>;
     private uploads: UploadRequest[] = [];
     private uploadQueue: UploadQueue;
+    private queueChange$: Observable<QueueChange>;
+    private queueChangeSubs = 0;
 
     public constructor() {
         this.change$     = new BehaviorSubject([]);
         this.uploadQueue = new UploadQueue();
-        this.queue.concurrent = 1;
+        this.uploadQueue.concurrent = 1;
     }
 
     public change(): Observable<UploadRequest[]> {
         return this.change$.asObservable();
     }
 
-    public get queue(): UploadQueue {
-        return this.uploadQueue;
+    public get queueChange(): Observable<QueueChange> {
+        return new Observable((subscriber) => {
+            this.queueChangeSubs += 1;
+            if (!this.queueChange$) {
+                this.queueChange$ = this.createQueueChangeBroadcast();
+            }
+            const sub = this.queueChange$.subscribe(subscriber);
+
+            /** unsubscribe */
+            return () => {
+                this.queueChangeSubs -= 1;
+                sub.unsubscribe();
+            };
+        });
     }
 
     /**
@@ -98,6 +112,27 @@ export class UploadStore {
         this.notifyObserver();
     }
 
+    private createQueueChangeBroadcast(): Observable<QueueChange> {
+
+        const change$ = this.uploadQueue.change;
+        return change$.pipe(
+            takeWhile(() => this.queueChangeSubs > 0),
+            /** buffer until change$ not submitting for at least 20ms */
+            buffer(change$.pipe(debounceTime(20))),
+            /** merge all changes into single change object */
+            map((changes) => {
+                const emptyChange: QueueChange = {add: [], removed: [], start: []};
+                return changes.reduce((change, buffered) => (
+                    {
+                        add:     [...change.add    , ...buffered.add    ],
+                        start:   [...change.start  , ...buffered.start  ],
+                        removed: [...change.removed, ...buffered.removed]
+                    }
+                ), emptyChange);
+            }),
+        );
+    }
+
     /**
      * create before start hook, if any upload wants to start we have to check
      *
@@ -110,13 +145,13 @@ export class UploadStore {
     private createBeforeStartHook(upload: UploadRequest): Observable<boolean> {
         return of(true).pipe(
             map(() => {
-                const isRegistered = this.queue.isRegistered(upload);
-                const isQueued     = this.queue.isQueued(upload);
+                const isRegistered = this.uploadQueue.isRegistered(upload);
+                const isQueued     = this.uploadQueue.isQueued(upload);
                 return isRegistered && !isQueued;
             }),
             tap(() => {
-                if (!this.queue.isRegistered(upload)) {
-                    this.queue.run(upload);
+                if (!this.uploadQueue.isRegistered(upload)) {
+                    this.uploadQueue.run(upload);
                     return;
                 }
             }),

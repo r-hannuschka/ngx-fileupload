@@ -14,10 +14,7 @@
     </div>
 
     <div *ngIf="uploads.length" class="file-upload--list">
-        <ngx-fileupload-item *ngFor="let item of uploads" 
-            [upload]="item"
-            [template]="itemTemplate"
-            (completed)="onUploadCompleted($event)">
+        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate" >
         </ngx-fileupload-item>
     </div>
 </div>

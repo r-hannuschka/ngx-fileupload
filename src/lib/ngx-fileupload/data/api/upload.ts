@@ -3,26 +3,12 @@ import { UploadModel } from "../upload.model";
 import { ValidationErrors } from "./validation";
 
 export enum UploadState {
-    /**
-     * upload has been added not means it is added to queue
-     */
-    QUEUED    = "queued",
-    /**
-     * upload starts xhr request
-     */
-    START = "start",
-    /**
-     * upload is running
-     */
-    PROGRESS  = "progress",
-    /**
-     * upload was canceled
-     */
-    CANCELED  = "canceled",
-    /**
-     * upload xhr request has been completed
-     */
-    REQUEST_COMPLETED = "[NgxFileUploadRequest] completed"
+    CANCELED          = 0,
+    QUEUED            = 1,
+    PENDING           = 2,
+    START             = 3,
+    PROGRESS          = 4,
+    REQUEST_COMPLETED = 5
 }
 
 export interface UploadResponse {

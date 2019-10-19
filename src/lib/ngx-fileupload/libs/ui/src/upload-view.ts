@@ -1,5 +1,5 @@
 import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, buffer, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../../data/api/validation";
 import { UploadRequest, UploadStore, UploadStoreManager } from "../../upload";
@@ -46,27 +46,50 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
-        this.store.change()
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe({
-                next: (uploads) => {
-                    this.uploads = uploads;
-                }
-            });
+        this.registerStoreEvents();
+        this.registerQueueEvents();
     }
 
     public ngOnDestroy() {
         this.destroyed$.next(true);
     }
 
+    private registerStoreEvents() {
+        this.store.change()
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe({
+                next: (uploads) => this.uploads = uploads
+            });
+    }
+
     /**
-     * if state is canceled or uploaded remove it
-     * if we enter the site again, it will instant trigger
-     * store change, and this will throw an change detection error since we
-     * modify data view has not been complete in change detection
+     * register for queue changes
      */
-    public onUploadCompleted(upload: UploadRequest) {
-        // this.store.remove(upload);
+    private registerQueueEvents() {
+        const change$ = this.store.queue.change;
+        change$
+            /* buffer queue changes since this will called multiple times
+             *  - add upload to queue
+             *  - start upload in queue
+             *  - remove upload from queue (uploaded or canceled)
+             */
+            .pipe(buffer(change$.pipe(debounceTime(20))))
+            .subscribe({
+                next: () => this.handleQueueChange()
+            });
+    }
+
+    /**
+     * reorder items now
+     * could be an action we dispatch on store, or only for our view
+     */
+    private handleQueueChange() {
+        this.uploads = this.uploads.sort((u1: UploadRequest, u2: UploadRequest) => {
+            if (u1.state > u2.state) {
+                return -1;
+            }
+            return 1;
+        });
     }
 
     public uploadAll() {

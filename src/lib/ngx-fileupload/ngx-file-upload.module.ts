@@ -4,12 +4,14 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { UploadViewComponent, FileBrowserDirective, UploadItemComponent } from "./libs/ui";
 import { FileSizePipe } from "./utils/file-size.pipe";
+import { StateToStringPipe } from "./utils/state-to-string.pipe";
 
 @NgModule({
     declarations: [
         FileBrowserDirective,
         UploadItemComponent,
         UploadViewComponent,
+        StateToStringPipe,
         FileSizePipe
     ],
     imports: [
@@ -20,6 +22,7 @@ import { FileSizePipe } from "./utils/file-size.pipe";
         FileBrowserDirective,
         UploadItemComponent,
         UploadViewComponent,
+        StateToStringPipe,
         FileSizePipe
     ]
 })

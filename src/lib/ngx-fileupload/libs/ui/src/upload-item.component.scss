@@ -39,6 +39,10 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
         align-items: center;
         display: flex;
         flex-direction: row;
+
+        .upload-item--state {
+            font-size: .85rem;
+        }
     }
 
     .upload-item--actions,
@@ -83,20 +87,18 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
 
     .upload-item--actions {
 
-        padding: .25rem;
         display: flex;
 
         button {
+            display: flex;
             padding: 0;
-            background: lighten(map-get($colors, 'dark'), 25%);
-            color: map-get($colors, 'white');
-            border-radius: 50%;
-            border: 0;
-            height: 1rem; 
-            width: 1rem; 
+            color: map-get($colors, 'dark');
             cursor: pointer;
-            font-size: .75rem;
             outline: none;
+            background: transparent;
+            line-height: 1rem;
+            border: 0;
+            font-size: 1rem;
 
             margin-right: .25rem;
 
@@ -105,7 +107,7 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
             }
 
             &:disabled {
-                background: lighten(map-get($colors, 'dark'), 50%);
+                color: lighten(map-get($colors, 'dark'), 50%);
                 cursor: not-allowed;
             }
         }

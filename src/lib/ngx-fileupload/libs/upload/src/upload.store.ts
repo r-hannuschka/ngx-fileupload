@@ -1,7 +1,7 @@
 import { UploadRequest } from "./upload.request";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import { tap, map, debounceTime, buffer } from "rxjs/operators";
-import { UploadQueue, QueueChange } from "./upload.queue";
+import { tap, map } from "rxjs/operators";
+import { UploadQueue } from "./upload.queue";
 import { UploadState } from "../../../data/api";
 
 /**
@@ -12,18 +12,20 @@ export class UploadStore {
 
     private change$: BehaviorSubject<UploadRequest[]>;
     private uploads: UploadRequest[] = [];
-    private queue: UploadQueue;
+    private uploadQueue: UploadQueue;
 
     public constructor() {
-        this.change$ = new BehaviorSubject([]);
-        this.queue   = new UploadQueue();
-        this.queue.concurrent = 3;
-
-        this.registerQueueEvents();
+        this.change$     = new BehaviorSubject([]);
+        this.uploadQueue = new UploadQueue();
+        this.queue.concurrent = 1;
     }
 
     public change(): Observable<UploadRequest[]> {
         return this.change$.asObservable();
+    }
+
+    public get queue(): UploadQueue {
+        return this.uploadQueue;
     }
 
     /**
@@ -52,11 +54,11 @@ export class UploadStore {
 
     /**
      * remove all uploads which has been invalid
-     * canceled or upload has been completed
+     * canceled or upload has been completed even it is has an error
      */
     public purge() {
         this.uploads = this.uploads.filter((upload) => {
-            let keepUpload = upload.state !== UploadState.REQUEST_COMPLETED || upload.hasError();
+            let keepUpload = upload.state !== UploadState.REQUEST_COMPLETED;
             keepUpload = keepUpload && upload.state !== UploadState.CANCELED;
             return keepUpload;
         });
@@ -67,7 +69,7 @@ export class UploadStore {
      * starts all queued uploads
      */
     public startAll() {
-        const uploads = this.uploads.filter((upload) => upload.data.state === UploadState.QUEUED);
+        const uploads = this.uploads.filter((upload) => upload.isIdle());
         uploads.forEach(upload => upload.start());
     }
 
@@ -102,7 +104,8 @@ export class UploadStore {
      * 1. upload is registered in queue
      * 2. upload is currently not queued
      *
-     * otherwise this will return false and prevent upload to start
+     * otherwise this will return false and prevent upload to start,
+     * after that upload will pushed to queue and start again if queue has space
      */
     private createBeforeStartHook(upload: UploadRequest): Observable<boolean> {
         return of(true).pipe(
@@ -125,35 +128,5 @@ export class UploadStore {
      */
     private notifyObserver() {
         this.change$.next(this.uploads);
-    }
-
-    /**
-     * register for queue changes
-     */
-    private registerQueueEvents() {
-        const change$ = this.queue.change;
-        change$.pipe(
-            /** buffer until change$ not submitting for at least for 20ms */
-            buffer(change$.pipe(debounceTime(20))),
-            /** merge all changes into single change object */
-            map((changes) => {
-                const emptyChange: QueueChange = {add: [], removed: [], start: []};
-                return changes.reduce((change, buffered) => (
-                    {
-                        add:     [...change.add    , ...buffered.add    ],
-                        start:   [...change.start  , ...buffered.start  ],
-                        removed: [...change.removed, ...buffered.removed]
-                    }
-                ), emptyChange);
-            })
-        ).subscribe({
-            next: (change: QueueChange) => this.handleQueueChange(change)
-        });
-    }
-
-    /**
-     * reorder items now
-     */
-    private handleQueueChange(change) {
     }
 }

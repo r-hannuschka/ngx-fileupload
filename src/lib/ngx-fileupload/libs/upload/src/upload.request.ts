@@ -42,8 +42,6 @@ export class UploadRequest implements Upload {
      */
     private cancel$: Subject<boolean> = new Subject();
 
-    private complete$: Subject<boolean> = new Subject();
-
     /**
      * upload stream to notify observers if something has been changed
      */
@@ -64,16 +62,16 @@ export class UploadRequest implements Upload {
         return this.upload$.asObservable();
     }
 
-    public get complete(): Observable<boolean> {
-        return this.complete$.asObservable();
-    }
-
     public get model(): UploadModel {
         return this.upload;
     }
 
     public get data(): UploadData {
         return this.upload.toJson();
+    }
+
+    public set state(state: UploadState) {
+        this.model.state = state;
     }
 
     public get state() {
@@ -99,6 +97,10 @@ export class UploadRequest implements Upload {
         ];
     }
 
+    public update() {
+        this.notifyObservers();
+    }
+
     /**
      * cancel current file upload, this will complete change subject
      */
@@ -106,7 +108,7 @@ export class UploadRequest implements Upload {
         if (this.upload.state !== UploadState.CANCELED) {
             this.upload.state = UploadState.CANCELED;
             this.cancel$.next(true);
-            this.completeUpload();
+            this.notifyObservers();
         }
     }
 
@@ -131,7 +133,11 @@ export class UploadRequest implements Upload {
     }
 
     public isPending(): boolean {
-        return this.model.isPending;
+        return this.upload.state === UploadState.PENDING;
+    }
+
+    public isIdle(): boolean {
+        return this.upload.state === UploadState.QUEUED;
     }
 
     public isRequestCompleted() {
@@ -167,7 +173,7 @@ export class UploadRequest implements Upload {
             filter(result => result)
         );
 
-        if (this.upload.state === UploadState.QUEUED) {
+        if (this.isIdle() || this.isPending()) {
             of(true).pipe(
                 switchMap(() => beforeStartHooks$),
                 switchMap(() => this.uploadFile()),
@@ -286,17 +292,6 @@ export class UploadRequest implements Upload {
     private handleSent() {
         this.upload.state = UploadState.START;
         this.notifyObservers();
-    }
-
-    /**
-     * emit upload has been completed
-     */
-    private completeUpload() {
-        this.notifyObservers();
-        this.complete$.next(true);
-
-        this.cancel$.complete();
-        this.complete$.complete();
     }
 
     /**

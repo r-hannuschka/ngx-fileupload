@@ -39,16 +39,16 @@ export class UploadQueue {
     private queueChange$: Subject<QueueChange> = new Subject();
 
     public run(upload: UploadRequest) {
-
         /** dont add uploads which are allredy in queue or running */
-        if (this.queuedUploads.indexOf(upload) > -1 || upload.data.state !== UploadState.QUEUED) {
+        if (upload.isPending()) {
             return;
         }
 
         this.registeredUploads.add(upload);
 
         // should not access the model directly
-        upload.model.isPending = true;
+        upload.state = UploadState.PENDING;
+        upload.update();
 
         if (this.active >= this.concurrentCount) {
             this.addToQueue(upload);
@@ -79,13 +79,13 @@ export class UploadQueue {
     private startUpload(upload: UploadRequest) {
         this.active += 1;
 
-        /** @todo should not access model directly */
-        upload.model.isPending = false;
-
         const uploadChange$ = upload.change
-            .pipe(filter((request) => request.state === UploadState.REQUEST_COMPLETED));
+            .pipe(filter((request) => (
+                request.state === UploadState.REQUEST_COMPLETED ||
+                request.state === UploadState.CANCELED
+            )));
 
-        merge(uploadChange$, upload.complete)
+        uploadChange$
             .pipe(take(1))
             .subscribe({
                 next: () => {
@@ -115,7 +115,7 @@ export class UploadQueue {
         let nextUploadReq = null;
         while (nextUploadReq === null && this.queuedUploads.length) {
             const nextUpload = this.queuedUploads.shift();
-            nextUploadReq = nextUpload && nextUpload.state === UploadState.QUEUED ? nextUpload : null;
+            nextUploadReq = nextUpload && nextUpload.isPending() ? nextUpload : null;
 
             if (!nextUploadReq) {
                 this.registeredUploads.delete(nextUpload);

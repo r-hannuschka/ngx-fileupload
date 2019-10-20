@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { UploadStore } from "./upload.store";
+import { UploadStoreConfig } from "../../../data/api";
 
 @Injectable({ providedIn: "root"})
 export class UploadStoreManager {

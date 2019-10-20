@@ -54,10 +54,6 @@ export class UploadRequest implements Upload {
 
     private hooks: {beforeStart: Array<() => Observable<boolean>>} = { beforeStart: [] };
 
-    /**
-     * returns observable which notify if file upload state
-     * has been changed
-     */
     public get change(): Observable<UploadModel> {
         return this.upload$.asObservable();
     }
@@ -117,15 +113,18 @@ export class UploadRequest implements Upload {
         this.upload$ = null;
     }
 
+    public isCompleted(): boolean {
+        let isCompleted = false;
+        isCompleted = isCompleted || (!this.hasError() && this.isRequestCompleted());
+        isCompleted = isCompleted || this.state === UploadState.CANCELED;
+        return isCompleted;
+    }
+
     /**
      * returns true if validators are set and upload not validated
      */
     public isInvalid(): boolean {
         return this.model.invalid;
-    }
-
-    public isCompleted(): boolean {
-        return this.upload.state === UploadState.CANCELED || this.isRequestCompleted();
     }
 
     public isProgress(): boolean {

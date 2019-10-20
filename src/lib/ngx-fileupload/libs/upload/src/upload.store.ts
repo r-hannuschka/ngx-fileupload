@@ -1,6 +1,6 @@
 import { UploadRequest } from "./upload.request";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import { tap, map, buffer, debounceTime, takeUntil, takeWhile } from "rxjs/operators";
+import { map, buffer, debounceTime, takeWhile } from "rxjs/operators";
 import { UploadQueue, QueueChange } from "./upload.queue";
 import { UploadState } from "../../../data/api";
 
@@ -19,6 +19,8 @@ export class UploadStore {
     public constructor() {
         this.change$     = new BehaviorSubject([]);
         this.uploadQueue = new UploadQueue();
+
+        // this.uploadQueue.concurrent = config.concurrentUploads;
         this.uploadQueue.concurrent = 1;
     }
 
@@ -47,7 +49,7 @@ export class UploadStore {
      */
     public add(upload: UploadRequest) {
         this.uploads = [...this.uploads, upload];
-        upload.beforeStart(() => this.createBeforeStartHook(upload));
+        this.uploadQueue.add(upload);
         this.notifyObserver();
     }
 
@@ -74,6 +76,7 @@ export class UploadStore {
         this.uploads = this.uploads.filter((upload) => {
             let keepUpload = upload.state !== UploadState.REQUEST_COMPLETED;
             keepUpload = keepUpload && upload.state !== UploadState.CANCELED;
+            /** @todo call upload destroy */
             return keepUpload;
         });
         this.notifyObserver();
@@ -117,8 +120,8 @@ export class UploadStore {
         const change$ = this.uploadQueue.change;
         return change$.pipe(
             takeWhile(() => this.queueChangeSubs > 0),
-            /** buffer until change$ not submitting for at least 20ms */
-            buffer(change$.pipe(debounceTime(20))),
+            /** buffer until change$ not submitting for at least 10ms */
+            buffer(change$.pipe(debounceTime(10))),
             /** merge all changes into single change object */
             map((changes) => {
                 const emptyChange: QueueChange = {add: [], removed: [], start: []};
@@ -129,31 +132,6 @@ export class UploadStore {
                         removed: [...change.removed, ...buffered.removed]
                     }
                 ), emptyChange);
-            }),
-        );
-    }
-
-    /**
-     * create before start hook, if any upload wants to start we have to check
-     *
-     * 1. upload is registered in queue
-     * 2. upload is currently not queued
-     *
-     * otherwise this will return false and prevent upload to start,
-     * after that upload will pushed to queue and start again if queue has space
-     */
-    private createBeforeStartHook(upload: UploadRequest): Observable<boolean> {
-        return of(true).pipe(
-            map(() => {
-                const isRegistered = this.uploadQueue.isRegistered(upload);
-                const isQueued     = this.uploadQueue.isQueued(upload);
-                return isRegistered && !isQueued;
-            }),
-            tap(() => {
-                if (!this.uploadQueue.isRegistered(upload)) {
-                    this.uploadQueue.run(upload);
-                    return;
-                }
             }),
         );
     }

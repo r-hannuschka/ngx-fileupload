@@ -106,3 +106,10 @@ export interface Upload {
      */
     isInvalid(): boolean;
 }
+
+export interface UploadStoreConfig {
+    /**
+     * max count of uploads at once, set to -1 for no limit
+     */
+    concurrentUploads: number;
+}

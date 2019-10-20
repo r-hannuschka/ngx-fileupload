@@ -1,7 +1,7 @@
 import { UploadState } from "../../../data/api";
 import { UploadRequest } from "./upload.request";
-import { merge, Subject, Observable } from "rxjs";
-import { filter, take } from "rxjs/operators";
+import { Subject, Observable, of } from "rxjs";
+import { filter, take, map, takeUntil, tap } from "rxjs/operators";
 
 export interface QueueChange {
     /**
@@ -27,8 +27,6 @@ export class UploadQueue {
 
     private concurrentCount = -1;
 
-    private registeredUploads: WeakSet<UploadRequest> = new WeakSet();
-
     public set concurrent(count: number) {
         this.concurrentCount = count;
     }
@@ -38,98 +36,89 @@ export class UploadQueue {
      */
     private queueChange$: Subject<QueueChange> = new Subject();
 
-    public run(upload: UploadRequest) {
-        /** dont add uploads which are allredy in queue or running */
-        if (upload.isPending()) {
-            return;
-        }
-
-        this.registeredUploads.add(upload);
-
-        // should not access the model directly
-        upload.state = UploadState.PENDING;
-        upload.update();
-
-        if (this.active >= this.concurrentCount) {
-            this.addToQueue(upload);
-            return;
-        }
-
-        this.startUpload(upload);
+    public add(upload: UploadRequest) {
+        this.registerUploadEvents(upload);
+        upload.beforeStart(() => this.createBeforeStartHook(upload));
     }
 
     public get change(): Observable<QueueChange> {
         return this.queueChange$.asObservable();
     }
 
-    public isRegistered(upload): boolean {
-        return this.registeredUploads.has(upload);
-    }
-
     /**
-     * checks for upload is in queue
+     * create before start hook, if any upload wants to start we have to check
+     *
+     * 1. upload is registered in queue
+     * 2. upload is currently not queued
+     *
+     * otherwise this will return false and prevent upload to start,
+     * after that upload will pushed to queue and start again if queue has space
      */
-    public isQueued(upload): boolean {
-        return this.queuedUploads.indexOf(upload) > -1;
-    }
+    private createBeforeStartHook(upload: UploadRequest): Observable<boolean> {
+        return of(true).pipe(
+            map(() => this.active < this.concurrentCount),
+            tap((isStartAble: boolean) => {
+                if (!isStartAble) {
+                    upload.model.state = UploadState.PENDING;
+                    /** @todo remove this, dont like it */
+                    upload.update();
 
-    /**
-     * starts new upload
-     */
-    private startUpload(upload: UploadRequest) {
-        this.active += 1;
-
-        const uploadChange$ = upload.change
-            .pipe(filter((request) => (
-                request.state === UploadState.REQUEST_COMPLETED ||
-                request.state === UploadState.CANCELED
-            )));
-
-        uploadChange$
-            .pipe(take(1))
-            .subscribe({
-                next: () => {
-                    this.active -= 1;
-                    this.removeFromQueue(upload);
-
-                    const nextUpload = this.getNextFromQueue();
-                    if (nextUpload) {
-                        this.startUpload(nextUpload);
-                    }
+                    this.queuedUploads.push(upload);
+                    this.queueChange$.next({add: [upload], removed: [], start: []});
                 }
-            });
-
-        upload.start();
-        this.queueChange$.next({add: [], removed: [], start: [upload]});
+            })
+        );
     }
 
-    private addToQueue(upload: UploadRequest) {
-        this.queuedUploads = [...this.queuedUploads, upload];
-        this.queueChange$.next({add: [upload], removed: [], start: []});
+    /**
+     * register to upload change
+     */
+    private registerUploadEvents(request: UploadRequest) {
+        const change$ = request.change;
+
+        /** register for changes which make request complete */
+        const uploadComplete$ = change$
+            .pipe( filter(() => request.isCompleted()), take(1));
+
+        change$
+            /** take all until upload was completed (uploaded with success or canceled) */
+            .pipe(takeUntil(uploadComplete$))
+            .subscribe({
+                next: () => this.onUploadStateChange(request),
+                complete: () => this.uploadCompleted(request)
+            });
+    }
+
+    private onUploadStateChange(req: UploadRequest) {
+        switch (req.state) {
+
+            case UploadState.START:
+                this.active += 1;
+                this.queueChange$.next({add: [], removed: [], start: [req]});
+                break;
+
+            /** request has been completed but with an error */
+            case UploadState.REQUEST_COMPLETED:
+                this.uploadCompleted(req, false);
+                break;
+        }
+    }
+
+    private uploadCompleted(request: UploadRequest, remove = true) {
+        this.active -= 1;
+        if (remove) {
+            this.queueChange$.next({add: [], removed: [request], start: []});
+        }
+        this.startNextFromQueue();
     }
 
     /**
      * get next upload request from queue
      */
-    private getNextFromQueue(): UploadRequest {
-        let nextUploadReq = null;
-        while (nextUploadReq === null && this.queuedUploads.length) {
+    private startNextFromQueue() {
+        if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();
-            nextUploadReq = nextUpload && nextUpload.isPending() ? nextUpload : null;
-
-            if (!nextUploadReq) {
-                this.registeredUploads.delete(nextUpload);
-                this.removeFromQueue(nextUpload);
-            }
+            nextUpload.start();
         }
-        return nextUploadReq;
-    }
-
-    /**
-     * remove upload from queue
-     */
-    private removeFromQueue(upload: UploadRequest) {
-        this.registeredUploads.delete(upload);
-        this.queueChange$.next({add: [], removed: [upload], start: []});
     }
 }

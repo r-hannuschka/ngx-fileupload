@@ -126,6 +126,10 @@ export class UploadModel {
         return Math.round(progress > 100 ? 100 : progress);
     }
 
+    public get isUploadAble(): boolean {
+        return true;
+    }
+
     public get hasError() {
         return this.uploadResponse && this.uploadResponse.errors ? true : false;
     }

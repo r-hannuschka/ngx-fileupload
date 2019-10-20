@@ -114,12 +114,12 @@ export class UploadStore {
             buffer(change$.pipe(debounceTime(10))),
             /** merge all changes into single change object */
             map((changes) => {
-                const emptyChange: QueueChange = {add: [], removed: [], start: []};
+                const emptyChange: QueueChange = {add: [], completed: [], start: []};
                 return changes.reduce((change, buffered) => (
                     {
-                        add:     [...change.add    , ...buffered.add    ],
-                        start:   [...change.start  , ...buffered.start  ],
-                        removed: [...change.removed, ...buffered.removed]
+                        add: [...change.add    , ...buffered.add    ],
+                        completed: [...change.completed, ...buffered.completed],
+                        start: [...change.start  , ...buffered.start  ],
                     }
                 ), emptyChange);
             }),

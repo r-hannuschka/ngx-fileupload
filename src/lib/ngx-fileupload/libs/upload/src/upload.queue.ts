@@ -16,7 +16,7 @@ export interface QueueChange {
      * upload has finish uploading, canceled
      * and not registered in queue anymore
      */
-    removed: UploadRequest[];
+    completed: UploadRequest[];
 }
 
 export class UploadQueue {
@@ -64,7 +64,7 @@ export class UploadQueue {
                     upload.update();
 
                     this.queuedUploads.push(upload);
-                    this.queueChange$.next({add: [upload], removed: [], start: []});
+                    this.queueChange$.next({add: [upload], completed: [], start: []});
                 }
             })
         );
@@ -92,7 +92,7 @@ export class UploadQueue {
             .pipe(takeUntil(uploadComplete$))
             .subscribe({
                 next: ()     => this.onUploadStateChange(request),
-                complete: () => this.uploadCompleted(request)
+                complete: () => this.startNextInQueue(request)
             });
     }
 
@@ -101,17 +101,17 @@ export class UploadQueue {
 
             case UploadState.START:
                 this.active += 1;
-                this.queueChange$.next({add: [], removed: [], start: [req]});
+                this.queueChange$.next({add: [], completed: [], start: [req]});
                 break;
 
             /** request has been completed but with an error */
             case UploadState.REQUEST_COMPLETED:
-                this.uploadCompleted(req);
+                this.startNextInQueue(req);
                 break;
         }
     }
 
-    private uploadCompleted(request: UploadRequest) {
+    private startNextInQueue(request: UploadRequest) {
         this.active = Math.max(this.active - 1, 0);
 
         if (this.queuedUploads.length > 0) {
@@ -119,6 +119,6 @@ export class UploadQueue {
             nextUpload.start();
         }
 
-        this.queueChange$.next({add: [], removed: [request], start: []});
+        this.queueChange$.next({add: [], completed: [request], start: []});
     }
 }

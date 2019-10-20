@@ -69,7 +69,9 @@ export class UploadViewComponent implements OnInit, OnDestroy {
         this.store.queueChange
             .pipe(takeUntil(this.destroyed$))
             .subscribe({
-                next: () => this.handleQueueChange()
+                next: (change) => {
+                    this.handleQueueChange();
+                }
             });
     }
 

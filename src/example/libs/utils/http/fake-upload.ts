@@ -71,7 +71,10 @@ export class FakeUploadInterceptor implements HttpInterceptor {
      * upload has been completed
      */
     private uploadCompleted(observer, hasError = false): void {
-        if (hasError) {
+
+        const isError = Math.random() * 10 > 5;
+
+        if (isError) {
             const error: HttpErrorResponse = new HttpErrorResponse({
                 status: 401,
                 error: "Not allowed to upload something"

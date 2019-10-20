@@ -84,14 +84,14 @@ export class UploadQueue {
             /**
              * take all until upload was completed (uploaded with success or canceled)
              * we dont remove sub if upload completed with an error since the upload request
-             * can be repeated.
+             * can be repeated, so we dont lose our subscription on this.
              *
              * canceled uploads or upload completed with success couldn't repeat they are
              * simply done
              */
             .pipe(takeUntil(uploadComplete$))
             .subscribe({
-                next: () => this.onUploadStateChange(request),
+                next: ()     => this.onUploadStateChange(request),
                 complete: () => this.uploadCompleted(request)
             });
     }
@@ -112,7 +112,7 @@ export class UploadQueue {
     }
 
     private uploadCompleted(request: UploadRequest) {
-        this.active = this.active - 1 < 0 ? 0 : this.active - 1;
+        this.active = Math.max(this.active - 1, 0);
 
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();

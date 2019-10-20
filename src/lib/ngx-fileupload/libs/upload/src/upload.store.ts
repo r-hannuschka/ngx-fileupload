@@ -1,8 +1,7 @@
 import { UploadRequest } from "./upload.request";
-import { BehaviorSubject, Observable, of } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { map, buffer, debounceTime, takeWhile } from "rxjs/operators";
 import { UploadQueue, QueueChange } from "./upload.queue";
-import { UploadState } from "../../../data/api";
 
 /**
  * could renamed to upload manager
@@ -74,14 +73,7 @@ export class UploadStore {
      */
     public purge() {
         this.uploads = this.uploads.filter((upload) => {
-            let keepUpload = upload.state !== UploadState.REQUEST_COMPLETED;
-            keepUpload = keepUpload && upload.state !== UploadState.CANCELED;
-
-            if (!keepUpload) {
-                upload.cancel();
-                upload.destroy();
-            }
-            return keepUpload;
+            return upload.isCompleted() ? (upload.destroy(), false) : true;
         });
         this.notifyObserver();
     }
@@ -92,15 +84,6 @@ export class UploadStore {
     public startAll() {
         const uploads = this.uploads.filter((upload) => upload.isIdle());
         uploads.forEach(upload => upload.start());
-    }
-
-    /**
-     * not really removing something
-     * this is more filtering something
-     */
-    public removeCompleted() {
-        this.uploads = this.uploads.filter(upload => !upload.isCompleted());
-        this.notifyObserver();
     }
 
     /**
@@ -116,7 +99,9 @@ export class UploadStore {
      * remove invalidated uploads
      */
     public removeInvalid() {
-        this.uploads = this.uploads.filter((upload) => !upload.isInvalid());
+        this.uploads = this.uploads.filter((upload) => {
+            return upload.isInvalid() ? (upload.destroy(), false) : true;
+        });
         this.notifyObserver();
     }
 

@@ -2,7 +2,7 @@
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from "@angular/core";
 import { UploadRequest, UploadControl } from "../../upload";
 import { UploadModel } from "../../../data/upload.model";
-import { UploadData, UploadState } from "../../../data/api";
+import { UploadData } from "../../../data/api";
 import {  Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import * as UploadAPI from "../../../data/api/upload";
@@ -99,26 +99,12 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
      * @inheritdoc
      */
     ngAfterViewInit(): void {
-
-        let state: UploadState = UploadState.QUEUED;
-
         this.fileUpload.change
             .pipe(
                 takeUntil(this.destroyed)
             )
             .subscribe({
-                next: (upload: UploadModel) => {
-
-                    this.context.data = upload.toJson();
-                    if (state !== upload.state) {
-                        state = upload.state;
-                        this.stateChange.emit(this.fileUpload);
-
-                        if (this.fileUpload.isCompleted()) {
-                            this.completed.emit(this.fileUpload);
-                        }
-                    }
-                }
+                next: (upload: UploadModel) => this.context.data = upload.toJson()
             });
     }
 

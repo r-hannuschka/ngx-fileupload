@@ -115,9 +115,9 @@ export class UploadRequest implements Upload {
         this.upload  = null;
     }
 
-    public isCompleted(): boolean {
-        let isCompleted = false;
-        isCompleted = isCompleted || (!this.hasError() && this.isRequestCompleted());
+    public isCompleted(ignoreError = false): boolean {
+        let isCompleted = this.isRequestCompleted();
+        isCompleted = isCompleted && (ignoreError ? true : !this.hasError());
         isCompleted = isCompleted || this.state === UploadState.CANCELED;
         return isCompleted;
     }

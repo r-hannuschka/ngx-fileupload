@@ -110,7 +110,9 @@ export class UploadRequest implements Upload {
 
     public destroy() {
         this.upload$.complete();
+        this.hooks   = null;
         this.upload$ = null;
+        this.upload  = null;
     }
 
     public isCompleted(): boolean {

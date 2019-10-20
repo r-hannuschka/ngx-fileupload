@@ -76,7 +76,11 @@ export class UploadStore {
         this.uploads = this.uploads.filter((upload) => {
             let keepUpload = upload.state !== UploadState.REQUEST_COMPLETED;
             keepUpload = keepUpload && upload.state !== UploadState.CANCELED;
-            /** @todo call upload destroy */
+
+            if (!keepUpload) {
+                upload.cancel();
+                upload.destroy();
+            }
             return keepUpload;
         });
         this.notifyObserver();
@@ -103,8 +107,9 @@ export class UploadStore {
      * stops all active uploads
      */
     public stopAll() {
-        this.uploads.forEach( upload => (upload.cancel()));
-        this.removeCompleted();
+        this.uploads.forEach(upload => (upload.cancel(), upload.destroy()));
+        this.uploads = [];
+        this.notifyObserver();
     }
 
     /**

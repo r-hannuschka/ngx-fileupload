@@ -1,6 +1,6 @@
 import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core";
-import { takeUntil, tap } from "rxjs/operators";
-import { Subject, pipe } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../../data/api/validation";
 import { UploadRequest, UploadStore, UploadStoreManager } from "../../upload";
 import { FileUploadItemContext } from "./upload-item.component";
@@ -41,11 +41,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     public constructor(
         private storeManager: UploadStoreManager
     ) {
-
-        // we need a configuration for create a store
-        // we need a token to register a store
-
-        this.store = this.storeManager.get(UploadViewStoreToken) || this.storeManager.createStore({ config: UploadViewStoreToken });
+        this.store = this.storeManager.get(UploadViewStoreToken) || this.storeManager.createStore(UploadViewStoreToken);
         this.destroyed$ = new Subject();
     }
 
@@ -71,7 +67,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      */
     private registerQueueEvents() {
         this.store.queueChange
-            .pipe(tap((change) => console.dir(change)))
+            .pipe(takeUntil(this.destroyed$))
             .subscribe({
                 next: () => this.handleQueueChange()
             });

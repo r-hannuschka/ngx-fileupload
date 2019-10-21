@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UploadModel } from "../data/upload.model";
 import { UploadRequest, UploadOptions } from "../libs/upload/src/upload.request";
-import { UploadStore } from "../libs/upload/src/upload.store";
+import { UploadStorage } from "../libs/upload/src/upload.storage";
 
 @Injectable({
     providedIn: "root"
@@ -18,7 +18,7 @@ export class FileUploadFactory {
         return new UploadRequest(this.httpClient, model, options);
     }
 
-    public createStore(): UploadStore {
-        return new UploadStore();
+    public createStore(): UploadStorage {
+        return new UploadStorage();
     }
 }

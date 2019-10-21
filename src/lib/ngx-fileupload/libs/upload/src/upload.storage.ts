@@ -7,7 +7,7 @@ import { UploadQueue, QueueChange } from "./upload.queue";
  * could renamed to upload manager
  * maybe we change this design to redux ... dont know
  */
-export class UploadStore {
+export class UploadStorage {
 
     private change$: BehaviorSubject<UploadRequest[]>;
     private uploads: UploadRequest[] = [];

@@ -4,7 +4,7 @@
     <button (click)="cleanAll()">Clean Uploads</button>
 </div>
 
-<div class="fileupload" [ngxFileUpload]="url" [store]="store" >
+<div class="fileupload" [ngxFileUpload]="url" [storage]="storage" >
 
     <div *ngIf="!uploads.length" class="file-upload--info-wrapper">
         <div class="file-upload--info">

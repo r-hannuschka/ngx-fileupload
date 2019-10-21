@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../../data/api/validation";
 import { UploadRequest } from "../../upload/src/upload.request";
 import { FileUploadFactory } from "../../../utils/factory";
-import { UploadStore } from "../../upload/src/upload.store";
+import { UploadStorage } from "../../upload/src/upload.storage";
 
 /**
  * directive to add uploads with drag / drop
@@ -30,7 +30,7 @@ export class FileBrowserDirective implements OnDestroy {
     public add: EventEmitter<UploadRequest[]>;
 
     @Input()
-    public store: UploadStore;
+    public storage: UploadStorage;
 
     @Input("ngxFileUpload")
     public set ngxFileUpload(url: string) {
@@ -136,7 +136,7 @@ export class FileBrowserDirective implements OnDestroy {
             if (this.validator) {
                 upload.validate(this.validator);
             }
-            this.store.add(upload);
+            this.storage.add(upload);
         });
     }
 

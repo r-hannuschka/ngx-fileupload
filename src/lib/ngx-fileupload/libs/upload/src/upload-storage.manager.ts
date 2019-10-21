@@ -1,17 +1,17 @@
 import { Injectable } from "@angular/core";
-import { UploadStore } from "./upload.store";
+import { UploadStorage } from "./upload.storage";
 import { UploadStoreConfig } from "../../../data/api";
 
 @Injectable({ providedIn: "root"})
-export class UploadStoreManager {
+export class UploadStorageManager {
 
     /**
      * type injection token
      */
-    private stores: WeakMap<any, UploadStore> = new WeakMap();
+    private stores: WeakMap<any, UploadStorage> = new WeakMap();
 
-    public createStore(token?: object): UploadStore {
-        const store = new UploadStore();
+    public createStorage(token?: object): UploadStorage {
+        const store = new UploadStorage();
         if (token) {
             this.register(store, token);
         }
@@ -21,7 +21,7 @@ export class UploadStoreManager {
     /**
      * factory to create a new store instance
      */
-    public register(store: UploadStore, token: object): boolean {
+    public register(store: UploadStorage, token: object): boolean {
         if (!this.stores.has(token)) {
             this.stores.set(token, store);
         }
@@ -43,7 +43,7 @@ export class UploadStoreManager {
     /**
      * get upload store
      */
-    public get(token: object): UploadStore | null {
+    public get(token: object): UploadStorage | null {
         if (this.stores.has(token)) {
             return this.stores.get(token);
         }

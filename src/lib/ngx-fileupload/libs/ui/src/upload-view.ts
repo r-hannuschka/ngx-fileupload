@@ -2,7 +2,7 @@ import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core"
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../../data/api/validation";
-import { UploadRequest, UploadStore, UploadStoreManager } from "../../upload";
+import { UploadRequest, UploadStorage, UploadStorageManager } from "../../upload";
 import { FileUploadItemContext } from "./upload-item.component";
 
 const UploadViewStoreToken = { name: "UploadStoreToken" };
@@ -34,14 +34,14 @@ export class UploadViewComponent implements OnInit, OnDestroy {
 
     public uploads: UploadRequest[] = [];
 
-    public store: UploadStore;
+    public storage: UploadStorage;
 
     private destroyed$: Subject<boolean>;
 
     public constructor(
-        private storeManager: UploadStoreManager
+        private storeManager: UploadStorageManager
     ) {
-        this.store = this.storeManager.get(UploadViewStoreToken) || this.storeManager.createStore(UploadViewStoreToken);
+        this.storage = this.storeManager.get(UploadViewStoreToken) || this.storeManager.createStorage(UploadViewStoreToken);
         this.destroyed$ = new Subject();
     }
 
@@ -55,7 +55,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     }
 
     private registerStoreEvents() {
-        this.store.change()
+        this.storage.change()
             .pipe(takeUntil(this.destroyed$))
             .subscribe({
                 next: (uploads) => this.uploads = uploads
@@ -66,7 +66,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      * register for queue changes
      */
     private registerQueueEvents() {
-        this.store.queueChange
+        this.storage.queueChange
             .pipe(takeUntil(this.destroyed$))
             .subscribe({
                 next: (change) => {
@@ -89,14 +89,14 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     }
 
     public uploadAll() {
-        this.store.startAll();
+        this.storage.startAll();
     }
 
     public stopAll() {
-        this.store.stopAll();
+        this.storage.stopAll();
     }
 
     public cleanAll() {
-        this.store.purge();
+        this.storage.purge();
     }
 }

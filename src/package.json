@@ -36,16 +36,17 @@
     "@angular/compiler-cli": "8.2.11",
     "@angular/language-service": "8.2.11",
     "@compodoc/compodoc": "1.1.11",
+    "@nrwl/cypress": "^8.6.0",
+    "@nrwl/workspace": "^8.6.0",
     "@types/jasmine": "3.4.4",
     "@types/jasminewd2": "2.0.8",
     "@types/node": "8.10.55",
-    "codelyzer": "5.1.2",
     "bootstrap-scss": "4.3.1",
-    "@nrwl/cypress": "^8.6.0",
-    "@nrwl/workspace": "^8.6.0",
+    "codelyzer": "5.1.2",
     "cypress": "^3.4.1",
     "express": "4.17.1",
     "express-fileupload": "1.1.5",
+    "https-proxy-agent": "^3.0.0",
     "jasmine-core": "3.5.0",
     "jasmine-spec-reporter": "4.2.1",
     "karma": "4.4.1",
@@ -59,5 +60,8 @@
     "tsickle": "0.37.0",
     "tslint": "5.20.0",
     "typescript": "3.4.5"
+  },
+  "resolutions": {
+    "https-proxy-agent": "^3.0.0"
   }
 }

@@ -3,6 +3,10 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { map, buffer, debounceTime, takeWhile } from "rxjs/operators";
 import { UploadQueue, QueueChange } from "./upload.queue";
 
+export interface UploadStorageConfig {
+    concurrentUploads: number;
+}
+
 /**
  * could renamed to upload manager
  * maybe we change this design to redux ... dont know
@@ -15,12 +19,11 @@ export class UploadStorage {
     private queueChange$: Observable<QueueChange>;
     private queueChangeSubs = 0;
 
-    public constructor() {
+    public constructor(config: UploadStorageConfig) {
         this.change$     = new BehaviorSubject([]);
         this.uploadQueue = new UploadQueue();
 
-        // this.uploadQueue.concurrent = config.concurrentUploads;
-        this.uploadQueue.concurrent = 1;
+        this.uploadQueue.concurrent = config.concurrentUploads || 5;
     }
 
     public change(): Observable<UploadRequest[]> {

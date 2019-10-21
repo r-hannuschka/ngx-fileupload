@@ -1,11 +1,19 @@
-import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core";
+import { Component, TemplateRef, Input, OnInit, OnDestroy, InjectionToken, Inject } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../../data/api/validation";
-import { UploadRequest, UploadStorage, UploadStorageManager } from "../../upload";
+import { UploadRequest, UploadStorage } from "../../upload";
 import { FileUploadItemContext } from "./upload-item.component";
 
-const UploadViewStoreToken = { name: "UploadStoreToken" };
+const DefaultUploadStorage = new InjectionToken<UploadStorage>("UploadStorage", {
+    providedIn: "root",
+    factory: (() => {
+        const storeConfig = {
+            concurrentUploads: 5
+        };
+        return new UploadStorage(storeConfig);
+    })
+});
 
 @Component({
     selector: "ngx-fileupload",
@@ -34,14 +42,11 @@ export class UploadViewComponent implements OnInit, OnDestroy {
 
     public uploads: UploadRequest[] = [];
 
-    public storage: UploadStorage;
-
     private destroyed$: Subject<boolean>;
 
     public constructor(
-        private storeManager: UploadStorageManager
+        @Inject(DefaultUploadStorage) private storage: UploadStorage
     ) {
-        this.storage = this.storeManager.get(UploadViewStoreToken) || this.storeManager.createStorage(UploadViewStoreToken);
         this.destroyed$ = new Subject();
     }
 

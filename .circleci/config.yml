@@ -170,7 +170,7 @@ jobs:
             - "4b:28:3e:14:3b:b1:bc:5b:48:17:14:61:6e:20:66:de"
       - run:
           name: "Deploy demo to gh-pages"
-          command: gh-pages --dotfiles --message "update demo page [skip ci]" --add --dist ./src/dist/ngx-fileupload-example-next --dest next-release
+          command: gh-pages --dotfiles --message "update demo page [skip ci]" --add --dist ./src/dist/ngx-fileupload-example --dest next-release
 
 workflows:
   version: 2.1

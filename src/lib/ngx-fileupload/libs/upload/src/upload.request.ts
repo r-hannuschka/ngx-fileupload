@@ -112,10 +112,15 @@ export class UploadRequest implements Upload {
     }
 
     public destroy() {
+        this.cancel();
+
+        this.cancel$.complete();
         this.upload$.complete();
-        this.hooks   = null;
-        this.upload$ = null;
-        this.upload  = null;
+
+        this.hooks      = null;
+        this.upload$    = null;
+        this.upload     = null;
+        this.cancel$    = null;
     }
 
     public isCompleted(ignoreError = false): boolean {
@@ -164,28 +169,31 @@ export class UploadRequest implements Upload {
      * if file is not queued, abort request on cancel
      */
     public start() {
-        /** call beforeStart hooks, if one returns false upload will not started */
-        const beforeStartHooks$ = of(true).pipe(
-            switchMap(() => forkJoin(this.hooks.beforeStart.map((hook) => hook()))),
-            map((result: boolean[]) => result.reduce((prev, cur) => prev && cur, true)),
-            tap(() => {
-                if (this.upload.isPending) {
-                    this.notifyObservers();
-                }
-            }),
-            filter(result => result)
-        );
 
-        if (this.isIdle() || this.isPending()) {
-            of(true).pipe(
-                switchMap(() => beforeStartHooks$),
-                switchMap(() => this.uploadFile()),
-                takeUntil(this.cancel$),
-            ).subscribe({
-                next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
-                error: (error: HttpErrorResponse) => this.handleError(error)
-            });
+        if (!this.isIdle() && !this.isPending()) {
+            return;
         }
+
+        /** call beforeStart hooks, if one returns false upload will not started */
+        const hooks = this.hooks.beforeStart.map((hook) => hook());
+        const beforeStartHooks$ = forkJoin(hooks)
+            .pipe(
+                map((result: boolean[]) => result.reduce((prev, cur) => prev && cur, true)),
+                tap(() => {
+                    if (this.upload.isPending) {
+                        this.notifyObservers();
+                    }
+                }),
+                filter(result => result)
+            );
+
+        beforeStartHooks$.pipe(
+            switchMap(() => this.uploadFile()),
+            takeUntil(this.cancel$),
+        ).subscribe({
+            next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
+            error: (error: HttpErrorResponse) => this.handleError(error)
+        });
     }
 
     /**
@@ -220,7 +228,7 @@ export class UploadRequest implements Upload {
         return this.http.post<string>(this.options.url, uploadBody, {
             reportProgress: true,
             observe: "events"
-        });
+        }).pipe(takeUntil(this.cancel$));
     }
 
     /**
@@ -262,9 +270,9 @@ export class UploadRequest implements Upload {
      */
     private handleHttpEvent(event: HttpEvent<string>) {
         switch (event.type) {
-            case HttpEventType.Sent: this.handleSent(); break;
+            case HttpEventType.Sent:           this.handleSent(); break;
             case HttpEventType.UploadProgress: this.handleProgress(event); break;
-            case HttpEventType.Response: this.handleResponse(event); break;
+            case HttpEventType.Response:       this.handleResponse(event); break;
         }
     }
 
@@ -272,6 +280,9 @@ export class UploadRequest implements Upload {
      * handle file upload in progress
      */
     private handleProgress(event: HttpProgressEvent) {
+
+        // http event and cancel / destroy comes on the same time or just close enough
+        // so this will handeled
         this.upload.state = UploadState.PROGRESS;
         this.upload.uploaded = event.loaded;
         this.notifyObservers();

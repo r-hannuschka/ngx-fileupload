@@ -75,8 +75,8 @@ export class UploadStorage {
     public purge() {
         this.uploads.forEach((upload) => {
             if (upload.isCompleted() || upload.isInvalid()) {
-                upload.destroy();
                 this.uploads.delete(upload.requestId);
+                upload.destroy();
             }
         });
         this.notifyObserver();

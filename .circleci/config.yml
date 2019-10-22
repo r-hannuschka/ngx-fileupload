@@ -14,7 +14,6 @@ aliases:
   - &filter_master
       branches:
         only: master
-aliases:
   - &filter_next_release
       branches:
         only: next-release

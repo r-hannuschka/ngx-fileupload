@@ -1,16 +1,17 @@
-import { Component } from "@angular/core";
-import { Upload } from "@r-hannuschka/ngx-fileupload";
+import { Component, Inject, OnInit } from "@angular/core";
+import { UploadStorage, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileupload";
 
 import * as ExampleCodeData from "@ngx-fileupload-example/data/code/customize/item-template";
 import * as uiItemTemplateData from "@ngx-fileupload-example/data/code/customize/item-template";
 import * as uiProgressbarCircleData from "@ngx-fileupload-example/data/code/ui/progressbar-circle";
+import { CTUploadStorage } from "@ngx-fileupload-example/data/base/upload-storage";
 
 @Component({
     selector: "app-customize--item-template",
     templateUrl: "item-template.component.html",
     styleUrls: ["./item-template.component.scss"]
 })
-export class ItemTemplateComponent {
+export class ItemTemplateComponent implements OnInit {
 
     public code = ExampleCodeData;
 
@@ -18,21 +19,28 @@ export class ItemTemplateComponent {
 
     public codeUiProgressbar = uiProgressbarCircleData;
 
-    public uploads: Upload[] = [];
-
     public showDocs = false;
 
-    public onUploadAdd(uploads: Upload[]) {
-        this.uploads = [...this.uploads, ...uploads];
-    }
+    public uploadStates = UploadApi.UploadState;
 
-    public uploadCompleted(completed: Upload) {
-        if (!completed.hasError()) {
-            this.uploads = this.uploads.filter((upload) => completed !== upload);
-        }
-    }
+    public uploads: UploadRequest[] = [];
+
+    public constructor(
+        @Inject(CTUploadStorage) public storage: UploadStorage
+    ) {}
 
     public toggleDocs() {
         this.showDocs = !this.showDocs;
+    }
+
+    public ngOnInit() {
+        this.storage.change()
+            .subscribe({
+                next: (requests: UploadRequest[]) => this.uploads = requests
+            });
+    }
+
+    public removeUpload(requestId) {
+        this.storage.remove(requestId);
     }
 }

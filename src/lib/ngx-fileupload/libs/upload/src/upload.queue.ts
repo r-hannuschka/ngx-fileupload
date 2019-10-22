@@ -27,22 +27,22 @@ export class UploadQueue {
 
     private concurrentCount = -1;
 
-    public set concurrent(count: number) {
-        this.concurrentCount = count;
-    }
-
     /**
      * subscribe to get notified queue has been changed
      */
     private queueChange$: Subject<QueueChange> = new Subject();
 
-    public add(upload: UploadRequest) {
-        this.registerUploadEvents(upload);
-        upload.beforeStart(() => this.createBeforeStartHook(upload));
+    public set concurrent(count: number) {
+        this.concurrentCount = count;
     }
 
     public get change(): Observable<QueueChange> {
         return this.queueChange$.asObservable();
+    }
+
+    public register(upload: UploadRequest) {
+        this.registerUploadEvents(upload);
+        upload.beforeStart(() => this.createBeforeStartHook(upload));
     }
 
     /**
@@ -59,7 +59,7 @@ export class UploadQueue {
             map(() => this.active < this.concurrentCount),
             tap((isStartAble: boolean) => {
                 if (!isStartAble) {
-                    upload.model.state = UploadState.PENDING;
+                    upload.state = UploadState.PENDING;
                     /** @todo remove this, dont like it */
                     upload.update();
 
@@ -105,7 +105,7 @@ export class UploadQueue {
                 break;
 
             /** request has been completed but with an error */
-            case UploadState.REQUEST_COMPLETED:
+            case UploadState.COMPLETED:
                 this.startNextInQueue(req);
                 break;
         }

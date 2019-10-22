@@ -1,13 +1,15 @@
 <div class="btn-toolbar mb-3">
 
-    <div class="input-group ml-auto"
-        [ngxFileUpload]="url"
-        [validator]="validator"
-        (add)="onUploadAdd($event)"
-    >
+    <div class="input-group ml-auto" [ngxFileUpload]="url" [validator]="validator" [storage]="storage" >
         <div class="input-group-prepend">
             <div class="input-group-text" id="btnGroupAddon">Files</div>
         </div>
         <input type="text" class="form-control" disabled="disabled" placeholder="Drag Drop or Click">
+    </div>
+
+    <div class="btn-group ml-3">
+        <button type="button" class="btn btn-secondary" (click)="uploadAll()">Upload All</button>
+        <button type="button" class="btn btn-secondary" (click)="purge()">Clean Up</button>
+        <button type="button" class="btn btn-secondary" (click)="stop()">Stop All</button>
     </div>
 </div>

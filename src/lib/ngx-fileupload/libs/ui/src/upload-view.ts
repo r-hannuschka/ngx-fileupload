@@ -5,11 +5,11 @@ import { Validator, ValidationFn } from "../../../data/api/validation";
 import { UploadRequest, UploadStorage } from "../../upload";
 import { FileUploadItemContext } from "./upload-item.component";
 
-const DefaultUploadStorage = new InjectionToken<UploadStorage>("UploadStorage", {
+const DefaultUploadStorage = new InjectionToken<UploadStorage>("Default Testing Upload Storage", {
     providedIn: "root",
     factory: (() => {
         const storeConfig = {
-            concurrentUploads: 5
+            concurrentUploads: 2
         };
         return new UploadStorage(storeConfig);
     })
@@ -40,27 +40,55 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     @Input()
     public validator: Validator | ValidationFn;
 
+    @Input()
+    public set storage(storage: UploadStorage) {
+        this.uploadStorage = storage;
+        this.uploadStorageSet = true;
+    }
+
+    public get storage(): UploadStorage {
+        return this.uploadStorage;
+    }
+
     public uploads: UploadRequest[] = [];
 
     private destroyed$: Subject<boolean>;
 
-    public constructor(
-        @Inject(DefaultUploadStorage) private storage: UploadStorage
-    ) {
+    private uploadStorage: UploadStorage;
+
+    private uploadStorageSet = false;
+
+    public constructor() {
         this.destroyed$ = new Subject();
     }
 
     public ngOnInit() {
+
+        if (!this.uploadStorage) {
+            this.uploadStorage = new UploadStorage({
+                concurrentUploads: 5
+            });
+        }
+
         this.registerStoreEvents();
         this.registerQueueEvents();
     }
 
     public ngOnDestroy() {
         this.destroyed$.next(true);
+
+        /** we handle our own storage so destroy this one */
+        if (!this.uploadStorageSet) {
+            this.uploadStorage.stopAll();
+            this.uploadStorage = null;
+        }
     }
 
+    /**
+     * register events for store changes
+     */
     private registerStoreEvents() {
-        this.storage.change()
+        this.uploadStorage.change()
             .pipe(takeUntil(this.destroyed$))
             .subscribe({
                 next: (uploads) => this.uploads = uploads
@@ -71,12 +99,10 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      * register for queue changes
      */
     private registerQueueEvents() {
-        this.storage.queueChange
+        this.uploadStorage.queueChange
             .pipe(takeUntil(this.destroyed$))
             .subscribe({
-                next: (change) => {
-                    this.handleQueueChange();
-                }
+                next: () => this.handleQueueChange()
             });
     }
 
@@ -93,15 +119,18 @@ export class UploadViewComponent implements OnInit, OnDestroy {
         });
     }
 
+    /** start upload for all files */
     public uploadAll() {
-        this.storage.startAll();
+        this.uploadStorage.startAll();
     }
 
+    /** stop all uploads */
     public stopAll() {
-        this.storage.stopAll();
+        this.uploadStorage.stopAll();
     }
 
+    /** purge uploads, invalid, completed, canceled will be removed */
     public cleanAll() {
-        this.storage.purge();
+        this.uploadStorage.purge();
     }
 }

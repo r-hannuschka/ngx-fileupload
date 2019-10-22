@@ -5,6 +5,7 @@ import { UploadQueue, QueueChange } from "./upload.queue";
 
 export interface UploadStorageConfig {
     concurrentUploads: number;
+    removeCompletedUploads?: boolean;
 }
 
 /**
@@ -14,12 +15,12 @@ export interface UploadStorageConfig {
 export class UploadStorage {
 
     private change$: BehaviorSubject<UploadRequest[]>;
-    private uploads: UploadRequest[] = [];
+    private uploads: Map<string, UploadRequest> = new Map();
     private uploadQueue: UploadQueue;
     private queueChange$: Observable<QueueChange>;
     private queueChangeSubs = 0;
 
-    public constructor(config: UploadStorageConfig) {
+    public constructor(config?: UploadStorageConfig) {
         this.change$     = new BehaviorSubject([]);
         this.uploadQueue = new UploadQueue();
 
@@ -36,6 +37,7 @@ export class UploadStorage {
             if (!this.queueChange$) {
                 this.queueChange$ = this.createQueueChangeBroadcast();
             }
+
             const sub = this.queueChange$.subscribe(subscriber);
 
             /** unsubscribe */
@@ -50,24 +52,20 @@ export class UploadStorage {
      * add new upload to store
      */
     public add(upload: UploadRequest) {
-        this.uploads = [...this.uploads, upload];
-        this.uploadQueue.add(upload);
+        this.uploads.set(upload.requestId, upload);
+        this.uploadQueue.register(upload);
         this.notifyObserver();
     }
 
     /**
      * remove upload from store
      */
-    public remove(upload: UploadRequest) {
-        const index = this.uploads.indexOf(upload);
-        if (index !== -1) {
-            this.uploads = [
-                ...this.uploads.slice(0, index),
-                ...this.uploads.slice(index + 1)
-            ];
-            upload.destroy();
-            this.notifyObserver();
-        }
+    public remove(upload: UploadRequest | string) {
+        const id = upload instanceof UploadRequest ? upload.requestId : upload;
+        const request = this.uploads.get(id);
+        request.destroy();
+        this.uploads.delete(id);
+        this.notifyObserver();
     }
 
     /**
@@ -75,8 +73,11 @@ export class UploadStorage {
      * canceled or upload has been completed even it is has an error
      */
     public purge() {
-        this.uploads = this.uploads.filter((upload) => {
-            return upload.isCompleted() ? (upload.destroy(), false) : true;
+        this.uploads.forEach((upload) => {
+            if (upload.isCompleted() || upload.isInvalid()) {
+                upload.destroy();
+                this.uploads.delete(upload.requestId);
+            }
         });
         this.notifyObserver();
     }
@@ -85,8 +86,11 @@ export class UploadStorage {
      * starts all queued uploads
      */
     public startAll() {
-        const uploads = this.uploads.filter((upload) => upload.isIdle());
-        uploads.forEach(upload => upload.start());
+        this.uploads.forEach((upload) => {
+            if (upload.isIdle()) {
+                upload.start();
+            }
+        });
     }
 
     /**
@@ -94,7 +98,7 @@ export class UploadStorage {
      */
     public stopAll() {
         this.uploads.forEach(upload => (upload.cancel(), upload.destroy()));
-        this.uploads = [];
+        this.uploads.clear();
         this.notifyObserver();
     }
 
@@ -102,14 +106,16 @@ export class UploadStorage {
      * remove invalidated uploads
      */
     public removeInvalid() {
-        this.uploads = this.uploads.filter((upload) => {
-            return upload.isInvalid() ? (upload.destroy(), false) : true;
+        this.uploads.forEach((upload) => {
+            if (upload.isInvalid()) {
+                upload.destroy();
+                this.uploads.delete(upload.requestId);
+            }
         });
         this.notifyObserver();
     }
 
     private createQueueChangeBroadcast(): Observable<QueueChange> {
-
         const change$ = this.uploadQueue.change;
         return change$.pipe(
             takeWhile(() => this.queueChangeSubs > 0),
@@ -133,6 +139,8 @@ export class UploadStorage {
      * notify observer store data has been changed
      */
     private notifyObserver() {
-        this.change$.next(this.uploads);
+        this.change$.next(
+            Array.from(this.uploads.values())
+        );
     }
 }

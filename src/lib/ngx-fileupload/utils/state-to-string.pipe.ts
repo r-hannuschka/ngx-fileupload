@@ -9,18 +9,12 @@ export class StateToStringPipe implements PipeTransform {
     transform(state: UploadState): string {
 
         switch (state) {
-            case UploadState.QUEUED:
-                return "queued";
-            case UploadState.PENDING:
-                return "pending";
-            case UploadState.PROGRESS:
-                return "progress";
-            case UploadState.REQUEST_COMPLETED:
-                return "request-completed";
-            case UploadState.START:
-                return "start";
-            default:
-                return "canceled";
+            case UploadState.QUEUED:    return "queued";
+            case UploadState.PENDING:   return "pending";
+            case UploadState.PROGRESS:  return "progress";
+            case UploadState.COMPLETED: return "completed";
+            case UploadState.START:     return "start";
+            default:                    return "canceled";
         }
     }
 }

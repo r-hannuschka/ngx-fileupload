@@ -3,12 +3,12 @@ import { UploadModel } from "../upload.model";
 import { ValidationErrors } from "./validation";
 
 export enum UploadState {
-    CANCELED          = 0,
-    QUEUED            = 1,
-    PENDING           = 2,
-    START             = 3,
-    PROGRESS          = 4,
-    REQUEST_COMPLETED = 5
+    CANCELED  = 0,
+    QUEUED    = 1,
+    PENDING   = 2,
+    START     = 3,
+    PROGRESS  = 4,
+    COMPLETED = 5
 }
 
 export interface UploadResponse {
@@ -63,6 +63,10 @@ export interface UploadData {
      * and not running currently
      */
     isPending: boolean;
+    /**
+     * upload request id
+     */
+    requestId: string;
 }
 
 export interface Upload {

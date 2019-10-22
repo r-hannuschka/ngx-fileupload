@@ -58,20 +58,20 @@ export class UploadRequest implements Upload {
         return this.upload$.asObservable();
     }
 
-    public get model(): UploadModel {
-        return this.upload;
-    }
-
     public get data(): UploadData {
         return this.upload.toJson();
     }
 
+    public get requestId(): string {
+        return this.upload.requestId;
+    }
+
     public set state(state: UploadState) {
-        this.model.state = state;
+        this.upload.state = state;
     }
 
     public get state() {
-        return this.model.state;
+        return this.upload.state;
     }
 
     /**
@@ -82,6 +82,9 @@ export class UploadRequest implements Upload {
         private upload: UploadModel,
         options: UploadOptions
     ) {
+        const reqId = Array.from({length: 4}, () => Math.random().toString(32).slice(2));
+        this.upload.requestId = reqId.join("_");
+
         this.upload$ = new BehaviorSubject(this.upload);
         this.options = {...this.options, ...options};
     }
@@ -126,7 +129,7 @@ export class UploadRequest implements Upload {
      * returns true if validators are set and upload not validated
      */
     public isInvalid(): boolean {
-        return this.model.invalid;
+        return this.upload.invalid;
     }
 
     public isProgress(): boolean {
@@ -142,7 +145,7 @@ export class UploadRequest implements Upload {
     }
 
     public isRequestCompleted() {
-        return this.upload.state === UploadState.REQUEST_COMPLETED;
+        return this.upload.state === UploadState.COMPLETED;
     }
 
     /**
@@ -150,7 +153,7 @@ export class UploadRequest implements Upload {
      * reset state, and reset errors
      */
     public retry() {
-        if (this.state === UploadState.REQUEST_COMPLETED && this.upload.hasError) {
+        if (this.state === UploadState.COMPLETED && this.upload.hasError) {
             this.resetUpload();
             this.start();
         }
@@ -161,7 +164,6 @@ export class UploadRequest implements Upload {
      * if file is not queued, abort request on cancel
      */
     public start() {
-
         /** call beforeStart hooks, if one returns false upload will not started */
         const beforeStartHooks$ = of(true).pipe(
             switchMap(() => forkJoin(this.hooks.beforeStart.map((hook) => hook()))),
@@ -186,6 +188,9 @@ export class UploadRequest implements Upload {
         }
     }
 
+    /**
+     * validate upload
+     */
     public validate(validator: Validator | ValidationFn) {
         const result = "validate" in validator
             ? validator.validate(this.upload.file)
@@ -247,7 +252,7 @@ export class UploadRequest implements Upload {
         };
 
         /** not completed since we could retry */
-        this.upload.state    = UploadState.REQUEST_COMPLETED;
+        this.upload.state    = UploadState.COMPLETED;
         this.upload.response = uploadResponse;
         this.notifyObservers();
     }
@@ -283,7 +288,7 @@ export class UploadRequest implements Upload {
             errors: null
         };
         this.upload.response = uploadResponse;
-        this.upload.state    = UploadState.REQUEST_COMPLETED;
+        this.upload.state    = UploadState.COMPLETED;
         this.notifyObservers();
     }
 
@@ -302,6 +307,9 @@ export class UploadRequest implements Upload {
         this.upload$.next(this.upload);
     }
 
+    /**
+     * reset upload
+     */
     private resetUpload() {
         this.upload.state     = UploadState.QUEUED;
         this.upload.response  = {success: false, body: null, errors: null};

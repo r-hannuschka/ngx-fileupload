@@ -20,6 +20,8 @@ export class UploadModel {
 
     private uploadPending = false;
 
+    private uploadRequestId = "";
+
     /**
      * Creates an instance of UploadFile.
      */
@@ -83,6 +85,14 @@ export class UploadModel {
 
     public get invalid(): boolean {
         return this.uploadInvalid;
+    }
+
+    public set requestId(id: string) {
+        this.uploadRequestId = id;
+    }
+
+    public get requestId(): string {
+        return this.uploadRequestId;
     }
 
     /**
@@ -151,7 +161,8 @@ export class UploadModel {
             },
             hasError:  this.hasError,
             isInvalid: this.uploadInvalid,
-            isPending: this.uploadPending
+            isPending: this.uploadPending,
+            requestId: this.requestId
         };
     }
 }

@@ -48,7 +48,7 @@
                 </li>
             </ul>
 
-            <ng-container *ngIf="upload.state === uploadState.REQUEST_COMPLETED">
+            <ng-container *ngIf="upload.state === uploadState.COMPLETED">
                 <ul *ngIf="upload.response.errors" class="upload-item--response-errors">
                     <li *ngFor="let error of upload.response.errors" class="message error">
                         {{error}}

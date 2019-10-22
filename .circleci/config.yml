@@ -17,7 +17,7 @@ aliases:
 aliases:
   - &filter_next_release
       branches:
-        only: beta
+        only: next-release
 
 jobs:
   install:

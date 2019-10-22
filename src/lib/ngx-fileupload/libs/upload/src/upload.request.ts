@@ -1,5 +1,5 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
-import { Subject, BehaviorSubject, Observable, of, forkJoin } from "rxjs";
+import { Subject, BehaviorSubject, Observable, forkJoin } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap } from "rxjs/operators";
 import { UploadState, UploadResponse, UploadData, Upload, Validator, ValidationFn} from "../../../data/api";
 import { UploadModel } from "../../../data/upload.model";
@@ -47,6 +47,11 @@ export class UploadRequest implements Upload {
      */
     private upload$: BehaviorSubject<UploadModel>;
 
+    /**
+     * upload stream gets destroyed
+     */
+    private destroyed$: Subject<boolean> = new Subject();
+
     private options: UploadOptions = {
         url: "",
         formData: { enabled: true, name: "file" }
@@ -56,6 +61,10 @@ export class UploadRequest implements Upload {
 
     public get change(): Observable<UploadModel> {
         return this.upload$.asObservable();
+    }
+
+    public get destroyed(): Observable<boolean> {
+        return this.destroyed$.asObservable();
     }
 
     public get data(): UploadData {
@@ -112,7 +121,8 @@ export class UploadRequest implements Upload {
     }
 
     public destroy() {
-        this.cancel();
+        this.cancel$.next(true);
+        this.destroyed$.next(true);
 
         this.cancel$.complete();
         this.upload$.complete();
@@ -175,8 +185,7 @@ export class UploadRequest implements Upload {
         }
 
         /** call beforeStart hooks, if one returns false upload will not started */
-        const hooks = this.hooks.beforeStart.map((hook) => hook());
-        const beforeStartHooks$ = forkJoin(hooks)
+        forkJoin(this.hooks.beforeStart.map((hook) => hook()))
             .pipe(
                 map((result: boolean[]) => result.reduce((prev, cur) => prev && cur, true)),
                 tap(() => {
@@ -184,16 +193,13 @@ export class UploadRequest implements Upload {
                         this.notifyObservers();
                     }
                 }),
-                filter(result => result)
-            );
-
-        beforeStartHooks$.pipe(
-            switchMap(() => this.uploadFile()),
-            takeUntil(this.cancel$),
-        ).subscribe({
-            next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
-            error: (error: HttpErrorResponse) => this.handleError(error)
-        });
+                filter(result => result),
+                switchMap(() => this.uploadFile()),
+            )
+            .subscribe({
+                next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
+                error: (error: HttpErrorResponse) => this.handleError(error)
+            });
     }
 
     /**

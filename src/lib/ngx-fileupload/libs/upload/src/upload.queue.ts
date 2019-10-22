@@ -1,6 +1,6 @@
 import { UploadState } from "../../../data/api";
 import { UploadRequest } from "./upload.request";
-import { Subject, Observable, of } from "rxjs";
+import { Subject, Observable, of, merge } from "rxjs";
 import { filter, take, map, takeUntil, tap } from "rxjs/operators";
 
 export interface QueueChange {
@@ -78,7 +78,7 @@ export class UploadQueue {
 
         /** register for changes which make request complete */
         const uploadComplete$ = change$
-            .pipe( filter(() => request.isCompleted()), take(1));
+            .pipe(filter(() => request.isCompleted()), take(1));
 
         change$
             /**
@@ -89,10 +89,10 @@ export class UploadQueue {
              * canceled uploads or upload completed with success couldn't repeat they are
              * simply done
              */
-            .pipe(takeUntil(uploadComplete$))
+            .pipe(takeUntil(merge(request.destroyed, uploadComplete$)))
             .subscribe({
                 next: ()     => this.onUploadStateChange(request),
-                complete: () => this.startNextInQueue(request)
+                complete: () => this.requestCompleted(request)
             });
     }
 
@@ -111,14 +111,20 @@ export class UploadQueue {
         }
     }
 
+    private requestCompleted(request: UploadRequest) {
+        if (request.isPending()) {
+            this.queuedUploads = this.queuedUploads.filter((upload) => upload !== request);
+        } else {
+            this.startNextInQueue(request);
+        }
+    }
+
     private startNextInQueue(request: UploadRequest) {
         this.active = Math.max(this.active - 1, 0);
-
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();
             nextUpload.start();
         }
-
         this.queueChange$.next({add: [], completed: [request], start: []});
     }
 }

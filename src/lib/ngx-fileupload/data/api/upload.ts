@@ -3,12 +3,13 @@ import { UploadModel } from "../upload.model";
 import { ValidationErrors } from "./validation";
 
 export enum UploadState {
-    CANCELED  = 0,
-    QUEUED    = 1,
-    PENDING   = 2,
-    START     = 3,
-    PROGRESS  = 4,
-    COMPLETED = 5
+    INVALID   = 0,
+    CANCELED  = 1,
+    QUEUED    = 2,
+    PENDING   = 3,
+    START     = 4,
+    PROGRESS  = 5,
+    COMPLETED = 6
 }
 
 export interface UploadResponse {

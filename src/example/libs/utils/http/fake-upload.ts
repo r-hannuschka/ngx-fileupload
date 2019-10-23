@@ -77,7 +77,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
         if (isError) {
             const error: HttpErrorResponse = new HttpErrorResponse({
                 status: 401,
-                error: "Not allowed to upload something"
+                error: ["Fakeuploader Random Error", "An error occured"]
             });
             observer.error(error);
         } else {

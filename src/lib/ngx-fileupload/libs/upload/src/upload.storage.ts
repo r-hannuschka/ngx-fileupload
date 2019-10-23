@@ -53,7 +53,9 @@ export class UploadStorage {
      */
     public add(upload: UploadRequest) {
         this.uploads.set(upload.requestId, upload);
-        this.uploadQueue.register(upload);
+        if (!upload.isInvalid()) {
+            this.uploadQueue.register(upload);
+        }
         this.notifyObserver();
     }
 

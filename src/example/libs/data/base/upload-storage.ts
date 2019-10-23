@@ -5,7 +5,7 @@ export const CTUploadStorage = new InjectionToken<UploadStorage>("Customize Temp
     providedIn: "root",
     factory: () => {
         return new UploadStorage({
-            concurrentUploads: 1
+            concurrentUploads: 3
         });
     }
 });

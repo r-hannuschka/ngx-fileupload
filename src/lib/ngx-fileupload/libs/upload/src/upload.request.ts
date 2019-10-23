@@ -113,7 +113,7 @@ export class UploadRequest implements Upload {
      * cancel current file upload, this will complete change subject
      */
     public cancel() {
-        if (this.upload.state !== UploadState.CANCELED) {
+        if (!this.isCompleted(true) && !this.upload.isInvalid) {
             this.upload.state = UploadState.CANCELED;
             this.cancel$.next(true);
             this.notifyObservers();
@@ -144,7 +144,7 @@ export class UploadRequest implements Upload {
      * returns true if validators are set and upload not validated
      */
     public isInvalid(): boolean {
-        return this.upload.invalid;
+        return this.upload.isInvalid;
     }
 
     public isProgress(): boolean {
@@ -210,10 +210,8 @@ export class UploadRequest implements Upload {
             ? validator.validate(this.upload.file)
             : validator(this.upload.file);
 
-        this.upload.invalid = false;
-
         if (result !== null) {
-            this.upload.invalid = true;
+            this.upload.state = UploadState.INVALID;
         }
         this.upload.validationErrors = result;
     }

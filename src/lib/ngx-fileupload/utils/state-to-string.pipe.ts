@@ -14,6 +14,7 @@ export class StateToStringPipe implements PipeTransform {
             case UploadState.PROGRESS:  return "progress";
             case UploadState.COMPLETED: return "completed";
             case UploadState.START:     return "start";
+            case UploadState.INVALID:   return "invalid";
             default:                    return "canceled";
         }
     }

@@ -79,12 +79,8 @@ export class UploadModel {
         return this.uploadPending;
     }
 
-    public set invalid(invalid: boolean) {
-        this.uploadInvalid = invalid;
-    }
-
-    public get invalid(): boolean {
-        return this.uploadInvalid;
+    public get isInvalid(): boolean {
+        return this.state === UploadState.INVALID;
     }
 
     public set requestId(id: string) {
@@ -160,7 +156,7 @@ export class UploadModel {
                 errors: this.validationErrors,
             },
             hasError:  this.hasError,
-            isInvalid: this.uploadInvalid,
+            isInvalid: this.isInvalid,
             isPending: this.uploadPending,
             requestId: this.requestId
         };

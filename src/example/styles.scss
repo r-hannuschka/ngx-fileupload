@@ -15,3 +15,7 @@ body {
 .error {
     color: map-get($colors, "red");
 }
+
+::ng-deep {
+    @include igx-tabs($dark-tabs);
+}

@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, BehaviorSubject, Observable, forkJoin } from "rxjs";
-import { takeUntil, filter, switchMap, map, tap } from "rxjs/operators";
+import { takeUntil, filter, switchMap, map } from "rxjs/operators";
 import { UploadState, UploadResponse, UploadData, Upload, Validator, ValidationFn} from "../../../data/api";
 import { UploadModel } from "../../../data/upload.model";
 
@@ -175,8 +175,7 @@ export class UploadRequest implements Upload {
     }
 
     /**
-     * upload file to server but only
-     * if file is not queued, abort request on cancel
+     * start file upload
      */
     public start() {
 
@@ -188,11 +187,6 @@ export class UploadRequest implements Upload {
         forkJoin(this.hooks.beforeStart.map((hook) => hook()))
             .pipe(
                 map((result: boolean[]) => result.reduce((prev, cur) => prev && cur, true)),
-                tap(() => {
-                    if (this.upload.isPending) {
-                        this.notifyObservers();
-                    }
-                }),
                 filter(result => result),
                 switchMap(() => this.uploadFile()),
             )
@@ -249,8 +243,7 @@ export class UploadRequest implements Upload {
     }
 
     /**
-     * if server not sends a status code in 2xx range this will
-     * throw an error which will handled here
+     * request responds with an error
      */
     private handleError(response: HttpErrorResponse) {
 
@@ -281,20 +274,16 @@ export class UploadRequest implements Upload {
     }
 
     /**
-     * handle file upload in progress
+     * handle http progress event
      */
     private handleProgress(event: HttpProgressEvent) {
-
-        // http event and cancel / destroy comes on the same time or just close enough
-        // so this will handeled
         this.upload.state = UploadState.PROGRESS;
         this.upload.uploaded = event.loaded;
         this.notifyObservers();
     }
 
     /**
-     * upload has been completed so server responds within 200 range
-     * status code
+     * upload completed with 20x
      */
     private handleResponse(res: HttpResponse<any>) {
         const uploadResponse: UploadResponse = {

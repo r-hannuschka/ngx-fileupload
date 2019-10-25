@@ -1,0 +1,16 @@
+<h1>overview works</h1>
+
+<ng-template #progressbarTemplate>
+</ng-template>
+
+<div>
+
+    <div class="header"></div>
+
+    <!-- toggle able -->
+    <div class="body">
+        <ng-container *ngFor="let upload of processing">
+            <app-ui--progressbar [progress]="upload.progress"></app-ui--progressbar>
+        </ng-container>
+    </div>
+</div>

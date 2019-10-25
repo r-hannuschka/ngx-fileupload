@@ -1,9 +1,14 @@
 $icomoon-font-path: "../../../../../assets/fonts" !default;
 
+@import '~igniteui-angular/lib/core/styles/themes/index';
 @import "variables";
 @import "icons";
 
 :host {
+
+    ::ng-deep {
+        @include igx-tabs($dark-tabs);
+    }
 
     .card-list {
         display: flex;

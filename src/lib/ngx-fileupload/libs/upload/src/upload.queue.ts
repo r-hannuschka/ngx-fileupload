@@ -1,22 +1,13 @@
 import { UploadState } from "../../../data/api";
 import { UploadRequest } from "./upload.request";
-import { Subject, Observable, of, merge } from "rxjs";
-import { filter, take, map, takeUntil, tap } from "rxjs/operators";
+import { Observable, of, merge, BehaviorSubject } from "rxjs";
+import { filter, take, map, takeUntil, tap, buffer, debounceTime } from "rxjs/operators";
 
-export interface QueueChange {
-    /**
-     * new upload was added to queue
-     */
-    add: UploadRequest[];
-    /**
-     * upload starts
-     */
-    start: UploadRequest[];
-    /**
-     * upload has finish uploading, canceled
-     * and not registered in queue anymore
-     */
-    completed: UploadRequest[];
+export interface QueueState {
+
+    pending: UploadRequest[];
+
+    processing: UploadRequest[];
 }
 
 export class UploadQueue {
@@ -25,24 +16,46 @@ export class UploadQueue {
 
     private queuedUploads: UploadRequest[] = [];
 
+    private progressingUploads: UploadRequest[] = [];
+
     private concurrentCount = -1;
 
     /**
      * subscribe to get notified queue has been changed
      */
-    private queueChange$: Subject<QueueChange> = new Subject();
+    private queueChange$: BehaviorSubject<QueueState>;
 
     public set concurrent(count: number) {
         this.concurrentCount = count;
     }
 
-    public get change(): Observable<QueueChange> {
-        return this.queueChange$.asObservable();
+    public get change(): Observable<QueueState> {
+        const queueChanged  = this.queueChange$.asObservable();
+        return queueChanged
+            .pipe(
+                buffer(queueChanged.pipe(debounceTime(10))),
+                map((bufferedChanges) => bufferedChanges.pop()),
+            );
+    }
+
+    public constructor() {
+        this.queueChange$ = new BehaviorSubject({
+            pending: [], processing: []
+        });
     }
 
     public register(upload: UploadRequest) {
         this.registerUploadEvents(upload);
         upload.beforeStart(() => this.createBeforeStartHook(upload));
+    }
+
+    public destroy() {
+        this.queueChange$.complete();
+
+        this.queueChange$       = null;
+        this.queuedUploads      = null;
+        this.progressingUploads = null;
+        this.active             = null;
     }
 
     /**
@@ -60,11 +73,9 @@ export class UploadQueue {
             tap((isStartAble: boolean) => {
                 if (!isStartAble) {
                     upload.state = UploadState.PENDING;
-                    /** @todo remove this, dont like it */
                     upload.update();
-
                     this.queuedUploads.push(upload);
-                    this.queueChange$.next({add: [upload], completed: [], start: []});
+                    this.notifyObserver();
                 }
             })
         );
@@ -101,7 +112,8 @@ export class UploadQueue {
 
             case UploadState.START:
                 this.active += 1;
-                this.queueChange$.next({add: [], completed: [], start: [req]});
+                this.progressingUploads.push(req);
+                this.notifyObserver();
                 break;
 
             /** request has been completed but with an error */
@@ -120,11 +132,19 @@ export class UploadQueue {
     }
 
     private startNextInQueue(request: UploadRequest) {
+        this.progressingUploads = this.progressingUploads.filter((upload) => upload !== request);
         this.active = Math.max(this.active - 1, 0);
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();
             nextUpload.start();
         }
-        this.queueChange$.next({add: [], completed: [request], start: []});
+        this.notifyObserver();
+    }
+
+    private notifyObserver() {
+        this.queueChange$.next({
+            pending:    [...this.queuedUploads],
+            processing: [...this.progressingUploads]
+        });
     }
 }

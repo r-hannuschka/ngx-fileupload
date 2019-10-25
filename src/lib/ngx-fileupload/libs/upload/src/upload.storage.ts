@@ -1,7 +1,6 @@
 import { UploadRequest } from "./upload.request";
 import { BehaviorSubject, Observable } from "rxjs";
-import { map, buffer, debounceTime, takeWhile } from "rxjs/operators";
-import { UploadQueue, QueueChange } from "./upload.queue";
+import { UploadQueue, QueueState } from "./upload.queue";
 
 export interface UploadStorageConfig {
     concurrentUploads: number;
@@ -17,8 +16,6 @@ export class UploadStorage {
     private change$: BehaviorSubject<UploadRequest[]>;
     private uploads: Map<string, UploadRequest> = new Map();
     private uploadQueue: UploadQueue;
-    private queueChange$: Observable<QueueChange>;
-    private queueChangeSubs = 0;
 
     public constructor(config?: UploadStorageConfig) {
         this.change$     = new BehaviorSubject([]);
@@ -31,21 +28,8 @@ export class UploadStorage {
         return this.change$.asObservable();
     }
 
-    public get queueChange(): Observable<QueueChange> {
-        return new Observable((subscriber) => {
-            this.queueChangeSubs += 1;
-            if (!this.queueChange$) {
-                this.queueChange$ = this.createQueueChangeBroadcast();
-            }
-
-            const sub = this.queueChange$.subscribe(subscriber);
-
-            /** unsubscribe */
-            return () => {
-                this.queueChangeSubs -= 1;
-                sub.unsubscribe();
-            };
-        });
+    public get queueChange(): Observable<QueueState> {
+        return this.uploadQueue.change;
     }
 
     /**
@@ -57,6 +41,23 @@ export class UploadStorage {
             this.uploadQueue.register(upload);
         }
         this.notifyObserver();
+    }
+
+    public destroy() {
+
+        /** destroy all uploads */
+        this.uploads.forEach(upload => (upload.destroy()));
+
+        /** destroy upload queue */
+        this.uploadQueue.destroy();
+        this.uploadQueue = null;
+
+
+        /** destroy change stream */
+        this.change$.complete();
+        this.change$ = null;
+
+        this.uploads = null;
     }
 
     /**
@@ -115,26 +116,6 @@ export class UploadStorage {
             }
         });
         this.notifyObserver();
-    }
-
-    private createQueueChangeBroadcast(): Observable<QueueChange> {
-        const change$ = this.uploadQueue.change;
-        return change$.pipe(
-            takeWhile(() => this.queueChangeSubs > 0),
-            /** buffer until change$ not submitting for at least 10ms */
-            buffer(change$.pipe(debounceTime(10))),
-            /** merge all changes into single change object */
-            map((changes) => {
-                const emptyChange: QueueChange = {add: [], completed: [], start: []};
-                return changes.reduce((change, buffered) => (
-                    {
-                        add: [...change.add    , ...buffered.add    ],
-                        completed: [...change.completed, ...buffered.completed],
-                        start: [...change.start  , ...buffered.start  ],
-                    }
-                ), emptyChange);
-            }),
-        );
     }
 
     /**

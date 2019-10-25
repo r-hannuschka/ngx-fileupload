@@ -71,7 +71,6 @@ export class UploadViewComponent implements OnInit, OnDestroy {
         }
 
         this.registerStoreEvents();
-        this.registerQueueEvents();
     }
 
     public ngOnDestroy() {
@@ -79,7 +78,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
 
         /** we handle our own storage so destroy this one */
         if (!this.uploadStorageSet) {
-            this.uploadStorage.stopAll();
+            this.uploadStorage.destroy();
             this.uploadStorage = null;
         }
     }
@@ -93,30 +92,6 @@ export class UploadViewComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (uploads) => this.uploads = uploads
             });
-    }
-
-    /**
-     * register for queue changes
-     */
-    private registerQueueEvents() {
-        this.uploadStorage.queueChange
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe({
-                next: () => this.handleQueueChange()
-            });
-    }
-
-    /**
-     * reorder items now
-     * could be an action we dispatch on store, or only for our view
-     */
-    private handleQueueChange() {
-        this.uploads = this.uploads.sort((u1: UploadRequest, u2: UploadRequest) => {
-            if (u1.state > u2.state) {
-                return -1;
-            }
-            return 1;
-        });
     }
 
     /** start upload for all files */

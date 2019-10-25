@@ -1,9 +1,9 @@
 import { Routes } from "@angular/router";
-import { CustomizeComponent } from "./customize.component";
+import { ItemTemplateComponent } from "./item-template/item-template.component";
 
 export const ItemTemplateRoutes: Routes = [
     {
         path: "customize",
-        component: CustomizeComponent
+        component: ItemTemplateComponent
     }
 ];

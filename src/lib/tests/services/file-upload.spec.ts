@@ -62,7 +62,7 @@ describe("Model: UploadFile", () => {
             }))
             .subscribe({
                 complete: () => {
-                    expect(states).toEqual([UploadState.QUEUED, UploadState.START, UploadState.PROGRESS, UploadState.UPLOADED]);
+                    expect(states).toEqual([UploadState.IDLE, UploadState.START, UploadState.PROGRESS, UploadState.UPLOADED]);
                     done();
                 }
             });

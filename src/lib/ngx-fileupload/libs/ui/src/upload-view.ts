@@ -1,19 +1,9 @@
-import { Component, TemplateRef, Input, OnInit, OnDestroy, InjectionToken, Inject } from "@angular/core";
+import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../../data/api/validation";
 import { UploadRequest, UploadStorage } from "../../upload";
 import { FileUploadItemContext } from "./upload-item.component";
-
-const DefaultUploadStorage = new InjectionToken<UploadStorage>("Default Testing Upload Storage", {
-    providedIn: "root",
-    factory: (() => {
-        const storeConfig = {
-            concurrentUploads: 2
-        };
-        return new UploadStorage(storeConfig);
-    })
-});
 
 @Component({
     selector: "ngx-fileupload",
@@ -65,9 +55,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     public ngOnInit() {
 
         if (!this.uploadStorage) {
-            this.uploadStorage = new UploadStorage({
-                concurrentUploads: 5
-            });
+            this.uploadStorage = new UploadStorage();
         }
 
         this.registerStoreEvents();

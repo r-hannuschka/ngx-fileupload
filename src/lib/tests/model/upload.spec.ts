@@ -26,7 +26,7 @@ describe("Model: Upload", () => {
     });
 
     it("should set by default to queued", () => {
-        expect(model.state).toBe(UploadState.QUEUED);
+        expect(model.state).toBe(UploadState.IDLE);
     });
 
     it("should set new state", () => {
@@ -68,7 +68,7 @@ describe("Model: Upload", () => {
 
     it("should return data as json", () => {
         const uploadData = {
-            state     : UploadState.QUEUED,
+            state     : UploadState.IDLE,
             uploaded  : 0,
             size      : file.size,
             name      : file.name,

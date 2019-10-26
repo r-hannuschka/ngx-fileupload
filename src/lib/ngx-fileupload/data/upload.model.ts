@@ -10,7 +10,7 @@ export class UploadModel {
 
     private uploadedSize = 0;
 
-    private uploadedState: UploadState = UploadState.QUEUED;
+    private uploadedState: UploadState = UploadState.IDLE;
 
     private uploadResponse: UploadResponse = null;
 

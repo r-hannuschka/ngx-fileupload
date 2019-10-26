@@ -5,7 +5,7 @@ import { ValidationErrors } from "./validation";
 export enum UploadState {
     INVALID   = 0,
     CANCELED  = 1,
-    QUEUED    = 2,
+    IDLE      = 2,
     PENDING   = 3,
     START     = 4,
     PROGRESS  = 5,

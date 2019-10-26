@@ -108,7 +108,7 @@ export const TEMPLATE = `
             <div class="actions btn-group">
                 <app-ui--button (dispatch)="ctrl.start()"
                     [class]="'btn-upload btn-secondary btn-sm'"
-                    [disabled]="upload.state !== uploadStates.QUEUED"
+                    [disabled]="upload.state !== uploadStates.IDLE"
                     *ngIf="!upload.completed">
                     <i class="icon-left icon-upload"></i>
                 </app-ui--button>

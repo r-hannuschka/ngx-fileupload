@@ -109,7 +109,7 @@ describe( "Upload Component:", () => {
 
     it("should not remove upload if queued or progressing", () => {
         const fileUpload  = new FileUploadMock() as any;
-        const uploadModel = { state: UploadState.QUEUED } as UploadModel;
+        const uploadModel = { state: UploadState.IDLE } as UploadModel;
         testComponent.ngxFileUploadComponent.onUploadsAdd([fileUpload]);
         testComponent.ngxFileUploadComponent.handleUploadChange(uploadModel, fileUpload);
         fixture.detectChanges();

@@ -58,6 +58,11 @@ export class UploadControl {
         });
     }
 
+    public remove(event?: MouseEvent) {
+        this.handleEvent(event);
+        this.fileUpload.destroy();
+    }
+
     private handleEvent(event?: MouseEvent) {
         if (event && event instanceof MouseEvent) {
             event.stopPropagation();

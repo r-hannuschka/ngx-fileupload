@@ -22,7 +22,7 @@
                 <!-- start upload action -->
                 <button type="button" class="item-action--upload" (click)="ctrl.start()"
                     *ngIf="!upload.hasError"
-                    [disabled]="upload.state !== uploadState.QUEUED">
+                    [disabled]="upload.state !== uploadState.IDLE">
                     <i class="ngx-fileupload-icon--upload"></i>
                 </button>
 
@@ -31,9 +31,17 @@
                     <i class="ngx-fileupload-icon--retry"></i>
                 </button>
 
-                <!-- only if running -->
-                <button type="button" class="item-action--stop" (click)="ctrl.stop($event);">
+                <!-- cancel active upload -->
+                <button type="button" 
+                    [disabled]="upload.state === uploadState.COMPLETED || upload.state === uploadState.CANCELED || upload.isInvalid" 
+                    class="item-action--stop" (click)="ctrl.stop($event);">
                     <i class="ngx-fileupload-icon--cancel"></i>
+                </button>
+
+                <!-- remove upload completly -->
+                <button type="button" class="item-action--remove" (click)="ctrl.remove();">
+                    <i class="ngx-fileupload-icon--remove"></i>
+                    D
                 </button>
             </div>
         </div>

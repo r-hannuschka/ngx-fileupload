@@ -124,21 +124,42 @@ export class UploadQueue {
     }
 
     private requestCompleted(request: UploadRequest) {
-        if (request.isPending()) {
-            this.queuedUploads = this.queuedUploads.filter((upload) => upload !== request);
-        } else {
-            this.startNextInQueue(request);
+        let updateQueue = true;
+
+        switch (request.state) {
+
+            /** request gets destroyed but was idle */
+            case UploadState.IDLE:
+                updateQueue = false;
+                break;
+
+            /** requests gets destroyed but allready in state pending */
+            case UploadState.PENDING:
+                this.queuedUploads = this.queuedUploads.filter((upload) => upload !== request);
+                break;
+
+            default:
+                updateQueue = this.startNextInQueue(request);
         }
-        this.notifyObserver();
+
+        if (updateQueue) {
+            this.notifyObserver();
+        }
     }
 
-    private startNextInQueue(request: UploadRequest) {
+    /**
+     * try to start next upload in queue, returns false if no further uploads
+     * exists
+     */
+    private startNextInQueue(request: UploadRequest): boolean {
         this.progressingUploads = this.progressingUploads.filter((upload) => upload !== request);
         this.active = Math.max(this.active - 1, 0);
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();
             nextUpload.start();
+            return true;
         }
+        return false;
     }
 
     private notifyObserver() {

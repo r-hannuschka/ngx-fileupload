@@ -10,7 +10,7 @@
                 <app-ui--button (dispatch)="ctrl.start()"
 
                     [class]="'btn-upload btn-sm'"
-                    [disabled]="upload.state !== uploadStates.QUEUED" 
+                    [disabled]="upload.state !== uploadStates.IDLE" 
                     *ngIf="!upload.completed">
 
                     <i class="icon-left icon-upload"></i>

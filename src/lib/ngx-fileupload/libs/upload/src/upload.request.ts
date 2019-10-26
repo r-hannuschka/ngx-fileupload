@@ -156,7 +156,7 @@ export class UploadRequest implements Upload {
     }
 
     public isIdle(): boolean {
-        return this.upload.state === UploadState.QUEUED;
+        return this.upload.state === UploadState.IDLE;
     }
 
     public isRequestCompleted() {
@@ -315,7 +315,7 @@ export class UploadRequest implements Upload {
      * reset upload
      */
     private resetUpload() {
-        this.upload.state     = UploadState.QUEUED;
+        this.upload.state     = UploadState.IDLE;
         this.upload.response  = {success: false, body: null, errors: null};
         this.upload.uploaded  = 0;
         this.upload.isPending = false;

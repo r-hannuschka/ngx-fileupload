@@ -1,6 +1,8 @@
 import { UploadRequest } from "./upload.request";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { buffer, debounceTime, tap } from "rxjs/operators";
 import { UploadQueue, QueueState } from "./upload.queue";
+import { take } from "rxjs/internal/operators/take";
 
 export interface UploadStorageConfig {
     concurrentUploads?: number;
@@ -25,18 +27,33 @@ export class UploadStorage {
 
     private storeConfig: UploadStorageConfig;
 
+    /**
+     * submits if an upload gets destroyed
+     */
+    private uploadDestroy$: Subject<UploadRequest> = new Subject();
+
     public constructor(config: UploadStorageConfig = {}) {
         this.change$     = new BehaviorSubject([]);
         this.uploadQueue = new UploadQueue();
 
         this.storeConfig = {...defaultStoreConfig, ...config};
         this.uploadQueue.concurrent = this.storeConfig.concurrentUploads;
+
+        this.registerUploadDestroyEvent();
     }
 
+    /**
+     * register to get notified something on store change, add and remove
+     */
     public change(): Observable<UploadRequest[]> {
         return this.change$.asObservable();
     }
 
+    /**
+     * get queue change observable to get notified something happens on queue.
+     * this will submit if pending uploads changes or new uploads will processing
+     * not if any upload has been added
+     */
     public get queueChange(): Observable<QueueState> {
         return this.uploadQueue.change;
     }
@@ -46,12 +63,25 @@ export class UploadStorage {
      */
     public add(upload: UploadRequest) {
         this.uploads.set(upload.requestId, upload);
+
         if (!upload.isInvalid()) {
             this.uploadQueue.register(upload);
         }
+
+        /**
+         * register to upload destroy, this can happens on any place
+         * not only in store. And pipe to interal subject we are subscribed
+         */
+        upload.destroyed
+            .pipe(take(1))
+            .subscribe(() => this.uploadDestroy$.next(upload));
+
         this.notifyObserver();
     }
 
+    /**
+     * destroy upload storage
+     */
     public destroy() {
 
         /** destroy all uploads */
@@ -61,10 +91,13 @@ export class UploadStorage {
         this.uploadQueue.destroy();
         this.uploadQueue = null;
 
-
         /** destroy change stream */
         this.change$.complete();
         this.change$ = null;
+
+        /** destroy upload destroy stream */
+        this.uploadDestroy$.complete();
+        this.uploadDestroy$ = null;
 
         this.uploads = null;
     }
@@ -76,8 +109,6 @@ export class UploadStorage {
         const id = upload instanceof UploadRequest ? upload.requestId : upload;
         const request = this.uploads.get(id);
         request.destroy();
-        this.uploads.delete(id);
-        this.notifyObserver();
     }
 
     /**
@@ -87,11 +118,9 @@ export class UploadStorage {
     public purge() {
         this.uploads.forEach((upload) => {
             if (upload.isCompleted() || upload.isInvalid()) {
-                this.uploads.delete(upload.requestId);
                 upload.destroy();
             }
         });
-        this.notifyObserver();
     }
 
     /**
@@ -110,8 +139,6 @@ export class UploadStorage {
      */
     public stopAll() {
         this.uploads.forEach(upload => (upload.cancel(), upload.destroy()));
-        this.uploads.clear();
-        this.notifyObserver();
     }
 
     /**
@@ -121,10 +148,23 @@ export class UploadStorage {
         this.uploads.forEach((upload) => {
             if (upload.isInvalid()) {
                 upload.destroy();
-                this.uploads.delete(upload.requestId);
             }
         });
         this.notifyObserver();
+    }
+
+    /**
+     * registers to uploads destroy event, since multiple uploads
+     * can destroyed in short amount of time we buffer them at least for 10ms.
+     * and then remove them from list and notify observer
+     */
+    private registerUploadDestroyEvent() {
+        this.uploadDestroy$.pipe(
+            tap((request: UploadRequest) => this.uploads.delete(request.requestId)),
+            buffer(this.uploadDestroy$.pipe(debounceTime(10))),
+        ).subscribe({
+            next: () => this.notifyObserver()
+        });
     }
 
     /**

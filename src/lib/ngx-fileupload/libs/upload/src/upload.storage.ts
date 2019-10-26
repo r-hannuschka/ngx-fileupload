@@ -4,6 +4,8 @@ import { UploadQueue, QueueState } from "./upload.queue";
 
 export interface UploadStorageConfig {
     concurrentUploads: number;
+
+    /** not implemented yet */
     removeCompletedUploads?: boolean;
 }
 

@@ -17,7 +17,10 @@ import { GroupMultipleComponent } from "./group-multiple/group-multiple.componen
         CommonModule,
         RouterModule.forChild([{
             path: "validation",
-            component: ValidationPageComponent
+            component: ValidationPageComponent,
+            data: {
+                uploadOverlay: true
+            }
         }]),
         NgxFileUploadModule,
         HighlightModule,

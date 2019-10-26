@@ -9,7 +9,7 @@
             <div class="actions btn-group">
                 <app-ui--button (dispatch)="ctrl.start()"
 
-                    [class]="'btn-upload btn-secondary btn-sm'"
+                    [class]="'btn-upload btn-sm'"
                     [disabled]="upload.state !== uploadStates.QUEUED" 
                     *ngIf="!upload.completed">
 
@@ -18,12 +18,12 @@
 
                 <app-ui--button (dispatch)="ctrl.stop()" 
                     [disabled]="upload.state === uploadStates.COMPLETED || upload.state === uploadStates.CANCELED || upload.isInvalid"
-                    [class]="'btn.cancel btn-secondary btn-sm'">
-                    <i class="icon-left icon-cancel-outline"></i>
+                    [class]="'btn.cancel btn-sm'">
+                    <i class="icon-left icon-canceled"></i>
                 </app-ui--button>
 
                 <app-ui--button (dispatch)="removeUpload(upload.requestId)">
-                    <i class="icon-left icon-cancel-outline"></i>
+                    <i class="icon-left icon-cancel"></i>
                 </app-ui--button>
             </div>
         </div>
@@ -89,6 +89,11 @@
 <h3>Custom Item Template</h3>
 
 <p>This example shows how to define a custom template which will be used for every upload in list.</p>
+<p>
+    Both Dashboard and Custom Item Template Page share the same Upload Storage. That means that both pages show the same
+    uploads (progress, state). So if you allready added Files in dashboard you will see them here again. And if you add Files here
+    you can see them in Dashboard.
+</p>
 
 <section class="demo mb-3">
     <igx-tabs>
@@ -121,6 +126,10 @@
 
         <igx-tabs-group label="SCSS">
             <pre><code [highlight]="codeUiItemTemplate.SCSS"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Storage">
+            <pre><code [highlight]="codeUploadStorage.TS"></code></pre>
         </igx-tabs-group>
 
         <igx-tabs-group label="Ui Progressbar Circle TS">

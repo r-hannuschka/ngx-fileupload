@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { environment } from "../environments/environment";
 import { MenuItem, MainMenuItems } from "@ngx-fileupload-example/data/base/data";
-import { Router, NavigationEnd } from "@angular/router";
+import { Router, NavigationEnd, ActivatedRoute } from "@angular/router";
 import { filter } from "rxjs/operators";
 
 @Component({
@@ -19,7 +19,8 @@ export class AppComponent implements OnInit {
     public showUploadOverlay = false;
 
     constructor(
-        private router: Router
+        private router: Router,
+        private activatedRoute: ActivatedRoute
     ) {
         this.disableAnimations = environment.disableAnimations || false;
     }
@@ -28,7 +29,9 @@ export class AppComponent implements OnInit {
         this.router.events
             .pipe(filter((event) => event instanceof NavigationEnd))
             .subscribe({
-                next: (event: NavigationEnd) => this.showUploadOverlay = event.url !== "/dashboard"
+                next: (event: NavigationEnd) => {
+                    this.showUploadOverlay = this.activatedRoute.snapshot.firstChild.data.uploadOverlay || false;
+                }
             });
     }
 }

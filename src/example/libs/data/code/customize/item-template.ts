@@ -34,8 +34,12 @@ export const HTML = `
 `;
 
 export const TYPESCRIPT = `
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
 import { UploadStorage, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileupload";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+
+import { ExampleUploadStorage } from "@ngx-fileupload-example/data/base/upload-storage";
 
 @Component({
     selector: "app-customize--item-template",
@@ -45,32 +49,34 @@ import { UploadStorage, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileu
 export class ItemTemplateComponent implements OnInit, OnDestroy {
 
     /**
-     * our upload storage which holds all uploads
-     */
-    public storage: UploadStorage;
-
-    /**
      * get upload-state enum so we could use it template
      */
     public uploadStates = UploadApi.UploadState;
 
     public uploads: UploadRequest[] = [];
 
-    public constructor() {
-        this.storage = new UploadStorage({
-            concurrentUploads: 3
-        });
+    private destroy$: Subject<boolean> = new Subject();
+
+    public constructor(
+        @Inject(ExampleUploadStorage) public storage: UploadStorage
+    ) {
     }
 
     public ngOnInit() {
         this.storage.change()
+            .pipe(takeuntil(this.destroy$))
             .subscribe({
                 next: (requests: UploadRequest[]) => this.uploads = requests
             });
     }
 
     public ngOnDestroy() {
-        this.storage.destroy();
+        this.destroy$.next(true);
+        this.destroy$.complete();
+
+        this.destroy$ = null;
+        this.uploads = null;
+        this.storage = null;
     }
 
     public uploadAll() {

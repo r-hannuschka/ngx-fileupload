@@ -1,9 +1,13 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
 import { UploadStorage, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileupload";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 import * as ExampleCodeData from "@ngx-fileupload-example/data/code/customize/item-template";
 import * as uiItemTemplateData from "@ngx-fileupload-example/data/code/customize/item-template";
 import * as uiProgressbarCircleData from "@ngx-fileupload-example/data/code/ui/progressbar-circle";
+import * as codeUploadStorage from "@ngx-fileupload-example/data/code/common/upload-storage";
+import { ExampleUploadStorage } from "@ngx-fileupload-example/data/base/upload-storage";
 
 @Component({
     selector: "app-customize--item-template",
@@ -18,18 +22,19 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
 
     public codeUiProgressbar = uiProgressbarCircleData;
 
+    public codeUploadStorage = codeUploadStorage;
+
     public showDocs = false;
 
     public uploadStates = UploadApi.UploadState;
 
     public uploads: UploadRequest[] = [];
 
-    public storage: UploadStorage;
+    public destroy$: Subject<boolean> = new Subject();
 
-    public constructor() {
-        this.storage = new UploadStorage({
-            concurrentUploads: 3
-        });
+    public constructor(
+        @Inject(ExampleUploadStorage) public storage: UploadStorage
+    ) {
     }
 
     public toggleDocs() {
@@ -38,13 +43,16 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         this.storage.change()
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (requests: UploadRequest[]) => this.uploads = requests
             });
     }
 
     public ngOnDestroy() {
-        this.storage.destroy();
+        this.destroy$.next(true);
+        this.destroy$.complete();
+        this.destroy$ = null;
     }
 
     public removeUpload(requestId) {

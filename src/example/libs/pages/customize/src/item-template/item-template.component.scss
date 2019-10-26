@@ -66,17 +66,18 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
             }
 
             .actions {
-                padding: 0 .5rem;
+                padding: 0 .25rem;
                 align-self: stretch;
 
                 ::ng-deep {
                     .btn {
                         border-top-left-radius: 0;
                         border-top-right-radius: 0;
-                        font-size: 1.3rem;
-                        padding: 0 .25rem;
+                        font-size: .9rem;
                         background: lighten(map-get($colors, black), 20%);
                         border-color: lighten(map-get($colors, black), 20%);
+                        color: inherit;
+                        padding: .25rem .125rem 0;
                     }
 
                     .btn:disabled {
@@ -84,14 +85,20 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
                         color: map-get($colors, textDark);
                     }
 
+                    app-ui--button:last-child .btn {
+                        padding: .25rem .25rem 0 .125rem;
+                    }
+
+                    app-ui--button:first-child .btn {
+                        padding: .25rem .125rem 0 .25rem;
+                    }
+
                     app-ui--button:not(:last-child) .btn {
                         border-bottom-right-radius: 0;
-                        padding: 0 .125rem 0 .25rem;
                     }
 
                     app-ui--button:not(:first-child) .btn {
                         border-bottom-left-radius: 0;
-                        padding: 0 .25rem 0 .125rem;
                     }
                 }
             }

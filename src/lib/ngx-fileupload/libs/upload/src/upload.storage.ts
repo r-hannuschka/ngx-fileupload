@@ -3,11 +3,15 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { UploadQueue, QueueState } from "./upload.queue";
 
 export interface UploadStorageConfig {
-    concurrentUploads: number;
+    concurrentUploads?: number;
 
     /** not implemented yet */
     removeCompletedUploads?: boolean;
 }
+
+const defaultStoreConfig: UploadStorageConfig = {
+    concurrentUploads: 5
+};
 
 /**
  * could renamed to upload manager
@@ -19,11 +23,14 @@ export class UploadStorage {
     private uploads: Map<string, UploadRequest> = new Map();
     private uploadQueue: UploadQueue;
 
-    public constructor(config?: UploadStorageConfig) {
+    private storeConfig: UploadStorageConfig;
+
+    public constructor(config: UploadStorageConfig = {}) {
         this.change$     = new BehaviorSubject([]);
         this.uploadQueue = new UploadQueue();
 
-        this.uploadQueue.concurrent = config.concurrentUploads || 5;
+        this.storeConfig = {...defaultStoreConfig, ...config};
+        this.uploadQueue.concurrent = this.storeConfig.concurrentUploads;
     }
 
     public change(): Observable<UploadRequest[]> {

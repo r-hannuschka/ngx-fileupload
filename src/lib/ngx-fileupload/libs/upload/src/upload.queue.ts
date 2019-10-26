@@ -118,7 +118,7 @@ export class UploadQueue {
 
             /** request has been completed but with an error */
             case UploadState.COMPLETED:
-                this.startNextInQueue(req);
+                this.requestCompleted(req);
                 break;
         }
     }
@@ -129,6 +129,7 @@ export class UploadQueue {
         } else {
             this.startNextInQueue(request);
         }
+        this.notifyObserver();
     }
 
     private startNextInQueue(request: UploadRequest) {
@@ -138,7 +139,6 @@ export class UploadQueue {
             const nextUpload = this.queuedUploads.shift();
             nextUpload.start();
         }
-        this.notifyObserver();
     }
 
     private notifyObserver() {

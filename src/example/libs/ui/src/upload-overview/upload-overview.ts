@@ -1,7 +1,8 @@
-import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
+import { Component, Inject, OnInit, OnDestroy, Input } from "@angular/core";
 import { UploadStorage, QueueState, UploadRequest, UploadData, UploadState, UploadModel } from "@r-hannuschka/ngx-fileupload";
 import { takeUntil, takeWhile } from "rxjs/operators";
 import { Subject, merge } from "rxjs";
+import { ViewportControl } from "ngx-customscrollbar";
 
 /** app specfic imports */
 import { ExampleUploadStorage } from "@ngx-fileupload-example/data/base/upload-storage";
@@ -9,19 +10,31 @@ import { ExampleUploadStorage } from "@ngx-fileupload-example/data/base/upload-s
 @Component({
     selector: "app-ui--upload-overview",
     templateUrl: "upload-overview.html",
-    styleUrls: ["./upload-overview.scss"]
+    styleUrls: ["./upload-overview.scss"],
+    viewProviders: [ViewportControl]
 })
 export class UploadOverviewComponent implements OnInit, OnDestroy {
 
-    private destroy$: Subject<boolean> = new Subject();
+    @Input()
+    public title = "Uploads";
 
     public processing: UploadData[] = [];
 
     public pending: UploadData[] = [];
 
+    public collapsed = true;
+
+    private destroy$: Subject<boolean> = new Subject();
+
     public constructor(
         @Inject(ExampleUploadStorage) private storage: UploadStorage
     ) {}
+
+    public ngOnDestroy() {
+        this.destroy$.next(true);
+        this.destroy$.complete();
+        this.destroy$ = null;
+    }
 
     public ngOnInit() {
 
@@ -40,14 +53,18 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
                 if (this.processing.length) {
                     // do not register if not required
                     this.registerProcessState(state.processing);
+                } else {
+                    this.collapsed = true;
                 }
             });
     }
 
-    public ngOnDestroy() {
-        this.destroy$.next(true);
-        this.destroy$.complete();
-        this.destroy$ = null;
+    public remove(requestId: string) {
+        this.storage.remove(requestId);
+    }
+
+    public toggleBody() {
+        this.collapsed = !this.collapsed;
     }
 
     /**

@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { NgxCustomScrollbarModule } from "ngx-customscrollbar";
 
 import { HeaderComponent } from "./header/header.component";
 import { HeaderMenuComponent } from "./header-menu/header-menu.component";
@@ -20,7 +21,8 @@ import * as Icons from "@ngx-fileupload-example/data/ui/icons";
         CommonModule,
         RouterModule,
         NgxFileUploadModule,
-        IgxIconModule
+        IgxIconModule,
+        NgxCustomScrollbarModule
     ],
     exports: [
         ButtonComponent,
@@ -29,6 +31,7 @@ import * as Icons from "@ngx-fileupload-example/data/ui/icons";
         UploadToolbarComponent,
         UploadItemSimpleComponent,
         UploadOverviewComponent,
+        NgxCustomScrollbarModule
     ],
     declarations: [
         ButtonComponent,

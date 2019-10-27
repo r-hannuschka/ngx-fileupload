@@ -44,7 +44,7 @@ $scrollbarTheme: (
     }
 
     .body {
-        background: map-get($colors, white);
+        background: #FDFDFF;
         border: 1px solid map-get($colors, black);
         border-width: 0 1px;
         height: 15rem;

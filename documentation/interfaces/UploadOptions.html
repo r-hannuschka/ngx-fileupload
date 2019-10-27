@@ -320,7 +320,7 @@ export class UploadRequest implements Upload {
 
     public isCompleted(ignoreError &#x3D; false): boolean {
         let isCompleted &#x3D; this.isRequestCompleted();
-        isCompleted &#x3D; isCompleted &amp;&amp; (ignoreError ? true : !this.hasError());
+        isCompleted &#x3D; isCompleted &amp;&amp; (ignoreError || !this.hasError());
         isCompleted &#x3D; isCompleted || this.state &#x3D;&#x3D;&#x3D; UploadState.CANCELED;
         return isCompleted;
     }

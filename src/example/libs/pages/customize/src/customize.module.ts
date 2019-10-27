@@ -8,9 +8,7 @@ import { IgxTabsModule } from "igniteui-angular";
 import { UiModule } from "@ngx-fileupload-example/ui";
 import { ItemTemplateRoutes } from "./routes";
 
-import { FileSelectComponent } from "./file-select/file-select.component";
 import { ItemTemplateComponent } from "./item-template/item-template.component";
-import { CustomizeComponent } from "./customize.component";
 
 @NgModule({
     imports: [
@@ -25,12 +23,10 @@ import { CustomizeComponent } from "./customize.component";
         RouterModule
     ],
     declarations: [
-        FileSelectComponent,
-        CustomizeComponent,
         ItemTemplateComponent
     ],
     entryComponents: [
-        CustomizeComponent
+        ItemTemplateComponent
     ],
     providers: [],
 })

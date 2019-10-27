@@ -10,11 +10,17 @@ export class UploadModel {
 
     private uploadedSize = 0;
 
-    private uploadedState: UploadState = UploadState.QUEUED;
+    private uploadedState: UploadState = UploadState.IDLE;
 
     private uploadResponse: UploadResponse = null;
 
     private uploadValidationErrors = null;
+
+    private uploadInvalid = false;
+
+    private uploadPending = false;
+
+    private uploadRequestId = "";
 
     /**
      * Creates an instance of UploadFile.
@@ -65,6 +71,26 @@ export class UploadModel {
         return this.uploadResponse;
     }
 
+    public set isPending(pending: boolean) {
+        this.uploadPending = pending;
+    }
+
+    public get isPending(): boolean {
+        return this.uploadPending;
+    }
+
+    public get isInvalid(): boolean {
+        return this.state === UploadState.INVALID;
+    }
+
+    public set requestId(id: string) {
+        this.uploadRequestId = id;
+    }
+
+    public get requestId(): string {
+        return this.uploadRequestId;
+    }
+
     /**
      * set current upload state
      */
@@ -106,6 +132,14 @@ export class UploadModel {
         return Math.round(progress > 100 ? 100 : progress);
     }
 
+    public get isUploadAble(): boolean {
+        return true;
+    }
+
+    public get hasError() {
+        return this.uploadResponse && this.uploadResponse.errors ? true : false;
+    }
+
     /**
      * return file upload data
      * @todo move to model
@@ -120,7 +154,11 @@ export class UploadModel {
             uploaded  : this.uploaded,
             validation: {
                 errors: this.validationErrors,
-            }
+            },
+            hasError:  this.hasError,
+            isInvalid: this.isInvalid,
+            isPending: this.uploadPending,
+            requestId: this.requestId
         };
     }
 }

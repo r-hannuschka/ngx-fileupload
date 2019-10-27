@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.0.0
+
+### features
+
+- implement upload storages which holds all upload requests
+- implement upload queue, that means that by default only 5 uploads can run concurrently all others will pending until we have more space
+- add new icons and customize view 
+- add new upload state: PENDING
+- rename upload state QUEUED to IDLE
+- all upload states are now numeric instead of strings, before UploadState.INVALID = 'invalid' after UploadState.INVALID = 1
+- add new pipe stateToString to convert UploadState to string value
+- Library exported now UploadApi, use in template with public uploadStates = UploadApi.UploadState, in template uploadStates.IDLE
+
 ## 2.1.1
 
 ### bugfixes

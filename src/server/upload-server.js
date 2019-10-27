@@ -50,7 +50,7 @@ app.post("/upload", function(req, res) {
             id: 0,
             type: 'any'
         },
-        message: `File: ${req.files.file.name} uploaded to the cloud`
+        message: `Hoooray File: ${req.files.file.name} uploaded to /dev/null`
     });
 
     /*

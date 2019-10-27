@@ -1,4 +1,4 @@
-import { FileUpload, UploadModel  } from "lib/public-api";
+import { UploadRequest, UploadModel  } from "lib/public-api";
 import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpProgressEvent, HttpEventType } from "@angular/common/http";
@@ -10,7 +10,7 @@ import { tap } from "rxjs/operators";
 describe("Model: UploadFile", () => {
 
     const url = "https://localhost/file/upload";
-    let fileupload: FileUpload;
+    let fileupload: UploadRequest;
     let injector: TestBed;
     let httpMock: HttpTestingController;
     let uploadFile: File;
@@ -31,10 +31,10 @@ describe("Model: UploadFile", () => {
         const httpClient = injector.get(HttpClient as Type<HttpClient>);
         uploadModel = new UploadModel(uploadFile);
 
-        fileupload = new FileUpload(httpClient, uploadModel, {url});
+        fileupload = new UploadRequest(httpClient, uploadModel, {url});
 
         /** should be default formData */
-        fileUploadNoFormData = new FileUpload(httpClient, uploadModel, {
+        fileUploadNoFormData = new UploadRequest(httpClient, uploadModel, {
             url,
             formData: {
                 enabled: false
@@ -62,7 +62,7 @@ describe("Model: UploadFile", () => {
             }))
             .subscribe({
                 complete: () => {
-                    expect(states).toEqual([UploadState.QUEUED, UploadState.START, UploadState.PROGRESS, UploadState.UPLOADED]);
+                    expect(states).toEqual([UploadState.IDLE, UploadState.START, UploadState.PROGRESS, UploadState.UPLOADED]);
                     done();
                 }
             });

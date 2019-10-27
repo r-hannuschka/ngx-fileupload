@@ -1,0 +1,127 @@
+$icomoon-font-path: "../../../../assets/fonts" !default;
+
+@import "~ngx-customscrollbar/scss/common";
+@import "~ngx-customscrollbar/scss/ngx-customscrollbars.theme";
+@import "variables";
+@import "icons";
+
+$scrollbarTheme: (
+    thumbBackground: rgba(map-get($colors, black), .5),
+    trackSize: .4rem
+);
+
+:host {
+    position: fixed;
+    bottom: 0;
+    right: .5rem;
+    display: block;
+    width: 300px;
+
+    ::ng-deep {
+        @include ngxCustomScrollbarsTheme($scrollbarTheme);
+    }
+
+    .header {
+        background: map-get($colors, black);
+        border-radius: .3rem .3rem 0 0;
+        color: map-get($colors, white);
+        padding: .5rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: .9rem;
+
+        ::ng-deep .btn {
+            color: inherit;
+            box-shadow: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .title .label:after {
+            content: ':'
+        }
+    }
+
+    .body {
+        background: #FDFDFF;
+        border: 1px solid map-get($colors, black);
+        border-width: 0 1px;
+        height: 15rem;
+        position: relative;
+    }
+
+    .scrollview {
+        overflow-y: auto;
+        height: 100%;
+        padding: .5rem 1rem;
+    }
+
+    ngx-customscrollbar {
+        position: absolute;
+        bottom: .1rem;
+        right: .25rem;
+        top: .1rem;
+    }
+
+    ul.uploads {
+
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        font-size: .9rem;
+
+        li {
+            display: flex;
+            flex-direction: row;
+            border-top: 1px solid rgba(map-get($colors, black), .2);
+            margin: .75rem 0;
+            padding: .75rem 0 0;
+        }
+
+        li:first-child {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        li.progressing ::ng-deep {
+            .progressbar-outer {
+                line {
+                    stroke: rgba(map-get($colors, black), .8);
+                    stroke-linecap: round;
+                }
+            }
+
+            .progressbar-inner {
+                line {
+                    stroke: map-get($colors, blue);
+                    stroke-linecap: round;
+                }
+            }
+        }
+
+        li span {
+            white-space: nowrap;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        li .info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+
+            ::ng-deep .btn {
+                padding:0;
+            }
+        }
+
+        li .remove {
+            cursor: pointer;
+            font-size: inherit;
+        }
+    }
+}

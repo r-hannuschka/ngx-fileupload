@@ -1,5 +1,5 @@
-import { Component, Output, Input, EventEmitter } from "@angular/core";
-import { Upload, Validator } from "@r-hannuschka/ngx-fileupload";
+import { Component, Input } from "@angular/core";
+import { Validator, UploadStorage } from "@r-hannuschka/ngx-fileupload";
 
 @Component({
     selector: "app-ui--upload-toolbar",
@@ -13,10 +13,18 @@ export class UploadToolbarComponent {
     @Input()
     url: string;
 
-    @Output()
-    add: EventEmitter<Upload[]> = new EventEmitter();
+    @Input()
+    public storage: UploadStorage;
 
-    public onUploadAdd(uploads: Upload[]) {
-        this.add.emit(uploads);
+    public uploadAll() {
+        this.storage.startAll();
+    }
+
+    public purge() {
+        this.storage.purge();
+    }
+
+    public stop() {
+        this.storage.stopAll();
     }
 }

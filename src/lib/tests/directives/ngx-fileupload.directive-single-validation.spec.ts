@@ -5,10 +5,10 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 
 import {
     NgxFileUploadDirective,
-    FileUpload
+    UploadRequest
 } from "lib/public-api";
 import { ValidatorMockFactory } from "../mock/validator.factory";
-import { Validator } from "lib/ngx-fileupload/utils/validation/validation";
+import { Validator } from "lib/ngx-fileupload/libs/validation/validation";
 import { By } from "@angular/platform-browser";
 
 @Component({
@@ -18,13 +18,13 @@ import { By } from "@angular/platform-browser";
 })
 class TestItemComponent {
 
-    public uploads: FileUpload[];
+    public uploads: UploadRequest[];
 
     public uploadUrl = "http://localhost/files/upload";
 
     public validator: Validator;
 
-    public onUploadsAdd(uploads: FileUpload[]) {
+    public onUploadsAdd(uploads: UploadRequest[]) {
         this.uploads = uploads;
     }
 }

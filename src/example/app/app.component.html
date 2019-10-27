@@ -2,4 +2,6 @@
 
 <main class="container">
     <router-outlet></router-outlet>
+
+    <app-ui--upload-overview *ngIf="showUploadOverlay" [title]="'Ongoing Uploads'"></app-ui--upload-overview>
 </main>

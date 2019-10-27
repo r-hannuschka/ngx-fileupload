@@ -1,6 +1,6 @@
 
 import { Component, Input, TemplateRef, EventEmitter, Output } from "@angular/core";
-import { UploadModel, FileUpload } from "lib/public-api";
+import { UploadModel, UploadRequest } from "lib/public-api";
 
 export interface UploadContext {
     data: any;
@@ -21,7 +21,7 @@ export class NgxFileUploadItemMockComponent {
      */
     public itemTpl: TemplateRef<UploadContext>;
 
-    private fileUpload: FileUpload;
+    private fileUpload: UploadRequest;
 
     /**
      * upload state has been changed
@@ -38,11 +38,11 @@ export class NgxFileUploadItemMockComponent {
      * sets upload we want to bind with current view
      */
     @Input()
-    public set upload(fileUpload: FileUpload) {
+    public set upload(fileUpload: UploadRequest) {
         this.fileUpload = fileUpload;
     }
 
-    public get upload(): FileUpload {
+    public get upload(): UploadRequest {
         return this.fileUpload;
     }
 

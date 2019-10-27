@@ -3,13 +3,13 @@ import { UploadModel } from "../upload.model";
 import { ValidationErrors } from "./validation";
 
 export enum UploadState {
-    QUEUED    = "queued",
-    START     = "start",
-    PROGRESS  = "progress",
-    UPLOADED  = "uploaded",
-    CANCELED  = "canceled",
-    ERROR     = "error",
-    INVALID   = "invalid"
+    INVALID   = 0,
+    CANCELED  = 1,
+    IDLE      = 2,
+    PENDING   = 3,
+    START     = 4,
+    PROGRESS  = 5,
+    COMPLETED = 6
 }
 
 export interface UploadResponse {
@@ -23,13 +23,51 @@ export interface UploadValidation {
 }
 
 export interface UploadData {
+    /**
+     * name of upload
+     */
     name: string;
+    /**
+     * progress in percent
+     */
     progress: number;
+    /**
+     * upload finishes request with a succes, holds success informations
+     */
     response: UploadResponse;
+    /**
+     * total size of upload
+     */
     size: number;
+    /**
+     * current state of upload
+     */
     state: UploadState;
+    /**
+     * uploaded size
+     */
     uploaded: number;
+    /**
+     * contains validation results
+     */
     validation: UploadValidation;
+    /**
+     * returns true if upload request was finished with an error
+     */
+    hasError: boolean;
+    /**
+     * returns true if upload is invalid
+     */
+    isInvalid: boolean;
+    /**
+     * upload is marked for start but still in upload queue
+     * and not running currently
+     */
+    isPending: boolean;
+    /**
+     * upload request id
+     */
+    requestId: string;
 }
 
 export interface Upload {
@@ -72,4 +110,11 @@ export interface Upload {
      * returns true if validators are set and upload not validated
      */
     isInvalid(): boolean;
+}
+
+export interface UploadStoreConfig {
+    /**
+     * max count of uploads at once, set to -1 for no limit
+     */
+    concurrentUploads: number;
 }

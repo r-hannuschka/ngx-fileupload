@@ -1,14 +1,19 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { NgxCustomScrollbarModule } from "ngx-customscrollbar";
+
 import { HeaderComponent } from "./header/header.component";
 import { HeaderMenuComponent } from "./header-menu/header-menu.component";
 import { RouterModule } from "@angular/router";
 import { ButtonComponent } from "./button/button.component";
 import { ProgressbarCircleComponent } from "./progressbar-circle/progressbar-circle.component";
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 import { UploadToolbarComponent } from "./upload-toolbar/upload-toolbar.component";
 import { UploadItemSimpleComponent } from "./upload-item-simple/upload-item-simple.component";
 import { IgxIconModule, IgxIconService } from "igniteui-angular";
+import { UploadOverviewComponent } from "./upload-overview/upload-overview";
+import { ProgressbarComponent } from "./progressbar/progressbar";
+
 import * as Icons from "@ngx-fileupload-example/data/ui/icons";
 
 @NgModule({
@@ -16,14 +21,17 @@ import * as Icons from "@ngx-fileupload-example/data/ui/icons";
         CommonModule,
         RouterModule,
         NgxFileUploadModule,
-        IgxIconModule
+        IgxIconModule,
+        NgxCustomScrollbarModule
     ],
     exports: [
         ButtonComponent,
         HeaderComponent,
         ProgressbarCircleComponent,
         UploadToolbarComponent,
-        UploadItemSimpleComponent
+        UploadItemSimpleComponent,
+        UploadOverviewComponent,
+        NgxCustomScrollbarModule
     ],
     declarations: [
         ButtonComponent,
@@ -31,7 +39,9 @@ import * as Icons from "@ngx-fileupload-example/data/ui/icons";
         HeaderMenuComponent,
         ProgressbarCircleComponent,
         UploadToolbarComponent,
-        UploadItemSimpleComponent
+        UploadItemSimpleComponent,
+        UploadOverviewComponent,
+        ProgressbarComponent
     ],
     providers: [],
 })

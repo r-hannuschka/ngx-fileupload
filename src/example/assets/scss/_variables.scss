@@ -2,19 +2,32 @@
 
 $icomoon-font-family: "icomoon" !default;
 
-$icon-warning: "\e900";
-$icon-upload: "\e901";
-$icon-arrow-sync: "\e902";
-$icon-cancel-outline: "\e903";
-$icon-document-add: "\e904";
+$icomoon-font-family: "icomoon" !default;
+$icomoon-font-path: "fonts" !default;
+
+$icon-connect: "\f07e";
+$icon-upload: "\e900";
+$icon-pending: "\e94e";
+$icon-reload: "\e984";
+$icon-warning: "\ea07";
+$icon-cancel: "\ea0d";
+$icon-canceled: "\ea0e";
+$icon-success: "\ea10";
+$icon-progress: "\ea2e";
+$icon-toggle-open: "\ea41";
+$icon-toggle-close: "\ea43";
+$icon-github: "\eab0";
+$icon-npm: "\eab1";
 
 $colors : (
     text: #E2E2E2,
+    white: #E2E2E2,
     textDark: darken(#E2E2E2, 20%),
     darkBlue: #006494,
     blue: #0582Ca,
     lightBlue: #00A6FB,
-    black: #0D1F2D
+    black: #0D1F2D,
+    red: #ED4337
 );
 
 $dark-tabs: igx-tabs-theme(

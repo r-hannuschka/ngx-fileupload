@@ -38,7 +38,7 @@ class UploadComponent {
 | name | type | description | mandatory |
 |---|---|---|---|
 | template | TemplateRef<FileUploadItemContext> | the template which should used to show upload informations | false |
-| upload | [FileUpload](../src/lib/ngx-fileupload/services/file-upload.ts#37) | the upload which has been created from upload directive | true |
+| upload | [FileUpload](../src/lib/ngx-fileupload/services/file-upload.ts#37) | the UploadRequest which sould visualized | true |
 
 ## @Output
 
@@ -145,6 +145,10 @@ Since the component could load a custom template we have to provide some data / 
     | state | string | current state of upload, one of [canceled, queued, progress, error,  uploaded, invalid] |
     | uploaded | number | uploaded size in byte |
     | validation | [UploadValidation](../src/lib/ngx-fileupload/model/upload.ts#19) | show validation errors for upload if validator if added |
+    | hasError | boolean | upload requests has been completed but with an response error |
+    | isInvalid | boolean | upload request is invalid |
+    | isPending | boolean | upload request has been started but has to wait |
+    | requestId | string | current request id |
 
 - ctrl
 
@@ -152,7 +156,8 @@ Since the component could load a custom template we have to provide some data / 
     |---|---|
     | retry | if an uploads failed you could retry upload the file, unless it is simply invalid |
     | start | starts request to upload a file to server |
-    | stop | cancel upload, this will set state of upload to canceled and trigger completed event |
+    | stop | cancel upload, this will set state of upload to canceled |
+    | remove | destroys an upload, will remove the upload from store / queue |
 
 ## Further reading
 

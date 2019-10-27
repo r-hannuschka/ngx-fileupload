@@ -15,6 +15,7 @@ $line-height: $ngx-fileupload-icons--line-height;
        url('#{$font-path}/#{$font-family}.svg?p1ifjq##{$font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
+  font-display: block;
 }
 
 [class^="ngx-fileupload-icon--"], [class*=" ngx-fileupload-icon--"] {
@@ -32,13 +33,9 @@ $line-height: $ngx-fileupload-icons--line-height;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.ngx-fileupload-icon--cancel:before {
-    content: $ngx-fileupload-icon--close; 
-}
-
 .ngx-fileupload-icon--start:before {
     color: map-get($map: $colors, $key: "progress");
-    content: $ngx-fileupload-icon--sync_alt; 
+    content: $ngx-fileupload-icon--connect; 
 }
 
 .ngx-fileupload-icon--progress {
@@ -51,21 +48,7 @@ $line-height: $ngx-fileupload-icons--line-height;
     animation: rotating 2s linear infinite;
 
     &:before {
-        content: $ngx-fileupload-icon--loop; 
-    }
-}
-
-.ngx-fileupload-icon--uploaded {
-    color: map-get($map: $colors, $key: "success");
-    &:before {
-        content: $ngx-fileupload-icon--check; 
-    }
-}
-
-.ngx-fileupload-icon--canceled {
-    color: map-get($map: $colors, $key: "red");
-    &:before {
-        content: $ngx-fileupload-icon--remove_done; 
+        content: $ngx-fileupload-icon--progress; 
     }
 }
 
@@ -73,22 +56,68 @@ $line-height: $ngx-fileupload-icons--line-height;
 .ngx-fileupload-icon--error {
     color: map-get($map: $colors, $key: "red");
     &:before {
-        content: $ngx-fileupload-icon--error_outline; 
+        content: $ngx-fileupload-icon--error; 
     }
 }
 
-.ngx-fileupload-icon--upload:before {
-    content: $ngx-fileupload-icon--file_upload; 
+.ngx-fileupload-icon--upload {
+  &:before {
+    content: $ngx-fileupload-icon--upload; 
+  }
 }
 
-.ngx-fileupload-icon--queued:before {
-    content: $ngx-fileupload-icon--queued; 
+.ngx-fileupload-icon--pending {
+  &:before {
+    content: $ngx-fileupload-icon--pending; 
+  }
 }
 
-.ngx-fileupload-icon--retry:before {
-    content: $ngx-fileupload-icon--replay; 
+.ngx-fileupload-icon--idle {
+  &:before {
+    content: $ngx-fileupload-icon--idle; 
+  }
 }
 
-.ngx-fileupload-icon--add:before {
-    content: $ngx-fileupload-icon--add; 
+.ngx-fileupload-icon--reload {
+  &:before {
+    content: $ngx-fileupload-icon--reload; 
+  }
+}
+
+.ngx-fileupload-icon--remove {
+  &:before {
+    content: $ngx-fileupload-icon--remove; 
+  }
+}
+
+.ngx-fileupload-icon--add {
+  &:before {
+    content: $ngx-fileupload-icon--plus; 
+  }
+}
+
+.ngx-fileupload-icon--cancel,
+.ngx-fileupload-icon--canceled {
+  &:before {
+    content: $ngx-fileupload-icon--canceled; 
+  }
+}
+
+.ngx-fileupload-icon--completed {
+
+    &.success {
+        color: map-get($colors, success);
+
+        &:before {
+            content: $ngx-fileupload-icon--success; 
+        }
+    }
+
+    &.error {
+        color: map-get($colors, red);
+
+        &:before {
+            content: $ngx-fileupload-icon--error; 
+        }
+    }
 }

@@ -27,6 +27,42 @@ Watch [Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) to see ngx fileup
 <ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>
 ```
 
+## Features 
+
+### Version 3.0+
+
+- **Upload Storage**
+
+    Uploads will not longer store in ViewComponents this was a big mistake which leads to the problem that all uploads have to been stopped if the view has been left. So we deicide create a Storage which holds all Upload Requests, so it is very easy to create a new **InjectionToken** and inject your UploadStorage in any view you want. You can even leave the view and return later and see your uploads again.
+
+- **Upload Queue**
+
+    The Upload Queue is part of the storage and controls which upload could start and which should pending until we got a free space. So you can add 50 Files start them all but by default the queue will only allow 5 uploads on the same time, if one upload is completed, canceled or removed it will grab next from queue and starts it.
+
+    This will only happens for Upload Requests which was started (upload all or start them one by one), so no File would uploaded if you just put them into the list.
+
+- **Seperate View from Bussiness Logic**
+
+    One other big change we completly seperate the view from bussiness logic, so you can allways build a complete own view just use the core classes (UploadStore, UploadQueue, UploadRequest, Validation) to create your own fileupload component.
+
+    You dont have create a complete own view if you want to customize one view, you can allways just use the NgxFileUpload UI and customize them.
+
+### Version 2.0+
+
+- **Validation**
+
+    We completly reworked the validation concept, so now validators are not Providers anymore and built in the Compositor Design Pattern. So you can create multiple validators and put them together into groups and combine multiple groups in one group.
+
+### Version 1.0+
+
+- **Async Uploads**
+
+    All files will uploaded in a seperat request, so you can control them seperate (cancel, start ) and get informations about them
+
+- **Full Customizeable**
+
+    Even if we provide a default view you can allways create a own view, inject a custom template to ngx-fileupload or ngx-fileupload-item to bring up a complete new view for every upload request or just add ngxFileUpload Directive to any component which should be used as FileBrowser
+
 To get more detailed informations please check out the docs
 
 - [Upload Component](./docs/upload-component.md)
@@ -66,10 +102,12 @@ ng test ngx-fileupload
 
 - reimplement e2e tests
 - reimplement unit tests
-- better state management for uploads
-- add option to limit processing max uploads at once
+- ~~better state management for uploads~~
+- ~~add option to limit processing max uploads at once~~
 
 ## Credits
+
+All icon fonts was created with [IconMoon App](https://icomoon.io/app/#/select)
 
 Special thanks for code reviews, great improvements and ideas to
 

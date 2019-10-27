@@ -1,8 +1,0 @@
-@import '~igniteui-angular/lib/core/styles/themes/index';
-@import "variables";
-
-:host {
-    ::ng-deep {
-        @include igx-tabs($dark-tabs);
-    }
-}

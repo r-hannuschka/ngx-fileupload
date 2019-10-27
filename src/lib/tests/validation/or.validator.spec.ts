@@ -1,4 +1,4 @@
-import { OrValidator } from "lib/ngx-fileupload/utils/validation/or.validator";
+import { OrValidator } from "lib/ngx-fileupload/libs/validation/src/or.validator";
 import { ValidatorMockFactory } from "../mock/validator.factory";
 
 describe("GroupedValidation: Or", () => {

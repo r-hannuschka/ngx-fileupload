@@ -108,6 +108,8 @@ ng test ngx-fileupload
 
 ## Credits
 
+All icon fonts was created with [IconMoon App](https://icomoon.io/app/#/select)
+
 Special thanks for code reviews, great improvements and ideas to
 
 ||||  

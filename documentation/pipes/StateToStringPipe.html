@@ -41,7 +41,7 @@
 
 <ol class="breadcrumb">
   <li>Pipes</li>
-  <li>FileSizePipe</li>
+  <li>StateToStringPipe</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -60,7 +60,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/utils/file-size.pipe.ts</code>
+            <code>lib/ngx-fileupload/utils/state-to-string.pipe.ts</code>
         </p>
 
 
@@ -71,7 +71,7 @@
                 <tbody>
                     <tr>
                         <td class="col-md-3">Name</td>
-                        <td class="col-md-9">fileSize</td>
+                        <td class="col-md-9">stateToString</td>
                     </tr>
                 </tbody>
             </table>
@@ -97,15 +97,15 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>transform(size: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+<code>transform(state: <a href="../interfaces/Upload.html">UploadState</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="10"
-                            class="link-to-prism">lib/ngx-fileupload/utils/file-size.pipe.ts:10</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="9"
+                            class="link-to-prism">lib/ngx-fileupload/utils/state-to-string.pipe.ts:9</a></div>
                 </td>
             </tr>
 
@@ -125,9 +125,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>size</td>
+                                    <td>state</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                <code><a href="../interfaces/Upload.html" target="_self" >UploadState</a></code>
                                     </td>
 
                                     <td>
@@ -159,23 +159,24 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Pipe, PipeTransform } from &quot;@angular/core&quot;;
+import { UploadState } from &quot;../data/api&quot;;
 
 @Pipe({
-    name: &quot;fileSize&quot;
+    name: &quot;stateToString&quot;
 })
-export class FileSizePipe implements PipeTransform {
+export class StateToStringPipe implements PipeTransform {
 
-    private units &#x3D; [&quot;Byte&quot;, &quot;Kb&quot;, &quot;Mb&quot;, &quot;Gb&quot;];
+    transform(state: UploadState): string {
 
-    transform(size: number): string {
-        let bytes &#x3D; isNaN(size) ? parseFloat(size.toString()) : size;
-        let unit  &#x3D; 0;
-
-        while (bytes &gt; 1024 &amp;&amp; this.units.length &gt; unit) {
-            bytes &#x3D; bytes / 1024;
-            unit++;
+        switch (state) {
+            case UploadState.IDLE:      return &quot;idle&quot;;
+            case UploadState.PENDING:   return &quot;pending&quot;;
+            case UploadState.PROGRESS:  return &quot;progress&quot;;
+            case UploadState.COMPLETED: return &quot;completed&quot;;
+            case UploadState.START:     return &quot;start&quot;;
+            case UploadState.INVALID:   return &quot;invalid&quot;;
+            default:                    return &quot;canceled&quot;;
         }
-        return &#x60;${bytes.toFixed(2)} ${this.units[unit]}&#x60;;
     }
 }
 </code></pre>
@@ -208,7 +209,7 @@ export class FileSizePipe implements PipeTransform {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'pipe';
-            var COMPODOC_CURRENT_PAGE_URL = 'FileSizePipe.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'StateToStringPipe.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

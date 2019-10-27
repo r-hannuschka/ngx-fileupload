@@ -131,13 +131,13 @@ import { UploadModel } from &quot;../upload.model&quot;;
 import { ValidationErrors } from &quot;./validation&quot;;
 
 export enum UploadState {
-    QUEUED    &#x3D; &quot;queued&quot;,
-    START     &#x3D; &quot;start&quot;,
-    PROGRESS  &#x3D; &quot;progress&quot;,
-    UPLOADED  &#x3D; &quot;uploaded&quot;,
-    CANCELED  &#x3D; &quot;canceled&quot;,
-    ERROR     &#x3D; &quot;error&quot;,
-    INVALID   &#x3D; &quot;invalid&quot;
+    INVALID   &#x3D; 0,
+    CANCELED  &#x3D; 1,
+    IDLE      &#x3D; 2,
+    PENDING   &#x3D; 3,
+    START     &#x3D; 4,
+    PROGRESS  &#x3D; 5,
+    COMPLETED &#x3D; 6
 }
 
 export interface UploadResponse {
@@ -151,13 +151,51 @@ export interface UploadValidation {
 }
 
 export interface UploadData {
+    /**
+     * name of upload
+     */
     name: string;
+    /**
+     * progress in percent
+     */
     progress: number;
+    /**
+     * upload finishes request with a succes, holds success informations
+     */
     response: UploadResponse;
+    /**
+     * total size of upload
+     */
     size: number;
+    /**
+     * current state of upload
+     */
     state: UploadState;
+    /**
+     * uploaded size
+     */
     uploaded: number;
+    /**
+     * contains validation results
+     */
     validation: UploadValidation;
+    /**
+     * returns true if upload request was finished with an error
+     */
+    hasError: boolean;
+    /**
+     * returns true if upload is invalid
+     */
+    isInvalid: boolean;
+    /**
+     * upload is marked for start but still in upload queue
+     * and not running currently
+     */
+    isPending: boolean;
+    /**
+     * upload request id
+     */
+    requestId: string;
 }
 
 export interface Upload {
@@ -201,6 +239,13 @@ export interface Upload {
      */
     isInvalid(): boolean;
 }
+
+export interface UploadStoreConfig {
+    /**
+     * max count of uploads at once, set to -1 for no limit
+     */
+    concurrentUploads: number;
+}
 </code></pre>
     </div>
 </div>
@@ -229,6 +274,7 @@ export interface Upload {
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
             var COMPODOC_CURRENT_PAGE_URL = 'UploadValidation.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

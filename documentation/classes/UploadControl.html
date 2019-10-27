@@ -60,7 +60,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/utils/upload-control.ts</code>
+            <code>lib/ngx-fileupload/libs/upload/src/upload.control.ts</code>
         </p>
 
             <p class="comment">
@@ -105,6 +105,10 @@ to the item template.</p>
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#remove">remove</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#retry">retry</a>
                             </li>
                             <li>
@@ -134,12 +138,12 @@ to the item template.</p>
                 <tr>
                     <td class="col-md-4">
                                 <span class="modifier">Public</span>
-                        <code>constructor(fileUpload: <a href="../interfaces/Upload.html">FileUpload</a>)</code>
+                        <code>constructor(fileUpload: <a href="../interfaces/Upload.html">UploadRequest</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">lib/ngx-fileupload/utils/upload-control.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">lib/ngx-fileupload/libs/upload/src/upload.control.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -160,7 +164,7 @@ to the item template.</p>
                                                         <td>fileUpload</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../interfaces/Upload.html" target="_self" >FileUpload</a></code>
+                                                                        <code><a href="../interfaces/Upload.html" target="_self" >UploadRequest</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -187,6 +191,78 @@ to the item template.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="remove"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            remove
+                        </b>
+                        <a href="#remove"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>remove(event?: MouseEvent)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">lib/ngx-fileupload/libs/upload/src/upload.control.ts:61</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>MouseEvent</code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="retry"></a>
                     <span class="name">
                         <b>
@@ -207,8 +283,8 @@ to the item template.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="34"
-                            class="link-to-prism">lib/ngx-fileupload/utils/upload-control.ts:34</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="33"
+                            class="link-to-prism">lib/ngx-fileupload/libs/upload/src/upload.control.ts:33</a></div>
                 </td>
             </tr>
 
@@ -283,8 +359,8 @@ since connection can be broken or something dont has started yet.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">lib/ngx-fileupload/utils/upload-control.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">lib/ngx-fileupload/libs/upload/src/upload.control.ts:41</a></div>
                 </td>
             </tr>
 
@@ -357,8 +433,8 @@ since connection can be broken or something dont has started yet.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="50"
-                            class="link-to-prism">lib/ngx-fileupload/utils/upload-control.ts:50</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">lib/ngx-fileupload/libs/upload/src/upload.control.ts:49</a></div>
                 </td>
             </tr>
 
@@ -417,7 +493,7 @@ since connection can be broken or something dont has started yet.</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { FileUpload } from &quot;./http/file-upload&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { UploadRequest } from &quot;./upload.request&quot;;
 import { timer } from &quot;rxjs&quot;;
 
 /**
@@ -438,10 +514,9 @@ import { timer } from &quot;rxjs&quot;;
 export class UploadControl {
 
     /**
-     *
      */
     public constructor(
-        private fileUpload: FileUpload
+        private fileUpload: UploadRequest
     ) {}
 
     /**
@@ -476,6 +551,11 @@ export class UploadControl {
         timer(0).subscribe({
             next: () &#x3D;&gt; this.fileUpload.cancel()
         });
+    }
+
+    public remove(event?: MouseEvent) {
+        this.handleEvent(event);
+        this.fileUpload.destroy();
     }
 
     private handleEvent(event?: MouseEvent) {
@@ -513,6 +593,7 @@ export class UploadControl {
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
             var COMPODOC_CURRENT_PAGE_URL = 'UploadControl.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

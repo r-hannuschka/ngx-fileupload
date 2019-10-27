@@ -61,7 +61,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/ui/upload-item/upload-item.component.ts</code>
+            <code>lib/ngx-fileupload/libs/ui/src/upload-item.component.ts</code>
         </p>
 
 
@@ -158,12 +158,13 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter } from &quot;@angular/core&quot;;
-import { FileUpload } from &quot;../../utils/http/file-upload&quot;;
-import { UploadControl } from &quot;../../utils/upload-control&quot;;
-import { UploadModel } from &quot;../../data/upload.model&quot;;
-import { UploadData, UploadState, Upload } from &quot;../../data/api&quot;;
-import { Subscription } from &quot;rxjs&quot;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from &quot;@angular/core&quot;;
+import { UploadRequest, UploadControl } from &quot;../../upload&quot;;
+import { UploadModel } from &quot;../../../data/upload.model&quot;;
+import { UploadData } from &quot;../../../data/api&quot;;
+import {  Subject } from &quot;rxjs&quot;;
+import { takeUntil } from &quot;rxjs/operators&quot;;
+import * as UploadAPI from &quot;../../../data/api/upload&quot;;
 
 export interface FileUploadItemContext {
     data: UploadData;
@@ -178,7 +179,9 @@ export interface FileUploadItemContext {
     templateUrl: &quot;upload-item.component.html&quot;,
     styleUrls: [&quot;./upload-item.component.scss&quot;],
 })
-export class UploadItemComponent implements OnInit, OnDestroy {
+export class UploadItemComponent implements AfterViewInit, OnDestroy {
+
+    public uploadState &#x3D; UploadAPI.UploadState;
 
     /**
      * item template which should rendered to display upload data
@@ -193,41 +196,36 @@ export class UploadItemComponent implements OnInit, OnDestroy {
     /**
      * file upload which should bound to this view
      */
-    private fileUpload: FileUpload;
+    private fileUpload: UploadRequest;
 
     /**
      * save subscription here,  since we have only 1 sub
      * i think takeUntil and Subject will be to much so we could
      * unsubscribe directly
      */
-    private changeSub: Subscription;
+    private destroyed: Subject&lt;boolean&gt; &#x3D; new Subject();
 
     /**
      * sets upload we want to bind with current view
      */
     @Input()
-    public set upload(fileUpload: FileUpload) {
+    public set upload(fileUpload: UploadRequest) {
         this.fileUpload &#x3D; fileUpload;
         this.context &#x3D; {
-            data: null,
+            data: this.fileUpload.data,
             ctrl: new UploadControl(fileUpload)
         };
     }
 
     @Output()
-    public completed: EventEmitter&lt;FileUpload&gt;;
+    public completed: EventEmitter&lt;UploadRequest&gt;;
 
     @Output()
-    public stateChange: EventEmitter&lt;FileUpload&gt;;
-
-    /** @deprecated use stateChange now */
-    @Output()
-    public changed: EventEmitter&lt;UploadModel&gt;;
+    public stateChange: EventEmitter&lt;UploadRequest&gt;;
 
     public constructor() {
         this.completed   &#x3D; new EventEmitter();
         this.stateChange &#x3D; new EventEmitter();
-        this.changed     &#x3D; new EventEmitter();
     }
 
     /**
@@ -259,24 +257,13 @@ export class UploadItemComponent implements OnInit, OnDestroy {
      *
      * @inheritdoc
      */
-    ngOnInit(): void {
-
-        let state: UploadState &#x3D; UploadState.QUEUED;
-
-        this.changeSub &#x3D; this.fileUpload.change
+    ngAfterViewInit(): void {
+        this.fileUpload.change
+            .pipe(
+                takeUntil(this.destroyed)
+            )
             .subscribe({
-                next: (upload: UploadModel) &#x3D;&gt; {
-                    this.context.data &#x3D; upload.toJson();
-
-                    if (state !&#x3D;&#x3D; upload.state) {
-                        this.stateChange.emit(this.fileUpload);
-                        this.changed.emit(upload);
-                        state &#x3D; upload.state;
-                    }
-                },
-                complete: () &#x3D;&gt; {
-                    this.completed.emit(this.fileUpload);
-                }
+                next: (upload: UploadModel) &#x3D;&gt; this.context.data &#x3D; upload.toJson()
             });
     }
 
@@ -284,10 +271,7 @@ export class UploadItemComponent implements OnInit, OnDestroy {
      * if component gets destroyed remove change subscription
      */
     ngOnDestroy() {
-        // cancel file upload if item view is destroyed
-        this.fileUpload.cancel();
-        this.changeSub.unsubscribe();
-        this.changeSub &#x3D; null;
+        this.destroyed.next(true);
     }
 
     /**
@@ -325,6 +309,7 @@ export class UploadItemComponent implements OnInit, OnDestroy {
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
             var COMPODOC_CURRENT_PAGE_URL = 'FileUploadItemContext.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

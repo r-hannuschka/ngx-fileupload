@@ -61,7 +61,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/utils/http/file-upload.ts</code>
+            <code>lib/ngx-fileupload/libs/upload/src/upload.request.ts</code>
         </p>
 
             <p class="comment">
@@ -184,10 +184,10 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from &quot;@angular/common/http&quot;;
-import { Subject, BehaviorSubject, Observable } from &quot;rxjs&quot;;
-import { takeUntil, filter } from &quot;rxjs/operators&quot;;
-import { UploadState, UploadResponse, UploadData, Upload} from &quot;../../data/api&quot;;
-import { UploadModel } from &quot;../../data/upload.model&quot;;
+import { Subject, BehaviorSubject, Observable, forkJoin } from &quot;rxjs&quot;;
+import { takeUntil, filter, switchMap, map } from &quot;rxjs/operators&quot;;
+import { UploadState, UploadResponse, UploadData, Upload, Validator, ValidationFn} from &quot;../../../data/api&quot;;
+import { UploadModel } from &quot;../../../data/upload.model&quot;;
 
 /**
  * Upload Options
@@ -220,7 +220,7 @@ export interface UploadOptions {
 /**
  * represents a single file upload
  */
-export class FileUpload implements Upload {
+export class UploadRequest implements Upload {
 
     /**
      * if cancel$ emits true, current upload will stopped
@@ -232,39 +232,120 @@ export class FileUpload implements Upload {
      */
     private upload$: BehaviorSubject&lt;UploadModel&gt;;
 
+    /**
+     * upload stream gets destroyed
+     */
+    private destroyed$: Subject&lt;boolean&gt; &#x3D; new Subject();
+
     private options: UploadOptions &#x3D; {
         url: &quot;&quot;,
         formData: { enabled: true, name: &quot;file&quot; }
     };
 
+    private hooks: {beforeStart: Array&lt;() &#x3D;&gt; Observable&lt;boolean&gt;&gt;} &#x3D; { beforeStart: [] };
+
+    public get change(): Observable&lt;UploadModel&gt; {
+        return this.upload$.asObservable();
+    }
+
+    public get destroyed(): Observable&lt;boolean&gt; {
+        return this.destroyed$.asObservable();
+    }
+
+    public get data(): UploadData {
+        return this.upload.toJson();
+    }
+
+    public get requestId(): string {
+        return this.upload.requestId;
+    }
+
+    public set state(state: UploadState) {
+        this.upload.state &#x3D; state;
+    }
+
+    public get state() {
+        return this.upload.state;
+    }
+
     /**
-     * create FileUpload service
+     * create UploadRequest service
      */
     public constructor(
         private http: HttpClient,
         private upload: UploadModel,
         options: UploadOptions
     ) {
+        const reqId &#x3D; Array.from({length: 4}, () &#x3D;&gt; Math.random().toString(32).slice(2));
+        this.upload.requestId &#x3D; reqId.join(&quot;_&quot;);
+
         this.upload$ &#x3D; new BehaviorSubject(this.upload);
         this.options &#x3D; {...this.options, ...options};
     }
 
+    public beforeStart(hook: () &#x3D;&gt; Observable&lt;boolean&gt;) {
+        this.hooks.beforeStart &#x3D; [
+            ...this.hooks.beforeStart,
+            hook
+        ];
+    }
+
+    public update() {
+        this.notifyObservers();
+    }
+
     /**
-     * upload file to server but only
-     * if file is not queued, abort request on cancel
+     * cancel current file upload, this will complete change subject
      */
-    public start() {
-        /** only start upload if state is not queued and is valid */
-        if (this.upload.state &#x3D;&#x3D;&#x3D; UploadState.QUEUED) {
-            this.uploadFile().pipe(
-                takeUntil(this.cancel$),
-                filter(() &#x3D;&gt; this.upload.state !&#x3D;&#x3D; UploadState.CANCELED)
-            )
-            .subscribe({
-                next: (event: HttpEvent&lt;string&gt;) &#x3D;&gt; this.handleHttpEvent(event),
-                error: (error: HttpErrorResponse) &#x3D;&gt; this.handleError(error)
-            });
+    public cancel() {
+        if (!this.isCompleted(true) &amp;&amp; !this.upload.isInvalid) {
+            this.upload.state &#x3D; UploadState.CANCELED;
+            this.cancel$.next(true);
+            this.notifyObservers();
         }
+    }
+
+    public destroy() {
+        this.cancel$.next(true);
+        this.destroyed$.next(true);
+
+        this.cancel$.complete();
+        this.upload$.complete();
+
+        this.hooks      &#x3D; null;
+        this.upload$    &#x3D; null;
+        this.upload     &#x3D; null;
+        this.cancel$    &#x3D; null;
+    }
+
+    public isCompleted(ignoreError &#x3D; false): boolean {
+        let isCompleted &#x3D; this.isRequestCompleted();
+        isCompleted &#x3D; isCompleted &amp;&amp; (ignoreError ? true : !this.hasError());
+        isCompleted &#x3D; isCompleted || this.state &#x3D;&#x3D;&#x3D; UploadState.CANCELED;
+        return isCompleted;
+    }
+
+    /**
+     * returns true if validators are set and upload not validated
+     */
+    public isInvalid(): boolean {
+        return this.upload.isInvalid;
+    }
+
+    public isProgress(): boolean {
+        return this.upload.state &#x3D;&#x3D;&#x3D; UploadState.PROGRESS || this.upload.state &#x3D;&#x3D;&#x3D; UploadState.START;
+    }
+
+    public isPending(): boolean {
+        return this.upload.state &#x3D;&#x3D;&#x3D; UploadState.PENDING;
+    }
+
+    public isIdle(): boolean {
+        return this.upload.state &#x3D;&#x3D;&#x3D; UploadState.IDLE;
+    }
+
+    public isRequestCompleted() {
+        return this.upload.state &#x3D;&#x3D;&#x3D; UploadState.COMPLETED;
     }
 
     /**
@@ -272,43 +353,46 @@ export class FileUpload implements Upload {
      * reset state, and reset errors
      */
     public retry() {
-        if (this.upload.state &#x3D;&#x3D;&#x3D; UploadState.ERROR) {
-            this.upload.state &#x3D; UploadState.QUEUED;
-            this.upload.response &#x3D; {success: false, body: null, errors: null};
+        if (this.state &#x3D;&#x3D;&#x3D; UploadState.COMPLETED &amp;&amp; this.upload.hasError) {
+            this.resetUpload();
             this.start();
         }
     }
 
     /**
-     * cancel current file upload, this will complete change subject
+     * start file upload
      */
-    public cancel() {
-        let isCancelAble &#x3D; this.upload.state !&#x3D;&#x3D; UploadState.CANCELED;
-        isCancelAble     &#x3D; isCancelAble &amp;&amp; this.upload.state !&#x3D;&#x3D; UploadState.UPLOADED;
+    public start() {
 
-        if (isCancelAble) {
-            this.upload.state &#x3D; UploadState.CANCELED;
-            this.notifyObservers();
-            this.cancel$.next(true);
-            this.completeUpload();
+        if (!this.isIdle() &amp;&amp; !this.isPending()) {
+            return;
         }
+
+        /** call beforeStart hooks, if one returns false upload will not started */
+        forkJoin(this.hooks.beforeStart.map((hook) &#x3D;&gt; hook()))
+            .pipe(
+                map((result: boolean[]) &#x3D;&gt; result.reduce((prev, cur) &#x3D;&gt; prev &amp;&amp; cur, true)),
+                filter(result &#x3D;&gt; result),
+                switchMap(() &#x3D;&gt; this.uploadFile()),
+            )
+            .subscribe({
+                next:  (event: HttpEvent&lt;string&gt;) &#x3D;&gt; this.handleHttpEvent(event),
+                error: (error: HttpErrorResponse) &#x3D;&gt; this.handleError(error)
+            });
     }
 
     /**
-     * returns observable which notify if file upload state
-     * has been changed
+     * validate upload
      */
-    public get change(): Observable&lt;UploadModel&gt; {
-        /** should be written into model or store ? */
-        return this.upload$.asObservable();
-    }
+    public validate(validator: Validator | ValidationFn) {
+        const result &#x3D; &quot;validate&quot; in validator
+            ? validator.validate(this.upload.file)
+            : validator(this.upload.file);
 
-    public get model(): UploadModel {
-        return this.upload;
-    }
-
-    public get data(): UploadData {
-        return this.upload.toJson();
+        if (result !&#x3D;&#x3D; null) {
+            this.upload.state &#x3D; UploadState.INVALID;
+        }
+        this.upload.validationErrors &#x3D; result;
     }
 
     /**
@@ -316,14 +400,7 @@ export class FileUpload implements Upload {
      * sends back an error response
      */
     public hasError(): boolean {
-        return this.upload.state &#x3D;&#x3D;&#x3D; UploadState.ERROR;
-    }
-
-    /**
-     * returns true if validators are set and upload not validated
-     */
-    public isInvalid(): boolean {
-        return this.upload.state &#x3D;&#x3D;&#x3D; UploadState.INVALID;
+        return this.upload.hasError;
     }
 
     /**
@@ -334,7 +411,7 @@ export class FileUpload implements Upload {
         return this.http.post&lt;string&gt;(this.options.url, uploadBody, {
             reportProgress: true,
             observe: &quot;events&quot;
-        });
+        }).pipe(takeUntil(this.cancel$));
     }
 
     /**
@@ -351,62 +428,7 @@ export class FileUpload implements Upload {
     }
 
     /**
-     * handle all http events
-     */
-    private handleHttpEvent(event: HttpEvent&lt;string&gt;) {
-        switch (event.type) {
-            case HttpEventType.Sent: this.handleSent(); break;
-            case HttpEventType.UploadProgress: this.handleProgress(event); break;
-            case HttpEventType.Response: this.handleResponse(event); break;
-        }
-    }
-
-    /**
-     * upload has been started
-     */
-    private handleSent() {
-        this.upload.state &#x3D; UploadState.START;
-        this.notifyObservers();
-    }
-
-    /**
-     * handle file upload in progress
-     */
-    private handleProgress(event: HttpProgressEvent) {
-        this.upload.state &#x3D; UploadState.PROGRESS;
-        this.upload.uploaded &#x3D; event.loaded;
-        this.notifyObservers();
-    }
-
-    /**
-     * upload has been completed so server responds within 200 range
-     * status code
-     */
-    private handleResponse(res: HttpResponse&lt;any&gt;) {
-        const uploadResponse: UploadResponse &#x3D; {
-            success: res.ok,
-            body: res.body,
-            errors: null
-        };
-        this.upload.state    &#x3D; UploadState.UPLOADED;
-        this.upload.response &#x3D; uploadResponse;
-        this.notifyObservers();
-        this.completeUpload();
-    }
-
-    /**
-     * if server not sends a status code in 2xx range this will
-     * throw an error which will handled here
-     *
-     * but we have sanitize the response message for this assume
-     * server not running ( no chance the server could send any messages )
-     * and response error will be a ProgressEvent instance, if this is the case
-     * fallback to the response.message
-     *
-     * and we could send back diffrent messages for a status like
-     *
-     * res.status(400).send(WHAT YOU WANT) so response.error will contain
-     * this array, or a string or anything else. If not see fallback.
+     * request responds with an error
      */
     private handleError(response: HttpErrorResponse) {
 
@@ -419,20 +441,52 @@ export class FileUpload implements Upload {
             errors
         };
 
-        this.upload.state    &#x3D; UploadState.ERROR;
+        /** not completed since we could retry */
+        this.upload.state    &#x3D; UploadState.COMPLETED;
         this.upload.response &#x3D; uploadResponse;
         this.notifyObservers();
     }
 
     /**
-     * complete download, complete streams and delete them
-     * notify observers
+     * handle all http events
      */
-    private completeUpload() {
-        this.upload$.complete();
-        this.cancel$.complete();
-        this.cancel$ &#x3D; null;
-        this.upload$ &#x3D; null;
+    private handleHttpEvent(event: HttpEvent&lt;string&gt;) {
+        switch (event.type) {
+            case HttpEventType.Sent:           this.handleSent(); break;
+            case HttpEventType.UploadProgress: this.handleProgress(event); break;
+            case HttpEventType.Response:       this.handleResponse(event); break;
+        }
+    }
+
+    /**
+     * handle http progress event
+     */
+    private handleProgress(event: HttpProgressEvent) {
+        this.upload.state &#x3D; UploadState.PROGRESS;
+        this.upload.uploaded &#x3D; event.loaded;
+        this.notifyObservers();
+    }
+
+    /**
+     * upload completed with 20x
+     */
+    private handleResponse(res: HttpResponse&lt;any&gt;) {
+        const uploadResponse: UploadResponse &#x3D; {
+            success: res.ok,
+            body: res.body,
+            errors: null
+        };
+        this.upload.response &#x3D; uploadResponse;
+        this.upload.state    &#x3D; UploadState.COMPLETED;
+        this.notifyObservers();
+    }
+
+    /**
+     * upload has been started
+     */
+    private handleSent() {
+        this.upload.state &#x3D; UploadState.START;
+        this.notifyObservers();
     }
 
     /**
@@ -440,6 +494,16 @@ export class FileUpload implements Upload {
      */
     private notifyObservers() {
         this.upload$.next(this.upload);
+    }
+
+    /**
+     * reset upload
+     */
+    private resetUpload() {
+        this.upload.state     &#x3D; UploadState.IDLE;
+        this.upload.response  &#x3D; {success: false, body: null, errors: null};
+        this.upload.uploaded  &#x3D; 0;
+        this.upload.isPending &#x3D; false;
     }
 }
 </code></pre>
@@ -470,6 +534,7 @@ export class FileUpload implements Upload {
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
             var COMPODOC_CURRENT_PAGE_URL = 'UploadOptions.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

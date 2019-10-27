@@ -37,7 +37,7 @@
 
 <ol class="breadcrumb">
   <li>Directives</li>
-  <li>UploadFileDirective</li>
+  <li>FileBrowserDirective</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -55,7 +55,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>lib/ngx-fileupload/ui/upload-file/upload-file.ts</code>
+            <code>lib/ngx-fileupload/libs/ui/src/file-browser.ts</code>
         </p>
 
             <p class="comment">
@@ -101,45 +101,7 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#url">url</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Methods</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#cancelAll">cancelAll</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#cleanAll">cleanAll</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#uploadAll">uploadAll</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -157,6 +119,9 @@
                             </li>
                             <li>
                                 <a href="#ngxFileUpload">ngxFileUpload</a>
+                            </li>
+                            <li>
+                                <a href="#storage">storage</a>
                             </li>
                             <li>
                                 <a href="#useFormData">useFormData</a>
@@ -229,12 +194,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(httpClient: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, renderer: <a href="https://angular.io/api/core/Renderer2" target="_blank">Renderer2</a>)</code>
+<code>constructor(renderer: <a href="https://angular.io/api/core/Renderer2" target="_blank">Renderer2</a>, uploadFactory: <a href="../injectables/FileUploadFactory.html">FileUploadFactory</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:74</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:70</a></div>
                             </td>
                         </tr>
 
@@ -254,10 +219,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>httpClient</td>
+                                                        <td>renderer</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                                        <code><a href="https://angular.io/api/core/Renderer2" target="_blank" >Renderer2</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -266,10 +231,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>renderer</td>
+                                                        <td>uploadFactory</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/core/Renderer2" target="_blank" >Renderer2</a></code>
+                                                                        <code><a href="../injectables/FileUploadFactory.html" target="_self" >FileUploadFactory</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -303,7 +268,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:56</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:58</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -323,7 +288,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:53</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:55</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -351,7 +316,28 @@ by default this will be file</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:37</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:36</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="storage"></a>
+                        <b>storage</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Upload.html" target="_self" >UploadStorage</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:33</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -371,7 +357,7 @@ by default this will be file</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:46</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:48</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -399,7 +385,7 @@ plain file object in body</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:59</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:41</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -417,13 +403,13 @@ plain file object in body</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../interfaces/Upload.html" target="_self" >EventEmitter&lt;FileUpload[]&gt;</a></code>
+                        <i>Type : </i>        <code><a href="../interfaces/Upload.html" target="_self" >EventEmitter&lt;UploadRequest[]&gt;</a></code>
 
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:32</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:30</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -464,8 +450,8 @@ plain file object in body</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="155"
-                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:155</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:119</a></div>
                 </td>
             </tr>
 
@@ -507,8 +493,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="131"
-                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:131</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:95</a></div>
                 </td>
             </tr>
 
@@ -549,8 +535,8 @@ to get notified we have a click event</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="140"
-                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:140</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:104</a></div>
                 </td>
             </tr>
 
@@ -565,176 +551,7 @@ to get notified we have a click event</p>
         </tbody>
     </table>
 </section>
-            <section>
-    
-    <h3 id="methods">
-        Methods
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="cancelAll"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            cancelAll
-                        </b>
-                        <a href="#cancelAll"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>cancelAll()</code>
-                </td>
-            </tr>
 
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="108"
-                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:108</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>cancel all downloads at once</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="cleanAll"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            cleanAll
-                        </b>
-                        <a href="#cleanAll"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>cleanAll()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="118"
-                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:118</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>search for broken uploads (error / invalid) and cancel
-them</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="uploadAll"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Public</span>
-                            uploadAll
-                        </b>
-                        <a href="#uploadAll"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>uploadAll()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="101"
-                            class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:101</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>begin all uploads at once</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>
-            <section>
-    
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="url"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Public</span>
-                            url</b>
-                            <a href="#url"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:34</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-</section>
 
             <section>
     <h3 id="accessors">
@@ -757,7 +574,7 @@ them</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">lib/ngx-fileupload/ui/upload-file/upload-file.ts:37</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">lib/ngx-fileupload/libs/ui/src/file-browser.ts:36</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -806,13 +623,12 @@ them</p>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2 } from &quot;@angular/core&quot;;
-import { HttpClient } from &quot;@angular/common/http&quot;;
-import { takeUntil } from &quot;rxjs/operators&quot;;
 import { Subject } from &quot;rxjs&quot;;
 
-import { Validator, ValidationFn, UploadState } from &quot;../../data/api&quot;;
-import { UploadModel } from &quot;../../data/upload.model&quot;;
-import { FileUpload } from &quot;../../utils/http/file-upload&quot;;
+import { Validator, ValidationFn } from &quot;../../../data/api/validation&quot;;
+import { UploadRequest } from &quot;../../upload/src/upload.request&quot;;
+import { FileUploadFactory } from &quot;../../../utils/factory&quot;;
+import { UploadStorage } from &quot;../../upload/src/upload.storage&quot;;
 
 /**
  * directive to add uploads with drag / drop
@@ -823,10 +639,9 @@ import { FileUpload } from &quot;../../utils/http/file-upload&quot;;
  * &lt;button (click)&#x3D;&quot;ngxFileUploadRef.upload()&quot;&gt;Upload&lt;/button&gt;
  */
 @Directive({
-  selector: &quot;[ngxFileUpload]&quot;,
-  exportAs: &quot;ngxFileUploadRef&quot;
+  selector: &quot;[ngxFileUpload]&quot;
 })
-export class UploadFileDirective implements OnDestroy {
+export class FileBrowserDirective implements OnDestroy {
 
     /**
      * upload has been added
@@ -836,14 +651,18 @@ export class UploadFileDirective implements OnDestroy {
      * &lt;div [ngxFileUpload]&#x3D;&quot;&quot;localhost/upload&quot;&quot; (add)&#x3D;&quot;onUploadAdd($event)&quot; &gt;&lt;/div&gt;
      */
     @Output()
-    public add: EventEmitter&lt;FileUpload[]&gt;;
+    public add: EventEmitter&lt;UploadRequest[]&gt;;
 
-    public url: string;
+    @Input()
+    public storage: UploadStorage;
 
     @Input(&quot;ngxFileUpload&quot;)
     public set ngxFileUpload(url: string) {
         this.url &#x3D; url;
     }
+
+    @Input()
+    public validator: Validator | ValidationFn;
 
     /**
      * if set to false upload post request body will use
@@ -862,18 +681,12 @@ export class UploadFileDirective implements OnDestroy {
     @Input()
     public disabled &#x3D; false;
 
-    @Input()
-    public validator: Validator | ValidationFn;
+    private url: string;
 
     /**
      * remove from subscribtions if component gets destroyed
      */
     private destroyed$: Subject&lt;boolean&gt; &#x3D; new Subject();
-
-    /**
-     * upload file queue
-     */
-    private uploads: FileUpload[] &#x3D; [];
 
     /**
      * input file field to trigger file window
@@ -884,8 +697,8 @@ export class UploadFileDirective implements OnDestroy {
      * Creates an instance of NgxFileUploadDirective.
      */
     constructor(
-        private httpClient: HttpClient,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private uploadFactory: FileUploadFactory,
     ) {
         this.add &#x3D; new EventEmitter();
         this.fileSelect &#x3D; this.createFieldInputField();
@@ -897,38 +710,6 @@ export class UploadFileDirective implements OnDestroy {
     public ngOnDestroy() {
         this.destroyed$.next(true);
         this.destroyed$.complete();
-
-        this.cancelAll();
-        this.uploads &#x3D; [];
-    }
-
-    /**
-     * begin all uploads at once
-     */
-    public uploadAll() {
-        this.uploads.forEach((upload: FileUpload) &#x3D;&gt; upload.start());
-    }
-
-    /**
-     * cancel all downloads at once
-     */
-    public cancelAll() {
-        for ( let i &#x3D; this.uploads.length - 1; i &gt;&#x3D; 0; i --) {
-            this.uploads[i].cancel();
-        }
-    }
-
-    /**
-     * search for broken uploads (error / invalid) and cancel
-     * them
-     */
-    public cleanAll() {
-        for ( let i &#x3D; this.uploads.length - 1; i &gt;&#x3D; 0; i --) {
-            const upload &#x3D; this.uploads[i];
-            if (upload.isInvalid() || upload.hasError()) {
-                upload.cancel();
-            }
-        }
     }
 
     /**
@@ -974,61 +755,13 @@ export class UploadFileDirective implements OnDestroy {
      * or with input type&#x3D;&quot;file&quot;
      */
     private handleFileSelect(files: File[]) {
-        const uploads &#x3D; files.map((file) &#x3D;&gt; this.createUpload(file));
-        this.add.emit(uploads);
-    }
-
-    /**
-     * create upload from file, listen to complete
-     * to remove upload from uploads list
-     *
-     * remove uplaod from uploads repository if upload completed
-     * or canceled
-     *
-     * @todo should be an action
-     */
-    private createUpload(file: File): FileUpload {
-        const uploadOptions &#x3D; {
-            url: this.url,
-            formData: {
-                enabled: this.useFormData,
-                name   : this.formDataName
+        files.forEach((file: File) &#x3D;&gt; {
+            const upload &#x3D; this.uploadFactory.createUpload(file, {url: this.url});
+            if (this.validator) {
+                upload.validate(this.validator);
             }
-        };
-
-        const fileModel &#x3D; new UploadModel(file);
-        const upload    &#x3D; new FileUpload(this.httpClient, fileModel, uploadOptions);
-
-        if (this.validator) {
-            this.preValidateUpload(fileModel);
-        }
-        if (!upload.isInvalid()) {
-            const sub &#x3D; upload.change
-                .pipe(takeUntil(this.destroyed$))
-                .subscribe({
-                    complete: () &#x3D;&gt; {
-                        this.uploads.splice(this.uploads.indexOf(upload), 1);
-                        sub.unsubscribe();
-                    }
-                });
-        }
-
-        this.uploads.push(upload);
-        return upload;
-    }
-
-    /**
-     * pre validate upload, if validation result is invalid
-     * fill could not uploaded anymore
-     *
-     * @todo should be an action ?
-     */
-    private preValidateUpload(upload: UploadModel) {
-        const result &#x3D; &quot;validate&quot; in this.validator ? this.validator.validate(upload.file) : this.validator(upload.file);
-        if (result !&#x3D;&#x3D; null) {
-            upload.state &#x3D; UploadState.INVALID;
-        }
-        upload.validationErrors &#x3D; result;
+            this.storage.add(upload);
+        });
     }
 
     /**
@@ -1097,7 +830,8 @@ export class UploadFileDirective implements OnDestroy {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'directive';
-            var COMPODOC_CURRENT_PAGE_URL = 'UploadFileDirective.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'FileBrowserDirective.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

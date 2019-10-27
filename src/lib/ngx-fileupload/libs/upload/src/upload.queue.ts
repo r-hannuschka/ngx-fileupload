@@ -2,7 +2,6 @@ import { UploadState } from "../../../data/api";
 import { UploadRequest } from "./upload.request";
 import { Observable, of, merge, BehaviorSubject } from "rxjs";
 import { filter, take, map, takeUntil, tap, buffer, debounceTime } from "rxjs/operators";
-import { runInThisContext } from 'vm';
 
 export interface QueueState {
 

@@ -53,13 +53,11 @@ import { ValidationPage } from "@ngx-fileupload-example/page/validation";
     ],
     bootstrap: [AppComponent],
     providers: [
-        /*
         {
             provide: HTTP_INTERCEPTORS,
             useClass: FakeUploadInterceptor,
             multi: true
         }
-        */
     ]
 })
 export class AppModule { }

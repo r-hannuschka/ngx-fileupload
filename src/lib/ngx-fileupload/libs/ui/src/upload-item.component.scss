@@ -26,9 +26,29 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
        Upload Item Header
     */
     .upload-item--header {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid darken(#FDFDFD, 8);
+        padding: 0 0 .25rem;
+        margin: 0 0 .25rem;
+
+        .title {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .action-remove {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            background: transparent;
+            align-self: center;
+            line-height: .9rem;
+            font-size: .9rem;
+            color: map-get($colors, dark);
+        }
     }
 
     /*
@@ -92,24 +112,28 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
         button {
             display: flex;
             padding: 0;
-            color: map-get($colors, 'dark');
+            color: map-get($colors, dark);
             cursor: pointer;
             outline: none;
             background: transparent;
             line-height: 1rem;
             border: 0;
             font-size: 1rem;
-
-            margin-right: .25rem;
+            margin: 0 .5rem 0 0;
 
             &:last-child {
                 margin: 0;
             }
 
             &:disabled {
-                color: lighten(map-get($colors, 'dark'), 50%);
+                color: lighten(map-get($colors, dark), 50%);
                 cursor: not-allowed;
             }
+        }
+
+        .item-action--reload, 
+        .item-action--cancel {
+            font-size: .9rem;
         }
     }
 

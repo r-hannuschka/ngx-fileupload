@@ -1,12 +1,26 @@
 <ng-template #defaultUploadItem let-upload="data" let-ctrl="ctrl">
 
     <div class="upload-item">
-        <div class="upload-item--header">{{upload.name}}</div>
+        <div class="upload-item--header">
+            <span class="title">
+                {{upload.name}}
+            </span>
+
+            <!-- remove upload completly -->
+            <button type="button" class="action-remove item-action--remove" (click)="ctrl.remove();">
+                <i class="ngx-fileupload-icon--remove"></i>
+            </button>
+        </div>
 
         <div class="upload-item--body">
-            <!-- upload state -->
+            <!-- upload state icon -->
             <div class="upload-item--state">
-                <i [ngClass]="['ngx-fileupload-icon--' + (upload.state | stateToString)]"></i>
+                <i [ngClass]="[
+                    'ngx-fileupload-icon--' + (upload.state | stateToString),
+                    upload.state === uploadState.COMPLETED
+                        ? upload.hasError ? 'error' : 'success' 
+                        : ''
+                ]"></i>
             </div>
 
             <!-- file progress: current state | progressbar -->
@@ -27,21 +41,15 @@
                 </button>
 
                 <!-- retry upload action -->
-                <button type="button" class="item-action--retry" (click)="ctrl.retry()" *ngIf="upload.hasError">
-                    <i class="ngx-fileupload-icon--retry"></i>
+                <button type="button" class="item-action--reload" (click)="ctrl.retry()" *ngIf="upload.hasError">
+                    <i class="ngx-fileupload-icon--reload"></i>
                 </button>
 
                 <!-- cancel active upload -->
                 <button type="button" 
                     [disabled]="upload.state === uploadState.COMPLETED || upload.state === uploadState.CANCELED || upload.isInvalid" 
-                    class="item-action--stop" (click)="ctrl.stop($event);">
+                    class="item-action--cancel" (click)="ctrl.stop($event);">
                     <i class="ngx-fileupload-icon--cancel"></i>
-                </button>
-
-                <!-- remove upload completly -->
-                <button type="button" class="item-action--remove" (click)="ctrl.remove();">
-                    <i class="ngx-fileupload-icon--remove"></i>
-                    D
                 </button>
             </div>
         </div>

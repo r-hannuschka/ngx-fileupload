@@ -127,19 +127,19 @@ export class UploadQueue {
         let updateQueue = true;
 
         switch (request.state) {
-
-            /** request gets destroyed but was idle */
+            /**
+             * request gets destroyed but was idle
+             * in this case the upload is not in progressing uploads nor
+             * in queued uploads
+             */
             case UploadState.IDLE:
                 updateQueue = false;
                 break;
 
-            /** requests gets destroyed but allready in state pending */
-            case UploadState.PENDING:
-                this.queuedUploads = this.queuedUploads.filter((upload) => upload !== request);
-                break;
-
             default:
-                updateQueue = this.startNextInQueue(request);
+                this.isInUploadQueue(request)
+                    ? this.removeFromQueue(request)
+                    : this.startNextInQueue(request);
         }
 
         if (updateQueue) {
@@ -148,18 +148,32 @@ export class UploadQueue {
     }
 
     /**
+     * checks upload is in queue
+     */
+    private  isInUploadQueue(request: UploadRequest): boolean {
+        return this.queuedUploads.indexOf(request) > -1;
+    }
+
+    /**
+     * remove upload request from queued uploads
+     */
+    private removeFromQueue(request) {
+        this.queuedUploads = this.queuedUploads.filter(upload =>  upload !== request);
+    }
+
+    /**
      * try to start next upload in queue, returns false if no further uploads
      * exists
      */
-    private startNextInQueue(request: UploadRequest): boolean {
+    private startNextInQueue(request: UploadRequest) {
+
         this.progressingUploads = this.progressingUploads.filter((upload) => upload !== request);
+
         this.active = Math.max(this.active - 1, 0);
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();
             nextUpload.start();
-            return true;
         }
-        return false;
     }
 
     private notifyObserver() {

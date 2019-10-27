@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.1
+
+### bugfixes
+
+- fixed bug cancel / destroy idle uploads could start next upload in queue
+
 ## 3.0.0
 
 ### features

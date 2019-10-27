@@ -2,6 +2,7 @@ import { UploadState } from "../../../data/api";
 import { UploadRequest } from "./upload.request";
 import { Observable, of, merge, BehaviorSubject } from "rxjs";
 import { filter, take, map, takeUntil, tap, buffer, debounceTime } from "rxjs/operators";
+import { runInThisContext } from 'vm';
 
 export interface QueueState {
 
@@ -25,6 +26,8 @@ export class UploadQueue {
      */
     private queueChange$: BehaviorSubject<QueueState>;
 
+    private observedUploads = new WeakSet<UploadRequest>();
+
     public set concurrent(count: number) {
         this.concurrentCount = count;
     }
@@ -45,7 +48,6 @@ export class UploadQueue {
     }
 
     public register(upload: UploadRequest) {
-        this.registerUploadEvents(upload);
         upload.beforeStart(() => this.createBeforeStartHook(upload));
     }
 
@@ -60,16 +62,21 @@ export class UploadQueue {
 
     /**
      * create before start hook, if any upload wants to start we have to check
-     *
-     * 1. upload is registered in queue
-     * 2. upload is currently not queued
-     *
-     * otherwise this will return false and prevent upload to start,
-     * after that upload will pushed to queue and start again if queue has space
      */
     private createBeforeStartHook(upload: UploadRequest): Observable<boolean> {
         return of(true).pipe(
+            /**
+             * before any download starts we registers on it
+             * to get notified when it starts and when it is completed, destroyed
+             */
+            tap(() => this.registerUploadChange(upload)),
+            /**
+             * check active uploads and max uploads we could run
+             */
             map(() => this.active < this.concurrentCount),
+            /**
+             * if we could not start upload push it into queue
+             */
             tap((isStartAble: boolean) => {
                 if (!isStartAble) {
                     upload.state = UploadState.PENDING;
@@ -84,73 +91,57 @@ export class UploadQueue {
     /**
      * register to upload change
      */
-    private registerUploadEvents(request: UploadRequest) {
+    private registerUploadChange(request: UploadRequest) {
+
+        if (this.observedUploads.has(request))  {
+            return;
+        }
+
         const change$ = request.change;
 
         /** register for changes which make request complete */
         const uploadComplete$ = change$
-            .pipe(filter(() => request.isCompleted()), take(1));
+            .pipe(filter(() => request.isCompleted(true)), take(1));
 
         change$
-            /**
-             * take all until upload was completed (uploaded with success or canceled)
-             * we dont remove sub if upload completed with an error since the upload request
-             * can be repeated, so we dont lose our subscription on this.
-             *
-             * canceled uploads or upload completed with success couldn't repeat they are
-             * simply done
-             */
-            .pipe(takeUntil(merge(request.destroyed, uploadComplete$)))
+            .pipe(
+                filter((upload) => upload.state === UploadState.START),
+                takeUntil(merge(request.destroyed, uploadComplete$))
+            )
             .subscribe({
-                next: ()     => this.onUploadStateChange(request),
+                next: ()     => this.requestStarting(request),
                 complete: () => this.requestCompleted(request)
             });
+
+        this.observedUploads.add(request);
     }
 
-    private onUploadStateChange(req: UploadRequest) {
-        switch (req.state) {
-
-            case UploadState.START:
-                this.active += 1;
-                this.progressingUploads.push(req);
-                this.notifyObserver();
-                break;
-
-            /** request has been completed but with an error */
-            case UploadState.COMPLETED:
-                this.requestCompleted(req);
-                break;
-        }
+    /**
+     * a new request is starting
+     */
+    private requestStarting(req: UploadRequest) {
+        this.active += 1;
+        this.progressingUploads.push(req);
+        this.notifyObserver();
     }
 
+    /**
+     * requests gets completed, this means request is pending or was progressing and the user
+     * cancel request, remove it or even destroys them
+     */
     private requestCompleted(request: UploadRequest) {
-        let updateQueue = true;
+        this.isInUploadQueue(request)
+            ? this.removeFromQueue(request)
+            : this.startNextInQueue(request);
 
-        switch (request.state) {
-            /**
-             * request gets destroyed but was idle
-             * in this case the upload is not in progressing uploads nor
-             * in queued uploads
-             */
-            case UploadState.IDLE:
-                updateQueue = false;
-                break;
-
-            default:
-                this.isInUploadQueue(request)
-                    ? this.removeFromQueue(request)
-                    : this.startNextInQueue(request);
-        }
-
-        if (updateQueue) {
-            this.notifyObserver();
-        }
+        this.observedUploads.delete(request);
+        this.notifyObserver();
     }
 
     /**
      * checks upload is in queue
      */
-    private  isInUploadQueue(request: UploadRequest): boolean {
+    private isInUploadQueue(request: UploadRequest): boolean {
         return this.queuedUploads.indexOf(request) > -1;
     }
 
@@ -166,9 +157,7 @@ export class UploadQueue {
      * exists
      */
     private startNextInQueue(request: UploadRequest) {
-
         this.progressingUploads = this.progressingUploads.filter((upload) => upload !== request);
-
         this.active = Math.max(this.active - 1, 0);
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();

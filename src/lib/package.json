@@ -1,7 +1,7 @@
 {
   "name": "@r-hannuschka/ngx-fileupload",
-  "version": "3.0.0",
-  "description": "angular fileupload library",
+  "version": "3.0.1",
+  "description": "angular file upload library with progressbar, upload queues and validation.",
   "repository": {
     "url": "git+https://github.com/r-hannuschka/ngx-fileupload.git",
     "type": "git"
@@ -14,7 +14,8 @@
     "upload",
     "fileupload",
     "progressbar",
-    "upload queue"
+    "upload queue",
+    "queue"
   ],
   "peerDependencies": {
     "@angular/common": "^8.0.1",

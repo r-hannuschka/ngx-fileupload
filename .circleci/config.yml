@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
     codecov: codecov/codecov@1.0.5
-    cypress: cypress-io/cypress@1.8.0
     browser_tools: circleci/browser-tools@0.1.3
 
 defaults: &defaults
@@ -24,14 +23,14 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: ngx-fileupload-{{ .Branch }}-{{ checksum "./src/package.json" }}
+          key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
       - run:
           name: "install packages"
-          command: cd src && npm ci
+          command: cd src && npm install && npm i webdriver-manager
       - save_cache:
-          key: ngx-fileupload-{{ .Branch }}-{{ checksum "./src/package.json" }}
+          key: ngx-fileupload-{{ .Branch }}-{{ checksum "src/package-lock.json" }}
           paths:
-            - ~/.cache
+            - "src/node_modules"
       - persist_to_workspace:
           root: ~/ngx-fileupload
           paths:
@@ -56,16 +55,16 @@ jobs:
           root: ~/ngx-fileupload
           paths: 
             - ./src/coverage
-  cypress-e2e:
+  e2e:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/ngx-fileupload
-      - restore_cache:
-          key: ngx-fileupload-{{ .Branch }}-{{ checksum "./src/package.json" }}
+      - browser_tools/install-chrome: 
+          replace-existing: true
       - run:
-          name: "cypress e2e"
-          command: cd src && npm run e2e
+          name: "run e2e tests"
+          command: cd src && npm run pretest:e2e && npm run e2e
   coverage:
     <<: *defaults
     steps:
@@ -180,7 +179,10 @@ workflows:
       - lint:
           requires:
             - install
-      - cypress-e2e:
+      - test:
+          requires:
+            - install
+      - e2e:
           requires:
             - install
       - build-docs:
@@ -205,3 +207,7 @@ workflows:
       - deploy-demo-next-release:
           requires:
             - build-demo-next-release
+      - coverage:
+          requires:
+            - test
+          filters: *filter_master

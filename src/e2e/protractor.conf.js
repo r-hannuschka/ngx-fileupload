@@ -11,7 +11,7 @@ exports.config = {
   SELENIUM_PROMISE_MANAGER: false,
   allScriptsTimeout: 11000,
   specs: [
-    "./src/**/*.e2e-spec.ts"
+    "./src/integration/**/*.spec.ts"
   ],
   capabilities: {
     "browserName": "chrome",

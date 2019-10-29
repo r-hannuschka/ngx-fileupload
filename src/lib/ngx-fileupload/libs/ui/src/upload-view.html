@@ -1,7 +1,7 @@
-<div class="upload--footer">
-    <button (click)="uploadAll()">upload all</button>
-    <button (click)="stopAll()">remove all</button>
-    <button (click)="cleanAll()">Clean Uploads</button>
+<div class="upload-toolbar">
+    <button class="upload-all" [disabled]="uploads.length === 0" (click)="uploadAll()">upload all</button>
+    <button class="remove-all" [disabled]="uploads.length === 0" (click)="stopAll()">remove all</button>
+    <button class="clean"      [disabled]="uploads.length === 0" (click)="cleanAll()">Clean Uploads</button>
 </div>
 
 <div class="fileupload" [ngxFileUpload]="url" [storage]="storage" [validator]="validator">

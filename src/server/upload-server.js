@@ -22,13 +22,6 @@ const logger = new letsLog.Logger({
     ]
 });
 
-let response = {
-    state: 200,
-    body: {
-        message: "files uploaded"
-    }
-};
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -36,34 +29,41 @@ app.use(function(req, res, next) {
 });
 app.use(fileUpload());
 
-app.post("/upload", function(req, res) {
+let response = null;
+let timeout = 0;
 
-    if (Object.keys(req.files).length == 0) {
-    }
+app.post("/upload", function(req, res) {
 
     const uploadedFile = req.files.file;
     logger.info(`File uploaded: ${uploadedFile.name}`)
 
-    res.status(200);
-    res.send({
+    if(timeout) {
+        setTimeout(() => sendResponse(res, uploadedFile), timeout);
+    } else {
+        sendResponse(res, uploadedFile);
+    }
+});
+
+function sendResponse(res, file) {
+
+    const defaultResponse = {
         file: {
             id: 0,
             type: 'any'
         },
-        message: `Hoooray File: ${req.files.file.name} uploaded to /dev/null`
-    });
+        message: `Hoooray File: ${file.name} uploaded to /dev/null`
+    };
 
-    /*
-    res.status(response.state);
-    res.send(response.body);
-    */
-});
+    res.status(response ? response.state : 200);
+    res.send(response ? response.body : defaultResponse);
+}
 
 app.listen(3000, () => process.stdout.write("Server started on port 3000\n"));
 
 /**
  * register process messages through ipc
  */
-process.on("message", (res) => {
-    response = res;
+process.on("message", (data) => {
+    response = data.response;
+    timeout  = data.timeout || 0;
 });

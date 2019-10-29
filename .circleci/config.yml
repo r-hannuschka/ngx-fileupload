@@ -204,7 +204,3 @@ workflows:
       - deploy-demo-next-release:
           requires:
             - build-demo-next-release
-      - coverage:
-          requires:
-            - test
-          filters: *filter_master

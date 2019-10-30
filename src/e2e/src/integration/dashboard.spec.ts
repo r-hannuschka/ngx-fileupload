@@ -5,11 +5,17 @@ import { writeFileSync } from "fs";
 import { NgxFileuploadPO } from "../support/ngx-fileupload.po";
 import { Dashboard } from "../support/dashboard.po";
 
-describe("workspace-project App", () => {
+describe("Ngx Fileupload Default View", () => {
 
     let server: ChildProcess;
     let ngxFileUpload: NgxFileuploadPO;
     let dashboard: Dashboard;
+
+    function slowDownUpload() {
+        server.send({
+            timeout: 1000
+        });
+    }
 
     beforeAll(async () => {
         // start very simple upload server which only logs
@@ -48,12 +54,9 @@ describe("workspace-project App", () => {
         });
 
         it("should remove all uploads at once", async () => {
-            const items        = ngxFileUpload.getUploadItems();
-            const cancelAction = ngxFileUpload.getCancelButton();
-
-            expect(items.count()).toBe(2);
-            await cancelAction.click();
-            expect(items.count()).toBe(0);
+            expect(ngxFileUpload.getUploadItems().count()).toBe(2);
+            await dashboard.cancelAll();
+            expect(ngxFileUpload.getUploadItems().count()).toBe(0);
         });
     });
 
@@ -64,78 +67,96 @@ describe("workspace-project App", () => {
             writeFileSync("./server/upload.log", "", { encoding: "utf8", flag: "w"});
         });
 
-        /**
-         * drop file so it can be uploaded
-         */
-        beforeAll(async () => {
+        it("should upload all files to server at once", async () => {
             await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
             await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file2.zip");
-        });
 
-        it("should upload all files to server at once", async () => {
-            const uploadAction = ngxFileUpload.getUploadButton();
-            await uploadAction.click();
+            await dashboard.uploadAll();
+
+            const uploadingItems = await ngxFileUpload.getUploadItems()
+                .all(by.css(".upload-item--state i"))
+                .map<string>(el => el.getAttribute("class"));
+
+            expect(uploadingItems).toEqual([
+                "ngx-fileupload-icon--completed success",
+                "ngx-fileupload-icon--completed success"
+            ]);
         });
 
         afterAll(async () => {
-            await ngxFileUpload.getCancelButton().click();
+            await dashboard.cancelAll();
         });
     });
 
-    describe("add file to upload", () => {
+    describe("testing single fileupload", () => {
 
-        beforeAll(async () => {
+        beforeEach(async () => {
             await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
         });
 
-        it("should enable all buttons", async () => {
+        it("should enable all buttons in upload toolbar", async () => {
             expect(await ngxFileUpload.getUploadButton().isEnabled()).toBeTruthy();
             expect(await ngxFileUpload.getCancelButton().isEnabled()).toBeTruthy();
             expect(await ngxFileUpload.getCleanButton().isEnabled()).toBeTruthy();
         });
 
-        it("should display upload file in list", async () => {
-            await ngxFileUpload.getUploadList().isPresent();
-            expect(await ngxFileUpload.getUploadList().isDisplayed()).toBeTruthy();
-            expect(await ngxFileUpload.getUploadItems().count()).toBe(1);
+        it("should added ui", async () => {
+            const items = ngxFileUpload.getUploadItems();
+            const icons = items.first().all(by.css(".upload-item--body i"));
+            const buttons = items.first().all(by.css(".upload-item--body button"));
+
+            expect(await items.count()).toBe(1);
+            expect(await icons.get(0).getAttribute("class")).toBe("ngx-fileupload-icon--idle");
+            expect(await icons.get(1).getAttribute("class")).toBe("ngx-fileupload-icon--upload");
+            expect(await icons.get(2).getAttribute("class")).toBe("ngx-fileupload-icon--cancel");
+
+            // action buttons
+            expect(await buttons.count()).toBe(2);
+            expect(await buttons.map<string>(button => button.getAttribute("class")))
+                .toEqual(["item-action--upload", "item-action--cancel"]);
+
+            expect(await buttons.map<boolean>(button => button.isEnabled())).toEqual([true, true]);
         });
 
-        it("upload should have icon idle", async () => {
-            const uploadItem = ngxFileUpload.getUploadItems().get(0);
-            const queuedIcon = uploadItem.element(by.css(".ngx-fileupload-icon--idle"));
+        it("should upload one item, and remove it", async () => {
 
-            expect(await queuedIcon.isDisplayed()).toBeTruthy();
+            // slow down upload
+            slowDownUpload();
+
+            const item = ngxFileUpload.getUploadItems().first();
+            const uploadAction = item.element(by.css(".upload-item--body .item-action--upload"));
+            const cancelAction = item.element(by.css(".upload-item--body .item-action--cancel"));
+
+            // dont wait for angular, click will trigger request
+            // which we will wait for
+            await browser.waitForAngularEnabled(false);
+            await uploadAction.click();
+            expect(await uploadAction.isEnabled()).toBeFalsy();
+            expect(await cancelAction.isEnabled()).toBeTruthy();
+
+            // wait for request has been completed
+            await browser.waitForAngularEnabled(true);
+
+            // file has been uploaded now should not be cancelable anymore
+            expect(await cancelAction.isEnabled()).toBeFalsy();
+
+            // uploaded with success
+            const message = await item.element(by.css(".upload-item--footer")).getText();
+            expect(message).toBe("Hoooray File: upload-file.zip uploaded to /dev/null");
+
+            // now remove upload
+            const removeAction = item.element(by.css("button.action-remove"));
+            await removeAction.click();
+            expect(await ngxFileUpload.getUploadItems().count()).toBe(0);
         });
 
-        it("should contain upload / cancel button", async () => {
-            const uploadItem   = ngxFileUpload.getUploadItems().get(0);
-            const uploadAction = uploadItem.element(by.css(".item-action--upload"));
-            const stopAction   = uploadItem.element(by.css(".item-action--cancel"));
-
-            expect(await uploadAction.isDisplayed());
-            expect(await stopAction.isDisplayed());
-        });
-
-        it("upload button should be enabled", async () => {
-            const uploadItem   = ngxFileUpload.getUploadItems().get(0);
-            const uploadAction = uploadItem.element(by.css(".item-action--upload"));
-
-            expect(await uploadAction.isEnabled()).toBeTruthy();
-        });
-
-        /**
-         * if no server is running / wrong url is passed it could not
-         * reached and should display error
-         */
-        it("should fail with 401, show reload btn", async () => {
+        it("should upload item, but response with error", async () => {
 
             /** tell our server what to response */
             server.send({
                 response: {
                     state: 401,
-                    body: {
-                        message: "forbidden"
-                    }
+                    body: "forbidden"
                 },
                 timeout: 0
             });
@@ -145,68 +166,53 @@ describe("workspace-project App", () => {
             const retryAction  = uploadItem.element(by.css(".item-action--reload"));
             const uploadAction = uploadItem.element(by.css(".item-action--upload"));
 
-            await uploadAction.click();
+            await dashboard.uploadAll();
 
-            expect(uploadAction.isPresent()).toBeFalsy();
-            expect(retryAction.isPresent()).toBeTruthy();
-            expect(retryAction.isDisplayed()).toBeTruthy();
-            expect(errorIcon.isDisplayed()).toBeTruthy();
+            expect(await uploadAction.isPresent()).toBeFalsy();
+            expect(await retryAction.isPresent()).toBeTruthy();
+            expect(await retryAction.isDisplayed()).toBeTruthy();
+            expect(await errorIcon.isDisplayed()).toBeTruthy();
         });
 
-        afterAll(async () => {
-            /** clean up all uploads */
-            await ngxFileUpload.getCancelButton().click();
+        afterEach(async () => {
+            await dashboard.cancelAll();
         });
     });
 
     describe("testing queue", () => {
 
         /** clear log file first to be sure all is working */
-        beforeAll(() => {
+        beforeAll(async () => {
             writeFileSync("./server/upload.log", "", { encoding: "utf8", flag: "w"});
         });
 
-        it("should add 10 files", async () => {
+        it("should have added 10 files to list", async () => {
             for (let i = 0; i < 10; i++) {
                 await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
             }
-        });
-
-        it("should have added 10 files to list", async () => {
             expect(await ngxFileUpload.getUploadItems().count()).toBe(10);
         });
 
         it("should only upload 3 files at once and get 7 queued", async () => {
-
             server.send({
                 response: null,
                 // slow down server response for 1 second, otherwise it is too fast
                 timeout: 1000
             });
 
-            /** scroll to upload button to avoid element could not be clicked */
-            const location = await ngxFileUpload.getUploadButton().getLocation();
-            await browser.executeScript(`scrollTo(${location.y}, ${location.x})`);
-            ngxFileUpload.getUploadButton().click();
-
             /** dont wait for angular since we dont want to know a upload process has been finished */
             await browser.waitForAngularEnabled(false);
-            await browser.sleep(100);
+            await dashboard.uploadAll();
+            await browser.sleep(500);
 
-            const pending = await ngxFileUpload.getUploadItems()
-                .all(by.css(`.upload-item--state i`))
-                .filter((elem) => elem.getAttribute("class")
-                    .then((className) => {
-                        return className === "ngx-fileupload-icon--pending";
-                    })
-                );
+            const items = ngxFileUpload.getUploadItems()
+                .all(by.css(`.upload-item--state`));
 
-            browser.waitForAngularEnabled(true);
-            expect(pending.length).toBe(7);
-        });
+            expect(await items.all(by.css("i.ngx-fileupload-icon--progress")).count()).toBe(3);
+            expect(await items.all(by.css("i.ngx-fileupload-icon--pending")).count()).toBe(7);
 
-        afterAll(() => {
-            ngxFileUpload.getCancelButton().click();
+            await dashboard.cancelAll();
+            await browser.waitForAngularEnabled(true);
         });
     });
 

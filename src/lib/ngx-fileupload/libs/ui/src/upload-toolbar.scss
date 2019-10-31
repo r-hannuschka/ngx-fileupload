@@ -8,7 +8,34 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
     justify-content: space-between;
 
     .info {
-        color: map-get($colors, white);
+        padding: 0 1rem;
+        color: darken(map-get($colors, "light"), 10);
+        display: flex;
+        align-items: center;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            flex-direction: row;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+        }
+
+        i {
+            color: inherit;
+            margin: 0 .25rem 0 .5rem;
+            align-self: stretch;
+            line-height: 1.4rem;
+
+            &[class$="upload"] {
+                font-size: 1.1rem;
+            }
+        }
     }
 
     .actions {
@@ -16,9 +43,8 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
 
         button {
             display: flex;
-            padding: .4rem .8rem;
-            border: 1px solid #2E2E2E;
-            border-width: 0 0 1px;
+            padding: .25rem .5rem;
+            border: 0;
             align-items: center;
             color: map-get($map: $colors, $key: "light");
             background: transparent;
@@ -31,14 +57,6 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
 
             &:last-child {
                 margin: 0;
-            }
-
-            &:first-child {
-                border-width: 0 1px 1px;
-            }
-
-            &:last-child {
-                border-width: 0 1px 1px;
             }
 
             &[disabled] {

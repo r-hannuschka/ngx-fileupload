@@ -1,18 +1,3 @@
-<div class="info">
-    Uploads:
-    <span>
-        <i class="ngx-fileupload-icon--upload"></i>
-        {{progressingCount}}
-    </span>
-    <span>
-        <i class="ngx-fileupload-icon--pending"></i>
-        {{pendingCount}}
-    </span>
-    <span>
-        <i class="ngx-fileupload-icon--idle"></i>
-        {{idleCount}}
-    </span>
-</div>
 <div class="actions">
     <button class="upload-all" [disabled]="idleCount === 0" (click)="uploadAll()">
         <i class="ngx-fileupload-icon--upload"></i>
@@ -20,4 +5,26 @@
     </button>
     <button class="clean"      (click)="cleanAll()">Clear</button>
     <button class="remove-all" (click)="stopAll()">Remove</button>
+</div>
+
+<div class="info">
+    Uploads:
+    <ul>
+        <li>
+            <i class="ngx-fileupload-icon--upload"></i>
+            <span>{{progressingCount}}</span>
+        </li>
+        <li>
+            <i class="ngx-fileupload-icon--pending"></i>
+            <span>{{pendingCount}}</span>
+        </li>
+        <li>
+            <i class="ngx-fileupload-icon--idle"></i>
+            <span>{{idleCount}}</span>
+        </li>
+        <li>
+            <i class="ngx-fileupload-icon--error"></i>
+            <span>{{errorCount}}</span>
+        </li>
+    </ul>
 </div>

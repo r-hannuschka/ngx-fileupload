@@ -12,14 +12,28 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
 
     @Input()
     public storage: UploadStorage;
-    public pendingCount = 0;
+
+    /**
+     * count uploads which should uploaded but currently waits
+     * for a place into queue
+     */
+    public pendingCount     = 0;
+
+    /**
+     * count of all uploads which are currently running
+     */
     public progressingCount = 0;
 
     /**
-     * upload idle count maybe we have to include
-     * that option we have canceled or upload completed with an error
+     * count of all uploads which are currently idle
      */
     public idleCount = 0;
+
+    /**
+     * count of all uploads which are completed but got an error
+     * and could try to reload
+     */
+    public errorCount       = 0;
 
     private destroyed$: Subject<boolean> = new Subject();
 
@@ -31,9 +45,22 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
         combineLatest([storeChange, this.storage.queueChange])
             .pipe(takeUntil(this.destroyed$))
             .subscribe(([uploads, queueState]) => {
+
                 this.progressingCount = queueState.processing.length;
                 this.pendingCount     = queueState.pending.length;
-                this.idleCount        = uploads.filter((upload) => upload.isIdle()).length;
+
+                this.idleCount        = 0;
+                this.errorCount       = 0;
+
+                uploads.forEach((upload) => {
+                    if (upload.isRequestCompleted() && upload.hasError() || upload.isInvalid()) {
+                        this.errorCount++;
+                    }
+
+                    if (upload.isIdle()) {
+                        this.idleCount++;
+                    }
+                });
             });
     }
 

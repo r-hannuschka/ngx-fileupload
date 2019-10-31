@@ -76,7 +76,7 @@ export interface Upload {
      * returns observable which notify if file upload state
      * has been changed
      */
-    readonly change: Observable<UploadModel>;
+    readonly change: Observable<UploadData>;
 
     /**
      * get upload data informations

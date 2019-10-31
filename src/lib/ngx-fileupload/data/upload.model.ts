@@ -16,8 +16,6 @@ export class UploadModel {
 
     private uploadValidationErrors = null;
 
-    private uploadInvalid = false;
-
     private uploadPending = false;
 
     private uploadRequestId = "";

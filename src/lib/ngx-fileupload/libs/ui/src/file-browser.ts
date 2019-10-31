@@ -3,7 +3,7 @@ import { Subject } from "rxjs";
 
 import { Validator, ValidationFn } from "../../../data/api/validation";
 import { UploadRequest } from "../../upload/src/upload.request";
-import { FileUploadFactory } from "../../../utils/factory";
+import { FileUploadFactory } from "../../utils/factory";
 import { UploadStorage } from "../../upload/src/upload.storage";
 
 /**

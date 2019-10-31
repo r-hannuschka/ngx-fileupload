@@ -1,7 +1,6 @@
 
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from "@angular/core";
 import { UploadRequest, UploadControl } from "../../upload";
-import { UploadModel } from "../../../data/upload.model";
 import { UploadData } from "../../../data/api";
 import {  Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -104,7 +103,7 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
                 takeUntil(this.destroyed)
             )
             .subscribe({
-                next: (upload: UploadModel) => this.context.data = upload.toJson()
+                next: (upload: UploadData) => this.context.data = upload
             });
     }
 

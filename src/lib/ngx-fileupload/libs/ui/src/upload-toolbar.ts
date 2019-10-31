@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from "@angular/core";
-import { UploadStorage } from "../../upload";
-import { Subject, combineLatest } from "rxjs";
+import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
+import { UploadStorage, UploadRequest } from "../../upload";
+import { UploadState } from "../../../data/api";
 
 @Component({
     selector: "ngx-fileupload-toolbar",
@@ -49,32 +50,7 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        const storeChange = this.storage.change()
-            .pipe(debounceTime(10));
-
-        combineLatest([storeChange, this.storage.queueChange])
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe(([uploads, queueState]) => {
-
-                this.progressingCount = queueState.processing.length;
-                this.pendingCount     = queueState.pending.length;
-
-                this.idleCount        = 0;
-                this.errorCount       = 0;
-
-                this.hasUploadsInList = uploads.length > 0;
-                this.isCleanable = uploads.some(upload => upload.isCompleted() || upload.isInvalid());
-
-                uploads.forEach((upload) => {
-                    if (upload.isRequestCompleted() && upload.hasError() || upload.isInvalid()) {
-                        this.errorCount++;
-                    }
-
-                    if (upload.isIdle()) {
-                        this.idleCount++;
-                    }
-                });
-            });
+        this.registerStoreChange();
     }
 
     ngOnDestroy() {
@@ -95,5 +71,40 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
     /** purge uploads, invalid, completed, canceled will be removed */
     public cleanAll() {
         this.storage.purge();
+    }
+
+    private registerStoreChange() {
+        this.storage.change()
+            .pipe(
+                debounceTime(10),
+                takeUntil(this.destroyed$)
+            )
+            .subscribe((uploads: UploadRequest[]) => {
+
+                this.idleCount        = 0;
+                this.pendingCount     = 0;
+                this.errorCount       = 0;
+                this.progressingCount = 0;
+
+                uploads.forEach((upload: UploadRequest) => {
+                    switch (upload.state) {
+                        case UploadState.IDLE:
+                            this.idleCount += 1;
+                            break;
+
+                        case UploadState.PENDING:
+                            this.pendingCount += 1;
+                            break;
+
+                        case UploadState.START:
+                        case UploadState.PROGRESS:
+                            this.progressingCount += 1;
+                            break;
+                    }
+                });
+
+                this.isCleanable = uploads.some(upload => upload.isCompleted() || upload.isInvalid());
+                this.hasUploadsInList = uploads.length > 0;
+            });
     }
 }

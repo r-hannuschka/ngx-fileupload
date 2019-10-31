@@ -1,5 +1,13 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
+/**
+ * format byte value into human readable value
+ *
+ * @example
+ * <span>{{1024 | fileSize}}</span>
+ * // prints out 1Kb
+ *
+ */
 @Pipe({
     name: "fileSize"
 })

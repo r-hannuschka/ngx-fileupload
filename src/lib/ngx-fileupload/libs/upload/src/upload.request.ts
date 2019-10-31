@@ -140,9 +140,10 @@ export class UploadRequest implements Upload {
         return isCompleted;
     }
 
-    /**
-     * returns true if validators are set and upload not validated
-     */
+    public isCanceled(): boolean {
+        return this.upload.state === UploadState.CANCELED;
+    }
+
     public isInvalid(): boolean {
         return this.upload.isInvalid;
     }
@@ -159,6 +160,7 @@ export class UploadRequest implements Upload {
         return this.upload.state === UploadState.IDLE;
     }
 
+    /** returns true if request has been completed even on error */
     public isRequestCompleted() {
         return this.upload.state === UploadState.COMPLETED;
     }
@@ -168,7 +170,7 @@ export class UploadRequest implements Upload {
      * reset state, and reset errors
      */
     public retry() {
-        if (this.state === UploadState.COMPLETED && this.upload.hasError) {
+        if (this.isRequestCompleted() && !this.hasError() || this.isCanceled()) {
             this.resetUpload();
             this.start();
         }

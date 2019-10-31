@@ -150,28 +150,48 @@ describe("Ngx Fileupload Default View", () => {
             expect(await ngxFileUpload.getUploadItems().count()).toBe(0);
         });
 
-        it("should upload item, but response with error", async () => {
+        it("should start upload, cancel and reload", async () => {
 
-            /** tell our server what to response */
+            // slow down upload
+            slowDownUpload();
+
+            const item = ngxFileUpload.getUploadItems().first();
+            const uploadAction = item.element(by.css(".upload-item--body .item-action--upload"));
+            const cancelAction = item.element(by.css(".upload-item--body .item-action--cancel"));
+
+            await browser.waitForAngularEnabled(false);
+            await uploadAction.click();
+            await browser.sleep(500);
+            await cancelAction.click();
+            // wait for request has been completed
+            await browser.waitForAngularEnabled(true);
+
+            const reloadAction = item.element(by.css(".upload-item--body .item-action--reload"));
+
+            expect(await uploadAction.isPresent()).toBeFalsy();
+            expect(await reloadAction.isPresent()).toBeTruthy();
+
+            await reloadAction.click();
+
+            const message = await item.element(by.css(".upload-item--footer")).getText();
+            expect(message).toBe("Hoooray File: upload-file.zip uploaded to /dev/null");
+        });
+
+        it("should upload item, but response with error", async () => {
+            /** tell our server what to respond */
             server.send({
                 response: {
                     state: 401,
-                    body: "forbidden"
-                },
-                timeout: 0
+                    body: ["e2e error", "forbidden"]
+                }
             });
 
-            const uploadItem   = ngxFileUpload.getUploadItems().get(0);
-            const errorIcon    = uploadItem.element(by.css(".ngx-fileupload-icon--completed.error"));
-            const retryAction  = uploadItem.element(by.css(".item-action--reload"));
-            const uploadAction = uploadItem.element(by.css(".item-action--upload"));
-
             await dashboard.uploadAll();
+            const errorList = ngxFileUpload.getUploadItems().first().all(by.css(".upload-item--response-errors li"));
+            expect(await errorList.count()).toBe(2);
 
-            expect(await uploadAction.isPresent()).toBeFalsy();
-            expect(await retryAction.isPresent()).toBeTruthy();
-            expect(await retryAction.isDisplayed()).toBeTruthy();
-            expect(await errorIcon.isDisplayed()).toBeTruthy();
+            const messages = errorList.map((el) => el.getText());
+            expect(await messages).toEqual(["e2e error", "forbidden"]);
         });
 
         afterEach(async () => {

@@ -1,0 +1,50 @@
+$ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
+@import '../../../assets//scss/variables';
+@import '../../../assets/scss/icons';
+
+:host {
+    display: flex;
+    background: map-get($colors, "dark");
+    justify-content: space-between;
+
+    .info {
+        color: map-get($colors, white);
+    }
+
+    .actions {
+        display: flex;
+
+        button {
+            display: flex;
+            padding: .4rem .8rem;
+            border: 1px solid #2E2E2E;
+            border-width: 0 0 1px;
+            align-items: center;
+            color: map-get($map: $colors, $key: "light");
+            background: transparent;
+            cursor: pointer;
+            outline: none;
+
+            i {
+                margin-right: .5rem;
+            }
+
+            &:last-child {
+                margin: 0;
+            }
+
+            &:first-child {
+                border-width: 0 1px 1px;
+            }
+
+            &:last-child {
+                border-width: 0 1px 1px;
+            }
+
+            &[disabled] {
+                color: darken(map-get($map: $colors, $key: "light"), 40);
+                cursor: default;
+            }
+        }
+    }
+}

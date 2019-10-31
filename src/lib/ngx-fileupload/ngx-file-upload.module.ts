@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 
-import { UploadViewComponent, FileBrowserDirective, UploadItemComponent } from "./libs/ui";
+import { UploadViewComponent, FileBrowserDirective, UploadItemComponent, UploadToolbarComponent } from "./libs/ui";
 import { FileSizePipe } from "./utils/file-size.pipe";
 import { StateToStringPipe } from "./utils/state-to-string.pipe";
 
@@ -11,6 +11,7 @@ import { StateToStringPipe } from "./utils/state-to-string.pipe";
         FileBrowserDirective,
         UploadItemComponent,
         UploadViewComponent,
+        UploadToolbarComponent,
         StateToStringPipe,
         FileSizePipe
     ],

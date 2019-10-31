@@ -1,13 +1,6 @@
-<div class="upload--toolbar">
-    <button class="remove-all" [disabled]="uploads.length === 0" (click)="stopAll()">Remove</button>
-    <button class="clean"      [disabled]="uploads.length === 0" (click)="cleanAll()">Clear</button>
-    <button class="upload-all" [disabled]="uploads.length === 0" (click)="uploadAll()">
-        <i class="ngx-fileupload-icon--upload"></i>
-        Upload
-    </button>
-</div>
+<ngx-fileupload-toolbar [storage]="uploadStorage"></ngx-fileupload-toolbar>
 
-<div class="upload--body fileupload" [ngxFileUpload]="url" [storage]="storage" [validator]="validator">
+<div class="upload--body fileupload" [ngxFileUpload]="url" [storage]="uploadStorage" [validator]="validator">
 
     <div *ngIf="!uploads.length" class="file-browser">
         <i class="ngx-fileupload-icon--add"></i>

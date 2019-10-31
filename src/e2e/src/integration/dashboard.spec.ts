@@ -2,14 +2,16 @@ import { simulateDrop } from "../../utils/drag-event";
 import { by, browser, logging } from "protractor";
 import { spawn, ChildProcess } from "child_process";
 import { writeFileSync } from "fs";
-import { NgxFileuploadPO } from "../support/ngx-fileupload.po";
+import { NgxFileuploadPO } from "../support/ngx-fileupload-ui/ngx-fileupload.po";
 import { Dashboard } from "../support/dashboard.po";
+import { UploadToolbarPO } from "../support/ngx-fileupload-ui/upload-toolbar";
 
 describe("Ngx Fileupload Default View", () => {
 
     let server: ChildProcess;
-    let ngxFileUpload: NgxFileuploadPO;
-    let dashboard: Dashboard;
+    const ngxFileUpload: NgxFileuploadPO = new NgxFileuploadPO();
+    const uploadToolbar: UploadToolbarPO = new UploadToolbarPO();
+    const dashboard: Dashboard = new Dashboard();
 
     function slowDownUpload() {
         server.send({
@@ -26,20 +28,10 @@ describe("Ngx Fileupload Default View", () => {
             "ipc"
         ]});
 
-        ngxFileUpload = new NgxFileuploadPO();
-        dashboard     = new Dashboard();
         await dashboard.navigateTo();
-
-        ngxFileUpload.initialize();
     });
 
     describe("initialize app", () => {
-        it("expect buttons to be disabled", async () => {
-            expect(await ngxFileUpload.getUploadButton().isEnabled()).toBeFalsy();
-            expect(await ngxFileUpload.getCleanButton().isEnabled()).toBeFalsy();
-            expect(await ngxFileUpload.getCancelButton().isEnabled()).toBeFalsy();
-        });
-
         it("expect upload informations to be shown", async () => {
             expect(await ngxFileUpload.getFileBrowser().getText()).toEqual("Drag/Drop files here or click");
         });
@@ -55,7 +47,7 @@ describe("Ngx Fileupload Default View", () => {
 
         it("should remove all uploads at once", async () => {
             expect(ngxFileUpload.getUploadItems().count()).toBe(2);
-            await dashboard.cancelAll();
+            await uploadToolbar.removeAll();
             expect(ngxFileUpload.getUploadItems().count()).toBe(0);
         });
     });
@@ -71,7 +63,7 @@ describe("Ngx Fileupload Default View", () => {
             await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
             await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file2.zip");
 
-            await dashboard.uploadAll();
+            await uploadToolbar.uploadAll();
 
             const uploadingItems = await ngxFileUpload.getUploadItems()
                 .all(by.css(".upload-item--state i"))
@@ -84,7 +76,7 @@ describe("Ngx Fileupload Default View", () => {
         });
 
         afterAll(async () => {
-            await dashboard.cancelAll();
+            await uploadToolbar.removeAll();
         });
     });
 
@@ -92,12 +84,6 @@ describe("Ngx Fileupload Default View", () => {
 
         beforeEach(async () => {
             await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
-        });
-
-        it("should enable all buttons in upload toolbar", async () => {
-            expect(await ngxFileUpload.getUploadButton().isEnabled()).toBeTruthy();
-            expect(await ngxFileUpload.getCancelButton().isEnabled()).toBeTruthy();
-            expect(await ngxFileUpload.getCleanButton().isEnabled()).toBeFalsy();
         });
 
         it("should added ui", async () => {
@@ -187,7 +173,7 @@ describe("Ngx Fileupload Default View", () => {
                 }
             });
 
-            await dashboard.uploadAll();
+            await uploadToolbar.uploadAll();
             const errorList = ngxFileUpload.getUploadItems().first().all(by.css(".upload-item--response-errors li"));
             expect(await errorList.count()).toBe(2);
 
@@ -196,7 +182,7 @@ describe("Ngx Fileupload Default View", () => {
         });
 
         afterEach(async () => {
-            await dashboard.cancelAll();
+            await uploadToolbar.removeAll();
         });
     });
 
@@ -223,7 +209,7 @@ describe("Ngx Fileupload Default View", () => {
 
             /** dont wait for angular since we dont want to know a upload process has been finished */
             await browser.waitForAngularEnabled(false);
-            await dashboard.uploadAll();
+            await uploadToolbar.uploadAll();
             await browser.sleep(200);
 
             const items = ngxFileUpload.getUploadItems()
@@ -232,7 +218,7 @@ describe("Ngx Fileupload Default View", () => {
             expect(await items.all(by.css("i.ngx-fileupload-icon--progress")).count()).toBe(3);
             expect(await items.all(by.css("i.ngx-fileupload-icon--pending")).count()).toBe(7);
 
-            await dashboard.cancelAll();
+            await uploadToolbar.removeAll();
             await browser.waitForAngularEnabled(true);
         });
     });

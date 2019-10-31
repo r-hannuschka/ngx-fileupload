@@ -115,7 +115,8 @@ describe("Ngx Fileupload Default View", () => {
             expect(await buttons.map<string>(button => button.getAttribute("class")))
                 .toEqual(["item-action--upload", "item-action--cancel"]);
 
-            expect(await buttons.map<boolean>(button => button.isEnabled())).toEqual([true, true]);
+            // cancel button should disabled if item has state idle
+            expect(await buttons.map<boolean>(button => button.isEnabled())).toEqual([true, false]);
         });
 
         it("should upload one item, and remove it", async () => {
@@ -223,7 +224,7 @@ describe("Ngx Fileupload Default View", () => {
             /** dont wait for angular since we dont want to know a upload process has been finished */
             await browser.waitForAngularEnabled(false);
             await dashboard.uploadAll();
-            await browser.sleep(500);
+            await browser.sleep(200);
 
             const items = ngxFileUpload.getUploadItems()
                 .all(by.css(`.upload-item--state`));

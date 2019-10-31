@@ -7,7 +7,7 @@ export class NgxFileuploadPO {
 
     public initialize() {
         this.ngxFileUpload = element(by.tagName("ngx-fileupload"));
-        this.toolbar       = this.ngxFileUpload.element(by.css(".upload--toolbar"));
+        this.toolbar       = this.ngxFileUpload.element(by.css("ngx-fileupload-toolbar"));
     }
 
     public getCancelButton() {

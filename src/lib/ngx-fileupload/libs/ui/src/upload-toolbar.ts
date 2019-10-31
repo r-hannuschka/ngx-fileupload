@@ -17,7 +17,7 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
      * count uploads which should uploaded but currently waits
      * for a place into queue
      */
-    public pendingCount     = 0;
+    public pendingCount = 0;
 
     /**
      * count of all uploads which are currently running
@@ -33,8 +33,18 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
      * count of all uploads which are completed but got an error
      * and could try to reload
      */
-    public errorCount       = 0;
+    public errorCount = 0;
 
+    public hasUploadsInList = false;
+
+    /**
+     * true if we have completed or invalid uploads
+     * in list
+     */
+    public isCleanable = false;
+
+    /**
+     */
     private destroyed$: Subject<boolean> = new Subject();
 
     ngOnInit() {
@@ -51,6 +61,9 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
 
                 this.idleCount        = 0;
                 this.errorCount       = 0;
+
+                this.hasUploadsInList = uploads.length > 0;
+                this.isCleanable = uploads.some(upload => upload.isCompleted() || upload.isInvalid());
 
                 uploads.forEach((upload) => {
                     if (upload.isRequestCompleted() && upload.hasError() || upload.isInvalid()) {

@@ -3,8 +3,8 @@
         <i class="ngx-fileupload-icon--upload"></i>
         Upload
     </button>
-    <button class="clean"      (click)="cleanAll()">Clear</button>
-    <button class="remove-all" (click)="stopAll()">Remove</button>
+    <button class="clean"      [disabled]="!isCleanable" (click)="cleanAll()">Clear</button>
+    <button class="remove-all" [disabled]="!hasUploadsInList" (click)="stopAll()">Remove</button>
 </div>
 
 <div class="info">

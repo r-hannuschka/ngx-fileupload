@@ -36,8 +36,8 @@ describe("Ngx Fileupload Default View", () => {
     describe("initialize app", () => {
         it("expect buttons to be disabled", async () => {
             expect(await ngxFileUpload.getUploadButton().isEnabled()).toBeFalsy();
-            expect(await ngxFileUpload.getCancelButton().isEnabled()).toBeFalsy();
             expect(await ngxFileUpload.getCleanButton().isEnabled()).toBeFalsy();
+            expect(await ngxFileUpload.getCancelButton().isEnabled()).toBeFalsy();
         });
 
         it("expect upload informations to be shown", async () => {
@@ -97,7 +97,7 @@ describe("Ngx Fileupload Default View", () => {
         it("should enable all buttons in upload toolbar", async () => {
             expect(await ngxFileUpload.getUploadButton().isEnabled()).toBeTruthy();
             expect(await ngxFileUpload.getCancelButton().isEnabled()).toBeTruthy();
-            expect(await ngxFileUpload.getCleanButton().isEnabled()).toBeTruthy();
+            expect(await ngxFileUpload.getCleanButton().isEnabled()).toBeFalsy();
         });
 
         it("should added ui", async () => {

@@ -170,7 +170,7 @@ export class UploadRequest implements Upload {
      * reset state, and reset errors
      */
     public retry() {
-        if (this.isRequestCompleted() && !this.hasError() || this.isCanceled()) {
+        if (this.isRequestCompleted() && this.hasError() || this.isCanceled()) {
             this.resetUpload();
             this.start();
         }

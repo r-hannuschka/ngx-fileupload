@@ -1,3 +1,16 @@
+function sendResponse(res, file) {
+    const defaultResponse = {
+        file: {
+            id: 0,
+            type: 'any'
+        },
+        message: `Hoooray File: ${file.name} uploaded to /dev/null`
+    };
+
+    res.status(response ? response.state : 200);
+    res.send(response ? response.body : defaultResponse);
+}
+
 // call all the required packages
 const express = require("express");
 const app = express();
@@ -43,20 +56,6 @@ app.post("/upload", function(req, res) {
         sendResponse(res, uploadedFile);
     }
 });
-
-function sendResponse(res, file) {
-
-    const defaultResponse = {
-        file: {
-            id: 0,
-            type: 'any'
-        },
-        message: `Hoooray File: ${file.name} uploaded to /dev/null`
-    };
-
-    res.status(response ? response.state : 200);
-    res.send(response ? response.body : defaultResponse);
-}
 
 app.listen(3000, () => process.stdout.write("Server started on port 3000\n"));
 

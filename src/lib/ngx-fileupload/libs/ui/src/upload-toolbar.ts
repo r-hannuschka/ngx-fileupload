@@ -67,7 +67,7 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
             )
             .subscribe((uploads: UploadRequest[]) => {
                 this.updateInfoBar(uploads);
-                this.isCleanable      = uploads.some(upload => upload.isCompleted() || upload.isInvalid());
+                this.isCleanable      = uploads.some(upload => upload.isCompleted(true) || upload.isInvalid());
                 this.hasUploadsInList = uploads.length > 0;
             });
     }

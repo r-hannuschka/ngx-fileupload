@@ -1,7 +1,7 @@
 {
   "name": "@r-hannuschka/ngx-fileupload",
-  "version": "3.0.1",
-  "description": "angular file upload library with progressbar, upload queues and validation.",
+  "version": "3.1.0",
+  "description": "Angular 8+ async file upload library with progressbar, upload queue and validation.",
   "repository": {
     "url": "git+https://github.com/r-hannuschka/ngx-fileupload.git",
     "type": "git"
@@ -9,6 +9,8 @@
   "license": "MIT",
   "keywords": [
     "ngx",
+    "async",
+    "angular",
     "angular 8",
     "file",
     "upload",

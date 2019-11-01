@@ -36,21 +36,13 @@ export class UploadViewComponent implements OnInit, OnDestroy {
         this.uploadStorageSet = true;
     }
 
-    public get storage(): UploadStorage {
-        return this.uploadStorage;
-    }
+    public uploadStorage: UploadStorage;
 
     public uploads: UploadRequest[] = [];
 
-    private destroyed$: Subject<boolean>;
-
-    private uploadStorage: UploadStorage;
+    private destroyed$: Subject<boolean> = new Subject();
 
     private uploadStorageSet = false;
-
-    public constructor() {
-        this.destroyed$ = new Subject();
-    }
 
     public ngOnInit() {
 
@@ -80,20 +72,5 @@ export class UploadViewComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (uploads) => this.uploads = uploads
             });
-    }
-
-    /** start upload for all files */
-    public uploadAll() {
-        this.uploadStorage.startAll();
-    }
-
-    /** stop all uploads */
-    public stopAll() {
-        this.uploadStorage.stopAll();
-    }
-
-    /** purge uploads, invalid, completed, canceled will be removed */
-    public cleanAll() {
-        this.uploadStorage.purge();
     }
 }

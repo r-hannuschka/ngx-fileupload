@@ -1,8 +1,7 @@
 import { UploadRequest } from "./upload.request";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { buffer, debounceTime, tap } from "rxjs/operators";
+import { buffer, debounceTime, tap, takeUntil, distinctUntilKeyChanged } from "rxjs/operators";
 import { UploadQueue, QueueState } from "./upload.queue";
-import { take } from "rxjs/internal/operators/take";
 
 export interface UploadStorageConfig {
     concurrentUploads?: number;
@@ -32,6 +31,8 @@ export class UploadStorage {
      */
     private uploadDestroy$: Subject<UploadRequest> = new Subject();
 
+    private uploadStateChange$: Subject<void> = new Subject();
+
     public constructor(config: UploadStorageConfig = {}) {
         this.change$     = new BehaviorSubject([]);
         this.uploadQueue = new UploadQueue();
@@ -39,20 +40,20 @@ export class UploadStorage {
         this.storeConfig = {...defaultStoreConfig, ...config};
         this.uploadQueue.concurrent = this.storeConfig.concurrentUploads;
 
+        this.registerUploadStateChanged();
         this.registerUploadDestroyEvent();
     }
 
     /**
-     * register to get notified something on store change, add and remove
+     * submits if any upload changes his state, uploads
+     * gets removed or added
      */
     public change(): Observable<UploadRequest[]> {
         return this.change$.asObservable();
     }
 
     /**
-     * get queue change observable to get notified something happens on queue.
-     * this will submit if pending uploads changes or new uploads will processing
-     * not if any upload has been added
+     * gets notified if queue changes
      */
     public get queueChange(): Observable<QueueState> {
         return this.uploadQueue.change;
@@ -68,13 +69,16 @@ export class UploadStorage {
             this.uploadQueue.register(upload);
         }
 
-        /**
-         * register to upload destroy, this can happens on any place
-         * not only in store. And pipe to interal subject we are subscribed
-         */
-        upload.destroyed
-            .pipe(take(1))
-            .subscribe(() => this.uploadDestroy$.next(upload));
+        upload.change
+            .pipe(
+                /** only gets notified if state changes */
+                distinctUntilKeyChanged("state"),
+                takeUntil(upload.destroyed),
+            )
+            .subscribe({
+                next: ()     => this.uploadStateChange$.next(),
+                complete: () => this.uploadDestroy$.next(upload)
+            });
 
         this.notifyObserver();
     }
@@ -98,6 +102,9 @@ export class UploadStorage {
         /** destroy upload destroy stream */
         this.uploadDestroy$.complete();
         this.uploadDestroy$ = null;
+
+        this.uploadStateChange$.complete();
+        this.uploadStateChange$ = null;
 
         this.uploads = null;
     }
@@ -151,6 +158,18 @@ export class UploadStorage {
             }
         });
         this.notifyObserver();
+    }
+
+    /**
+     * upload state has been changed from
+     * idle to pending
+     */
+    private registerUploadStateChanged() {
+        this.uploadStateChange$.pipe(
+            buffer(this.uploadStateChange$.pipe(debounceTime(10))),
+        ).subscribe({
+            next: () => this.notifyObserver()
+        });
     }
 
     /**

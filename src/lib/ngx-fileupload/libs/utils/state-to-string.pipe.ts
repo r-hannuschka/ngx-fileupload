@@ -1,6 +1,13 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { UploadState } from "../data/api";
+import { UploadState } from "../../data/api";
 
+/**
+ * converts upload state to string value
+ *
+ * @example
+ * <span>{{upload.state | stateToString}}</span>
+ * // prints one of these idle, pending, progress, completed, start, invalid, canceled
+ */
 @Pipe({
     name: "stateToString"
 })

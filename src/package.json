@@ -1,6 +1,6 @@
 {
   "name": "ngx-fileupload",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,12 +9,13 @@
     "lint": "ng lint",
     "compodoc": "npx compodoc -p lib/tsconfig.lib.json --disablePrivate --disableLifeCycleHooks",
     "pretest:e2e": "node ./node_modules/protractor/bin/webdriver-manager update",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e --configuration e2e --port=4201",
+    "e2e:watch": "watch 'ng e2e --port=4201' lib example e2e --wait=1"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "8.2.11",
-    "@angular/cdk": "^8.2.3",
+    "@angular/cdk": "8.2.3",
     "@angular/common": "8.2.11",
     "@angular/compiler": "8.2.11",
     "@angular/core": "8.2.11",
@@ -24,12 +25,12 @@
     "@angular/router": "8.2.11",
     "highlight.js": "9.15.10",
     "igniteui-angular": "8.2.3",
-    "ngx-customscrollbar": "^2.0.1",
+    "ngx-customscrollbar": "2.0.1",
     "ngx-highlightjs": "3.0.3",
     "rxjs": "6.5.3",
     "tslib": "1.10.0",
-    "web-animations-js": "^2.3.2",
-    "zone.js": "^0.9.1"
+    "web-animations-js": "2.3.2",
+    "zone.js": "0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.803.12",
@@ -38,17 +39,14 @@
     "@angular/compiler-cli": "8.2.11",
     "@angular/language-service": "8.2.11",
     "@compodoc/compodoc": "1.1.11",
-    "@nrwl/cypress": "^8.6.0",
-    "@nrwl/workspace": "^8.6.0",
     "@types/jasmine": "3.4.4",
     "@types/jasminewd2": "2.0.8",
     "@types/node": "8.10.55",
     "bootstrap-scss": "4.3.1",
-    "codelyzer": "5.1.2",
-    "cypress": "^3.4.1",
+    "codelyzer": "^5.2.0",
     "express": "4.17.1",
     "express-fileupload": "1.1.5",
-    "https-proxy-agent": "^3.0.0",
+    "https-proxy-agent": "3.0.0",
     "jasmine-core": "3.5.0",
     "jasmine-spec-reporter": "4.2.1",
     "karma": "4.4.1",
@@ -58,12 +56,14 @@
     "karma-jasmine-html-reporter": "1.4.2",
     "letslog": "1.0.12",
     "ng-packagr": "5.6.1",
+    "protractor": "5.4.2",
     "ts-node": "8.4.1",
     "tsickle": "0.37.0",
     "tslint": "5.20.0",
-    "typescript": "3.4.5"
+    "typescript": "3.4.5",
+    "watch": "^1.0.2"
   },
   "resolutions": {
-    "https-proxy-agent": "^3.0.0"
+    "https-proxy-agent": "3.0.0"
   }
 }

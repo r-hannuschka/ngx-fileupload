@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, Input } from "@angular/core";
-import { UploadStorage, QueueState, UploadRequest, UploadData, UploadState, UploadModel } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage, QueueState, UploadRequest, UploadData, UploadState } from "@r-hannuschka/ngx-fileupload";
 import { takeUntil, takeWhile } from "rxjs/operators";
 import { Subject, merge } from "rxjs";
 import { ViewportControl } from "ngx-customscrollbar";
@@ -82,7 +82,7 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (model: UploadModel) => this.updateData(model.toJson())
+                next: (model: UploadData) => this.updateData(model)
             });
     }
 

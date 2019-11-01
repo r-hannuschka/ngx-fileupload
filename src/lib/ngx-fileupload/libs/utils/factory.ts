@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { UploadModel } from "../data/upload.model";
-import { UploadRequest, UploadOptions } from "../libs/upload/src/upload.request";
-import { UploadStorage } from "../libs/upload/src/upload.storage";
+import { UploadModel } from "../../data/upload.model";
+import { UploadRequest, UploadOptions } from "../upload/src/upload.request";
+import { UploadStorage } from "../upload/src/upload.storage";
 
 @Injectable({
     providedIn: "root"

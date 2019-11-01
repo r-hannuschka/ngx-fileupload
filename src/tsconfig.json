@@ -50,7 +50,7 @@
        * paths for fileupload library 
        */
       "@lib/utils/*": [
-        "./lib/ngx-fileupload/utils/*"
+        "lib/ngx-fileupload/libs/utils/*"
       ],
       "@lib/utils/validation": [
         "lib/ngx-fileupload/libs/validation"

@@ -2,12 +2,11 @@
 import { ComponentFixture, async, TestBed } from "@angular/core/testing";
 import { Component, HostListener, TemplateRef, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { NgMathPipesModule } from "angular-pipes";
 
 import { NgxFileUploadItemComponent, UploadModel, FileUploadItemContext } from "lib/public-api";
 import { FileUploadMock } from "../mock/upload-file.mock";
 import { By } from "@angular/platform-browser";
-import { ToArrayPipe } from "lib/ngx-fileupload/utils/to-array.pipe";
+import { ToArrayPipe } from "lib/ngx-fileupload/libs/utils/to-array.pipe";
 
 @Component({
     template: `

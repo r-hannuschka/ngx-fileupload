@@ -1,5 +1,5 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
-import { Subject, BehaviorSubject, Observable, forkJoin } from "rxjs";
+import { Subject, Observable, forkJoin } from "rxjs";
 import { takeUntil, filter, switchMap, map } from "rxjs/operators";
 import { UploadState, UploadResponse, UploadData, Upload, Validator, ValidationFn} from "../../../data/api";
 import { UploadModel } from "../../../data/upload.model";
@@ -45,7 +45,7 @@ export class UploadRequest implements Upload {
     /**
      * upload stream to notify observers if something has been changed
      */
-    private upload$: BehaviorSubject<UploadModel>;
+    private upload$: Subject<UploadData>;
 
     /**
      * upload stream gets destroyed
@@ -59,7 +59,7 @@ export class UploadRequest implements Upload {
 
     private hooks: {beforeStart: Array<() => Observable<boolean>>} = { beforeStart: [] };
 
-    public get change(): Observable<UploadModel> {
+    public get change(): Observable<UploadData> {
         return this.upload$.asObservable();
     }
 
@@ -94,7 +94,7 @@ export class UploadRequest implements Upload {
         const reqId = Array.from({length: 4}, () => Math.random().toString(32).slice(2));
         this.upload.requestId = reqId.join("_");
 
-        this.upload$ = new BehaviorSubject(this.upload);
+        this.upload$ = new Subject();
         this.options = {...this.options, ...options};
     }
 
@@ -140,9 +140,10 @@ export class UploadRequest implements Upload {
         return isCompleted;
     }
 
-    /**
-     * returns true if validators are set and upload not validated
-     */
+    public isCanceled(): boolean {
+        return this.upload.state === UploadState.CANCELED;
+    }
+
     public isInvalid(): boolean {
         return this.upload.isInvalid;
     }
@@ -159,6 +160,7 @@ export class UploadRequest implements Upload {
         return this.upload.state === UploadState.IDLE;
     }
 
+    /** returns true if request has been completed even on error */
     public isRequestCompleted() {
         return this.upload.state === UploadState.COMPLETED;
     }
@@ -168,7 +170,7 @@ export class UploadRequest implements Upload {
      * reset state, and reset errors
      */
     public retry() {
-        if (this.state === UploadState.COMPLETED && this.upload.hasError) {
+        if (this.isRequestCompleted() && this.hasError() || this.isCanceled()) {
             this.resetUpload();
             this.start();
         }
@@ -308,7 +310,7 @@ export class UploadRequest implements Upload {
      * send notification to observers
      */
     private notifyObservers() {
-        this.upload$.next(this.upload);
+        this.upload$.next(this.upload.toJson());
     }
 
     /**

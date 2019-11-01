@@ -71,6 +71,7 @@ export class UploadStorage {
 
         upload.change
             .pipe(
+                /** only gets notified if state changes */
                 distinctUntilKeyChanged("state"),
                 takeUntil(upload.destroyed),
             )
@@ -101,6 +102,9 @@ export class UploadStorage {
         /** destroy upload destroy stream */
         this.uploadDestroy$.complete();
         this.uploadDestroy$ = null;
+
+        this.uploadStateChange$.complete();
+        this.uploadStateChange$ = null;
 
         this.uploads = null;
     }

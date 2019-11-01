@@ -2,7 +2,13 @@ import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { UploadStorage, UploadRequest } from "../../upload";
-import { UploadState } from "../../../data/api";
+
+interface InfoData {
+    error: number;
+    idle: number;
+    pending: number;
+    progress: number;
+}
 
 @Component({
     selector: "ngx-fileupload-toolbar",
@@ -14,27 +20,7 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
     @Input()
     public storage: UploadStorage;
 
-    /**
-     * count uploads which should uploaded but currently waits
-     * for a place into queue
-     */
-    public pendingCount = 0;
-
-    /**
-     * count of all uploads which are currently running
-     */
-    public progressingCount = 0;
-
-    /**
-     * count of all uploads which are currently idle
-     */
-    public idleCount = 0;
-
-    /**
-     * count of all uploads which are completed but got an error
-     * and could try to reload
-     */
-    public errorCount = 0;
+    public uploadInfo: InfoData = { error: 0, pending: 0, idle: 0, progress: 0 };
 
     public hasUploadsInList = false;
 
@@ -80,31 +66,23 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroyed$)
             )
             .subscribe((uploads: UploadRequest[]) => {
-
-                this.idleCount        = 0;
-                this.pendingCount     = 0;
-                this.errorCount       = 0;
-                this.progressingCount = 0;
-
-                uploads.forEach((upload: UploadRequest) => {
-                    switch (upload.state) {
-                        case UploadState.IDLE:
-                            this.idleCount += 1;
-                            break;
-
-                        case UploadState.PENDING:
-                            this.pendingCount += 1;
-                            break;
-
-                        case UploadState.START:
-                        case UploadState.PROGRESS:
-                            this.progressingCount += 1;
-                            break;
-                    }
-                });
-
-                this.isCleanable = uploads.some(upload => upload.isCompleted() || upload.isInvalid());
+                this.updateInfoBar(uploads);
+                this.isCleanable      = uploads.some(upload => upload.isCompleted() || upload.isInvalid());
                 this.hasUploadsInList = uploads.length > 0;
             });
+    }
+
+    private updateInfoBar(uploads: UploadRequest[]) {
+        this.uploadInfo = uploads.reduce<InfoData>((data, upload) => {
+            return {
+                ...data,
+                ...{
+                    error   : data.error    + (upload.hasError() || upload.isInvalid() ? 1 : 0),
+                    idle    : data.idle     + (upload.isIdle() ? 1 : 0),
+                    pending : data.pending  + (upload.isPending() ? 1 : 0),
+                    progress: data.progress + (upload.isProgress() ? 1 : 0)
+                }
+            };
+        }, {idle: 0, pending: 0, error: 0, progress: 0});
     }
 }

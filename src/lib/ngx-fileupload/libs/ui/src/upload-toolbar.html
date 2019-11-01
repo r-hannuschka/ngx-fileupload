@@ -1,5 +1,5 @@
 <div class="actions">
-    <button class="upload-all" [disabled]="idleCount === 0" (click)="uploadAll()">
+    <button class="upload-all" [disabled]="uploadInfo.idle === 0" (click)="uploadAll()">
         <i class="ngx-fileupload-icon--upload"></i>
         Upload
     </button>
@@ -12,19 +12,19 @@
     <ul>
         <li>
             <i class="ngx-fileupload-icon--upload"></i>
-            <span>{{progressingCount}}</span>
+            <span>{{uploadInfo.progress}}</span>
         </li>
         <li>
             <i class="ngx-fileupload-icon--pending"></i>
-            <span>{{pendingCount}}</span>
+            <span>{{uploadInfo.pending}}</span>
         </li>
         <li>
             <i class="ngx-fileupload-icon--idle"></i>
-            <span>{{idleCount}}</span>
+            <span>{{uploadInfo.idle}}</span>
         </li>
         <li>
             <i class="ngx-fileupload-icon--error"></i>
-            <span>{{errorCount}}</span>
+            <span>{{uploadInfo.error}}</span>
         </li>
     </ul>
 </div>

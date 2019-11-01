@@ -127,7 +127,7 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
 
             &:disabled {
                 color: lighten(map-get($colors, dark), 50%);
-                cursor: not-allowed;
+                cursor: default;
             }
         }
 

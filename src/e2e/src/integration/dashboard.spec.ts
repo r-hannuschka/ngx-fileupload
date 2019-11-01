@@ -1,4 +1,4 @@
-import { simulateDrop } from "../../utils/drag-event";
+import { simulateDrop } from "../utils/drag-event";
 import { by, browser, logging } from "protractor";
 import { spawn, ChildProcess } from "child_process";
 import { writeFileSync } from "fs";

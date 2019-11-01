@@ -1,4 +1,4 @@
-import { simulateDrop } from "../../utils/drag-event";
+import { simulateDrop } from "../utils/drag-event";
 import { browser, logging } from "protractor";
 import { spawn, ChildProcess } from "child_process";
 import { Dashboard } from "../support/dashboard.po";
@@ -95,6 +95,24 @@ describe("Ngx Fileupload Upload Toolbar", () => {
 
         /** start uploads */
         await browser.waitForAngularEnabled(true);
+        await uploadToolbar.removeAll();
+    });
+
+    it("should show upload error 1 in info bar", async () => {
+        server.send({
+            response: {state: 401, message: "just no"}
+        });
+
+        // add another file
+        await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
+        await uploadToolbar.uploadAll();
+
+        expect(
+            await uploadToolbar.uploadStates.map<string>((state) => state.getText())
+        ).toEqual(["0", "0", "0", "1"]);
+
+        /** start uploads */
+        await uploadToolbar.removeAll();
     });
 
     afterEach(async () => {

@@ -210,7 +210,7 @@ describe("Ngx Fileupload Default View", () => {
             /** dont wait for angular since we dont want to know a upload process has been finished */
             await browser.waitForAngularEnabled(false);
             await uploadToolbar.uploadAll();
-            await browser.sleep(200);
+            await browser.sleep(100);
 
             const items = ngxFileUpload.getUploadItems()
                 .all(by.css(`.upload-item--state`));

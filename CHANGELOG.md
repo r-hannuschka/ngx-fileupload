@@ -1,5 +1,25 @@
 # Changelog
 
+## 3.1.0
+
+### features
+
+- add new pipe isCancelAble which returns true if an upload could canceled
+- add upload informations into upload toolbar
+- upload all button is now only enabled if idle uploads in list
+- clear button is now only enabled if uploads are completed / canceled / invalid
+- upload item cancel only enabled if upload is progressing (start / stop) or pending
+- canceled uploads are now reload able
+- upload storage change submits now if an upload changes his state (idle, queued, start, progressing, canceled ...)
+
+### bugfixes
+
+- fixed ui upload toolbar
+
+### other changes
+
+- upload.request change not submits upload model anymore instead used UploadData
+
 ## 3.0.1
 
 ### bugfixes

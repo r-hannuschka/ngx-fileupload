@@ -1,16 +1,3 @@
-function sendResponse(res, file) {
-    const defaultResponse = {
-        file: {
-            id: 0,
-            type: 'any'
-        },
-        message: `Hoooray File: ${file.name} uploaded to /dev/null`
-    };
-
-    res.status(response ? response.state : 200);
-    res.send(response ? response.body : defaultResponse);
-}
-
 // call all the required packages
 const express = require("express");
 const app = express();
@@ -35,15 +22,28 @@ const logger = new letsLog.Logger({
     ]
 });
 
+let response = null;
+let timeout = 0;
+
+function sendResponse(res, file) {
+    const defaultResponse = {
+        file: {
+            id: 0,
+            type: 'any'
+        },
+        message: `Hoooray File: ${file.name} uploaded to /dev/null`
+    };
+
+    res.status(response ? response.state : 200);
+    res.send(response ? response.body : defaultResponse);
+}
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 app.use(fileUpload());
-
-let response = null;
-let timeout = 0;
 
 app.post("/upload", function(req, res) {
 

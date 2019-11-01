@@ -203,8 +203,8 @@ describe("Ngx Fileupload Default View", () => {
         it("should only upload 3 files at once and get 7 queued", async () => {
             server.send({
                 response: null,
-                // slow down server response for 1 second, otherwise it is too fast
-                timeout: 1000
+                // slow down server response for 5 seconds, otherwise it is too fast
+                timeout: 5000
             });
 
             /** dont wait for angular since we dont want to know a upload process has been finished */

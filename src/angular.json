@@ -64,6 +64,30 @@
                 }
               ]
             },
+            "demo": {
+              "fileReplacements": [
+                {
+                  "replace": "example/environments/environment.ts",
+                  "with": "example/environments/environment.demo.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
             "e2e": {
               "fileReplacements": [
                 {
@@ -82,6 +106,9 @@
           "configurations": {
             "production": {
               "browserTarget": "ngx-fileupload-example:build:production"
+            },
+            "demo": {
+              "browserTarget": "ngx-fileupload-example:build:demo"
             },
             "e2e": {
               "browserTarget": "ngx-fileupload-example:build:e2e"

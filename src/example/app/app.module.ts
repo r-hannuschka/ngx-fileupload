@@ -1,7 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule, Provider } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { environment } from "../environments/environment";
 
 import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 import { IgxIconModule } from "igniteui-angular";
@@ -10,6 +10,9 @@ import xml from "highlight.js/lib/languages/xml";
 import scss from "highlight.js/lib/languages/scss";
 import typescript from "highlight.js/lib/languages/typescript";
 import javascript from "highlight.js/lib/languages/javascript";
+
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { FakeUploadInterceptor } from "@ngx-fileupload-example/utils/http";
 
 /**
  * Import every language you wish to highlight here
@@ -28,10 +31,15 @@ import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { UiModule } from "@ngx-fileupload-example/ui";
-import { FakeUploadInterceptor } from "@ngx-fileupload-example/utils/http";
 import { CustomizePage } from "@ngx-fileupload-example/page/customize";
 import { Dashboard } from "@ngx-fileupload-example/page/dashboard";
 import { ValidationPage } from "@ngx-fileupload-example/page/validation";
+
+const fakeUploadProvider: Provider = {
+    provide: HTTP_INTERCEPTORS,
+    useClass: FakeUploadInterceptor,
+    multi: true
+};
 
 @NgModule({
     declarations: [
@@ -52,12 +60,7 @@ import { ValidationPage } from "@ngx-fileupload-example/page/validation";
         })
     ],
     bootstrap: [AppComponent],
-    providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: FakeUploadInterceptor,
-            multi: true
-        }
-    ]
+    providers: [...environment.demo ? [fakeUploadProvider] : []]
 })
-export class AppModule { }
+export class AppModule {
+}

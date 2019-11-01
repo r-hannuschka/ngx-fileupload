@@ -42,7 +42,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
                 takeWhile(() => upload.state !== "completed")
             ).subscribe({
                 next: () => this.nextTick(upload, observer),
-                complete: () => this.uploadCompleted(observer, hasError)
+                complete: () => this.uploadCompleted(observer, file.name, hasError)
             });
         });
     }
@@ -70,11 +70,9 @@ export class FakeUploadInterceptor implements HttpInterceptor {
     /**
      * upload has been completed
      */
-    private uploadCompleted(observer, hasError = false): void {
+    private uploadCompleted(observer, fileName: string, hasError = false ): void {
 
-        const isError = Math.random() * 10 > 5;
-
-        if (isError) {
+        if (hasError) {
             const error: HttpErrorResponse = new HttpErrorResponse({
                 status: 401,
                 error: ["Fakeuploader Random Error", "An error occured"]
@@ -82,7 +80,11 @@ export class FakeUploadInterceptor implements HttpInterceptor {
             observer.error(error);
         } else {
             const response = new HttpResponse({
-                status: 201
+                status: 201,
+                body: {
+                    file: { id: 0, type: "any" },
+                    message: `Hoooray File: ${fileName} uploaded to /dev/null`
+                }
             });
             observer.next(response);
         }

@@ -75,13 +75,10 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
     private updateInfoBar(uploads: UploadRequest[]) {
         this.uploadInfo = uploads.reduce<InfoData>((data, upload) => {
             return {
-                ...data,
-                ...{
-                    error   : data.error    + (upload.hasError() || upload.isInvalid() ? 1 : 0),
-                    idle    : data.idle     + (upload.isIdle() ? 1 : 0),
-                    pending : data.pending  + (upload.isPending() ? 1 : 0),
-                    progress: data.progress + (upload.isProgress() ? 1 : 0)
-                }
+                error   : data.error    + (upload.hasError() || upload.isInvalid() ? 1 : 0),
+                idle    : data.idle     + (upload.isIdle() ? 1 : 0),
+                pending : data.pending  + (upload.isPending() ? 1 : 0),
+                progress: data.progress + (upload.isProgress() ? 1 : 0)
             };
         }, {idle: 0, pending: 0, error: 0, progress: 0});
     }

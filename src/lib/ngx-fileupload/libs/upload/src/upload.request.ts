@@ -1,7 +1,8 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, Observable, forkJoin } from "rxjs";
 import { takeUntil, filter, switchMap, map } from "rxjs/operators";
-import { UploadState, UploadResponse, UploadData, Upload, Validator, ValidationFn} from "../../../data/api";
+import { UploadState, UploadResponse, UploadData, Upload} from "../../../data/api";
+import { Validator, ValidationFn } from "../../validation";
 import { UploadModel } from "../../../data/upload.model";
 
 /**
@@ -202,6 +203,7 @@ export class UploadRequest implements Upload {
      * validate upload
      */
     public validate(validator: Validator | ValidationFn) {
+
         const result = "validate" in validator
             ? validator.validate(this.upload.file)
             : validator(this.upload.file);

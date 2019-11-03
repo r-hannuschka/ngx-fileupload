@@ -1,10 +1,10 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2 } from "@angular/core";
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2, Inject } from "@angular/core";
 import { Subject } from "rxjs";
 
 import { Validator, ValidationFn } from "../../../data/api/validation";
 import { UploadRequest } from "../../upload/src/upload.request";
-import { FileUploadFactory } from "../../utils/factory";
 import { UploadStorage } from "../../upload/src/upload.storage";
+import { NgxFileUploadFactory } from "../../utils";
 
 /**
  * directive to add uploads with drag / drop
@@ -38,7 +38,7 @@ export class FileBrowserDirective implements OnDestroy {
     }
 
     @Input()
-    public validator: Validator | ValidationFn;
+    public validator: Validator | ValidationFn = null;
 
     /**
      * if set to false upload post request body will use
@@ -74,7 +74,7 @@ export class FileBrowserDirective implements OnDestroy {
      */
     constructor(
         private renderer: Renderer2,
-        private uploadFactory: FileUploadFactory,
+        @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
     ) {
         this.add = new EventEmitter();
         this.fileSelect = this.createFieldInputField();
@@ -132,10 +132,7 @@ export class FileBrowserDirective implements OnDestroy {
      */
     private handleFileSelect(files: File[]) {
         files.forEach((file: File) => {
-            const upload = this.uploadFactory.createUpload(file, {url: this.url});
-            if (this.validator) {
-                upload.validate(this.validator);
-            }
+            const upload = this.uploadFactory.createUploadRequest(file, {url: this.url}, this.validator);
             this.storage.add(upload);
         });
     }

@@ -1,5 +1,4 @@
 import { Observable } from "rxjs";
-import { UploadModel } from "../upload.model";
 import { ValidationErrors } from "./validation";
 
 export enum UploadState {

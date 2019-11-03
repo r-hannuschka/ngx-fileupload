@@ -1,4 +1,4 @@
-import { Validator, ValidationErrors, ValidationFn } from "@lib/data/api/validation";
+import { Validator, ValidationErrors, ValidationFn } from "./api";
 
 export abstract class GroupedValidator implements Validator {
 

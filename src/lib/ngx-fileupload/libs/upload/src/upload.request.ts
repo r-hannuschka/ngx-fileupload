@@ -201,9 +201,10 @@ export class UploadRequest implements Upload {
 
     /**
      * validate upload
+     *
+     * @deprecated
      */
     public validate(validator: Validator | ValidationFn) {
-
         const result = "validate" in validator
             ? validator.validate(this.upload.file)
             : validator(this.upload.file);

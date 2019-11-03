@@ -132,7 +132,7 @@ export class FileBrowserDirective implements OnDestroy {
      */
     private handleFileSelect(files: File[]) {
         files.forEach((file: File) => {
-            const upload = this.uploadFactory.create(file, {url: this.url}, this.validator);
+            const upload = this.uploadFactory.createUploadRequest(file, {url: this.url}, this.validator);
             this.storage.add(upload);
         });
     }

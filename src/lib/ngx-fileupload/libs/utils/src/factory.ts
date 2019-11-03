@@ -3,9 +3,10 @@ import { HttpClient } from "@angular/common/http";
 import { UploadModel } from "../../../data/upload.model";
 import { UploadRequest, UploadOptions } from "../../upload/src/upload.request";
 import { ValidationFn, Validator } from "../../validation";
+import { UploadState } from "../../../data/api";
 
 export interface NgxFileUploadFactory {
-    create: (
+    createUploadRequest: (
         file: File,
         options: UploadOptions,
         validators: Validator | ValidationFn
@@ -27,14 +28,19 @@ class Factory implements NgxFileUploadFactory {
     /**
      * constructs new upload request
      */
-    public create( file: File, options: UploadOptions, validator: ValidationFn | Validator = null): UploadRequest {
-        const model  = new UploadModel(file);
-        const upload = new UploadRequest(this.httpClient, model, options);
+    public createUploadRequest( file: File, options: UploadOptions, validator: ValidationFn | Validator = null): UploadRequest {
+        const model = new UploadModel(file);
+        let validationResult = null;
 
         if (validator) {
-            upload.validate(validator);
+            validationResult = "validate" in validator ? validator.validate(file) : validator(file);
         }
-        return upload;
+
+        if (validationResult !== null) {
+            model.state = UploadState.INVALID;
+            model.validationErrors = validationResult;
+        }
+        return new UploadRequest(this.httpClient, model, options);
     }
 }
 

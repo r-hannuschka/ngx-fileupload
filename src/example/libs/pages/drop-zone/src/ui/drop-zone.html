@@ -1,0 +1,8 @@
+<ngx-fileupload-toolbar [storage]="uploadStorage"></ngx-fileupload-toolbar>
+
+<ngx-file-drop (onFileDrop)="drop($event)" [dropZoneLabel]="'Drop Files Here'" >
+</ngx-file-drop>
+
+<div class="files">
+    <ngx-fileupload-item *ngFor="let upload of uploads" [upload]="upload"></ngx-fileupload-item>
+</div>

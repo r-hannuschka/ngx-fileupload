@@ -25,6 +25,7 @@ import { CancelAblePipe } from "./libs/utils/src/cancelable.pipe";
         FileBrowserDirective,
         UploadItemComponent,
         UploadViewComponent,
+        UploadToolbarComponent,
         StateToStringPipe,
         FileSizePipe,
         CancelAblePipe

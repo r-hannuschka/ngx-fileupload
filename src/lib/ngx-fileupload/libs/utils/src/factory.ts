@@ -9,7 +9,7 @@ export interface NgxFileUploadFactory {
     createUploadRequest: (
         file: File,
         options: UploadOptions,
-        validators: Validator | ValidationFn
+        validators?: Validator | ValidationFn
     ) => UploadRequest;
 }
 

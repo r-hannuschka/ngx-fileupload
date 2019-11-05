@@ -169,7 +169,7 @@ export class UploadStorage {
      */
     private registerUploadStateChanged() {
         this.uploadStateChange$.pipe(
-            buffer(this.uploadStateChange$.pipe(debounceTime(10))),
+            // buffer(this.uploadStateChange$.pipe(debounceTime(10))),
             takeUntil(this.destroyed$)
         ).subscribe({
             next: () => this.notifyObserver()

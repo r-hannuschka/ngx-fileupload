@@ -28,6 +28,7 @@ import * as Icons from "@ngx-fileupload-example/data/ui/icons";
         ButtonComponent,
         HeaderComponent,
         ProgressbarCircleComponent,
+        ProgressbarComponent,
         UploadToolbarComponent,
         UploadItemSimpleComponent,
         UploadOverviewComponent,

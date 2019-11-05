@@ -25,13 +25,13 @@ const logger = new letsLog.Logger({
 let response = null;
 let timeout = 0;
 
-function sendResponse(res, file) {
+function sendResponse(res, file, msg = null) {
     const defaultResponse = {
         file: {
             id: 0,
             type: "any"
         },
-        message: `Hoooray File: ${file.name} uploaded to /dev/null`
+        message: msg || `Hoooray File: ${file.name} uploaded to /dev/null`
     };
 
     res.status(response ? response.state : 200);
@@ -54,6 +54,20 @@ app.post("/upload", function(req, res) {
         setTimeout(() => sendResponse(res, uploadedFile), timeout);
     } else {
         sendResponse(res, uploadedFile);
+    }
+});
+
+app.post("/upload/gallery", function(req, res) {
+
+    const uploadedFile = req.files.picture;
+    logger.info(`Picture uploaded: ${uploadedFile.name}`);
+
+    const message = `New picture added to our gallery ${uploadedFile.name}`;
+
+    if(timeout) {
+        setTimeout(() => sendResponse(res, uploadedFile, message), timeout);
+    } else {
+        sendResponse(res, uploadedFile, message);
     }
 });
 

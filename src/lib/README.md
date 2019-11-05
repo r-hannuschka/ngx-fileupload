@@ -70,6 +70,7 @@ See [Documentation](https://r-hannuschka.github.io/ngx-fileupload/documentation)
 
 To get more detailed informations please check out the docs
 
+- [NgxFileUploadFactory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md)
 - [Upload Component](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-component.md)
 - [Upload Directive](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-directive.md)
 - [Upload Item](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-item.md)

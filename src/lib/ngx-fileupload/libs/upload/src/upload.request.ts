@@ -1,5 +1,5 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
-import { Subject, Observable, forkJoin } from "rxjs";
+import { Subject, Observable, forkJoin, merge } from "rxjs";
 import { takeUntil, filter, switchMap, map } from "rxjs/operators";
 import { UploadState, UploadResponse, UploadData, Upload} from "../../../data/api";
 import { Validator, ValidationFn } from "../../validation";
@@ -122,12 +122,13 @@ export class UploadRequest implements Upload {
     }
 
     public destroy() {
-        this.cancel$.next(true);
         this.destroyed$.next(true);
 
+        this.destroyed$.complete();
         this.cancel$.complete();
         this.upload$.complete();
 
+        this.destroyed$ = null;
         this.hooks      = null;
         this.upload$    = null;
         this.upload     = null;
@@ -231,7 +232,7 @@ export class UploadRequest implements Upload {
         return this.http.post<string>(this.options.url, uploadBody, {
             reportProgress: true,
             observe: "events"
-        }).pipe(takeUntil(this.cancel$));
+        }).pipe(takeUntil(merge(this.cancel$, this.destroyed$)));
     }
 
     /**

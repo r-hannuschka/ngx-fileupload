@@ -148,7 +148,7 @@ export class UploadStorage {
      * stops all active uploads
      */
     public stopAll() {
-        this.uploads.forEach(upload => (upload.cancel(), upload.destroy()));
+        this.uploads.forEach(upload => upload.destroy());
     }
 
     /**

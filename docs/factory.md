@@ -8,7 +8,12 @@ Factory to create new UploadRequests
 
 ```ts
 ...
-import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest } from "@r-hannuschka/ngx-fileupload";
+import {
+    UploadStorage,
+    NgxFileUploadFactory,
+    UploadOptions,
+    UploadRequest
+} from "@r-hannuschka/ngx-fileupload";
 ...
 
 @Component({
@@ -24,14 +29,7 @@ export class MyComponent implements OnDestroy, OnInit {
     private uploadOptions: UploadOptions = {
         url: "http://localhost:3000/upload/gallery",
         formData: {
-            /**
-             * enable formdata, if false file will send directly in body
-             */
             enabled: true,
-            /**
-             * FormData field name:
-             * uploaded file could be found in req.files.picture;
-             */
             name: "picture"
         }
     };
@@ -48,7 +46,9 @@ export class MyComponent implements OnDestroy, OnInit {
      * files get dropped
      */
     public fileSelectOrDrop(file: File) {
-        const uploadRequest: UploadRequest = this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions);
+        const uploadRequest: UploadRequest = 
+            this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions);
+
         this.uploadStorage.add(requests);
     }
 

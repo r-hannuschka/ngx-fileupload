@@ -77,11 +77,15 @@ export class UploadStorage {
                 .pipe(
                     /** only gets notified if state changes */
                     distinctUntilKeyChanged("state"),
-                    takeUntil(merge(request.destroyed, this.destroyed$)),
+                    takeUntil(request.destroyed),
                 )
                 .subscribe({
-                    next: ()     => this.uploadStateChange$.next(),
-                    complete: () => this.uploadDestroy$.next(request)
+                    next: () => this.uploadStateChange$.next(),
+                    complete: () => {
+                        // remove upload from list
+                        this.uploads.delete(request.requestId);
+                        this.uploadDestroy$.next();
+                    }
                 });
         });
 
@@ -93,9 +97,13 @@ export class UploadStorage {
      * if storage is provided with InjectionToken
      */
     public destroy() {
+
+        /** remove from all subscriptions */
         this.destroyed$.next(true);
+
+        /** stop all downloads */
         this.stopAll();
-        this.uploads.clear();
+
         this.uploadQueue.destroy();
 
         /** destroy change stream */
@@ -169,7 +177,7 @@ export class UploadStorage {
      */
     private registerUploadStateChanged() {
         this.uploadStateChange$.pipe(
-            // buffer(this.uploadStateChange$.pipe(debounceTime(10))),
+            buffer(this.uploadStateChange$.pipe(debounceTime(10))),
             takeUntil(this.destroyed$)
         ).subscribe({
             next: () => this.notifyObserver()
@@ -183,7 +191,6 @@ export class UploadStorage {
      */
     private registerUploadDestroyEvent() {
         this.uploadDestroy$.pipe(
-            tap((request: UploadRequest) => this.uploads.delete(request.requestId)),
             buffer(this.uploadDestroy$.pipe(debounceTime(10))),
             takeUntil(this.destroyed$)
         ).subscribe({

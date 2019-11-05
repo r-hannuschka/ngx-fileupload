@@ -1,22 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" height="6" width="100%">
     <g class="progressbar-outer">
-        <line 
-            x1="4px"
+        <line x1="0"
             y1="50%"
+            x2="100%"
             y2="50%"
-            stroke-width="6" 
-            attr.x2="{{width - 4}}px"
-        />
+            stroke-width="30" />
     </g>
     <g class="progressbar-inner">
-        <line 
-            x1="4px"
+        <line
+            x1="0"
             y1="50%"
+            x2="100%"
             y2="50%"
-            stroke-width="6" 
-            attr.x2="{{width - 4}}px"
-            attr.stroke-dasharray="{{width}}px" 
-            attr.stroke-dashoffset="{{progressbarWidth}}px" 
-        />
+            stroke="#C2E362" 
+            fill="transparent" 
+            stroke-dasharray="100%" 
+            stroke-dashoffset="50%" 
+            stroke-width="28" />
     </g>
 </svg>

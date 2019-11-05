@@ -1,8 +1,69 @@
-<ngx-fileupload-toolbar [storage]="uploadStorage"></ngx-fileupload-toolbar>
+<!-- SECTION TEMPLATES -->
+<ng-template #itemTemplate let-upload="data" let-ctrl="ctrl">
+    <div class="upload-item">
+        <div class="label"><p>{{upload.name}}</p></div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{width: upload.progress + '%'}"></div>
+        </div>
+        <div class="actions" [ngSwitch]="upload.state">
+            <!-- only icons -->
+            <span class="state" *ngSwitchCase="states.PENDING"><i class="icon-pending"></i></span>
+            <span class="state" *ngSwitchCase="states.START"><i class="icon-connect"></i></span>
+            <span class="state" *ngSwitchCase="states.PROGRESS"><i class="icon-progress"></i></span>
+            <span class="state" *ngSwitchCase="states.COMPLETED">
+                <i [ngClass]="upload.hasError ? 'icon-warning' : 'icon-success'"></i>
+            </span>
 
-<ngx-file-drop (onFileDrop)="drop($event)" [dropZoneLabel]="'Drop Files Here'" >
-</ngx-file-drop>
+            <!-- action buttons -->
+            <button type="button" class="btn state" *ngSwitchDefault (click)="ctrl.start()">
+                <i class="icon-upload"></i>
+            </button>
+            <button type="button" class="btn state" (click)="ctrl.remove()"><i class="icon-cancel"></i></button>
+        </div>
+    </div>
+</ng-template>
 
-<div class="files">
-    <ngx-fileupload-item *ngFor="let upload of uploads" [upload]="upload"></ngx-fileupload-item>
-</div>
+<ng-template #example>
+    <ngx-fileupload-toolbar [storage]="uploadStorage"></ngx-fileupload-toolbar>
+
+    <ngx-file-drop (onFileDrop)="drop($event)" 
+        [dropZoneLabel]="'Drop or'"
+        [dropZoneClassName]="'ngx-fileupload__ngx-file-drop'"
+        [showBrowseBtn]="true" 
+        [browseBtnLabel]="'Browse'">
+    </ngx-file-drop>
+
+    <div class="files">
+        <ngx-fileupload-item *ngFor="let upload of uploads" [template]="itemTemplate" [upload]="upload"></ngx-fileupload-item>
+    </div>
+</ng-template>
+
+<!-- SECTION CONTENT -->
+
+<p>
+    For this example we use <a target="blank" href="https://www.npmjs.com/package/ngx-file-drop">ngx-file-drop library</a> for drag and drop which can also handles drag n drop directories. There are other good librarys out for drag and drop we decide to use this one for following reasons:
+</p>
+<ul>
+    <li>Well maintained</li>
+    <li>no third party libraries involved</li>
+    <li>Well tested by community</li>
+</ul>
+<p>Since we dont use ngx-fileupload browser, we have to take care when files have been dropped, create a new UploadRequest with NgxFileUploadFactory and put every UploadRequest into storage.</p>
+
+<hr />
+
+<igx-tabs>
+
+    <igx-tabs-group label="Demo">
+        <ng-container [ngTemplateOutlet]="example"></ng-container>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Typescript">
+        <pre><code [highlight]="code.TS"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Html">
+        <pre><code [highlight]="code.HTML"></code></pre>
+    </igx-tabs-group>
+
+</igx-tabs>

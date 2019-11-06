@@ -21,7 +21,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
         if (req.url.indexOf("upload") === -1) {
             return next.handle(req);
         }
-        const file: File = req.body.get("file");
+        const file: File = req.body.has("file") ? req.body.get("file") : req.body.get("picture");
         return this.createFakeUpload(file, req.url.indexOf("error") !== -1);
     }
 

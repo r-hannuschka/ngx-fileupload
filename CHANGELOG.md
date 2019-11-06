@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.1
+
+### bugfixes
+
+- fixed bug custom formData was not used
+
 ## 3.2.0
 
 ### features

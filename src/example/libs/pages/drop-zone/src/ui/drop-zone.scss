@@ -1,0 +1,114 @@
+$icomoon-font-path: "../../../../../assets/fonts" !default;
+
+@import '~igniteui-angular/lib/core/styles/themes/index';
+@import "variables";
+@import "icons";
+
+:host {
+
+    ::ng-deep {
+        @include igx-tabs($dark-tabs);
+    }
+
+    .header {
+
+        background: map-get($colors, darkBlue);
+        color: map-get($colors, text);
+
+        i {
+            font-size: 12rem;
+            margin: 0 1rem;
+        }
+    }
+
+    .files {
+
+        height: 30vh;
+        overflow-y: auto;
+        padding: 0 1rem;
+        border: 1px solid map-get($colors, darkBlue);
+        border-top-width: 0;
+
+        ngx-fileupload-item {
+            margin: 0 0 .5rem;
+            border-bottom: 1px solid rgba(map-get($colors, black), .1);
+
+            &:last-child {
+                border-bottom: 0;
+            }
+        }
+
+        .upload-item {
+            display: flex;
+            align-items: center;
+            padding: .5rem 0;
+
+            .label {
+                flex: 0 0 25%;
+                overflow: hidden;
+
+                p {
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    margin: 0;
+                }
+            }
+
+            .progress {
+                flex: 1;
+                height: .5rem;
+                background: rgba(map-get($colors, black), .8);
+
+                .progress-bar {
+                    background: map-get($colors, blue);
+                }
+            }
+
+            .actions {
+                flex-shrink: 1;
+
+                .state {
+                    border: 0;
+                    background: transparent;
+                    height: auto;
+                    margin: 0;
+                    padding: 0;
+                    margin-left: .3rem;
+                    box-shadow: none;
+                    color: map-get($colors, black);
+                }
+
+                /** 
+                * ICONS
+                */
+                .icon-success,
+                .icon-progress {
+                    font-size: .8rem;
+                }
+
+                .icon-warning, 
+                .icon-connect, 
+                .icon-pending,
+                .icon-cancel {
+                    font-size: .9rem;
+                }
+            }
+        }
+    }
+
+    ::ng-deep {
+        .ngx-fileupload__ngx-file-drop {
+            border: 1px solid map-get($colors, darkBlue);
+
+            .ngx-file-drop__content {
+                height: auto;
+                padding: 1rem;
+            }
+        }
+
+        .ngx-file-drop__drop-zone-label {
+            margin-right: .4rem;
+        }
+    }
+}

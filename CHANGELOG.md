@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.2.0
+
+### features
+
+- export ngx-fileupload-toolbar
+- UploadStorage could add now array of UploadRequests 
+- create Factory to create UploadRequests
+- create example page using ngx-file-drop as file browser
+
+### bugfixes
+
+- fixed bug if all uploads was removed, storage change triggers twice
+- fixed bug storage destroy dont unsubscribe from observables
+
 ## 3.1.0
 
 ### features

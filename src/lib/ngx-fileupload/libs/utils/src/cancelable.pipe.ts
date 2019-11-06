@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { UploadData, UploadState } from "../../data/api";
+import { UploadData, UploadState } from "../../../data/api";
 
 /**
  * returns true if an upload could be canceled

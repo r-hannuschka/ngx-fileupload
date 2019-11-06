@@ -807,6 +807,9 @@ copy of the Program in return for a fee.
 ngx-customscrollbar
 MIT
 
+ngx-file-drop
+MIT
+
 ngx-highlightjs
 MIT
 

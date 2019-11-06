@@ -1,6 +1,6 @@
 {
   "name": "ngx-fileupload",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,7 +11,7 @@
     "pretest:e2e": "node ./node_modules/protractor/bin/webdriver-manager update",
     "e2e": "ng e2e --configuration e2e --port=4201",
     "e2e:watch": "watch 'ng e2e --port=4201' lib example e2e --wait=1",
-    "build:demo": "ng build --configuration=demo",
+    "build:demo": "ng build --configuration=demo --base-href=/ngx-fileupload/",
     "deploy:demo": "npx ngh --dir='dist/ngx-fileupload-example'"
   },
   "private": true,

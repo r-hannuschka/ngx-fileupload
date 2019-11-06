@@ -2,11 +2,14 @@ import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Render
 import { Subject } from "rxjs";
 
 import { Validator, ValidationFn } from "../../../data/api/validation";
-import { UploadRequest } from "../../upload/src/upload.request";
-import { UploadStorage } from "../../upload/src/upload.storage";
+import { UploadRequest, UploadOptions, UploadStorage } from "../../upload";
 import { NgxFileUploadFactory } from "../../utils";
 
 /**
+ * FileBrowser directive
+ *
+ * @todo refactor this should only notifiy if files are dropped, not add them to store or create an upload
+ *
  * directive to add uploads with drag / drop
  *
  * @example
@@ -15,7 +18,7 @@ import { NgxFileUploadFactory } from "../../utils";
  * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: "[ngxFileUpload]"
+  selector: "ngxFileUpload, [ngxFileUpload]"
 })
 export class FileBrowserDirective implements OnDestroy {
 
@@ -29,20 +32,39 @@ export class FileBrowserDirective implements OnDestroy {
     @Output()
     public add: EventEmitter<UploadRequest[]>;
 
+    /**
+     *
+     * @deprecated
+     * @todo remove in 3.3.0
+     */
     @Input()
     public storage: UploadStorage;
 
+    /**
+     * this should be only a file browser directive
+     *
+     * @deprecated
+     * @todo remove in 3.3.0
+     */
     @Input("ngxFileUpload")
     public set ngxFileUpload(url: string) {
         this.url = url;
     }
 
+    /**
+     *
+     * @deprecated
+     * @todo remove in 3.3.0
+     */
     @Input()
-    public validator: Validator | ValidationFn = null;
+    public url = "";
 
     /**
      * if set to false upload post request body will use
      * plain file object in body
+     *
+     * @deprecated
+     * @todo remove in 3.3.0
      */
     @Input()
     public useFormData = true;
@@ -50,14 +72,25 @@ export class FileBrowserDirective implements OnDestroy {
     /**
      * form data field name with which form >data will be send
      * by default this will be file
+     *
+     * @deprecated
+     * @todo remove in 3.3.0
      */
     @Input()
     public formDataName = "file";
 
+    /**
+     * form data field name with which form >data will be send
+     * by default this will be file
+     *
+     * @deprecated
+     * @todo remove in 3.3.0
+     */
+    @Input()
+    public validator: Validator | ValidationFn = null;
+
     @Input()
     public disabled = false;
-
-    private url: string;
 
     /**
      * remove from subscribtions if component gets destroyed
@@ -117,7 +150,6 @@ export class FileBrowserDirective implements OnDestroy {
      */
     @HostListener("click", ["$event"])
     public onClick(event: MouseEvent) {
-
         event.stopPropagation();
         event.preventDefault();
 
@@ -129,10 +161,22 @@ export class FileBrowserDirective implements OnDestroy {
     /**
      * files has been selected via drag drop
      * or with input type="file"
+     *
+     * @todo refactor this directive should only select
+     * files and not push them into any store.
      */
     private handleFileSelect(files: File[]) {
+
+        const uploadOptions: UploadOptions = {
+            url: this.url,
+            formData: {
+                enabled: this.useFormData,
+                name: this.formDataName
+            }
+        };
+
         files.forEach((file: File) => {
-            const upload = this.uploadFactory.createUploadRequest(file, {url: this.url}, this.validator);
+            const upload = this.uploadFactory.createUploadRequest(file, uploadOptions, this.validator);
             this.storage.add(upload);
         });
     }

@@ -62,4 +62,4 @@ jobs:
       - name: lint
         run: |
           cd src
-          npm run lint
+          npm run lint -- ngx-fileupload

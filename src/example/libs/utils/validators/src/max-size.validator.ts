@@ -17,8 +17,6 @@ export class MaxUploadSizeValidator implements Validator {
     }
 
     public validate(file: File): ValidationErrors | null {
-        const valid = (file.size / this.maxSize) < 1;
-
         if (file.size / this.maxSize > 1) {
             return {
                 maxFileSizeValidator: `max file size ${this.toUnits(this.maxSize)}`

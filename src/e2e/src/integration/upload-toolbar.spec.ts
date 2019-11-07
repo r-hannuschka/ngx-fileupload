@@ -13,12 +13,6 @@ describe("Ngx Fileupload Upload Toolbar", () => {
     const uploadToolbar: UploadToolbarPO = new UploadToolbarPO();
     const dashboard: Dashboard = new Dashboard();
 
-    function slowDownUpload() {
-        server.send({
-            timeout: 1000
-        });
-    }
-
     beforeAll(async () => {
         // start very simple upload server which only logs
         server = spawn("node", ["./server/upload-server.js"], {stdio: [

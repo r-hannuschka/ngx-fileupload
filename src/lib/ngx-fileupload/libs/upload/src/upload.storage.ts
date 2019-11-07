@@ -1,6 +1,6 @@
 import { UploadRequest } from "./upload.request";
-import { BehaviorSubject, Observable, Subject, merge } from "rxjs";
-import { buffer, debounceTime, tap, takeUntil, distinctUntilKeyChanged } from "rxjs/operators";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { buffer, debounceTime, takeUntil, distinctUntilKeyChanged } from "rxjs/operators";
 import { UploadQueue, QueueState } from "./upload.queue";
 
 export interface UploadStorageConfig {

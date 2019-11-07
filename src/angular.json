@@ -141,7 +141,7 @@
               "devServerTarget": "ngx-fileupload-example:serve:e2e"
             },
             "github-actions": {
-              "devServerTarget": "ng-github-actions:serve:production",
+              "devServerTarget": "ngx-fileupload-example:serve:production",
               "protractorConfig": "e2e/github-actions.conf.js",
               "webdriverUpdate": false
             }

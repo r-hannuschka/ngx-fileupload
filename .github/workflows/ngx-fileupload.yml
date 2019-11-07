@@ -29,11 +29,13 @@ jobs:
           npm ci
 
       - name: install puppeteer
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: | 
           cd src
           npm i puppeteer@chrome-78
 
       - name: install webdriver
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: | 
           cd src
           npm run github-actions:webdriver

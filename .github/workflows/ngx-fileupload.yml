@@ -55,7 +55,7 @@ jobs:
       - name: protractor e2e tests
         run: |
           cd src
-          npm run e2e
+          npm run github-actions:e2e
 
       - name: lint
         run: |

@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
 import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileupload";
 import { NgxFileDropEntry, FileSystemFileEntry } from "ngx-file-drop";
-import { takeUntil, tap } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 
 import * as ExampleCodeData from "@ngx-fileupload-example/data/code/ngx-drop-zone/drop-zone";

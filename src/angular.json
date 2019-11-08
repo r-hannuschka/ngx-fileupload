@@ -139,13 +139,18 @@
             },
             "e2e": {
               "devServerTarget": "ngx-fileupload-example:serve:e2e"
+            },
+            "github-actions": {
+              "devServerTarget": "ngx-fileupload-example:serve:production",
+              "protractorConfig": "e2e/github-actions.conf.js",
+              "webdriverUpdate": false
             }
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
+            "tsConfig": "./tsconfig.json",
             "exclude": [
               "**/node_modules/**"
             ]

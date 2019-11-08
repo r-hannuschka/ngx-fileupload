@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.2
+
+### other changes
+
+- update readme
+- switch to github actions
+
 ## 3.2.1
 
 ### bugfixes

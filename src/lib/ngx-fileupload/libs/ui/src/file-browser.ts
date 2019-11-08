@@ -1,9 +1,5 @@
-import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2, Inject } from "@angular/core";
+import { Directive, HostListener, Input, Output, EventEmitter, OnDestroy, Renderer2 } from "@angular/core";
 import { Subject } from "rxjs";
-
-import { Validator, ValidationFn } from "../../../data/api/validation";
-import { UploadRequest, UploadOptions, UploadStorage } from "../../upload";
-import { NgxFileUploadFactory } from "../../utils";
 
 /**
  * FileBrowser directive
@@ -18,7 +14,7 @@ import { NgxFileUploadFactory } from "../../utils";
  * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: "ngxFileUpload, [ngxFileUpload]"
+  selector: "[ngxFileUpload]"
 })
 export class FileBrowserDirective implements OnDestroy {
 
@@ -30,64 +26,7 @@ export class FileBrowserDirective implements OnDestroy {
      * <div [ngxFileUpload]=""localhost/upload"" (add)="onUploadAdd($event)" ></div>
      */
     @Output()
-    public add: EventEmitter<UploadRequest[]>;
-
-    /**
-     *
-     * @deprecated
-     * @todo remove in 3.3.0
-     */
-    @Input()
-    public storage: UploadStorage;
-
-    /**
-     * this should be only a file browser directive
-     *
-     * @deprecated
-     * @todo remove in 3.3.0
-     */
-    @Input("ngxFileUpload")
-    public set ngxFileUpload(url: string) {
-        this.url = url;
-    }
-
-    /**
-     *
-     * @deprecated
-     * @todo remove in 3.3.0
-     */
-    @Input()
-    public url = "";
-
-    /**
-     * if set to false upload post request body will use
-     * plain file object in body
-     *
-     * @deprecated
-     * @todo remove in 3.3.0
-     */
-    @Input()
-    public useFormData = true;
-
-    /**
-     * form data field name with which form >data will be send
-     * by default this will be file
-     *
-     * @deprecated
-     * @todo remove in 3.3.0
-     */
-    @Input()
-    public formDataName = "file";
-
-    /**
-     * form data field name with which form >data will be send
-     * by default this will be file
-     *
-     * @deprecated
-     * @todo remove in 3.3.0
-     */
-    @Input()
-    public validator: Validator | ValidationFn = null;
+    public add: EventEmitter<File[]>;
 
     @Input()
     public disabled = false;
@@ -106,8 +45,7 @@ export class FileBrowserDirective implements OnDestroy {
      * Creates an instance of NgxFileUploadDirective.
      */
     constructor(
-        private renderer: Renderer2,
-        @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
+        private renderer: Renderer2
     ) {
         this.add = new EventEmitter();
         this.fileSelect = this.createFieldInputField();
@@ -140,7 +78,7 @@ export class FileBrowserDirective implements OnDestroy {
 
         if (!this.disabled) {
             const files = Array.from(event.dataTransfer.files);
-            this.handleFileSelect(files);
+            this.add.emit(files);
         }
     }
 
@@ -159,29 +97,6 @@ export class FileBrowserDirective implements OnDestroy {
     }
 
     /**
-     * files has been selected via drag drop
-     * or with input type="file"
-     *
-     * @todo refactor this directive should only select
-     * files and not push them into any store.
-     */
-    private handleFileSelect(files: File[]) {
-
-        const uploadOptions: UploadOptions = {
-            url: this.url,
-            formData: {
-                enabled: this.useFormData,
-                name: this.formDataName
-            }
-        };
-
-        files.forEach((file: File) => {
-            const upload = this.uploadFactory.createUploadRequest(file, uploadOptions, this.validator);
-            this.storage.add(upload);
-        });
-    }
-
-    /**
      * create dummy input field to select files
      * for security reasons, we cant trigger a file select window
      * without it
@@ -189,7 +104,7 @@ export class FileBrowserDirective implements OnDestroy {
     private createFieldInputField(): HTMLInputElement {
         const inputField = document.createElement("input");
         this.renderer.setAttribute(inputField, "type", "file");
-        this.renderer.setAttribute(inputField, "multiple", "multiple");
+        this.renderer.setProperty(inputField, "multiple", true);
         this.renderer.setStyle(inputField, "display", "none");
         this.renderer.listen(inputField, "change", (e) => this.onFileSelect(e));
         return inputField;
@@ -204,7 +119,7 @@ export class FileBrowserDirective implements OnDestroy {
         event.preventDefault();
 
         const files = Array.from(this.fileSelect.files);
-        this.handleFileSelect(files);
+        this.add.emit(files);
 
         /**
          * clear value otherwise change will not trigger again

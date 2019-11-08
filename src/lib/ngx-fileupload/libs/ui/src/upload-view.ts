@@ -1,8 +1,9 @@
-import { Component, TemplateRef, Input, OnInit, OnDestroy } from "@angular/core";
+import { Component, TemplateRef, Input, OnInit, OnDestroy, Inject } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Validator, ValidationFn } from "../../../data/api/validation";
-import { UploadRequest, UploadStorage } from "../../upload";
+import { UploadRequest, UploadStorage, UploadOptions } from "../../upload";
+import { NgxFileUploadFactory } from "../../utils";
 import { FileUploadItemContext } from "./upload-item.component";
 
 @Component({
@@ -44,11 +45,25 @@ export class UploadViewComponent implements OnInit, OnDestroy {
 
     private uploadStorageSet = false;
 
+    private uploadOptions: UploadOptions;
+
+    public constructor(
+        @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
+    ) { }
+
     public ngOnInit() {
 
         if (!this.uploadStorage) {
             this.uploadStorage = new UploadStorage();
         }
+
+        this.uploadOptions = {
+            url: this.url,
+            formData: {
+                enabled: this.useFormData,
+                name:    this.formDataName
+            }
+        };
 
         this.registerStoreEvents();
     }
@@ -61,6 +76,15 @@ export class UploadViewComponent implements OnInit, OnDestroy {
             this.uploadStorage.destroy();
             this.uploadStorage = null;
         }
+    }
+
+    /**
+     * files get dropped
+     */
+    public dropFiles(files: File[]) {
+        const uploads = this.uploadFactory.createUploadRequest(
+            files, this.uploadOptions, this.validator);
+        this.uploadStorage.add(uploads);
     }
 
     /**

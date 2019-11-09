@@ -109,18 +109,6 @@ describe("Ngx Fileupload Upload Toolbar", () => {
         await uploadToolbar.removeAll();
     });
 
-    afterEach(async () => {
-        // Assert that there are no errors emitted from the browser
-        let logs = await browser.manage().logs().get(logging.Type.BROWSER);
-
-        /** we expect an error in browser with state of 401 so we filter this out */
-        const error = "responded with a status of 401 (Unauthorized)";
-        logs = logs.filter((entry: logging.Entry) => !entry.message.endsWith(error));
-
-        expect(logs)
-            .not.toContain(jasmine.objectContaining({ level: logging.Level.SEVERE } as logging.Entry));
-    });
-
     afterAll(() => {
         server.kill("SIGINT");
     });

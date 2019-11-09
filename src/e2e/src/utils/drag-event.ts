@@ -9,8 +9,10 @@ import { F_OK } from "constants";
 import { browser } from "protractor";
 
 const JS_BIND_INPUT = (target) => {
+
     const input = document.createElement("input");
     input.type = "file";
+    input.multiple = true;
     input.style.display = "none";
     input.addEventListener("change", () => {
         target.scrollIntoView( true );
@@ -43,11 +45,16 @@ const JS_BIND_INPUT = (target) => {
  * @example
  * dropFile($("#drop-area"), "./image.png");
  */
-export async function simulateDrop( dropArea, file ) {
-    const filePath = resolve(__dirname, `../data/${file}`);
-    accessSync(filePath, F_OK);
+export async function simulateDrop(dropArea, file: string[] | string) {
+
+    const files    = Array.isArray(file) ? file : [file];
+    const filePath: string[] = files.map((sourceFile) => {
+        const path = resolve(__dirname, `../data/${sourceFile}`);
+        accessSync(path, F_OK);
+        return path;
+    });
 
     const element    = await dropArea.getWebElement();
     const input: any = await browser.executeScript(JS_BIND_INPUT, element);
-    input.sendKeys(filePath);
+    input.sendKeys(filePath.join("\n"));
 }

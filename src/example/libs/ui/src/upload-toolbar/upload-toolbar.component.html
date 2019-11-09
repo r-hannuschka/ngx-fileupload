@@ -1,6 +1,6 @@
 <div class="btn-toolbar mb-3">
 
-    <div class="input-group ml-auto" [ngxFileUpload]="url" [validator]="validator" [storage]="storage" >
+    <div class="input-group ml-auto" ngxFileUpload (add)="drop($event)" >
         <div class="input-group-prepend">
             <div class="input-group-text" id="btnGroupAddon">Files</div>
         </div>

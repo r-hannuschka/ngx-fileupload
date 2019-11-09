@@ -6,11 +6,9 @@ import { ValidationFn, Validator } from "../../validation";
 import { UploadState } from "../../../data/api";
 
 export interface NgxFileUploadFactory {
-    createUploadRequest: (
-        file: File,
-        options: UploadOptions,
-        validators?: Validator | ValidationFn
-    ) => UploadRequest;
+    createUploadRequest<T extends File | File[]>(
+        file: T, options: UploadOptions, validator?: Validator | ValidationFn
+    ): T extends File[] ? UploadRequest[] : UploadRequest;
 }
 
 /**
@@ -25,10 +23,21 @@ class Factory implements NgxFileUploadFactory {
         private httpClient: HttpClient
     ) {}
 
+    public createUploadRequest(file: File, options: UploadOptions, validator: ValidationFn | Validator): UploadRequest;
+    public createUploadRequest(file: File[], options: UploadOptions, validator: ValidationFn | Validator): UploadRequest[];
+    public createUploadRequest(file: File | File[], options: UploadOptions, validator: ValidationFn | Validator = null) {
+
+        if (Array.isArray(file)) {
+            return file.map((source) => this.buildRequest(source, options, validator));
+        } else {
+            return this.buildRequest(file, options, validator);
+        }
+    }
+
     /**
-     * constructs new upload request
+     * build concrete upload request
      */
-    public createUploadRequest( file: File, options: UploadOptions, validator: ValidationFn | Validator = null): UploadRequest {
+    private buildRequest(file: File, options: UploadOptions, validator: ValidationFn | Validator = null): UploadRequest {
         const model = new UploadModel(file);
         let validationResult = null;
 
@@ -40,6 +49,7 @@ class Factory implements NgxFileUploadFactory {
             model.state = UploadState.INVALID;
             model.validationErrors = validationResult;
         }
+
         return new UploadRequest(this.httpClient, model, options);
     }
 }

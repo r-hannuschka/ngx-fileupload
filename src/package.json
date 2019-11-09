@@ -12,8 +12,9 @@
     "e2e:watch": "watch 'ng e2e --port=4201' lib example e2e --wait=1",
     "build:demo": "ng build --configuration=demo --base-href=/ngx-fileupload/",
     "deploy:demo": "npx ngh --dir='dist/ngx-fileupload-example'",
-    "github-actions:webdriver": "webdriver-manager update --standalone false --gecko false --versions.chrome 78.0.3904.70",
-    "github-actions:e2e": "ng e2e --configuration=github-actions --port=4201"
+    "github-actions-e2e:chrome": "ng e2e --configuration=github-actions-chrome --port=4201",
+    "github-actions-e2e:firefox": "ng e2e --configuration=github-actions-firefox --port=4201",
+    "webdriver:update": "webdriver-manager update --version.gecko=v0.26.0 --versions.chrome 78.0.3904.70 --standalone false"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +32,7 @@
     "ngx-customscrollbar": "2.0.1",
     "ngx-file-drop": "^8.0.8",
     "ngx-highlightjs": "3.0.3",
+    "puppeteer": "^1.20.0",
     "rxjs": "6.5.3",
     "tslib": "1.10.0",
     "web-animations-js": "2.3.2",

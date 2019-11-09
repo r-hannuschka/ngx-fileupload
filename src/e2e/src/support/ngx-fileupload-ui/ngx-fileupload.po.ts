@@ -15,10 +15,10 @@ export class NgxFileuploadPO {
     }
 
     public getUploadItems(): ElementArrayFinder {
-        return element.all(by.tagName("ngx-fileupload-item"));
+        return this.ngxFileUpload.all(by.tagName("ngx-fileupload-item"));
     }
 
     public getUploadActionsFromItem(): ElementArrayFinder {
-        return element.all(by.css(".item-action--cancel"));
+        return this.ngxFileUpload.all(by.css(".item-action--cancel"));
     }
 }

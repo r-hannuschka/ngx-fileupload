@@ -76,7 +76,7 @@ jobs:
       - name: protractor e2e tests
         run: |
           cd src
-          npm run github-actions-chrome:e2e
+          npm run github-actions-e2e:chrome
 
   e2e-firefox:
     needs: install
@@ -95,4 +95,4 @@ jobs:
       - name: protractor e2e tests
         run: |
           cd src
-          npm run github-actions-ff:e2e
+          npm run github-actions-e2e:firefox

@@ -103,16 +103,17 @@ export class MyComponent implements OnInit {
 
 | name |description |
 |---|---|
-|change: Observable<UploadRequest[]> |Observable to get notified if something in store changed (added, removed) |
+|change: Observable<UploadRequest[]> |Observable to get notified if something in store changed (added, removed, uplodate state changed) |
 |queueChange: Observable<QueueState> | Observable to get notified if queue changed upload processing, upload pending|
 
 ### Methods
 
 | name | params | description |
 |---|---|---|
-|add | request: UploadRequest| adds new UploadRequest to storage |
-|remove | request:string | remove upload request from storage by given **UploadRequest.requestId** |
-|remove | request:UploadRequest | remove upload from storage by given **UploadRequest** |
+|add | UploadRequest| adds new UploadRequest to storage |
+|add | UploadRequest[]| adds multiple UploadRequests to storage |
+|remove | string | remove upload request from storage by given **UploadRequest.requestId** |
+|remove | UploadRequest | remove upload from storage by given **UploadRequest** |
 |purge  |  | remove all uploads which has canceled, invalid or upload completed with success, uploads which requests completes with an error will not removed since we could retry them |
 |startAll || starts all idle uploads |
 |stopAll || stops all uploads and remove them from storage |

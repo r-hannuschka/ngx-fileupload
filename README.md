@@ -20,19 +20,26 @@ npm
 npm i --save @r-hannuschka/ngx-fileupload
 ```
 
+## Usage
+
+```html
+<ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>
+```
+
 ## Demo
 
 Watch [Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) to see ngx fileupload in action, customizing views and add validations.
 
 ## Docs
 
-See [Documentation](https://r-hannuschka.github.io/ngx-fileupload/documentation) for further details, auto generated with Compodoc
+To get more detailed informations please check out the docs
 
-## Usage
-
-```html
-<ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>
-```
+- [File Browser](./docs/upload-directive.md)
+- [NgxFileUploadFactory](./docs/factory.md)
+- [Storage](./docs/upload.storage.md)
+- [Upload Component](./docs/upload-component.md)
+- [Upload Item](./docs/upload-item.md)
+- [Validation](./docs/validation.md)
 
 ## Features 
 
@@ -70,15 +77,6 @@ See [Documentation](https://r-hannuschka.github.io/ngx-fileupload/documentation)
 
     Even if we provide a default view you can allways create a own view, inject a custom template to ngx-fileupload or ngx-fileupload-item to bring up a complete new view for every upload request or just add ngxFileUpload Directive to any component which should be used as FileBrowser
 
-To get more detailed informations please check out the docs
-
-- [NgxFileUploadFactory](./docs/factory.md)
-- [Upload Component](./docs/upload-component.md)
-- [Upload Directive](./docs/upload-directive.md)
-- [Upload Item](./docs/upload-item.md)
-- [Storage](./docs/upload.storage.md)
-- [Validation](./docs/validation.md)
-
 ___
 
 ## Development
@@ -109,7 +107,7 @@ ng test ngx-fileupload
 
 ## Roadmap
 
-- reimplement e2e tests
+- ~~reimplement e2e tests~~
 - reimplement unit tests
 - ~~better state management for uploads~~
 - ~~add option to limit processing max uploads at once~~

@@ -10,7 +10,7 @@ import { Subject } from "rxjs";
  *
  * @example
  *
- * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)" #ngxFileuploadRef="ngxFileUploadRef"></div>
+ * <div [ngxFileUpload]="'URL'" (add)="onUploadAdd($event)"></div>
  * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({

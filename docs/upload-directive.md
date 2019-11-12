@@ -78,7 +78,7 @@ class UploadComponent implements OnInit {
 ## @Output
 
 | name | type | description |
-|---|---|---|---|
+|---|---|---|
 | add | File[] | files which was added for upload |
 
 ## Further reading

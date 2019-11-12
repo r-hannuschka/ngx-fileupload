@@ -1,12 +1,6 @@
 <ngx-fileupload-toolbar [storage]="uploadStorage"></ngx-fileupload-toolbar>
 
-<div class="upload--body fileupload"
-    [ngxFileUpload]="url" 
-    [formDataName]="formDataName"
-    [useFormData]="useFormData"
-    [storage]="uploadStorage"
-    [validator]="validator"
->
+<div class="upload--body fileupload" ngxFileUpload (add)="dropFiles($event)">
 
     <div *ngIf="!uploads.length" class="file-browser">
         <i class="ngx-fileupload-icon--add"></i>

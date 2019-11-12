@@ -10,7 +10,7 @@ export const HTML = `
 
     <!-- upload toolbar -->
     <div class="btn-toolbar mb-3">
-        <div class="input-group ml-auto" [ngxFileUpload]="http://localhost:3000/upload/" [storage]="storage" >
+        <div class="input-group ml-auto" ngxFileUpload (add)="drop($event)" >
             <div class="input-group-prepend">
                 <div class="input-group-text" id="btnGroupAddon">Files</div>
             </div>
@@ -27,7 +27,7 @@ export const HTML = `
     <!-- fileuploads goes here -->
     <div class="card-list">
         <ng-container *ngFor="let upload of uploads">
-            <ngx-fileupload-item [template]="itemTemplate" [upload]="upload"></ngx-fileupload-item>
+            <ngx-fileupload-item [template]="uploadRequestTemplate" [upload]="upload"></ngx-fileupload-item>
         </ng-container>
     </div>
 </div>
@@ -35,7 +35,7 @@ export const HTML = `
 
 export const TYPESCRIPT = `
 import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
-import { UploadStorage, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileupload";
+import { Validator, UploadStorage, UploadOptions, NgxFileUploadFactory } from "@r-hannuschka/ngx-fileupload";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
@@ -58,7 +58,8 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
     private destroy$: Subject<boolean> = new Subject();
 
     public constructor(
-        @Inject(ExampleUploadStorage) public storage: UploadStorage
+        @Inject(ExampleUploadStorage) public storage: UploadStorage,
+        @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
     ) {
     }
 
@@ -77,6 +78,12 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
         this.destroy$ = null;
         this.uploads = null;
         this.storage = null;
+        itemTemplate}
+
+    public drop(files: File[]) {
+        const uploadOptions: UploadOptions = { url: 'http://localhost:3000/upload' };
+        this.storage.add(
+            this.uploadFactory.createUploadRequest(files, uploadOptions));
     }
 
     public uploadAll() {

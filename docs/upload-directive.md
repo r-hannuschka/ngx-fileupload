@@ -1,21 +1,21 @@
 # Upload Directive
 
-This directive has 4 main tasks:
-
-1. register events ( click open file browser ), drag events if some files will moved via drag drop into the upload zone
-2. pre validate if validators has been added
-
-Since the ngxFileUpload directive provides no own view, you have to add this to any component which should be used as drop zone
-and listen to the __add__ event.
+Simple file drop zone and file browser, listen to add event to get files which was selected for upload.
 
 @example
 
 ```ts
+import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
+import { UploadRequest, UploadStorage, UploadOptions } from "../../upload";
+import { NgxFileUploadFactory } from "../../utils";
+
 @Compononent({
     template: `
-        <div class="fileupload" [ngxFileUpload]="url" [storage]="storage">
+        <-- bind file browser directive to any element -->
+        <div class="fileupload" ngxFileUpload (add)="onFilesDrop($event)">
             drag drop files here or click
         </div>
+
         <div class="fileupload list>
             <ngx-fileupload-item *ngFor="let upload of uploads" [upload]="upload"></ngx-fileupload-item>
         </div>
@@ -24,16 +24,15 @@ and listen to the __add__ event.
 })
 class UploadComponent implements OnInit {
 
-    public url: string = "http://localhost/upload";
-
     public uploads: UploadRequest[];
 
     public storage: UploadStorage;
 
     private destroyed: Subject<boolean> = new Subject();
 
-    public constructor() {
-        /** create local storage */
+    public constructor(
+        @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
+    ) {
         this.storage = new UploadStorage();
     }
 
@@ -44,13 +43,28 @@ class UploadComponent implements OnInit {
     }
 
     public ngOnDestroy() {
-        this.storage.destroy();
+        /** @todo implement */
+    }
 
-        this.destroyed.next(true);
-        this.destroyed.complete();
+    /**
+     * handle add event from file browser directive
+     * 
+     * create new request with upload factory and attach,
+     * them to upload storage
+     */
+    public onFilesDrop(files: File[]) {
 
-        this.storage   = null;
-        this.destroyed = null;
+        /** configure upload options */
+        const uploadOptions: UploadOptions = {
+            url: 'http://localhost:3000/upload/gallery',
+            formData: {
+                enabled: true,
+                name: 'picture'
+            }
+        }
+
+        const uploads = this.uploadFactory.createUploadRequest(files, uploadOptions /*, validators */);
+        this.uploadStorage.add(uploads);
     }
 }
 ```
@@ -59,13 +73,15 @@ class UploadComponent implements OnInit {
 
 | name | type | description | mandatory |
 |---|---|---|---|
-| url / [ngxFileUpload] | string | set url which should be used for http upload request | true |
-| storage | UploadStorage | UploadStorage to add new UploadRequests | true |
-| useFormData | boolean | if set to false upload post request will add file into body (default true) instead of form data | false |
-| formDataName | string | form data field name which will contain file, not used if useFormData is set to false ( default file ) | false |
-| validator | Validator/ValidatorFn | pre validators for all files which will added | false |
+| ngxFileUpload | void | adds file browser to any element | true |
+
+## @Output
+
+| name | type | description |
+|---|---|---|
+| add | File[] | files which was added for upload |
 
 ## Further reading
 
-- [Validation](./validation.md)
-- [Upload Item](./upload-item.md)
+- [Upload Factory](./factory.md)
+- [Upload Storage](./upload.storgage.md)

@@ -1,16 +1,18 @@
 import { simulateDrop } from "../utils/drag-event";
-import { by, browser, logging } from "protractor";
+import { by, browser } from "protractor";
 import { spawn, ChildProcess } from "child_process";
 import { writeFileSync } from "fs";
 import { NgxFileuploadPO } from "../support/ngx-fileupload-ui/ngx-fileupload.po";
 import { Dashboard } from "../support/dashboard.po";
 import { UploadToolbarPO } from "../support/ngx-fileupload-ui/upload-toolbar";
+import { FileBrowserPo } from "../support/ngx-fileupload-ui/file-browser.po";
 
 describe("Ngx Fileupload Default View", () => {
 
     let server: ChildProcess;
     const ngxFileUpload: NgxFileuploadPO = new NgxFileuploadPO();
     const uploadToolbar: UploadToolbarPO = new UploadToolbarPO();
+    const fileBrowser: FileBrowserPo     = new FileBrowserPo();
     const dashboard: Dashboard = new Dashboard();
 
     function slowDownUpload() {
@@ -33,16 +35,14 @@ describe("Ngx Fileupload Default View", () => {
 
     describe("initialize app", () => {
         it("expect upload informations to be shown", async () => {
-            expect(await ngxFileUpload.getFileBrowser().getText()).toEqual("Drag/Drop files here or click");
+            expect(await fileBrowser.fileBrowser.getText()).toEqual("Drag/Drop files here or click");
         });
     });
 
     describe("cancel action should remove all uploads", () => {
 
-        /** add 2 uploads the second one should be invalid */
         beforeAll(async () => {
-            await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
-            await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.txt");
+            await fileBrowser.dropFiles(["./upload-file.zip", "./upload-file.txt"]);
         });
 
         it("should remove all uploads at once", async () => {
@@ -60,9 +60,7 @@ describe("Ngx Fileupload Default View", () => {
         });
 
         it("should upload all files to server at once", async () => {
-            await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
-            await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file2.zip");
-
+            await fileBrowser.dropFiles([ "./upload-file.zip", "./upload-file2.zip" ]);
             await uploadToolbar.uploadAll();
 
             const uploadingItems = await ngxFileUpload.getUploadItems()
@@ -83,7 +81,7 @@ describe("Ngx Fileupload Default View", () => {
     describe("testing single fileupload", () => {
 
         beforeEach(async () => {
-            await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
+            await fileBrowser.dropFile("./upload-file.zip");
         });
 
         it("should added ui", async () => {
@@ -221,18 +219,6 @@ describe("Ngx Fileupload Default View", () => {
             await uploadToolbar.removeAll();
             await browser.waitForAngularEnabled(true);
         });
-    });
-
-    afterEach(async () => {
-        // Assert that there are no errors emitted from the browser
-        let logs = await browser.manage().logs().get(logging.Type.BROWSER);
-
-        /** we expect an error in browser with state of 401 so we filter this out */
-        const error = "responded with a status of 401 (Unauthorized)";
-        logs = logs.filter((entry: logging.Entry) => !entry.message.endsWith(error));
-
-        expect(logs)
-            .not.toContain(jasmine.objectContaining({ level: logging.Level.SEVERE } as logging.Entry));
     });
 
     afterAll(() => {

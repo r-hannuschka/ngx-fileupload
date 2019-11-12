@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.3.0
+
+### features
+
+- file browser / ngxFileUpload Directive only handles file drop / browse now
+- NgxFileUploadFactory could now create multiple Requests at once just pass File[] as first argument
+
+### other changes
+
+- update docs
+- update examples
+
 ## 3.2.2
 
 ### other changes

@@ -3,7 +3,6 @@
 
 Factory to create new UploadRequests
 
-
 ## Usage
 
 ```ts
@@ -43,11 +42,23 @@ export class MyComponent implements OnDestroy, OnInit {
     }
 
     /**
-     * files get dropped
+     * create single UploadRequest, just pass File to createUploadRequest
      */
     public fileSelectOrDrop(file: File) {
+
         const uploadRequest: UploadRequest = 
             this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions);
+
+        this.uploadStorage.add(requests);
+    }
+
+    /**
+     * create multiple UploadRequests, just pass File[] to createUploadRequest
+     */
+    public multipleFiles(files: File[]) {
+
+        const uploadRequest: UploadRequest[] = 
+            this.uploadFactory.createUploadRequest(files, this.uploadOptions);
 
         this.uploadStorage.add(requests);
     }
@@ -61,10 +72,10 @@ export class MyComponent implements OnDestroy, OnInit {
 
 ### Methods
 
-| name | params | description |
-|---|---|---|
-|createUploadRequest | request: UploadRequest, options: UploadOptions, validator?: ValidationFn| adds new UploadRequest to storage |
-|createUploadRequest | request: UploadRequest, options: UploadOptions, validator?: Validator| adds new UploadRequest to storage |
+| name | params | create | description |
+|---|---|---|---|
+|createUploadRequest | File, UploadOptions [, ValidatorFn \| Validator] | UploadRequest | creates new UploadRequest which could added to storage |
+|createUploadRequest | File[], UploadOptions [, ValidatorFn \| Validator]  | UploadRequest[] | creates multiple UploadRequests which could added to storage |
 
 ### Interface UploadOptions
 
@@ -104,10 +115,8 @@ export interface UploadOptions {
 
 ```ts
 export interface NgxFileUploadFactory {
-    createUploadRequest: (
-        file: File,
-        options: UploadOptions,
-        validators?: Validator | ValidationFn
-    ) => UploadRequest;
+    createUploadRequest<T extends File | File[]>(
+        file: T, options: UploadOptions, validator?: Validator | ValidationFn
+    ): T extends File[] ? UploadRequest[] : UploadRequest;
 }
 ```

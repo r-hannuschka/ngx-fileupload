@@ -1,6 +1,6 @@
 {
   "name": "ngx-fileupload",
-  "version": "3.2.4",
+  "version": "3.3.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,8 +12,9 @@
     "e2e:watch": "watch 'ng e2e --port=4201' lib example e2e --wait=1",
     "build:demo": "ng build --configuration=demo --base-href=/ngx-fileupload/",
     "deploy:demo": "npx ngh --dir='dist/ngx-fileupload-example'",
-    "github-actions:webdriver": "webdriver-manager update --standalone false --gecko false --versions.chrome 78.0.3904.70",
-    "github-actions:e2e": "ng e2e --configuration=github-actions --port=4201"
+    "github-actions-e2e:chrome": "ng e2e --configuration=github-actions-chrome --port=4201",
+    "github-actions-e2e:firefox": "ng e2e --configuration=github-actions-firefox --port=4201",
+    "webdriver:update": "webdriver-manager update --version.gecko=v0.26.0 --versions.chrome 78.0.3904.70 --standalone false"
   },
   "private": true,
   "dependencies": {
@@ -27,9 +28,9 @@
     "@angular/platform-browser-dynamic": "8.2.13",
     "@angular/router": "8.2.13",
     "highlight.js": "9.16.2",
-    "igniteui-angular": "8.2.3",
+    "igniteui-angular": "8.2.7",
     "ngx-customscrollbar": "2.0.1",
-    "ngx-file-drop": "^8.0.8",
+    "ngx-file-drop": "8.0.8",
     "ngx-highlightjs": "3.0.3",
     "rxjs": "6.5.3",
     "tslib": "1.10.0",
@@ -37,21 +38,21 @@
     "zone.js": "0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "0.803.17",
-    "@angular-devkit/build-ng-packagr": "0.803.17",
-    "@angular/cli": "8.3.17",
+    "@angular-devkit/build-angular": "0.803.18",
+    "@angular-devkit/build-ng-packagr": "0.803.18",
+    "@angular/cli": "8.3.18",
     "@angular/compiler-cli": "8.2.13",
     "@angular/language-service": "8.2.13",
     "@compodoc/compodoc": "1.1.11",
-    "@types/jasmine": "3.4.5",
+    "@types/jasmine": "3.4.6",
     "@types/jasminewd2": "2.0.8",
-    "@types/node": "8.10.55",
-    "angular-cli-ghpages": "^0.6.0",
+    "@types/node": "8.10.59",
+    "angular-cli-ghpages": "0.6.0",
     "bootstrap-scss": "4.3.1",
     "codelyzer": "5.2.0",
     "express": "4.17.1",
     "express-fileupload": "1.1.5",
-    "https-proxy-agent": "3.0.0",
+    "https-proxy-agent": "3.0.1",
     "jasmine-core": "3.5.0",
     "jasmine-spec-reporter": "4.2.1",
     "karma": "4.4.1",
@@ -69,6 +70,6 @@
     "watch": "1.0.2"
   },
   "resolutions": {
-    "https-proxy-agent": "3.0.0"
+    "https-proxy-agent": "3.0.1"
   }
 }

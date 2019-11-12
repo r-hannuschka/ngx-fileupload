@@ -20,19 +20,27 @@ npm
 npm i --save @r-hannuschka/ngx-fileupload
 ```
 
+## Usage
+
+```html
+<ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>
+```
+
 ## Demo
 
 Watch [Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) to see ngx fileupload in action, customizing views and add validations.
 
 ## Docs
 
-See [Documentation](https://r-hannuschka.github.io/ngx-fileupload/documentation) for further details, auto generated with Compodoc
+To get more detailed informations please check out the docs
 
-## Usage
+- [File Browser](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-directive.md)
+- [NgxFileUploadFactory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md)
+- [Upload Component](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-component.md)
+- [Upload Item](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-item.md)
+- [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload.storage.md)
+- [Validation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)
 
-```html
-<ngx-fileupload [url]="'http://localhost:3000/upload'"></ngx-fileupload>
-```
 
 ## Features 
 
@@ -71,13 +79,6 @@ See [Documentation](https://r-hannuschka.github.io/ngx-fileupload/documentation)
     Even if we provide a default view you can allways create a own view, inject a custom template to ngx-fileupload or ngx-fileupload-item to bring up a complete new view for every upload request or just add ngxFileUpload Directive to any component which should be used as FileBrowser
 
 To get more detailed informations please check out the docs
-
-- [NgxFileUploadFactory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md)
-- [Upload Component](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-component.md)
-- [Upload Directive](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-directive.md)
-- [Upload Item](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-item.md)
-- [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload.storage.md)
-- [Validation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)
 
 ___
 

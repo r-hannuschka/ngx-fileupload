@@ -1,5 +1,5 @@
 import { simulateDrop } from "../utils/drag-event";
-import { browser, logging } from "protractor";
+import { browser } from "protractor";
 import { spawn, ChildProcess } from "child_process";
 import { Dashboard } from "../support/dashboard.po";
 import { UploadToolbarPO } from "../support/ngx-fileupload-ui/upload-toolbar";

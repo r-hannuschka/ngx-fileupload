@@ -1,5 +1,5 @@
 import { simulateDrop } from "../../utils/drag-event";
-import { by, element, ElementArrayFinder } from "protractor";
+import { by, element } from "protractor";
 
 export class FileBrowserPo {
 

@@ -7,3 +7,4 @@ export type ValidationFn = (file: File) => ValidationErrors | null;
 export interface Validator {
     validate(file: File): ValidationErrors | null;
 }
+

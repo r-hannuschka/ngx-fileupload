@@ -1,4 +1,4 @@
-import { UploadState } from "../../../data/api";
+import { UploadState } from "../../api";
 import { UploadRequest } from "./upload.request";
 import { Observable, of, merge, BehaviorSubject } from "rxjs";
 import { filter, take, map, takeUntil, tap, buffer, debounceTime } from "rxjs/operators";

@@ -1,6 +1,12 @@
 import { Observable } from "rxjs";
 import { ValidationErrors } from "./validation";
 
+export interface UploadResponse {
+    success: boolean;
+    errors: any;
+    body: any;
+}
+
 export enum UploadState {
     INVALID   = 0,
     CANCELED  = 1,
@@ -11,17 +17,12 @@ export enum UploadState {
     COMPLETED = 6
 }
 
-export interface UploadResponse {
-    success: boolean;
-    errors: any;
-    body: any;
-}
-
 export interface UploadValidation {
     errors: ValidationErrors | null;
 }
 
 export interface UploadData {
+
     /**
      * name of upload
      */
@@ -116,4 +117,55 @@ export interface UploadStoreConfig {
      * max count of uploads at once, set to -1 for no limit
      */
     concurrentUploads: number;
+}
+
+/**
+ * Upload Options
+ */
+export interface UploadOptions {
+
+    /**
+     * url which should used to upload file
+     */
+    url: string;
+
+    /**
+     * form data options
+     */
+    formData?: {
+
+        /**
+         * if set to false, file will send through post body and not wrapped in
+         * FormData Object
+         */
+        enabled: boolean;
+        /**
+         * only used if FormData is enabled, defines the name which should used
+         * in FormData
+         */
+        name?: string;
+    };
+}
+
+export interface UploadFile {
+
+    readonly file: File;
+
+    readonly fileSize: number;
+
+    readonly fileName: string;
+
+    readonly fileType: string;
+
+    response: UploadResponse;
+
+    state: UploadState;
+
+    uploaded: number;
+
+    validationErrors: ValidationErrors | null;
+
+    progress: number;
+
+    hasError: boolean;
 }

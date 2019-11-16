@@ -26,7 +26,7 @@
         "lib/public-api"
       ],
       /**
-       * paths for fileupload example 
+       * paths for fileupload example
        */
       "@ngx-fileupload-example/utils/api/upload": [
         "example/utils/validators"
@@ -46,8 +46,8 @@
       "@ngx-fileupload-example/utils/*": [
         "example/libs/utils/*"
       ],
-      /** 
-       * paths for fileupload library 
+      /**
+       * paths for fileupload library
        */
       "@lib/utils/*": [
         "lib/ngx-fileupload/libs/utils/*"
@@ -62,7 +62,7 @@
         "lib/ngx-fileupload/libs/ui"
       ],
       "@lib/data/api": [
-        "./lib/ngx-fileupload/data/api"
+        "lib/ngx-fileupload/libs/api"
       ]
     }
   }

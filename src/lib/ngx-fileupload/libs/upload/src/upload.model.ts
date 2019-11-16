@@ -1,10 +1,9 @@
-import { ValidationErrors } from "./api/validation";
-import { UploadState, UploadResponse, UploadData } from "./api/upload";
+import { UploadFile, UploadState, UploadResponse, ValidationErrors } from "../../api";
 
 /**
  * Represents a file which will be uploaded
  */
-export class UploadModel {
+export class UploadModel implements UploadFile {
 
     private uploadFile: File;
 
@@ -16,9 +15,7 @@ export class UploadModel {
 
     private uploadValidationErrors = null;
 
-    private uploadPending = false;
-
-    private uploadRequestId = "";
+    private uploadProgress = 0;
 
     /**
      * Creates an instance of UploadFile.
@@ -69,26 +66,6 @@ export class UploadModel {
         return this.uploadResponse;
     }
 
-    public set isPending(pending: boolean) {
-        this.uploadPending = pending;
-    }
-
-    public get isPending(): boolean {
-        return this.uploadPending;
-    }
-
-    public get isInvalid(): boolean {
-        return this.state === UploadState.INVALID;
-    }
-
-    public set requestId(id: string) {
-        this.uploadRequestId = id;
-    }
-
-    public get requestId(): string {
-        return this.uploadRequestId;
-    }
-
     /**
      * set current upload state
      */
@@ -125,38 +102,15 @@ export class UploadModel {
         return this.uploadValidationErrors;
     }
 
-    public get progress(): number {
-        const progress = this.uploaded * 100 / this.fileSize;
-        return Math.round(progress > 100 ? 100 : progress);
+    public set progress(progress: number) {
+        this.uploadProgress = progress;
     }
 
-    public get isUploadAble(): boolean {
-        return true;
+    public get progress(): number {
+        return this.uploadProgress;
     }
 
     public get hasError() {
         return this.uploadResponse && this.uploadResponse.errors ? true : false;
-    }
-
-    /**
-     * return file upload data
-     * @todo move to model
-     */
-    public toJson(): UploadData {
-        return {
-            name      : this.fileName,
-            progress  : this.progress,
-            response  : this.response,
-            size      : this.fileSize,
-            state     : this.state,
-            uploaded  : this.uploaded,
-            validation: {
-                errors: this.validationErrors,
-            },
-            hasError:  this.hasError,
-            isInvalid: this.isInvalid,
-            isPending: this.uploadPending,
-            requestId: this.requestId
-        };
     }
 }

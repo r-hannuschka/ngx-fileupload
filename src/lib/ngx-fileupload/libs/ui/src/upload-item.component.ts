@@ -1,10 +1,10 @@
 
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from "@angular/core";
 import { UploadRequest, UploadControl } from "../../upload";
-import { UploadData } from "../../../data/api";
+import { UploadData } from "../../api";
 import {  Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import * as UploadAPI from "../../../data/api/upload";
+import { UploadState } from "../../api";
 
 export interface FileUploadItemContext {
     data: UploadData;
@@ -21,7 +21,7 @@ export interface FileUploadItemContext {
 })
 export class UploadItemComponent implements AfterViewInit, OnDestroy {
 
-    public uploadState = UploadAPI.UploadState;
+    public uploadState = UploadState;
 
     /**
      * item template which should rendered to display upload data

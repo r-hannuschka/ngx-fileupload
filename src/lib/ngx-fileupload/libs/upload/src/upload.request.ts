@@ -1,37 +1,7 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, Observable, forkJoin, merge } from "rxjs";
 import { takeUntil, filter, switchMap, map } from "rxjs/operators";
-import { UploadState, UploadResponse, UploadData, Upload} from "../../../data/api";
-import { Validator, ValidationFn } from "../../validation";
-import { UploadModel } from "../../../data/upload.model";
-
-/**
- * Upload Options
- */
-export interface UploadOptions {
-
-    /**
-     * url which should used to upload file
-     */
-    url: string;
-
-    /**
-     * form data options
-     */
-    formData?: {
-
-        /**
-         * if set to false, file will send through post body and not wrapped in
-         * FormData Object
-         */
-        enabled: boolean;
-        /**
-         * only used if FormData is enabled, defines the name which should used
-         * in FormData
-         */
-        name?: string;
-    };
-}
+import { UploadState, UploadResponse, UploadData, Upload, UploadFile, UploadOptions} from "../../api";
 
 /**
  * represents a single file upload
@@ -69,11 +39,21 @@ export class UploadRequest implements Upload {
     }
 
     public get data(): UploadData {
-        return this.upload.toJson();
-    }
-
-    public get requestId(): string {
-        return this.upload.requestId;
+        return {
+            name: this.upload.fileName,
+            isPending: this.upload.state === UploadState.PENDING,
+            isInvalid: this.upload.state === UploadState.INVALID,
+            progress: this.upload.progress,
+            requestId: this.requestId,
+            size: this.upload.fileSize,
+            state: this.upload.state,
+            response: this.upload.response,
+            uploaded: this.upload.uploaded,
+            validation: {
+                errors: this.upload.validationErrors
+            },
+            hasError: this.upload.state === UploadState.COMPLETED && !this.upload.response.success
+        };
     }
 
     public set state(state: UploadState) {
@@ -84,17 +64,21 @@ export class UploadRequest implements Upload {
         return this.upload.state;
     }
 
+    private uploadRequestId: string;
+
+    public get requestId(): string {
+        return this.uploadRequestId;
+    }
+
     /**
      * create UploadRequest service
      */
     public constructor(
         private http: HttpClient,
-        private upload: UploadModel,
+        private upload: UploadFile,
         options: UploadOptions
     ) {
-        const reqId = Array.from({length: 4}, () => Math.random().toString(32).slice(2));
-        this.upload.requestId = reqId.join("_");
-
+        this.uploadRequestId = Array.from({length: 4}, () => Math.random().toString(32).slice(2)).join("-");
         this.upload$ = new Subject();
         this.options = {...this.options, ...options};
     }
@@ -114,7 +98,7 @@ export class UploadRequest implements Upload {
      * cancel current file upload, this will complete change subject
      */
     public cancel() {
-        if (!this.isCompleted(true) && !this.upload.isInvalid) {
+        if (!this.isCompleted(true) && this.upload.state !== UploadState.INVALID) {
             this.upload.state = UploadState.CANCELED;
             this.cancel$.next(true);
             this.notifyObservers();
@@ -147,7 +131,7 @@ export class UploadRequest implements Upload {
     }
 
     public isInvalid(): boolean {
-        return this.upload.isInvalid;
+        return this.upload.state === UploadState.INVALID;
     }
 
     public isProgress(): boolean {
@@ -187,7 +171,11 @@ export class UploadRequest implements Upload {
             return;
         }
 
-        /** call beforeStart hooks, if one returns false upload will not started */
+        /** call beforeStart hooks, if one returns false upload will not started
+         * rework to concat since we can go out if anything break
+         * so it have not loop through all observables if anything break and we have a
+         * chain we can control a bit by position of hook
+         */
         forkJoin(this.hooks.beforeStart.map((hook) => hook()))
             .pipe(
                 map((result: boolean[]) => result.reduce((prev, cur) => prev && cur, true)),
@@ -198,22 +186,6 @@ export class UploadRequest implements Upload {
                 next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
                 error: (error: HttpErrorResponse) => this.handleError(error)
             });
-    }
-
-    /**
-     * validate upload
-     *
-     * @deprecated
-     */
-    public validate(validator: Validator | ValidationFn) {
-        const result = "validate" in validator
-            ? validator.validate(this.upload.file)
-            : validator(this.upload.file);
-
-        if (result !== null) {
-            this.upload.state = UploadState.INVALID;
-        }
-        this.upload.validationErrors = result;
     }
 
     /**
@@ -283,8 +255,14 @@ export class UploadRequest implements Upload {
      * handle http progress event
      */
     private handleProgress(event: HttpProgressEvent) {
+
+        const loaded   = event.loaded;
+        const progress = loaded * 100 / this.upload.fileSize;
+
         this.upload.state = UploadState.PROGRESS;
-        this.upload.uploaded = event.loaded;
+        this.upload.uploaded = loaded;
+        this.upload.progress = Math.min(Math.round(progress), 100);
+
         this.notifyObservers();
     }
 
@@ -314,7 +292,7 @@ export class UploadRequest implements Upload {
      * send notification to observers
      */
     private notifyObservers() {
-        this.upload$.next(this.upload.toJson());
+        this.upload$.next(this.data);
     }
 
     /**
@@ -324,6 +302,5 @@ export class UploadRequest implements Upload {
         this.upload.state     = UploadState.IDLE;
         this.upload.response  = {success: false, body: null, errors: null};
         this.upload.uploaded  = 0;
-        this.upload.isPending = false;
     }
 }

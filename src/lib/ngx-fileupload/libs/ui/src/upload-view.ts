@@ -1,8 +1,8 @@
 import { Component, TemplateRef, Input, OnInit, OnDestroy, Inject } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { Validator, ValidationFn } from "../../../data/api/validation";
-import { UploadRequest, UploadStorage, UploadOptions } from "../../upload";
+import { Validator, ValidationFn, UploadOptions } from "../../api";
+import { UploadRequest, UploadStorage } from "../../upload";
 import { NgxFileUploadFactory } from "../../utils";
 import { FileUploadItemContext } from "./upload-item.component";
 

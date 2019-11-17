@@ -1,13 +1,12 @@
 
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from "@angular/core";
 import { UploadRequest, UploadControl } from "../../upload";
-import { UploadData } from "../../api";
-import {  Subject } from "rxjs";
+import { UploadState, FileUpload } from "../../api";
+import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { UploadState } from "../../api";
 
 export interface FileUploadItemContext {
-    data: UploadData;
+    data: FileUpload;
     ctrl: UploadControl;
 }
 
@@ -22,11 +21,6 @@ export interface FileUploadItemContext {
 export class UploadItemComponent implements AfterViewInit, OnDestroy {
 
     public uploadState = UploadState;
-
-    /**
-     * item template which should rendered to display upload data
-     */
-    public itemTpl: TemplateRef<FileUploadItemContext>;
 
     /**
      * template context which is bound to rendered template
@@ -46,14 +40,28 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
     private destroyed: Subject<boolean> = new Subject();
 
     /**
+     * set template which should be used for upload items, if no TemplateRef is passed
+     * it will fallback to [defaultUploadItem]{@link #template}
+     */
+    @ViewChild("defaultUploadItem", {static: true})
+    public itemTpl: TemplateRef<FileUploadItemContext>;
+
+    @Input()
+    public set template(tpl: TemplateRef<FileUploadItemContext>) {
+        if (tpl instanceof TemplateRef) {
+            this.itemTpl = tpl;
+        }
+    }
+
+    /**
      * sets upload we want to bind with current view
      */
     @Input()
-    public set upload(fileUpload: UploadRequest) {
-        this.fileUpload = fileUpload;
+    public set upload(request: UploadRequest) {
+        this.fileUpload = request;
         this.context = {
-            data: this.fileUpload.data,
-            ctrl: new UploadControl(fileUpload)
+            data: {...request.uploadFile},
+            ctrl: new UploadControl(request)
         };
     }
 
@@ -66,18 +74,6 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
     public constructor() {
         this.completed   = new EventEmitter();
         this.stateChange = new EventEmitter();
-    }
-
-    /**
-     * set template which should be used for upload items, if no TemplateRef is passed
-     * it will fallback to [defaultUploadItem]{@link #template}
-     */
-    @ViewChild("defaultUploadItem", {static: true})
-    @Input()
-    public set template(tpl: TemplateRef<FileUploadItemContext>) {
-        if (tpl instanceof TemplateRef) {
-            this.itemTpl = tpl;
-        }
     }
 
     /**
@@ -99,11 +95,11 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
      */
     ngAfterViewInit(): void {
         this.fileUpload.change
-            .pipe(
-                takeUntil(this.destroyed)
-            )
+            .pipe(takeUntil(this.destroyed))
             .subscribe({
-                next: (upload: UploadData) => this.context.data = upload
+                next: (fileUpload: FileUpload) => {
+                    return this.context.data = fileUpload;
+                }
             });
     }
 
@@ -119,5 +115,12 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
      */
     public returnZero() {
         return 0;
+    }
+
+    /** should return upload file */
+    private getContextData(uploadFile: FileUpload): any {
+        return {
+            ...uploadFile
+        };
     }
 }

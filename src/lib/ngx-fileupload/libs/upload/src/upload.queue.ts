@@ -62,13 +62,13 @@ export class UploadQueue {
     /**
      * create before start hook, if any upload wants to start we have to check
      */
-    private createBeforeStartHook(upload: UploadRequest): Observable<boolean> {
+    private createBeforeStartHook(request: UploadRequest): Observable<boolean> {
         return of(true).pipe(
             /**
              * before any download starts we registers on it
              * to get notified when it starts and when it is completed, destroyed
              */
-            tap(() => this.registerUploadChange(upload)),
+            tap(() => this.registerUploadChange(request)),
             /**
              * check active uploads and max uploads we could run
              */
@@ -78,9 +78,8 @@ export class UploadQueue {
              */
             tap((isStartAble: boolean) => {
                 if (!isStartAble) {
-                    upload.state = UploadState.PENDING;
-                    upload.update();
-                    this.queuedUploads.push(upload);
+                    request.uploadFile.state = UploadState.PENDING;
+                    this.queuedUploads.push(request);
                     this.notifyObserver();
                 }
             })

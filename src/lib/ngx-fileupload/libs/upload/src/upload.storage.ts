@@ -1,6 +1,6 @@
 import { UploadRequest } from "./upload.request";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { buffer, debounceTime, takeUntil, distinctUntilKeyChanged } from "rxjs/operators";
+import { buffer, debounceTime, takeUntil, distinctUntilKeyChanged, tap, take } from "rxjs/operators";
 import { UploadQueue, QueueState } from "./upload.queue";
 
 export interface UploadStorageConfig {
@@ -25,11 +25,7 @@ export class UploadStorage {
     private uploadQueue: UploadQueue;
     private storeConfig: UploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
-
-    /**
-     * submits if an upload gets destroyed
-     */
-    private uploadDestroy$: Subject<UploadRequest> = new Subject();
+    private uploadDestroy$: Subject<boolean> = new Subject();
 
     private uploadStateChange$: Subject<void> = new Subject();
 
@@ -75,18 +71,17 @@ export class UploadStorage {
 
             request.change
                 .pipe(
-                    /** only gets notified if state changes */
                     distinctUntilKeyChanged("state"),
                     takeUntil(request.destroyed),
                 )
                 .subscribe({
-                    next: () => this.uploadStateChange$.next(),
-                    complete: () => {
-                        // remove upload from list
-                        this.uploads.delete(request.requestId);
-                        this.uploadDestroy$.next();
-                    }
+                    next: () => this.uploadStateChange$.next()
                 });
+
+            request.destroyed.pipe(
+                tap(() => this.uploads.delete(request.requestId)),
+                take(1)
+            ).subscribe(() => this.uploadDestroy$.next());
         });
 
         this.notifyObserver();

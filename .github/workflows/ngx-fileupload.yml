@@ -90,7 +90,7 @@ jobs:
         uses: actions/cache@v1
         with:
             path: ./src/node_modules
-            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}V
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
 
       - name: protractor e2e tests
         run: |
@@ -109,7 +109,7 @@ jobs:
         uses: actions/cache@v1
         with:
             path: ./src/node_modules
-            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}V
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
 
       - name: unit tests
         run: |

@@ -76,7 +76,7 @@ jobs:
       - name: protractor e2e tests
         run: |
           cd src
-          npm run github-actions-e2e:chrome
+          npm run github-actions:e2e-chrome
 
   e2e-firefox:
     needs: install
@@ -95,7 +95,7 @@ jobs:
       - name: protractor e2e tests
         run: |
           cd src
-          npm run github-actions-e2e:firefox
+          npm run github-actions:e2e-firefox
 
   unit-tests:
     needs: install
@@ -114,4 +114,4 @@ jobs:
       - name: unit tests
         run: |
           cd src
-          npm run test
+          npm run github-actions:units-tests

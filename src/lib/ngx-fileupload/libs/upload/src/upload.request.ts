@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, Observable, merge, of, concat } from "rxjs";
-import { takeUntil, filter, switchMap, map, tap, combineAll, take, takeWhile, bufferCount } from "rxjs/operators";
+import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
 import { UploadState, UploadResponse, Upload, UploadOptions, FileUpload} from "../../api";
 import { UploadModel } from "./upload.model";
 

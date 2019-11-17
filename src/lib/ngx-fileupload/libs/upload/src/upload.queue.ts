@@ -47,7 +47,7 @@ export class UploadQueue {
     }
 
     public register(upload: UploadRequest) {
-        upload.beforeStart(() => this.createBeforeStartHook(upload));
+        upload.beforeStart(this.createBeforeStartHook(upload));
     }
 
     public destroy() {

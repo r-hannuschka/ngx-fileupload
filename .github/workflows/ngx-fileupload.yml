@@ -114,4 +114,4 @@ jobs:
       - name: unit tests
         run: |
           cd src
-          npm run test -- --code-coverage
+          npm run test

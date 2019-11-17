@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, Observable, merge, of, concat } from "rxjs";
-import { takeUntil, filter, switchMap, map, tap, combineAll, take } from "rxjs/operators";
+import { takeUntil, filter, switchMap, map, tap, combineAll, take, takeWhile, bufferCount } from "rxjs/operators";
 import { UploadState, UploadResponse, Upload, UploadOptions, FileUpload} from "../../api";
 import { UploadModel } from "./upload.model";
 
@@ -18,7 +18,7 @@ export class UploadRequest implements Upload {
         formData: { enabled: true, name: "file" }
     };
 
-    private hooks: {beforeStart: Array<() => Observable<boolean>>} = { beforeStart: [] };
+    private hooks: {beforeStart: Observable<boolean>[]} = { beforeStart: [] };
 
     public get change(): Observable<FileUpload> {
         return this.change$.asObservable();
@@ -45,7 +45,7 @@ export class UploadRequest implements Upload {
         this.options = {...this.options, ...options};
     }
 
-    public beforeStart(hook: () => Observable<boolean>) {
+    public beforeStart(hook: Observable<boolean>) {
         this.hooks.beforeStart = [
             ...this.hooks.beforeStart,
             hook
@@ -135,31 +135,36 @@ export class UploadRequest implements Upload {
             return;
         }
 
-        const initialState = this.upload.state;
-        let hook$: Observable<boolean> = of(true);
-        if (this.hooks.beforeStart.length) {
-            hook$ = concat(this.hooks.beforeStart.map((hook) => hook()))
-                .pipe(
-                    combineAll(),
-                    map((result) => {
-                        if (initialState !== this.upload.state) {
-                            this.notifyObservers();
-                        }
-                        return result.reduce((prev, cur) => prev && cur, true);
-                    }),
-                    take(1),
-                    filter(result => result),
-                );
-        }
-
-        // we have to concat them
-        hook$.pipe(
+        this.beforeStartHook$.pipe(
+            filter( isAllowedToStart => isAllowedToStart),
             tap(() => (this.upload.state = UploadState.START, this.notifyObservers())),
             switchMap(() => this.startUploadRequest()),
         ).subscribe({
             next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
             error: (error: HttpErrorResponse) => this.handleError(error)
         });
+    }
+
+    /**
+     * call hooks in order, see playground
+     *
+     * @see https://rxviz.com/v/58GkkYv8
+     */
+    private get beforeStartHook$(): Observable<boolean> {
+
+        const initialState = this.upload.state;
+
+        let hook$: Observable<boolean> = of(true);
+
+        if (this.hooks.beforeStart.length) {
+            hook$ = concat(...this.hooks.beforeStart)
+            .pipe(
+                bufferCount(this.hooks.beforeStart.length),
+                map((result) => result.every(isAllowed => isAllowed)),
+                tap(() => this.upload.state !== initialState ? this.notifyObservers() : void 0)
+            );
+        }
+        return hook$;
     }
 
     /**

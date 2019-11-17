@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from "@angular/common/
 import { Type } from "@angular/core";
 import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/http";
 import { UploadModel } from "../../mockup/upload-model";
-import { tap, filter } from "rxjs/operators";
+import { tap, filter, finalize, debounceTime, throttleTime, take, delay } from "rxjs/operators";
 import { of } from "rxjs";
 
 describe("NgxFileUpload/libs/upload", () => {
@@ -92,6 +92,7 @@ describe("NgxFileUpload/libs/upload", () => {
                 .subscribe({
                     next: (upload: FileUpload) => {
                         expect(request.isCanceled()).toBeTruthy();
+                        expect(request.isCompleted()).toBeTruthy();
                         done();
                     }
                 });
@@ -140,7 +141,7 @@ describe("NgxFileUpload/libs/upload", () => {
         it("should not start upload, if beforeStartHook emits false but not changed state", () => {
             const spy = jasmine.createSpy("cancel");
 
-            request.beforeStart(() => of(false));
+            request.beforeStart(of(false));
 
             // expect request change will not called
             request.change.subscribe(() => spy());
@@ -155,16 +156,38 @@ describe("NgxFileUpload/libs/upload", () => {
         it("should notify observer if hook change state", () => {
             const spy = jasmine.createSpy("cancel");
 
-            request.beforeStart(() => {
-                request.uploadFile.state = UploadState.PENDING;
-                return of(false);
-            });
+            request.beforeStart(of(false).pipe(tap(() => request.uploadFile.state = UploadState.PENDING)));
 
             // expect request change will not called
             request.change.subscribe(() => spy());
             request.start();
 
             expect(spy).toHaveBeenCalled();
+        });
+
+        it("should call hooks in registered order", (done) => {
+            const hookCalls = [];
+
+            const hook1 = of(true).pipe(
+                tap(() => (hookCalls.push("hook1"), request.uploadFile.state = UploadState.PENDING)),
+                delay(2000)
+            );
+
+            const hook2 = of(false).pipe(
+                tap(() => (hookCalls.push("hook2"), request.uploadFile.state = UploadState.INVALID))
+            );
+
+            request.beforeStart(hook1);
+            request.beforeStart(hook2);
+
+            request.change.subscribe(() => {
+                expect(hookCalls).toEqual(["hook1", "hook2"]);
+                expect(request.isInvalid()).toBeTruthy();
+                done();
+            });
+
+            // expect request change will not called
+            request.start();
         });
 
         it("should not start upload, is not pending or idle", () => {
@@ -224,13 +247,46 @@ describe("NgxFileUpload/libs/upload", () => {
             });
         });
 
+        it("should restart canceled upload", () => {
+
+            request.start();
+
+            request.cancel();
+            expect(request.isCanceled()).toBeTruthy();
+            httpMock.expectOne(url);
+
+            /** start again */
+            request.retry();
+            expect(request.uploadFile.state).toBe(UploadState.START);
+
+            const req = httpMock.expectOne(url);
+            req.flush("");
+        });
+
+        it("should restart upload with error", () => {
+
+            request.start();
+            const errorReq = httpMock.expectOne(url);
+            errorReq.flush("not found", {
+                status: 404,
+                statusText: "unauthorized"
+            });
+
+            expect(request.hasError()).toBeTruthy();
+
+            request.retry();
+            expect(request.uploadFile.state).toBe(UploadState.START);
+
+            const retryReq = httpMock.expectOne(url);
+            retryReq.flush("");
+        });
+
         it("should destroy upload", () => {
             const spy = jasmine.createSpy("destroy");
             request.destroyed.subscribe(
                 () => spy()
             );
             request.destroy();
-
             expect(spy).toHaveBeenCalled();
         });
     });

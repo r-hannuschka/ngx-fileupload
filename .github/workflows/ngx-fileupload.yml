@@ -111,7 +111,7 @@ jobs:
             path: ./src/node_modules
             key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}V
 
-      - name: protractor e2e tests
+      - name: unit tests
         run: |
           cd src
           npm run test -- --code-coverage

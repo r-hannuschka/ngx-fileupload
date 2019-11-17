@@ -14,6 +14,7 @@
     "deploy:demo": "npx ngh --dir='dist/ngx-fileupload-example'",
     "github-actions-e2e:chrome": "ng e2e --configuration=github-actions-chrome --port=4201",
     "github-actions-e2e:firefox": "ng e2e --configuration=github-actions-firefox --port=4201",
+    "test:code-coverage": "ng test --code-coverage",
     "webdriver:update": "webdriver-manager update --version.gecko=v0.26.0 --versions.chrome 78.0.3904.70 --standalone false"
   },
   "private": true,

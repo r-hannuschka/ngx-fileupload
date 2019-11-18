@@ -31,10 +31,8 @@ describe("ngx-fileupload/libs/utils", () => {
             expect(result).toBeTruthy();
         });
 
-        it ("it should not be cancelable if state on state canceled, completed, invalid and idle", () => {
-
+        it ("it should not be cancelable on state canceled, completed, invalid and idle", () => {
             const states = [UploadState.CANCELED, UploadState.COMPLETED, UploadState.INVALID, UploadState.IDLE];
-
             const result: boolean[] = states.map((state: UploadState) => {
                 fileUpload.state = state;
                 return pipe.transform(fileUpload);

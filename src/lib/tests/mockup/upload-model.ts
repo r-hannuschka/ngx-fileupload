@@ -20,8 +20,6 @@ export class UploadModel implements FileUpload {
 
     isPending = false;
 
-    requestId = Math.random().toString(32).substr(2);
-
     state = UploadState.IDLE;
 
     uploaded = 0;

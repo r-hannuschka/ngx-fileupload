@@ -1,11 +1,11 @@
 import { UploadRequest, FileUpload, UploadState } from "@r-hannuschka/ngx-fileupload";
 import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { Type } from "@angular/core";
 import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/http";
-import { UploadModel } from "../../mockup/upload-model";
-import { tap, filter, finalize, debounceTime, throttleTime, take, delay } from "rxjs/operators";
+import { Type } from "@angular/core";
+import { tap, filter, delay } from "rxjs/operators";
 import { of } from "rxjs";
+import { UploadModel } from "../../mockup/upload-model";
 
 describe("NgxFileUpload/libs/upload", () => {
 

@@ -36,8 +36,7 @@
     "ngx-highlightjs": "3.0.3",
     "rxjs": "6.5.3",
     "tslib": "1.10.0",
-    "web-animations-js": "2.3.2",
-    "zone.js": "0.10.2"
+    "web-animations-js": "2.3.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.803.19",
@@ -69,8 +68,9 @@
     "ts-node": "8.5.2",
     "tsickle": "0.37.1",
     "tslint": "5.20.0",
-    "typescript": "3.4.5",
-    "watch": "1.0.2"
+    "typescript": "3.5.3",
+    "watch": "1.0.2",
+    "zone.js": "0.9.1"
   },
   "resolutions": {
     "https-proxy-agent": "3.0.1"

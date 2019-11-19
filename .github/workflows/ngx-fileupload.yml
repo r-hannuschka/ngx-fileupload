@@ -120,5 +120,5 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }} #required
-          file: ./src/coverage/lcov.info
+          file: ./src/coverage/ngx-fileupload/lcov.info
           flags: unittests

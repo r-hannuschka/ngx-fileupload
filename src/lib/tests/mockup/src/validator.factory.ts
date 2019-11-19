@@ -3,9 +3,7 @@ import { Validator, ValidationErrors, ValidationFn } from "@r-hannuschka/ngx-fil
 class InvalidValidation implements Validator {
     validate(file: File): ValidationErrors | null {
         return {
-            invalid: {
-                errors: ["this is an invalid file"]
-            }
+            invalid: "this is an invalid file"
         };
     }
 }
@@ -23,9 +21,7 @@ class DynamicNameValidation implements Validator {
     validate(file: File): ValidationErrors | null {
         if (file.name !== this.name) {
             return {
-                dynamicNameValidation: {
-                    errors: [`invalid name: ${file.name}`]
-                }
+                dynamicNameValidation: `invalid name: ${file.name}`
             };
         }
         return null;
@@ -36,9 +32,7 @@ class InvalidFileValidator implements Validator {
 
     validate(file: File): ValidationErrors | null {
         return {
-            invalidFile: {
-                errors: ["invalid file"]
-            }
+            invalidFile: "invalid file"
         };
     }
 }
@@ -47,9 +41,7 @@ class InvalidFileSizeValidator implements Validator {
 
     validate(file: File): ValidationErrors | null {
         return {
-            invalidFileSize: {
-                errors: ["file should be at least 1 Petabyte! Size is everything!"]
-            }
+            invalidFileSize: "file should be at least 1 Petabyte! Bigger is better!"
         };
     }
 }

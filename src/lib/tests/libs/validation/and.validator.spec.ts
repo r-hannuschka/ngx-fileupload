@@ -1,5 +1,5 @@
 import { AndValidator } from "@r-hannuschka/ngx-fileupload";
-import { ValidatorMockFactory } from "../../mockup/validator.factory";
+import { ValidatorMockFactory } from "../../mockup/src/validator.factory";
 
 describe("ngx-fileupload/libs/validation/and", () => {
 

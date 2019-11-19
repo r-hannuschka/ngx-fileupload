@@ -59,8 +59,8 @@
         <div class="upload-item--footer">
 
             <!-- show validation errors -->
-            <ul *ngIf="upload.validation" class="upload-item--validation">
-                <li *ngFor="let error of upload.validation | keyvalue : returnZero" class="message">
+            <ul *ngIf="upload.validationErrors" class="upload-item--validation">
+                <li *ngFor="let error of upload.validationErrors | keyvalue : returnZero" class="message">
                     {{error.value}}
                 </li>
             </ul>

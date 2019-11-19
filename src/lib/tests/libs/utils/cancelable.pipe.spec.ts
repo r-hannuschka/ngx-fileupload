@@ -1,5 +1,5 @@
 import { CancelAblePipe, FileUpload, UploadState } from "@r-hannuschka/ngx-fileupload";
-import { UploadModel } from "../../mockup/upload-model";
+import { UploadModel } from "../../mockup/src/upload-model";
 
 describe("ngx-fileupload/libs/utils/cancelable.pipe", () => {
 

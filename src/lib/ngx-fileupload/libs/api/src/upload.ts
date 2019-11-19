@@ -37,7 +37,7 @@ export interface FileUpload {
 
     uploaded: number;
 
-    validation: ValidationErrors | null;
+    validationErrors: ValidationErrors | null;
 
     progress: number;
 

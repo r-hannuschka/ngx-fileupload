@@ -3,17 +3,17 @@ import { Component, HostListener, TemplateRef, ViewChild } from "@angular/core";
 import { ComponentFixture, async, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 
-import { UploadItemComponent, FileUploadItemContext } from "@r-hannuschka/ngx-fileupload";
-import { UploadRequestMock } from "../../mockup/upload-request.mock";
-import { UploadModel } from "../../mockup/upload-model";
+import { UploadItemComponent, FileUploadItemContext, ValidationErrors, StateToStringPipe, CancelAblePipe, FileSizePipe } from "@r-hannuschka/ngx-fileupload";
+import { UploadModel, UploadRequestMock } from "../../mockup";
 
 @Component({
     template: `
         <ng-template #itemTemplate let-upload="data">
-            {{upload.name}}
-            {{upload.size}}
+            <div class="name">{{upload.name}}</div>
+            <div class="size">{{upload.size}}</div>
+            <div class="uploaded">{{upload.uploaded}}</div>
         </ng-template>
-        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate"></ngx-fileupload-item>
+        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="customTemplate"></ngx-fileupload-item>
     `
 })
 class TestItemComponent {
@@ -24,7 +24,7 @@ class TestItemComponent {
      * we set this to any since i could send anything through template input
      * decorater even there is a type defined
      */
-    public itemTemplate: any;
+    public customTemplate: any;
 
     @ViewChild("itemTemplate", {read: TemplateRef, static: true})
     public template: TemplateRef<FileUploadItemContext>;
@@ -33,20 +33,15 @@ class TestItemComponent {
     public onClick() {}
 }
 
-xdescribe( "NgxFileUploadItemComponent:", () => {
+describe( "NgxFileUploadItemComponent:", () => {
 
     let fixture: ComponentFixture<TestItemComponent>;
     let testComponent: TestItemComponent;
     let fileUpload: UploadRequestMock;
     let uploadModel: UploadModel;
 
-    beforeAll(() => {
-        const file  = new File(["hello world"], "upload.txt", { type: "text/plain"});
-        uploadModel = new UploadModel();
-        fileUpload  = new UploadRequestMock(uploadModel);
-    });
-
     beforeEach(async(() => {
+
         TestBed.configureTestingModule( {
             imports: [
                 CommonModule,
@@ -54,11 +49,18 @@ xdescribe( "NgxFileUploadItemComponent:", () => {
             declarations: [
                 TestItemComponent,
                 UploadItemComponent,
+                StateToStringPipe,
+                FileSizePipe,
+                CancelAblePipe
             ]
         }).compileComponents();
     }));
 
     beforeEach(() => {
+
+        uploadModel = new UploadModel();
+        fileUpload  = new UploadRequestMock(uploadModel);
+
         fixture = TestBed.createComponent(TestItemComponent);
         testComponent = fixture.componentInstance;
     });
@@ -74,10 +76,21 @@ xdescribe( "NgxFileUploadItemComponent:", () => {
         expect(uploadItemComponent.itemTpl).toBeDefined();
     });
 
+    it("should use default item template if we pass null", () => {
+        testComponent.uploads = [fileUpload];
+        fixture.detectChanges();
+
+        const uploadItemComponent = fixture.debugElement
+            .query(By.css("ngx-fileupload-item"))
+            .injector.get(UploadItemComponent);
+
+        expect(uploadItemComponent.itemTpl).toBeDefined();
+    });
+
     it("should use default item template if we send true as template", () => {
 
+        testComponent.customTemplate = "anything else";
         testComponent.uploads = [fileUpload];
-        testComponent.itemTemplate = "affe";
         fixture.detectChanges();
 
         const uploadItemComponent = fixture.debugElement
@@ -88,18 +101,53 @@ xdescribe( "NgxFileUploadItemComponent:", () => {
     });
 
     it("should use custom template", () => {
+        testComponent.customTemplate = testComponent.template;
         testComponent.uploads = [fileUpload];
-        testComponent.itemTemplate = testComponent.template;
         fixture.detectChanges();
 
         const uploadItem = fixture.debugElement.query(By.css("ngx-fileupload-item"));
         const uploadItemComponent = uploadItem.injector.get(UploadItemComponent);
 
         expect(uploadItemComponent.itemTpl).toBe(testComponent.template);
-        expect(uploadItem.nativeElement.innerHTML).toContain("upload.txt");
+        expect(uploadItem.nativeElement.innerHTML).toContain("upload-file.txt");
+    });
+
+    it("should update template", () => {
+        testComponent.customTemplate = testComponent.template;
+        testComponent.uploads = [fileUpload];
+        fixture.detectChanges();
+
+        /** set progress to 20 */
+        fileUpload.uploadFile.uploaded = 20;
+        fileUpload.applyChange();
+        fixture.detectChanges();
+
+        const uploaded = fixture.debugElement.query(By.css("ngx-fileupload-item .uploaded"));
+        expect(uploaded.nativeNode.textContent).toBe("20");
+    });
+
+    it("should show validation errors", () => {
+
+        const validationErrors: ValidationErrors = {
+            error1: "invalid file",
+            error2: "invalid name"
+        };
+
+        fileUpload.uploadFile.validationErrors = validationErrors;
+        fileUpload.uploadFile.isInvalid  = true;
+
+        testComponent.uploads = [fileUpload];
+        fixture.detectChanges();
+
+        const uploaded = fixture.debugElement.queryAll(By.css("ngx-fileupload-item .upload-item--validation li"));
+        expect(uploaded.length).toBe(2);
+
+        const messages = uploaded.map((element) => element.nativeNode.textContent.trim());
+        expect(messages).toEqual(["invalid file", "invalid name"]);
     });
 
     it("should not pass click event", () => {
+
         testComponent.uploads = [fileUpload];
         fixture.detectChanges();
 

@@ -4,7 +4,7 @@ import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClient } from "@angular/common/http";
 import { Type } from "@angular/core";
-import { UploadModel } from "../../mockup/upload-model";
+import { UploadModel } from "../../mockup/src/upload-model";
 
 describe("NgxFileUpload/libs/utils/factory", () => {
 

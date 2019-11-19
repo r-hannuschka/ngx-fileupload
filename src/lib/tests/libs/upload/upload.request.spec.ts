@@ -5,7 +5,7 @@ import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/ht
 import { Type } from "@angular/core";
 import { tap, filter, delay } from "rxjs/operators";
 import { of } from "rxjs";
-import { UploadModel } from "../../mockup/upload-model";
+import { UploadModel } from "../../mockup/src/upload-model";
 
 describe("NgxFileUpload/libs/upload", () => {
 

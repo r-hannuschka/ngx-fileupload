@@ -69,7 +69,7 @@ export class UploadModel implements FileUpload {
      */
     public uploaded = 0;
 
-    public validation: ValidationErrors = null;
+    public validationErrors: ValidationErrors = null;
 
     public progress = 0;
 

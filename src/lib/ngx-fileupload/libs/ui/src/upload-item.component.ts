@@ -116,11 +116,4 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
     public returnZero() {
         return 0;
     }
-
-    /** should return upload file */
-    private getContextData(uploadFile: FileUpload): any {
-        return {
-            ...uploadFile
-        };
-    }
 }

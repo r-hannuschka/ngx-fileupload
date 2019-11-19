@@ -4,23 +4,30 @@ const file = new File(["@r-hannuschka/ngx-fileupload unit tests"], "upload-file.
 
 export class UploadModel implements FileUpload {
 
+    public constructor() {
+        this.file = file;
+        this.name = file.name;
+        this.type = file.type;
+        this.size = file.size;
+    }
+
     validation: ValidationErrors = null;
 
-    isInvalid: boolean;
+    isInvalid = false;
 
-    file: File = file;
+    file: File;
 
-    size: number = file.size;
+    size = 0;
 
-    name;
+    name = "";
 
-    type;
+    type = "plain/text";
 
-    response: UploadResponse;
+    response: UploadResponse = null;
 
     isPending = false;
 
-    state = UploadState.IDLE;
+    state: UploadState = UploadState.IDLE;
 
     uploaded = 0;
 

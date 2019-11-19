@@ -122,3 +122,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }} #required
           file: ./src/coverage/ngx-fileupload/lcov.info
           flags: unittests
+

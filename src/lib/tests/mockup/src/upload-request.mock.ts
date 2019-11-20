@@ -8,7 +8,7 @@ export class UploadRequestMock implements UploadRequest {
 
     destroyed: Observable<boolean> = new Subject<boolean>().asObservable();
 
-    requestId: string;
+    requestId = "123_test";
 
     public uploadFile: FileUpload;
 

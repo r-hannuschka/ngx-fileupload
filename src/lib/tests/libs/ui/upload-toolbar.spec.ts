@@ -33,6 +33,7 @@ describe( "ngx-fileupload/libs/ui/upload-toolbar:", () => {
 
         testComponent = fixture.componentInstance;
         testComponent.storage = storage;
+        testComponent.ngOnInit();
     });
 
     it("should contain upload all button", () => {

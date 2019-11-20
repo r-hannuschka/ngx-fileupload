@@ -1,17 +1,17 @@
 import { UploadStorage } from "@r-hannuschka/ngx-fileupload";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 
 export class UploadStorageMock extends UploadStorage {
 
     public change(): Observable<any> {
-        return null;
+        return of([]);
     }
 
     /**
      * gets notified if queue changes
      */
     public get queueChange(): Observable<any> {
-        return null;
+        return of([]);
     }
 
     public destroy() {}
@@ -19,8 +19,7 @@ export class UploadStorageMock extends UploadStorage {
     /**
      * remove upload from store
      */
-    public remove() {
-    }
+    public remove() {}
 
     /**
      * remove all uploads which has been invalid

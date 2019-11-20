@@ -1,7 +1,7 @@
-import { UploadRequest } from "./upload.request";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { buffer, debounceTime, takeUntil, distinctUntilKeyChanged, tap, take } from "rxjs/operators";
 import { UploadQueue, QueueState } from "./upload.queue";
+import { UploadRequest } from "../../api";
 
 export interface UploadStorageConfig {
     concurrentUploads?: number;
@@ -119,7 +119,7 @@ export class UploadStorage {
      * remove upload from store
      */
     public remove(upload: UploadRequest | string) {
-        const id = upload instanceof UploadRequest ? upload.requestId : upload;
+        const id = typeof(upload) === "string" ? upload : upload.requestId;
         const request = this.uploads.get(id);
         request.destroy();
     }

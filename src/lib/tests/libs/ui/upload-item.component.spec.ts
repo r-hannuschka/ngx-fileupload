@@ -158,4 +158,3 @@ describe( "NgxFileUploadItemComponent:", () => {
         expect(clickSpy).not.toHaveBeenCalled();
     });
 });
-

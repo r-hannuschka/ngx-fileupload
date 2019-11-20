@@ -1,5 +1,5 @@
 
-import { UploadRequest } from "@r-hannuschka/ngx-fileupload";
+import { UploadRequest, Upload } from "@r-hannuschka/ngx-fileupload";
 import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClient } from "@angular/common/http";
@@ -24,7 +24,7 @@ describe("NgxFileUpload/libs/utils/factory", () => {
         httpClient = injector.get(HttpClient as Type<HttpClient>);
 
         const uploadFile = new UploadModel();
-        request = new UploadRequest(httpClient, uploadFile, {url});
+        request = new Upload(httpClient, uploadFile, {url});
     });
 
     it("should do anything", () => {

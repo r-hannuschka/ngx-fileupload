@@ -1,5 +1,6 @@
 <div class="actions">
     <button class="upload-all" [disabled]="uploadInfo.idle === 0" (click)="uploadAll()">
+        {{uploadInfo.idle}}
         <i class="ngx-fileupload-icon--upload"></i>
         Upload
     </button>

@@ -1,13 +1,13 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, Observable, merge, of, concat } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
-import { UploadState, UploadResponse, Upload, UploadOptions, FileUpload} from "../../api";
+import { UploadState, UploadResponse, UploadRequest, UploadOptions, FileUpload} from "../../api";
 import { UploadModel } from "./upload.model";
 
 /**
  * represents a single file upload
  */
-export class UploadRequest implements Upload {
+export class Upload implements UploadRequest {
 
     private cancel$: Subject<boolean> = new Subject();
     private change$: Subject<FileUpload> = new Subject();

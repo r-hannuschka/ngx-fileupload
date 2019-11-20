@@ -1,14 +1,39 @@
 import { Observable, Subject } from "rxjs";
-import { FileUpload, Upload } from "@r-hannuschka/ngx-fileupload";
+import { FileUpload, UploadRequest, UploadState } from "@r-hannuschka/ngx-fileupload";
 
 /**
  * represents a single fileupload
  */
-export class UploadRequestMock implements Upload {
+export class UploadRequestMock implements UploadRequest {
+
+    destroyed: Observable<boolean> = new Subject<boolean>().asObservable();
+
+    requestId: string;
 
     public uploadFile: FileUpload;
 
     private change$: Subject<FileUpload>;
+
+    isCanceled(): boolean {
+        return false;
+    }
+
+    retry(): void {
+    }
+
+    beforeStart(hook: Observable<boolean>): void {
+    }
+
+    destroy(): void {
+    }
+
+    isCompleted(): boolean {
+        return this.uploadFile.state === UploadState.COMPLETED;
+    }
+
+    isIdle(): boolean {
+        return this.uploadFile.state === UploadState.IDLE;
+    }
 
     start(): void {
     }
@@ -21,8 +46,17 @@ export class UploadRequestMock implements Upload {
     }
 
     isInvalid(): boolean {
-        return false;
+        return this.uploadFile.state === UploadState.INVALID;
     }
+
+    isPending(): boolean {
+        return this.uploadFile.state === UploadState.PENDING;
+    }
+
+    isProgress(): boolean {
+        return this.uploadFile.state === UploadState.PROGRESS || this.uploadFile.state === UploadState.START;
+    }
+
 
     public constructor(model: FileUpload) {
         this.uploadFile = model;

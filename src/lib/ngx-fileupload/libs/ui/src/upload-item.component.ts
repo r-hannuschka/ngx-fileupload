@@ -1,7 +1,7 @@
 
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from "@angular/core";
-import { UploadRequest, UploadControl } from "../../upload";
-import { UploadState, FileUpload } from "../../api";
+import { UploadControl } from "../../upload";
+import { UploadRequest, UploadState, FileUpload } from "../../api";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 

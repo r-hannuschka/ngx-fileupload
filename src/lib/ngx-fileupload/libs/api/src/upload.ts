@@ -46,7 +46,9 @@ export interface FileUpload {
     isInvalid: boolean;
 }
 
-export interface Upload {
+export interface UploadRequest {
+
+    requestId: string;
 
     /**
      * returns observable which notify if file upload state
@@ -56,11 +58,11 @@ export interface Upload {
 
     readonly uploadFile: FileUpload;
 
-    /**
-     * upload file to server but only
-     * if file is not queued, abort request on cancel
-     */
-    start(): void;
+    readonly destroyed: Observable<boolean>;
+
+    beforeStart(hook: Observable<boolean>): void;
+
+    destroy(): void;
 
     /**
      * cancel current file upload, this will complete change subject
@@ -73,10 +75,24 @@ export interface Upload {
      */
     hasError(): boolean;
 
+    isIdle(): boolean;
+
     /**
      * returns true if validators are set and upload not validated
      */
     isInvalid(): boolean;
+
+    isProgress(): boolean;
+
+    isPending(): boolean;
+
+    isCompleted(ignoreError?: boolean): boolean;
+
+    isCanceled(): boolean;
+
+    retry(): void;
+
+    start(): void;
 }
 
 export interface UploadStoreConfig {

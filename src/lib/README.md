@@ -9,7 +9,7 @@
 
 Angular 8+ async fileupload with progressbar
 
-![ngx-fileupload.gif](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/ngx-fileupload.gif)
+[![ngx file upload demo on youtube](http://img.youtube.com/vi/KpHKw0AEOqg/0.jpg)](http://www.youtube.com/watch?v=KpHKw0AEOqg)
 
 ___
 

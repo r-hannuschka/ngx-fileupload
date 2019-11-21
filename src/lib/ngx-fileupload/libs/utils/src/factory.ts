@@ -23,7 +23,7 @@ class Factory implements NgxFileUploadFactory {
 
     public createUploadRequest(file: File, options: UploadOptions, validator: ValidationFn | Validator): UploadRequest;
     public createUploadRequest(file: File[], options: UploadOptions, validator: ValidationFn | Validator): UploadRequest[];
-    public createUploadRequest(file: File | File[], options: UploadOptions, validator: ValidationFn | Validator = null) {
+    public createUploadRequest(file: File | File[], options: UploadOptions, validator?: ValidationFn | Validator) {
 
         if (Array.isArray(file)) {
             return file.map((source) => this.buildRequest(source, options, validator));
@@ -35,7 +35,7 @@ class Factory implements NgxFileUploadFactory {
     /**
      * build concrete upload request
      */
-    private buildRequest(file: File, options: UploadOptions, validator: ValidationFn | Validator = null): UploadRequest {
+    private buildRequest(file: File, options: UploadOptions, validator?: ValidationFn | Validator): UploadRequest {
         const model = new UploadModel(file);
         let validationResult = null;
 

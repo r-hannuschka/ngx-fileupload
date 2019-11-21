@@ -1,20 +1,5 @@
 import { FileUpload, UploadState, UploadResponse, ValidationErrors } from "../../api";
 
-
-function Readonly() {
-
-    return (target: any, key: string) => {
-
-        Object.defineProperty(target, key, {
-            get: () => {
-                return target.state;
-            },
-            enumerable: true,
-            configurable: true,
-          });
-    };
-}
-
 /**
  * Represents a file which will be uploaded
  */

@@ -262,7 +262,6 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should restart upload with error", () => {
-
         request.start();
         const errorReq = httpMock.expectOne(url);
         errorReq.flush("not found", {
@@ -277,6 +276,14 @@ describe("NgxFileUpload/libs/upload", () => {
 
         const retryReq = httpMock.expectOne(url);
         retryReq.flush("");
+    });
+
+    it("should not restart upload which allready completed", () => {
+        const startSpy = spyOn(request, "start").and.callThrough();
+        request.uploadFile.state = UploadState.COMPLETED;
+        request.uploadFile.response = {success: true, body: null, errors: []};
+        request.retry();
+        expect(startSpy).not.toHaveBeenCalled();
     });
 
     it("should destroy upload", () => {

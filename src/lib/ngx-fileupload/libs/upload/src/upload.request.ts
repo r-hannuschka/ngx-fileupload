@@ -32,7 +32,7 @@ export class Upload implements UploadRequest {
         return this.upload;
     }
 
-    public readonly requestId: string = Array.from({length: 4}, () => Math.random().toString(32).slice(2)).join("-");
+    public requestId: string;
 
     /**
      * create UploadRequest service

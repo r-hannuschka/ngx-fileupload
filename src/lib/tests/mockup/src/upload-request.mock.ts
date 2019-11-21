@@ -6,13 +6,22 @@ import { FileUpload, UploadRequest, UploadState } from "@r-hannuschka/ngx-fileup
  */
 export class UploadRequestMock implements UploadRequest {
 
-    destroyed: Observable<boolean> = new Subject<boolean>().asObservable();
+    destroy$: Subject<boolean>;
 
-    requestId = "123_test";
+    destroyed: Observable<boolean>;
+
+    requestId;
 
     public uploadFile: FileUpload;
 
-    private change$: Subject<FileUpload>;
+    change$: Subject<FileUpload>;
+
+    public constructor(model: FileUpload) {
+        this.uploadFile = model;
+        this.change$ = new Subject();
+        this.destroy$ = new Subject();
+        this.destroyed = this.destroy$.asObservable();
+    }
 
     isCanceled(): boolean {
         return false;
@@ -25,6 +34,9 @@ export class UploadRequestMock implements UploadRequest {
     }
 
     destroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
+        this.change$.complete();
     }
 
     isCompleted(): boolean {
@@ -55,12 +67,6 @@ export class UploadRequestMock implements UploadRequest {
 
     isProgress(): boolean {
         return this.uploadFile.state === UploadState.PROGRESS || this.uploadFile.state === UploadState.START;
-    }
-
-
-    public constructor(model: FileUpload) {
-        this.uploadFile = model;
-        this.change$ = new Subject();
     }
 
     public get change(): Observable<FileUpload> {

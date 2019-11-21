@@ -1,13 +1,6 @@
 import { UploadState, UploadRequest } from "../../api";
-import { Observable, of, merge, BehaviorSubject } from "rxjs";
-import { filter, take, map, takeUntil, tap, buffer, debounceTime } from "rxjs/operators";
-
-export interface QueueState {
-
-    pending: UploadRequest[];
-
-    processing: UploadRequest[];
-}
+import { Observable, of, merge } from "rxjs";
+import { filter, take, map, takeUntil, tap } from "rxjs/operators";
 
 export class UploadQueue {
 
@@ -19,30 +12,10 @@ export class UploadQueue {
 
     private concurrentCount = -1;
 
-    /**
-     * subscribe to get notified queue has been changed
-     */
-    private queueChange$: BehaviorSubject<QueueState>;
-
     private observedUploads = new WeakSet<UploadRequest>();
 
     public set concurrent(count: number) {
         this.concurrentCount = count;
-    }
-
-    public get change(): Observable<QueueState> {
-        const queueChanged  = this.queueChange$.asObservable();
-        return queueChanged
-            .pipe(
-                buffer(queueChanged.pipe(debounceTime(10))),
-                map((bufferedChanges) => bufferedChanges.pop()),
-            );
-    }
-
-    public constructor() {
-        this.queueChange$ = new BehaviorSubject({
-            pending: [], processing: []
-        });
     }
 
     public register(upload: UploadRequest) {
@@ -50,9 +23,6 @@ export class UploadQueue {
     }
 
     public destroy() {
-        this.queueChange$.complete();
-
-        this.queueChange$       = null;
         this.queuedUploads      = null;
         this.progressingUploads = null;
         this.active             = null;
@@ -79,7 +49,6 @@ export class UploadQueue {
                 if (!isStartAble) {
                     request.uploadFile.state = UploadState.PENDING;
                     this.queuedUploads.push(request);
-                    this.notifyObserver();
                 }
             })
         );
@@ -88,29 +57,26 @@ export class UploadQueue {
     /**
      * register to upload change
      */
-    private registerUploadChange(request: UploadRequest) {
+    private registerUploadChange(request: UploadRequest): void {
 
-        if (this.observedUploads.has(request))  {
-            return;
+        if (!this.observedUploads.has(request))  {
+            this.observedUploads.add(request);
+            const change$ = request.change;
+
+            /** register for changes which make request complete */
+            const uploadComplete$ = change$
+                .pipe(filter(() => request.isCompleted(true)), take(1));
+
+            change$
+                .pipe(
+                    filter((upload) => upload.state === UploadState.START),
+                    takeUntil(merge(request.destroyed, uploadComplete$))
+                )
+                .subscribe({
+                    next: ()     => this.requestStarting(request),
+                    complete: () => this.requestCompleted(request)
+                });
         }
-
-        const change$ = request.change;
-
-        /** register for changes which make request complete */
-        const uploadComplete$ = change$
-            .pipe(filter(() => request.isCompleted(true)), take(1));
-
-        change$
-            .pipe(
-                filter((upload) => upload.state === UploadState.START),
-                takeUntil(merge(request.destroyed, uploadComplete$))
-            )
-            .subscribe({
-                next: ()     => this.requestStarting(request),
-                complete: () => this.requestCompleted(request)
-            });
-
-        this.observedUploads.add(request);
     }
 
     /**
@@ -119,7 +85,6 @@ export class UploadQueue {
     private requestStarting(req: UploadRequest) {
         this.active += 1;
         this.progressingUploads.push(req);
-        this.notifyObserver();
     }
 
     /**
@@ -132,7 +97,6 @@ export class UploadQueue {
             : this.startNextInQueue(request);
 
         this.observedUploads.delete(request);
-        this.notifyObserver();
     }
 
     /**
@@ -160,12 +124,5 @@ export class UploadQueue {
             const nextUpload = this.queuedUploads.shift();
             nextUpload.start();
         }
-    }
-
-    private notifyObserver() {
-        this.queueChange$.next({
-            pending:    [...this.queuedUploads],
-            processing: [...this.progressingUploads]
-        });
     }
 }

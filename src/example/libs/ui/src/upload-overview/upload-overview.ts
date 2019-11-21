@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, Input } from "@angular/core";
-import { UploadStorage, QueueState, UploadRequest, UploadState, FileUpload, Upload } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage, UploadRequest, UploadState, FileUpload } from "@r-hannuschka/ngx-fileupload";
 import { takeUntil, takeWhile } from "rxjs/operators";
 import { Subject, merge } from "rxjs";
 import { ViewportControl } from "ngx-customscrollbar";
@@ -38,6 +38,7 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
 
+        /*
         this.storage.queueChange
             .pipe(
                 takeUntil(this.destroy$)
@@ -45,11 +46,11 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
             .subscribe((state: QueueState) => {
                 /**
                  * @todo improve we dont want to render this list again and again
-                 */
+                 *
                 this.processing = state.processing.map((req) => req.uploadFile);
                 this.pending    = state.pending.map((req) => req.uploadFile);
 
-                /** register to processing uploads to get a change */
+                /** register to processing uploads to get a change *
                 if (this.processing.length) {
                     // do not register if not required
                     this.registerProcessState(state.processing);
@@ -57,6 +58,7 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
                     this.collapsed = true;
                 }
             });
+            */
     }
 
     public remove(requestId: string) {

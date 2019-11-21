@@ -44,7 +44,6 @@ class Factory implements NgxFileUploadFactory {
         }
 
         if (validationResult !== null) {
-            console.log(validationResult);
             model.state = UploadState.INVALID;
             model.validationErrors = validationResult;
         }

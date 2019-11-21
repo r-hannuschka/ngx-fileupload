@@ -38,4 +38,9 @@ describe("ngx-fileupload/libs/utils/file-size.pipe", () => {
         const result = (1024 * 1024 * .5) / 3; // 512 : 3 = 170.666666666...
         expect(pipe.transform((.5 * 1024 * 1024) / 3)).toEqual(`170.66 Kb`);
     });
+
+    it ("should convert string to 1MByte", () => {
+        const num = Math.pow(1024, 2).toString().concat("e") as any;
+        expect(pipe.transform(num)).toEqual(`1 Mb`);
+    });
   });

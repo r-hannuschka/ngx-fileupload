@@ -21,79 +21,48 @@ export interface UploadValidation {
     errors: ValidationErrors | null;
 }
 
-export interface UploadData {
+export interface FileUpload {
 
-    /**
-     * name of upload
-     */
-    name: string;
-    /**
-     * progress in percent
-     */
-    progress: number;
-    /**
-     * upload finishes request with a succes, holds success informations
-     */
+    readonly file: File;
+
+    readonly size: number;
+
+    readonly name: string;
+
+    readonly type: string;
+
     response: UploadResponse;
-    /**
-     * total size of upload
-     */
-    size: number;
-    /**
-     * current state of upload
-     */
+
     state: UploadState;
-    /**
-     * uploaded size
-     */
+
     uploaded: number;
-    /**
-     * contains validation results
-     */
-    validation: UploadValidation;
-    /**
-     * returns true if upload request was finished with an error
-     */
+
+    validationErrors: ValidationErrors | null;
+
+    progress: number;
+
     hasError: boolean;
-    /**
-     * returns true if upload is invalid
-     */
+
     isInvalid: boolean;
-    /**
-     * upload is marked for start but still in upload queue
-     * and not running currently
-     */
-    isPending: boolean;
-    /**
-     * upload request id
-     */
-    requestId: string;
 }
 
-export interface Upload {
+export interface UploadRequest {
+
+    requestId: string;
 
     /**
      * returns observable which notify if file upload state
      * has been changed
      */
-    readonly change: Observable<UploadData>;
+    readonly change: Observable<FileUpload>;
 
-    /**
-     * get upload data informations
-     */
-    readonly data: UploadData;
+    readonly uploadFile: FileUpload;
 
-    /**
-     * upload file to server but only
-     * if file is not queued, abort request on cancel
-     */
-    start(): void;
+    readonly destroyed: Observable<boolean>;
 
-    /**
-     * restart download again
-     * reset state, and reset errors
-     */
-    retry(): void;
+    beforeStart(hook: Observable<boolean>): void;
+
+    destroy(): void;
 
     /**
      * cancel current file upload, this will complete change subject
@@ -106,10 +75,24 @@ export interface Upload {
      */
     hasError(): boolean;
 
+    isIdle(): boolean;
+
     /**
      * returns true if validators are set and upload not validated
      */
     isInvalid(): boolean;
+
+    isProgress(): boolean;
+
+    isPending(): boolean;
+
+    isCompleted(ignoreError?: boolean): boolean;
+
+    isCanceled(): boolean;
+
+    retry(): void;
+
+    start(): void;
 }
 
 export interface UploadStoreConfig {
@@ -145,27 +128,4 @@ export interface UploadOptions {
          */
         name?: string;
     };
-}
-
-export interface UploadFile {
-
-    readonly file: File;
-
-    readonly fileSize: number;
-
-    readonly fileName: string;
-
-    readonly fileType: string;
-
-    response: UploadResponse;
-
-    state: UploadState;
-
-    uploaded: number;
-
-    validationErrors: ValidationErrors | null;
-
-    progress: number;
-
-    hasError: boolean;
 }

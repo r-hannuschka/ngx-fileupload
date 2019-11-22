@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
-import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadState, UploadRequest } from "@r-hannuschka/ngx-fileupload";
 import { NgxFileDropEntry, FileSystemFileEntry } from "ngx-file-drop";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -19,7 +19,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
 
     public code = ExampleCodeData;
 
-    public states = UploadApi.UploadState;
+    public states = UploadState;
 
     /** upload options */
     private uploadOptions: UploadOptions = {

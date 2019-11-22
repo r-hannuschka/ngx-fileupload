@@ -1,6 +1,6 @@
 name: ngx-fileupload
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
 
@@ -25,18 +25,18 @@ jobs:
       - name: install dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: |
-          cd src 
+          cd src
           npm ci
 
       - name: install puppeteer
         if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: | 
+        run: |
           cd src
           npm i puppeteer@chrome-78
 
       - name: update webdriver
         if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: | 
+        run: |
           cd src
           npm run webdriver:update
 
@@ -76,7 +76,7 @@ jobs:
       - name: protractor e2e tests
         run: |
           cd src
-          npm run github-actions-e2e:chrome
+          npm run github-actions:e2e-chrome
 
   e2e-firefox:
     needs: install
@@ -95,4 +95,31 @@ jobs:
       - name: protractor e2e tests
         run: |
           cd src
-          npm run github-actions-e2e:firefox
+          npm run github-actions:e2e-firefox
+
+  unit-tests:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: npm cache
+        uses: actions/cache@v1
+        with:
+            path: ./src/node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
+
+      - name: unit tests
+        run: |
+          cd src
+          npm run github-actions:unit-tests
+
+      - name: codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} #required
+          file: ./src/coverage/ngx-fileupload/lcov.info
+          flags: unittests
+

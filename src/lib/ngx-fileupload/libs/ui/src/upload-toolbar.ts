@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
-import { UploadStorage, UploadRequest } from "../../upload";
+import { UploadStorage } from "../../upload";
+import { UploadRequest } from "../../api";
 
 interface InfoData {
     error: number;
@@ -35,7 +36,6 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
     private destroyed$: Subject<boolean> = new Subject();
 
     ngOnInit() {
-
         this.registerStoreChange();
     }
 

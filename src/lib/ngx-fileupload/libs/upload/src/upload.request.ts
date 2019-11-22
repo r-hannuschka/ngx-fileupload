@@ -1,26 +1,16 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
-import { Subject, Observable, forkJoin, merge } from "rxjs";
-import { takeUntil, filter, switchMap, map } from "rxjs/operators";
-import { UploadState, UploadResponse, UploadData, Upload, UploadFile, UploadOptions} from "../../api";
+import { Subject, Observable, merge, of, concat } from "rxjs";
+import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
+import { UploadState, UploadResponse, UploadRequest, UploadOptions, FileUpload} from "../../api";
+import { UploadModel } from "./upload.model";
 
 /**
  * represents a single file upload
  */
-export class UploadRequest implements Upload {
+export class Upload implements UploadRequest {
 
-    /**
-     * if cancel$ emits true, current upload will stopped
-     */
     private cancel$: Subject<boolean> = new Subject();
-
-    /**
-     * upload stream to notify observers if something has been changed
-     */
-    private upload$: Subject<UploadData>;
-
-    /**
-     * upload stream gets destroyed
-     */
+    private change$: Subject<FileUpload> = new Subject();
     private destroyed$: Subject<boolean> = new Subject();
 
     private options: UploadOptions = {
@@ -28,101 +18,75 @@ export class UploadRequest implements Upload {
         formData: { enabled: true, name: "file" }
     };
 
-    private hooks: {beforeStart: Array<() => Observable<boolean>>} = { beforeStart: [] };
+    private hooks: {beforeStart: Observable<boolean>[]} = { beforeStart: [] };
 
-    public get change(): Observable<UploadData> {
-        return this.upload$.asObservable();
+    public get change(): Observable<FileUpload> {
+        return this.change$.asObservable();
     }
 
     public get destroyed(): Observable<boolean> {
         return this.destroyed$.asObservable();
     }
 
-    public get data(): UploadData {
-        return {
-            name: this.upload.fileName,
-            isPending: this.upload.state === UploadState.PENDING,
-            isInvalid: this.upload.state === UploadState.INVALID,
-            progress: this.upload.progress,
-            requestId: this.requestId,
-            size: this.upload.fileSize,
-            state: this.upload.state,
-            response: this.upload.response,
-            uploaded: this.upload.uploaded,
-            validation: {
-                errors: this.upload.validationErrors
-            },
-            hasError: this.upload.state === UploadState.COMPLETED && !this.upload.response.success
-        };
+    public get uploadFile(): FileUpload {
+        return this.upload;
     }
 
-    public set state(state: UploadState) {
-        this.upload.state = state;
-    }
-
-    public get state() {
-        return this.upload.state;
-    }
-
-    private uploadRequestId: string;
-
-    public get requestId(): string {
-        return this.uploadRequestId;
-    }
+    public requestId: string;
 
     /**
      * create UploadRequest service
      */
     public constructor(
         private http: HttpClient,
-        private upload: UploadFile,
+        private upload: FileUpload,
         options: UploadOptions
     ) {
-        this.uploadRequestId = Array.from({length: 4}, () => Math.random().toString(32).slice(2)).join("-");
-        this.upload$ = new Subject();
         this.options = {...this.options, ...options};
     }
 
-    public beforeStart(hook: () => Observable<boolean>) {
+    public beforeStart(hook: Observable<boolean>) {
         this.hooks.beforeStart = [
             ...this.hooks.beforeStart,
             hook
         ];
     }
 
-    public update() {
-        this.notifyObservers();
-    }
-
     /**
      * cancel current file upload, this will complete change subject
      */
     public cancel() {
-        if (!this.isCompleted(true) && this.upload.state !== UploadState.INVALID) {
+        if (this.isProgress()) {
             this.upload.state = UploadState.CANCELED;
-            this.cancel$.next(true);
             this.notifyObservers();
+            this.cancel$.next(true);
         }
     }
 
     public destroy() {
+        this.finalizeUpload();
         this.destroyed$.next(true);
-
         this.destroyed$.complete();
-        this.cancel$.complete();
-        this.upload$.complete();
 
         this.destroyed$ = null;
         this.hooks      = null;
-        this.upload$    = null;
         this.upload     = null;
         this.cancel$    = null;
+        this.change$    = null;
+    }
+
+    /**
+     * return true if upload was not completed since the server
+     * sends back an error response
+     */
+    public hasError(): boolean {
+        return this.upload.state === UploadState.COMPLETED && !this.upload.response.success;
     }
 
     public isCompleted(ignoreError = false): boolean {
         let isCompleted = this.isRequestCompleted();
         isCompleted = isCompleted && (ignoreError || !this.hasError());
-        isCompleted = isCompleted || this.state === UploadState.CANCELED;
+        isCompleted = isCompleted || this.upload.state === UploadState.CANCELED;
         return isCompleted;
     }
 
@@ -157,7 +121,7 @@ export class UploadRequest implements Upload {
      */
     public retry() {
         if (this.isRequestCompleted() && this.hasError() || this.isCanceled()) {
-            this.resetUpload();
+            this.upload = new UploadModel(this.upload.file);
             this.start();
         }
     }
@@ -171,40 +135,49 @@ export class UploadRequest implements Upload {
             return;
         }
 
-        /** call beforeStart hooks, if one returns false upload will not started
-         * rework to concat since we can go out if anything break
-         * so it have not loop through all observables if anything break and we have a
-         * chain we can control a bit by position of hook
-         */
-        forkJoin(this.hooks.beforeStart.map((hook) => hook()))
-            .pipe(
-                map((result: boolean[]) => result.reduce((prev, cur) => prev && cur, true)),
-                filter(result => result),
-                switchMap(() => this.uploadFile()),
-            )
-            .subscribe({
-                next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
-                error: (error: HttpErrorResponse) => this.handleError(error)
-            });
+        this.beforeStartHook$.pipe(
+            filter(isAllowedToStart => isAllowedToStart),
+            tap(() => (this.upload.state = UploadState.START, this.notifyObservers())),
+            switchMap(() => this.startUploadRequest()),
+        ).subscribe({
+            next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
+            error: (error: HttpErrorResponse) => this.handleError(error)
+        });
     }
 
     /**
-     * return true if upload was not completed since the server
-     * sends back an error response
+     * call hooks in order, see playground
+     *
+     * @see https://rxviz.com/v/58GkkYv8
      */
-    public hasError(): boolean {
-        return this.upload.hasError;
+    private get beforeStartHook$(): Observable<boolean> {
+
+        const initialState = this.upload.state;
+
+        let hook$: Observable<boolean> = of(true);
+
+        if (this.hooks.beforeStart.length) {
+            hook$ = concat(...this.hooks.beforeStart)
+            .pipe(
+                bufferCount(this.hooks.beforeStart.length),
+                map((result) => result.every(isAllowed => isAllowed)),
+                tap(() => this.upload.state !== initialState ? this.notifyObservers() : void 0)
+            );
+        }
+        return hook$;
     }
 
     /**
      * build form data and send request to server
      */
-    private uploadFile(): Observable<HttpEvent<string>> {
+    private startUploadRequest(): Observable<HttpEvent<string>> {
         const uploadBody = this.createUploadBody();
         return this.http.post<string>(this.options.url, uploadBody, {
             reportProgress: true,
             observe: "events"
-        }).pipe(takeUntil(merge(this.cancel$, this.destroyed$)));
+        }).pipe(
+            takeUntil(merge(this.cancel$, this.destroyed$)),
+        );
     }
 
     /**
@@ -214,7 +187,7 @@ export class UploadRequest implements Upload {
         if (this.options.formData.enabled) {
             const formData = new FormData();
             const label    = this.options.formData.name;
-            formData.append(label, this.upload.file, this.upload.fileName);
+            formData.append(label, this.upload.file, this.upload.name);
             return formData;
         }
         return this.upload.file;
@@ -234,9 +207,9 @@ export class UploadRequest implements Upload {
             errors
         };
 
-        /** not completed since we could retry */
         this.upload.state    = UploadState.COMPLETED;
         this.upload.response = uploadResponse;
+        this.upload.hasError = true;
         this.notifyObservers();
     }
 
@@ -245,7 +218,6 @@ export class UploadRequest implements Upload {
      */
     private handleHttpEvent(event: HttpEvent<string>) {
         switch (event.type) {
-            case HttpEventType.Sent:           this.handleSent(); break;
             case HttpEventType.UploadProgress: this.handleProgress(event); break;
             case HttpEventType.Response:       this.handleResponse(event); break;
         }
@@ -257,7 +229,7 @@ export class UploadRequest implements Upload {
     private handleProgress(event: HttpProgressEvent) {
 
         const loaded   = event.loaded;
-        const progress = loaded * 100 / this.upload.fileSize;
+        const progress = loaded * 100 / this.upload.size;
 
         this.upload.state = UploadState.PROGRESS;
         this.upload.uploaded = loaded;
@@ -267,7 +239,7 @@ export class UploadRequest implements Upload {
     }
 
     /**
-     * upload completed with 20x
+     * upload completed with an success
      */
     private handleResponse(res: HttpResponse<any>) {
         const uploadResponse: UploadResponse = {
@@ -278,29 +250,21 @@ export class UploadRequest implements Upload {
         this.upload.response = uploadResponse;
         this.upload.state    = UploadState.COMPLETED;
         this.notifyObservers();
-    }
-
-    /**
-     * upload has been started
-     */
-    private handleSent() {
-        this.upload.state = UploadState.START;
-        this.notifyObservers();
+        this.finalizeUpload();
     }
 
     /**
      * send notification to observers
      */
     private notifyObservers() {
-        this.upload$.next(this.data);
+        this.change$.next({...this.upload});
     }
 
     /**
-     * reset upload
+     * upload has been completed, canceled or destroyed
      */
-    private resetUpload() {
-        this.upload.state     = UploadState.IDLE;
-        this.upload.response  = {success: false, body: null, errors: null};
-        this.upload.uploaded  = 0;
+    private finalizeUpload() {
+        this.change$.complete();
+        this.cancel$.complete();
     }
 }

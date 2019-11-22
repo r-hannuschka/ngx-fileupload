@@ -1,116 +1,66 @@
-import { UploadFile, UploadState, UploadResponse, ValidationErrors } from "../../api";
+import { FileUpload, UploadState, UploadResponse, ValidationErrors } from "../../api";
 
 /**
  * Represents a file which will be uploaded
  */
-export class UploadModel implements UploadFile {
-
-    private uploadFile: File;
-
-    private uploadedSize = 0;
-
-    private uploadedState: UploadState = UploadState.IDLE;
-
-    private uploadResponse: UploadResponse = null;
-
-    private uploadValidationErrors = null;
-
-    private uploadProgress = 0;
+export class UploadModel implements FileUpload {
 
     /**
      * Creates an instance of UploadFile.
      */
     public constructor(file: File) {
-        this.uploadFile = file;
+        this.file = file;
+        this.size = file.size;
+        this.type = file.type;
+        this.name = file.name;
     }
 
     /**
      * get raw file
      */
-    public get file(): File {
-        return this.uploadFile;
-    }
+    public readonly file: File;
 
     /**
      * returns filesize in byte
      */
-    public get fileSize(): number {
-        return this.file.size;
-    }
+    public readonly size: number;
 
     /**
      * returns filename
      */
-    public get fileName(): string {
-        return this.file.name;
-    }
+    public readonly name: string;
 
     /**
      * returns mime type of file
      */
-    public get fileType(): string {
-        return this.file.type;
-    }
+    public readonly type: string;
 
     /**
      * set response data if upload has been completed
      */
-    public set response(response: UploadResponse) {
-        this.uploadResponse = response;
-    }
-
-    /**
-     * get response data if upload has been completed
-     */
-    public get response(): UploadResponse {
-        return this.uploadResponse;
-    }
+    public response: UploadResponse = {
+        body: null,
+        errors: null,
+        success: null
+    };
 
     /**
      * set current upload state
      */
-    public set state(state: UploadState) {
-        this.uploadedState = state;
-    }
-
-    /**
-     * get current upload state
-     */
-    public get state(): UploadState {
-        return this.uploadedState;
-    }
+    public state: UploadState = UploadState.IDLE;
 
     /**
      * set uploaded size
      */
-    public set uploaded(bytes: number) {
-        this.uploadedSize = bytes;
-    }
+    public uploaded = 0;
 
-    /**
-     * get uploaded size
-     */
-    public get uploaded(): number {
-        return this.uploadedSize;
-    }
+    public validationErrors: ValidationErrors = null;
 
-    public set validationErrors(errors: ValidationErrors | null) {
-        this.uploadValidationErrors = errors;
-    }
+    public progress = 0;
 
-    public get validationErrors(): ValidationErrors | null {
-        return this.uploadValidationErrors;
-    }
+    public hasError = false;
 
-    public set progress(progress: number) {
-        this.uploadProgress = progress;
-    }
-
-    public get progress(): number {
-        return this.uploadProgress;
-    }
-
-    public get hasError() {
-        return this.uploadResponse && this.uploadResponse.errors ? true : false;
+    public get isInvalid(): boolean {
+        return this.state === UploadState.INVALID;
     }
 }

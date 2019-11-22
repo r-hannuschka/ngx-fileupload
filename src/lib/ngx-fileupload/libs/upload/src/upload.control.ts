@@ -1,5 +1,5 @@
-import { UploadRequest } from "./upload.request";
 import { timer } from "rxjs";
+import { UploadRequest } from "../../api";
 
 /**
  * remote control for a single upload, will passed

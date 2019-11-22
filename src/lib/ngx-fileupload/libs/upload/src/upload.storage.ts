@@ -1,40 +1,35 @@
-import { UploadRequest } from "./upload.request";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { buffer, debounceTime, takeUntil, distinctUntilKeyChanged } from "rxjs/operators";
-import { UploadQueue, QueueState } from "./upload.queue";
+import { Observable, Subject, ReplaySubject } from "rxjs";
+import { buffer, debounceTime, takeUntil, distinctUntilKeyChanged, tap, take } from "rxjs/operators";
+import { UploadQueue } from "./upload.queue";
+import { UploadRequest } from "../../api";
 
 export interface UploadStorageConfig {
     concurrentUploads?: number;
+
+    autoStart?: boolean;
 
     /** not implemented yet */
     removeCompletedUploads?: boolean;
 }
 
 const defaultStoreConfig: UploadStorageConfig = {
-    concurrentUploads: 5
+    concurrentUploads: 5,
+    autoStart: false
 };
 
-/**
- * could renamed to upload manager
- * maybe we change this design to redux ... dont know
- */
 export class UploadStorage {
 
-    private change$: BehaviorSubject<UploadRequest[]>;
+    private change$: ReplaySubject<UploadRequest[]>;
     private uploads: Map<string, UploadRequest> = new Map();
     private uploadQueue: UploadQueue;
     private storeConfig: UploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
-
-    /**
-     * submits if an upload gets destroyed
-     */
-    private uploadDestroy$: Subject<UploadRequest> = new Subject();
+    private uploadDestroy$: Subject<boolean> = new Subject();
 
     private uploadStateChange$: Subject<void> = new Subject();
 
     public constructor(config: UploadStorageConfig = {}) {
-        this.change$     = new BehaviorSubject([]);
+        this.change$     = new ReplaySubject(1);
         this.uploadQueue = new UploadQueue();
 
         this.storeConfig = {...defaultStoreConfig, ...config};
@@ -53,43 +48,47 @@ export class UploadStorage {
     }
 
     /**
-     * gets notified if queue changes
-     */
-    public get queueChange(): Observable<QueueState> {
-        return this.uploadQueue.change;
-    }
-
-    /**
      * add new upload to store
      */
     public add(upload: UploadRequest | UploadRequest[]) {
-
         const requests = Array.isArray(upload) ? upload : [upload];
-
         requests.forEach((request: UploadRequest) => {
-            this.uploads.set(request.requestId, request);
 
-            if (!request.isInvalid()) {
-                this.uploadQueue.register(request);
+            if (request.requestId && this.uploads.has(request.requestId)) {
+                return;
             }
 
-            request.change
-                .pipe(
-                    /** only gets notified if state changes */
+            request.requestId = request.requestId || this.generateUniqeRequestId();
+            this.uploads.set(request.requestId, request);
+
+            /** only register for changes if request is not invalid */
+            if (!request.isInvalid()) {
+                this.uploadQueue.register(request);
+                request.change.pipe(
                     distinctUntilKeyChanged("state"),
                     takeUntil(request.destroyed),
                 )
-                .subscribe({
-                    next: () => this.uploadStateChange$.next(),
-                    complete: () => {
-                        // remove upload from list
-                        this.uploads.delete(request.requestId);
-                        this.uploadDestroy$.next();
-                    }
-                });
+                .subscribe(() => this.uploadStateChange$.next());
+            }
+
+            request.destroyed.pipe(
+                tap(() => this.uploads.delete(request.requestId)),
+                take(1)
+            ).subscribe(() => this.uploadDestroy$.next());
         });
 
         this.notifyObserver();
+    }
+
+    /**
+     * generate uniqe request id
+     */
+    private generateUniqeRequestId(): string {
+        let reqId: string;
+        do {
+            reqId = Array.from({length: 4}, () => Math.random().toString(32).slice(2)).join("-");
+        } while (this.uploads.has(reqId));
+        return reqId;
     }
 
     /**
@@ -124,7 +123,7 @@ export class UploadStorage {
      * remove upload from store
      */
     public remove(upload: UploadRequest | string) {
-        const id = upload instanceof UploadRequest ? upload.requestId : upload;
+        const id = typeof(upload) === "string" ? upload : upload.requestId;
         const request = this.uploads.get(id);
         request.destroy();
     }

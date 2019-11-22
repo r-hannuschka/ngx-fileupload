@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, Input } from "@angular/core";
-import { UploadStorage, QueueState, UploadRequest, UploadData, UploadState } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage, UploadRequest, UploadState, FileUpload } from "@r-hannuschka/ngx-fileupload";
 import { takeUntil, takeWhile } from "rxjs/operators";
 import { Subject, merge } from "rxjs";
 import { ViewportControl } from "ngx-customscrollbar";
@@ -18,9 +18,9 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
     @Input()
     public title = "Uploads";
 
-    public processing: UploadData[] = [];
+    public processing: FileUpload[] = [];
 
-    public pending: UploadData[] = [];
+    public pending: FileUpload[] = [];
 
     public collapsed = true;
 
@@ -38,6 +38,7 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
 
+        /*
         this.storage.queueChange
             .pipe(
                 takeUntil(this.destroy$)
@@ -45,11 +46,11 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
             .subscribe((state: QueueState) => {
                 /**
                  * @todo improve we dont want to render this list again and again
-                 */
-                this.processing = state.processing.map((req) => req.data);
-                this.pending    = state.pending.map((req) => req.data);
+                 *
+                this.processing = state.processing.map((req) => req.uploadFile);
+                this.pending    = state.pending.map((req) => req.uploadFile);
 
-                /** register to processing uploads to get a change */
+                /** register to processing uploads to get a change *
                 if (this.processing.length) {
                     // do not register if not required
                     this.registerProcessState(state.processing);
@@ -57,6 +58,7 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
                     this.collapsed = true;
                 }
             });
+            */
     }
 
     public remove(requestId: string) {
@@ -82,7 +84,7 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$)
             )
             .subscribe({
-                next: (model: UploadData) => this.updateData(model)
+                next: (model: FileUpload) => this.updateData(model)
             });
     }
 
@@ -90,10 +92,6 @@ export class UploadOverviewComponent implements OnInit, OnDestroy {
      * find data in processing array and update only the data
      * this will prevent list from render again
      */
-    private updateData(data: UploadData) {
-        const processData = this.processing
-            .filter((model) => model.requestId === data.requestId);
-
-        Object.assign(processData[0], data);
+    private updateData(data: FileUpload) {
     }
 }

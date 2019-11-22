@@ -1,5 +1,6 @@
 import { Observable, Subject } from "rxjs";
 import { FileUpload, UploadRequest, UploadState } from "@r-hannuschka/ngx-fileupload";
+import { take } from "rxjs/operators";
 
 /**
  * represents a single fileupload
@@ -9,6 +10,8 @@ export class UploadRequestMock implements UploadRequest {
     destroy$: Subject<boolean>;
 
     destroyed: Observable<boolean>;
+
+    public hooks = [];
 
     requestId;
 
@@ -24,13 +27,14 @@ export class UploadRequestMock implements UploadRequest {
     }
 
     isCanceled(): boolean {
-        return false;
+        return this.uploadFile.state === UploadState.CANCELED;
     }
 
     retry(): void {
     }
 
     beforeStart(hook: Observable<boolean>): void {
+        this.hooks.push(hook);
     }
 
     destroy(): void {
@@ -48,6 +52,12 @@ export class UploadRequestMock implements UploadRequest {
     }
 
     start(): void {
+        this.hooks.forEach((hook) => hook.pipe(take(1)).subscribe((start) => {
+            if (start) {
+                this.uploadFile.state = UploadState.START;
+                this.applyChange();
+            }
+        }));
     }
 
     cancel(): void {

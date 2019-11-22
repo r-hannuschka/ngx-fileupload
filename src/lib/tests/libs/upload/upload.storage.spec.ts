@@ -1,9 +1,8 @@
-
 import { UploadStorage, UploadState } from "@r-hannuschka/ngx-fileupload";
 import { UploadRequestMock, UploadModel } from "../../mockup";
 import { take, skip, takeWhile, tap } from "rxjs/operators";
 
-describe("ngx-fileupload/libs/upload/upload-control", () => {
+describe("ngx-fileupload/libs/upload/upload.storage", () => {
 
     let storage: UploadStorage;
 

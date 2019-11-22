@@ -61,6 +61,7 @@ export class UploadQueue {
 
         if (!this.observedUploads.has(request))  {
             this.observedUploads.add(request);
+
             const change$ = request.change;
 
             /** register for changes which make request complete */

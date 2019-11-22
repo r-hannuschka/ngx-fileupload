@@ -136,7 +136,7 @@ export class Upload implements UploadRequest {
         }
 
         this.beforeStartHook$.pipe(
-            filter( isAllowedToStart => isAllowedToStart),
+            filter(isAllowedToStart => isAllowedToStart),
             tap(() => (this.upload.state = UploadState.START, this.notifyObservers())),
             switchMap(() => this.startUploadRequest()),
         ).subscribe({

@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/r-hannuschka/ngx-fileupload/branch/feature%2Frefactoring/graph/badge.svg)](https://codecov.io/gh/r-hannuschka/ngx-fileupload)
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
 
-Angular 8+ async fileupload with progressbar
+Angular 8 async file upload with progressbar, upload queue and validations.
 
 [![ngx file upload demo on youtube](./docs/ngx-fileupload.png)](http://www.youtube.com/watch?v=KpHKw0AEOqg)
 ___

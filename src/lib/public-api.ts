@@ -8,8 +8,6 @@ export * from "./ngx-fileupload/libs/upload";
 export * from "./ngx-fileupload/libs/validation";
 export * from "./ngx-fileupload/libs/utils";
 
-export { UploadState } from "./ngx-fileupload/libs/api";
-
 /** @deprecated use UploadState directly */
 import * as UploadAPI from "./ngx-fileupload/libs/api/src/upload";
 export const UploadApi = UploadAPI;

@@ -1,19 +1,16 @@
 
-import { UploadRequest, Upload, NgxFileUploadFactory } from "@r-hannuschka/ngx-fileupload";
+import { NgxFileUploadFactory } from "@r-hannuschka/ngx-fileupload";
 import { TestBed, getTestBed, inject } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClient } from "@angular/common/http";
 import { Type } from "@angular/core";
-import { UploadModel } from "../../mockup/src/upload-model";
 import { ValidatorMockFactory } from "../../mockup";
 
 describe("NgxFileUpload/libs/utils/factory", () => {
 
-    const url = "https://localhost/file/upload";
     let httpClient: HttpClient;
     let injector: TestBed;
     let httpMock: HttpTestingController;
-    let request: UploadRequest;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -23,9 +20,6 @@ describe("NgxFileUpload/libs/utils/factory", () => {
         injector   = getTestBed();
         httpMock   = injector.get(HttpTestingController as Type<HttpTestingController>);
         httpClient = injector.get(HttpClient as Type<HttpClient>);
-
-        const uploadFile = new UploadModel();
-        request = new Upload(httpClient, uploadFile, {url});
     });
 
     it("should create single UploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {

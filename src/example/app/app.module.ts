@@ -35,6 +35,7 @@ import { CustomizePage } from "@ngx-fileupload-example/page/customize";
 import { Dashboard } from "@ngx-fileupload-example/page/dashboard";
 import { ValidationPage } from "@ngx-fileupload-example/page/validation";
 import { DropZone } from "@ngx-fileupload-example/page/drop-zone";
+import { AutoUploadDemo } from '@ngx-fileupload-example/page/auto-upload';
 
 const fakeUploadProvider: Provider = {
     provide: HTTP_INTERCEPTORS,
@@ -60,6 +61,7 @@ const fakeUploadProvider: Provider = {
         UiModule,
 
         // pages
+        AutoUploadDemo,
         CustomizePage,
         Dashboard,
         ValidationPage,

@@ -8,8 +8,6 @@ export class UploadQueue {
 
     private queuedUploads: UploadRequest[] = [];
 
-    private progressingUploads: UploadRequest[] = [];
-
     private concurrentCount = -1;
 
     private observedUploads = new WeakSet<UploadRequest>();
@@ -24,7 +22,6 @@ export class UploadQueue {
 
     public destroy() {
         this.queuedUploads      = null;
-        this.progressingUploads = null;
         this.active             = null;
     }
 
@@ -46,10 +43,7 @@ export class UploadQueue {
              * if we could not start upload push it into queue
              */
             tap((isStartAble: boolean) => {
-                if (!isStartAble) {
-                    request.uploadFile.state = UploadState.PENDING;
-                    this.queuedUploads.push(request);
-                }
+                !isStartAble ? this.writeToQueue(request) : this.startRequest(request);
             })
         );
     }
@@ -74,18 +68,23 @@ export class UploadQueue {
                     takeUntil(merge(request.destroyed, uploadComplete$))
                 )
                 .subscribe({
-                    next: ()     => this.requestStarting(request),
-                    complete: () => this.requestCompleted(request)
+                    complete: () => {
+                        this.requestCompleted(request);
+                    }
                 });
         }
     }
 
-    /**
-     * a new request is starting
-     */
-    private requestStarting(req: UploadRequest) {
+    private writeToQueue(request: UploadRequest) {
+        request.uploadFile.state = UploadState.PENDING;
+        this.queuedUploads.push(request);
+    }
+
+    private startRequest(request: UploadRequest) {
+        if (this.isInUploadQueue(request)) {
+            this.removeFromQueue(request);
+        }
         this.active += 1;
-        this.progressingUploads.push(req);
     }
 
     /**
@@ -95,7 +94,7 @@ export class UploadQueue {
     private requestCompleted(request: UploadRequest) {
         this.isInUploadQueue(request)
             ? this.removeFromQueue(request)
-            : this.startNextInQueue(request);
+            : this.startNextInQueue();
 
         this.observedUploads.delete(request);
     }
@@ -118,8 +117,7 @@ export class UploadQueue {
      * try to start next upload in queue, returns false if no further uploads
      * exists
      */
-    private startNextInQueue(request: UploadRequest) {
-        this.progressingUploads = this.progressingUploads.filter((upload) => upload !== request);
+    private startNextInQueue() {
         this.active = Math.max(this.active - 1, 0);
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();

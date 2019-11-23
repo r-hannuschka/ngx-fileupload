@@ -72,7 +72,7 @@ describe("Ngx Fileupload Upload Toolbar", () => {
         /** start uploads */
         await browser.waitForAngularEnabled(false);
         await uploadToolbar.uploadAll();
-        await browser.sleep(100);
+        await browser.sleep(200);
 
         expect(
             await uploadToolbar.uploadStates.map<string>((state) => state.getText())
@@ -82,6 +82,7 @@ describe("Ngx Fileupload Upload Toolbar", () => {
     it("should contain 3 progressing, 7 pending and 1 idle in info bar", async () => {
         // add another file
         await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
+        await browser.sleep(200);
 
         expect(
             await uploadToolbar.uploadStates.map<string>((state) => state.getText())

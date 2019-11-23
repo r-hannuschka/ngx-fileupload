@@ -82,6 +82,13 @@ describe("Ngx Fileupload Default View", () => {
 
         beforeEach(async () => {
             await fileBrowser.dropFile("./upload-file.zip");
+
+            /**
+             * ngx-fileupload-storage sends emits after 50ms
+             * so it will not rendered directly and we have to wait for it,
+             * if this is not inserted after 5 seconds timeout
+             */
+            await browser.wait(ngxFileUpload.getUploadItems().isPresent(), 5000);
         });
 
         it("should added ui", async () => {

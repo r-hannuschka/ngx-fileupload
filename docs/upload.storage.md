@@ -143,5 +143,7 @@ Configuration which could passed to UploadStorage constructor, if no one is pass
 export interface UploadStorageConfig {
     /** how many upload requests could handled at once in queue */
     concurrentUploads?: number;
+
+    enableAutoUpload?: boolean;
 }
 ```

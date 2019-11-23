@@ -21,8 +21,8 @@ export class UploadQueue {
     }
 
     public destroy() {
-        this.queuedUploads      = null;
-        this.active             = null;
+        this.queuedUploads = null;
+        this.active = null;
     }
 
     /**

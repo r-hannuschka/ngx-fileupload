@@ -57,7 +57,7 @@ export class UploadStorage {
             this.registerUploadEvents(request);
         });
 
-        this.afterUploadsAdd();
+        this.afterUploadsAdd(requests);
         this.notifyObserver();
     }
 
@@ -84,9 +84,9 @@ export class UploadStorage {
      * uploads has been added and events are registered
      * finalize operations
      */
-    private afterUploadsAdd(): void {
+    private afterUploadsAdd(requests: UploadRequest[]): void {
         if (this.storeConfig.enableAutoStart) {
-            this.uploads.forEach((uploadRequest) => uploadRequest.start());
+            requests.forEach((uploadRequest) => uploadRequest.start());
         }
     }
 

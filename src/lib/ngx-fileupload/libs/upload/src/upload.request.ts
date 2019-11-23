@@ -56,7 +56,7 @@ export class Upload implements UploadRequest {
      * cancel current file upload, this will complete change subject
      */
     public cancel() {
-        if (this.isProgress()) {
+        if (this.isProgress() || this.isPending()) {
             this.upload.state = UploadState.CANCELED;
             this.notifyObservers();
             this.cancel$.next(true);

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { UploadStorage } from "@r-hannuschka/ngx-fileupload";
 
 @Component({

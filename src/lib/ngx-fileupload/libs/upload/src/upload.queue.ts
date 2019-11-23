@@ -43,7 +43,9 @@ export class UploadQueue {
              * if we could not start upload push it into queue
              */
             tap((isStartAble: boolean) => {
-                !isStartAble ? this.writeToQueue(request) : this.startRequest(request);
+                if (!isStartAble) {
+                    this.writeToQueue(request);
+                }
             })
         );
     }
@@ -62,29 +64,21 @@ export class UploadQueue {
             const uploadComplete$ = change$
                 .pipe(filter(() => request.isCompleted(true)), take(1));
 
-            change$
-                .pipe(
-                    filter((upload) => upload.state === UploadState.START),
-                    takeUntil(merge(request.destroyed, uploadComplete$))
-                )
-                .subscribe({
-                    complete: () => {
-                        this.requestCompleted(request);
-                    }
-                });
+            change$.pipe(
+                filter((upload) => upload.state === UploadState.START),
+                takeUntil(merge(request.destroyed, uploadComplete$))
+            ).subscribe({
+                next: () => this.active += 1,
+                complete: () => {
+                    this.requestCompleted(request);
+                }
+            });
         }
     }
 
     private writeToQueue(request: UploadRequest) {
         request.uploadFile.state = UploadState.PENDING;
-        this.queuedUploads.push(request);
-    }
-
-    private startRequest(request: UploadRequest) {
-        if (this.isInUploadQueue(request)) {
-            this.removeFromQueue(request);
-        }
-        this.active += 1;
+        this.queuedUploads = [...this.queuedUploads, request];
     }
 
     /**

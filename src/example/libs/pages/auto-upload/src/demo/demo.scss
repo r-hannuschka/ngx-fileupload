@@ -1,0 +1,23 @@
+$icomoon-font-path: "../../../../../assets/fonts" !default;
+
+@import '~igniteui-angular/lib/core/styles/themes/index';
+@import "variables";
+@import "icons";
+
+:host {
+
+    ::ng-deep {
+        @include igx-tabs($dark-tabs);
+    }
+
+    .header {
+
+        background: map-get($colors, darkBlue);
+        color: map-get($colors, text);
+
+        i {
+            font-size: 12rem;
+            margin: 0 1rem;
+        }
+    }
+}

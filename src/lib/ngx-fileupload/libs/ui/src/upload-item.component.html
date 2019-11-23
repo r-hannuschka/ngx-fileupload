@@ -18,7 +18,7 @@
                 <i [ngClass]="[
                     'ngx-fileupload-icon--' + (upload.state | stateToString),
                     upload.state === uploadState.COMPLETED
-                        ? upload.hasError ? 'error' : 'success' 
+                        ? upload.hasError ? 'error' : 'success'
                         : ''
                 ]"></i>
             </div>
@@ -41,14 +41,14 @@
                 </button>
 
                 <!-- retry upload action -->
-                <button type="button" class="item-action--reload" 
-                    (click)="ctrl.retry()" 
+                <button type="button" class="item-action--reload"
+                    (click)="ctrl.retry()"
                     *ngIf="upload.hasError || upload.state === uploadState.CANCELED">
                     <i class="ngx-fileupload-icon--reload"></i>
                 </button>
 
                 <!-- cancel active upload -->
-                <button type="button" 
+                <button type="button"
                     [disabled]="!(upload | isCancelAble)" class="item-action--cancel" (click)="ctrl.stop($event);">
                     <i class="ngx-fileupload-icon--cancel"></i>
                 </button>
@@ -59,8 +59,8 @@
         <div class="upload-item--footer">
 
             <!-- show validation errors -->
-            <ul *ngIf="upload.validation.errors" class="upload-item--validation">
-                <li *ngFor="let error of upload.validation.errors | keyvalue : returnZero" class="message">
+            <ul *ngIf="upload.validationErrors" class="upload-item--validation">
+                <li *ngFor="let error of upload.validationErrors | keyvalue : returnZero" class="message">
                     {{error.value}}
                 </li>
             </ul>

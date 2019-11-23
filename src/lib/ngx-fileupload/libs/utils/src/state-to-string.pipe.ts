@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { UploadState } from "../../../data/api";
+import { UploadState } from "../../api";
 
 /**
  * converts upload state to string value

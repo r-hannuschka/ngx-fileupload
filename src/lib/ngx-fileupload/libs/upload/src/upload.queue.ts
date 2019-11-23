@@ -1,14 +1,6 @@
-import { UploadState } from "../../../data/api";
-import { UploadRequest } from "./upload.request";
-import { Observable, of, merge, BehaviorSubject } from "rxjs";
-import { filter, take, map, takeUntil, tap, buffer, debounceTime } from "rxjs/operators";
-
-export interface QueueState {
-
-    pending: UploadRequest[];
-
-    processing: UploadRequest[];
-}
+import { UploadState, UploadRequest } from "../../api";
+import { Observable, of, merge } from "rxjs";
+import { filter, take, map, takeUntil, tap } from "rxjs/operators";
 
 export class UploadQueue {
 
@@ -16,14 +8,7 @@ export class UploadQueue {
 
     private queuedUploads: UploadRequest[] = [];
 
-    private progressingUploads: UploadRequest[] = [];
-
     private concurrentCount = -1;
-
-    /**
-     * subscribe to get notified queue has been changed
-     */
-    private queueChange$: BehaviorSubject<QueueState>;
 
     private observedUploads = new WeakSet<UploadRequest>();
 
@@ -31,44 +16,25 @@ export class UploadQueue {
         this.concurrentCount = count;
     }
 
-    public get change(): Observable<QueueState> {
-        const queueChanged  = this.queueChange$.asObservable();
-        return queueChanged
-            .pipe(
-                buffer(queueChanged.pipe(debounceTime(10))),
-                map((bufferedChanges) => bufferedChanges.pop()),
-            );
-    }
-
-    public constructor() {
-        this.queueChange$ = new BehaviorSubject({
-            pending: [], processing: []
-        });
-    }
-
     public register(upload: UploadRequest) {
-        upload.beforeStart(() => this.createBeforeStartHook(upload));
+        upload.beforeStart(this.createBeforeStartHook(upload));
     }
 
     public destroy() {
-        this.queueChange$.complete();
-
-        this.queueChange$       = null;
-        this.queuedUploads      = null;
-        this.progressingUploads = null;
-        this.active             = null;
+        this.queuedUploads = null;
+        this.active = null;
     }
 
     /**
      * create before start hook, if any upload wants to start we have to check
      */
-    private createBeforeStartHook(upload: UploadRequest): Observable<boolean> {
+    private createBeforeStartHook(request: UploadRequest): Observable<boolean> {
         return of(true).pipe(
             /**
              * before any download starts we registers on it
              * to get notified when it starts and when it is completed, destroyed
              */
-            tap(() => this.registerUploadChange(upload)),
+            tap(() => this.registerUploadChange(request)),
             /**
              * check active uploads and max uploads we could run
              */
@@ -78,10 +44,7 @@ export class UploadQueue {
              */
             tap((isStartAble: boolean) => {
                 if (!isStartAble) {
-                    upload.state = UploadState.PENDING;
-                    upload.update();
-                    this.queuedUploads.push(upload);
-                    this.notifyObserver();
+                    this.writeToQueue(request);
                 }
             })
         );
@@ -90,38 +53,32 @@ export class UploadQueue {
     /**
      * register to upload change
      */
-    private registerUploadChange(request: UploadRequest) {
+    private registerUploadChange(request: UploadRequest): void {
 
-        if (this.observedUploads.has(request))  {
-            return;
-        }
+        if (!this.observedUploads.has(request))  {
+            this.observedUploads.add(request);
 
-        const change$ = request.change;
+            const change$ = request.change;
 
-        /** register for changes which make request complete */
-        const uploadComplete$ = change$
-            .pipe(filter(() => request.isCompleted(true)), take(1));
+            /** register for changes which make request complete */
+            const uploadComplete$ = change$
+                .pipe(filter(() => request.isCompleted(true)), take(1));
 
-        change$
-            .pipe(
+            change$.pipe(
                 filter((upload) => upload.state === UploadState.START),
                 takeUntil(merge(request.destroyed, uploadComplete$))
-            )
-            .subscribe({
-                next: ()     => this.requestStarting(request),
-                complete: () => this.requestCompleted(request)
+            ).subscribe({
+                next: () => this.active += 1,
+                complete: () => {
+                    this.requestCompleted(request);
+                }
             });
-
-        this.observedUploads.add(request);
+        }
     }
 
-    /**
-     * a new request is starting
-     */
-    private requestStarting(req: UploadRequest) {
-        this.active += 1;
-        this.progressingUploads.push(req);
-        this.notifyObserver();
+    private writeToQueue(request: UploadRequest) {
+        request.uploadFile.state = UploadState.PENDING;
+        this.queuedUploads = [...this.queuedUploads, request];
     }
 
     /**
@@ -131,10 +88,9 @@ export class UploadQueue {
     private requestCompleted(request: UploadRequest) {
         this.isInUploadQueue(request)
             ? this.removeFromQueue(request)
-            : this.startNextInQueue(request);
+            : this.startNextInQueue();
 
         this.observedUploads.delete(request);
-        this.notifyObserver();
     }
 
     /**
@@ -155,19 +111,11 @@ export class UploadQueue {
      * try to start next upload in queue, returns false if no further uploads
      * exists
      */
-    private startNextInQueue(request: UploadRequest) {
-        this.progressingUploads = this.progressingUploads.filter((upload) => upload !== request);
+    private startNextInQueue() {
         this.active = Math.max(this.active - 1, 0);
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();
             nextUpload.start();
         }
-    }
-
-    private notifyObserver() {
-        this.queueChange$.next({
-            pending:    [...this.queuedUploads],
-            processing: [...this.progressingUploads]
-        });
     }
 }

@@ -1,43 +1,29 @@
-import { UploadRequest } from "./upload.request";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { buffer, debounceTime, takeUntil, distinctUntilKeyChanged } from "rxjs/operators";
-import { UploadQueue, QueueState } from "./upload.queue";
-
-export interface UploadStorageConfig {
-    concurrentUploads?: number;
-
-    /** not implemented yet */
-    removeCompletedUploads?: boolean;
-}
+import { Observable, Subject, ReplaySubject } from "rxjs";
+import { buffer, takeUntil, distinctUntilKeyChanged, tap, take, auditTime, map } from "rxjs/operators";
+import { UploadQueue } from "./upload.queue";
+import { UploadRequest, UploadStorageConfig } from "../../api";
 
 const defaultStoreConfig: UploadStorageConfig = {
-    concurrentUploads: 5
+    concurrentUploads: 5,
+    enableAutoStart: false
 };
 
-/**
- * could renamed to upload manager
- * maybe we change this design to redux ... dont know
- */
 export class UploadStorage {
 
-    private change$: BehaviorSubject<UploadRequest[]>;
+    private change$: ReplaySubject<UploadRequest[]>;
     private uploads: Map<string, UploadRequest> = new Map();
     private uploadQueue: UploadQueue;
     private storeConfig: UploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
-
-    /**
-     * submits if an upload gets destroyed
-     */
-    private uploadDestroy$: Subject<UploadRequest> = new Subject();
+    private uploadDestroy$: Subject<boolean> = new Subject();
 
     private uploadStateChange$: Subject<void> = new Subject();
 
-    public constructor(config: UploadStorageConfig = {}) {
-        this.change$     = new BehaviorSubject([]);
+    public constructor(config: UploadStorageConfig = null) {
+        this.change$     = new ReplaySubject(1);
         this.uploadQueue = new UploadQueue();
 
-        this.storeConfig = {...defaultStoreConfig, ...config};
+        this.storeConfig = {...defaultStoreConfig, ...(config || {})};
         this.uploadQueue.concurrent = this.storeConfig.concurrentUploads;
 
         this.registerUploadStateChanged();
@@ -49,47 +35,70 @@ export class UploadStorage {
      * gets removed or added
      */
     public change(): Observable<UploadRequest[]> {
-        return this.change$.asObservable();
-    }
-
-    /**
-     * gets notified if queue changes
-     */
-    public get queueChange(): Observable<QueueState> {
-        return this.uploadQueue.change;
+        return this.change$.pipe(
+            buffer(this.change$.pipe(auditTime(50))),
+            map((changes: UploadRequest[][]) => changes.slice(-1)[0])
+        );
     }
 
     /**
      * add new upload to store
      */
     public add(upload: UploadRequest | UploadRequest[]) {
-
         const requests = Array.isArray(upload) ? upload : [upload];
 
         requests.forEach((request: UploadRequest) => {
+            if (request.requestId && this.uploads.has(request.requestId)) {
+                return;
+            }
+            request.requestId = request.requestId || this.generateUniqeRequestId();
             this.uploads.set(request.requestId, request);
 
-            if (!request.isInvalid()) {
-                this.uploadQueue.register(request);
-            }
-
-            request.change
-                .pipe(
-                    /** only gets notified if state changes */
-                    distinctUntilKeyChanged("state"),
-                    takeUntil(request.destroyed),
-                )
-                .subscribe({
-                    next: () => this.uploadStateChange$.next(),
-                    complete: () => {
-                        // remove upload from list
-                        this.uploads.delete(request.requestId);
-                        this.uploadDestroy$.next();
-                    }
-                });
+            this.registerUploadEvents(request);
         });
 
+        this.afterUploadsAdd(requests);
         this.notifyObserver();
+    }
+
+    /**
+     * register for changes and destroy on upload request
+     */
+    private registerUploadEvents(request: UploadRequest): void {
+        if (!request.isInvalid()) {
+            this.uploadQueue.register(request);
+            request.change.pipe(
+                distinctUntilKeyChanged("state"),
+                takeUntil(request.destroyed),
+            )
+            .subscribe(() => this.uploadStateChange$.next());
+        }
+
+        request.destroyed.pipe(
+            tap(() => this.uploads.delete(request.requestId)),
+            take(1)
+        ).subscribe(() => this.uploadDestroy$.next());
+    }
+
+    /**
+     * uploads has been added and events are registered
+     * finalize operations
+     */
+    private afterUploadsAdd(requests: UploadRequest[]): void {
+        if (this.storeConfig.enableAutoStart) {
+            requests.forEach((uploadRequest) => uploadRequest.start());
+        }
+    }
+
+    /**
+     * generate uniqe request id
+     */
+    private generateUniqeRequestId(): string {
+        let reqId: string;
+        do {
+            reqId = Array.from({length: 4}, () => Math.random().toString(32).slice(2)).join("-");
+        } while (this.uploads.has(reqId));
+        return reqId;
     }
 
     /**
@@ -124,7 +133,7 @@ export class UploadStorage {
      * remove upload from store
      */
     public remove(upload: UploadRequest | string) {
-        const id = upload instanceof UploadRequest ? upload.requestId : upload;
+        const id = typeof(upload) === "string" ? upload : upload.requestId;
         const request = this.uploads.get(id);
         request.destroy();
     }
@@ -176,12 +185,11 @@ export class UploadStorage {
      * idle to pending
      */
     private registerUploadStateChanged() {
-        this.uploadStateChange$.pipe(
-            buffer(this.uploadStateChange$.pipe(debounceTime(10))),
-            takeUntil(this.destroyed$)
-        ).subscribe({
-            next: () => this.notifyObserver()
-        });
+        this.uploadStateChange$
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe({
+                next: () => this.notifyObserver()
+            });
     }
 
     /**
@@ -190,20 +198,17 @@ export class UploadStorage {
      * and then remove them from list and notify observer
      */
     private registerUploadDestroyEvent() {
-        this.uploadDestroy$.pipe(
-            buffer(this.uploadDestroy$.pipe(debounceTime(10))),
-            takeUntil(this.destroyed$)
-        ).subscribe({
-            next: () => this.notifyObserver()
-        });
+        this.uploadDestroy$
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe({
+                next: () => this.notifyObserver()
+            });
     }
 
     /**
      * notify observer store data has been changed
      */
     private notifyObserver() {
-        this.change$.next(
-            Array.from(this.uploads.values())
-        );
+        this.change$.next(Array.from(this.uploads.values()));
     }
 }

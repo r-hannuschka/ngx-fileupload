@@ -1,9 +1,7 @@
 import { InjectionToken, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { UploadModel } from "../../../data/upload.model";
-import { UploadRequest, UploadOptions } from "../../upload/src/upload.request";
-import { ValidationFn, Validator } from "../../validation";
-import { UploadState } from "../../../data/api";
+import { UploadOptions, UploadState, ValidationFn, Validator, UploadRequest } from "../../api";
+import { Upload, UploadModel } from "../../upload";
 
 export interface NgxFileUploadFactory {
     createUploadRequest<T extends File | File[]>(
@@ -25,7 +23,7 @@ class Factory implements NgxFileUploadFactory {
 
     public createUploadRequest(file: File, options: UploadOptions, validator: ValidationFn | Validator): UploadRequest;
     public createUploadRequest(file: File[], options: UploadOptions, validator: ValidationFn | Validator): UploadRequest[];
-    public createUploadRequest(file: File | File[], options: UploadOptions, validator: ValidationFn | Validator = null) {
+    public createUploadRequest(file: File | File[], options: UploadOptions, validator?: ValidationFn | Validator) {
 
         if (Array.isArray(file)) {
             return file.map((source) => this.buildRequest(source, options, validator));
@@ -37,7 +35,7 @@ class Factory implements NgxFileUploadFactory {
     /**
      * build concrete upload request
      */
-    private buildRequest(file: File, options: UploadOptions, validator: ValidationFn | Validator = null): UploadRequest {
+    private buildRequest(file: File, options: UploadOptions, validator?: ValidationFn | Validator): UploadRequest {
         const model = new UploadModel(file);
         let validationResult = null;
 
@@ -50,7 +48,7 @@ class Factory implements NgxFileUploadFactory {
             model.validationErrors = validationResult;
         }
 
-        return new UploadRequest(this.httpClient, model, options);
+        return new Upload(this.httpClient, model, options);
     }
 }
 

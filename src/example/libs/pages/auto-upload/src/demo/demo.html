@@ -1,0 +1,31 @@
+<h3>Automatic Upload</h3>
+
+<p>
+    To enable uploads starts automatically if added to storage, you have to set StorageConfiguration.enableAutoUpload to true. Default value is false.
+</p>
+
+<pre><code [highlight]="'
+new UploadStorage({
+    concurrentUploads: 3, // how many uploads could be active on the same time
+    enableAutoUpload: true
+});
+'"></code></pre>
+
+<section class="demo mb-3">
+    <igx-tabs>
+
+        <igx-tabs-group label="Demo">
+            <div class="mt-3 ">
+                <ngx-fileupload [url]="'http://localhost:3000/upload'" [storage]="storage"></ngx-fileupload>
+            </div>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Typescript">
+            <pre><code [highlight]="code.TS"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Html">
+            <pre><code [highlight]="code.HTML"></code></pre>
+        </igx-tabs-group>
+    </igx-tabs>
+</section>

@@ -1,7 +1,7 @@
 import { GroupedValidator } from "./grouped.validator";
 import { AndValidator } from "./and.validator";
 import { OrValidator } from "./or.validator";
-import { Validator, ValidationFn } from "./api";
+import { Validator, ValidationFn } from "../../api";
 
 export class ValidationBuilder {
 

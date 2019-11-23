@@ -104,7 +104,6 @@ export class MyComponent implements OnInit {
 | name |description |
 |---|---|
 |change: Observable<UploadRequest[]> |Observable to get notified if something in store changed (added, removed, uplodate state changed) |
-|queueChange: Observable<QueueState> | Observable to get notified if queue changed upload processing, upload pending|
 
 ### Methods
 
@@ -144,5 +143,7 @@ Configuration which could passed to UploadStorage constructor, if no one is pass
 export interface UploadStorageConfig {
     /** how many upload requests could handled at once in queue */
     concurrentUploads?: number;
+
+    enableAutoUpload?: boolean;
 }
 ```

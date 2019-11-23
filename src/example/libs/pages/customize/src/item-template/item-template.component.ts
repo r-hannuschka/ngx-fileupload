@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
-import { UploadStorage, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage, UploadRequest, UploadState } from "@r-hannuschka/ngx-fileupload";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
@@ -26,7 +26,7 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
 
     public showDocs = false;
 
-    public uploadStates = UploadApi.UploadState;
+    public uploadStates = UploadState;
 
     public uploads: UploadRequest[] = [];
 

@@ -4,12 +4,12 @@
 ![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-fileupload/badge.svg?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/dc2f1a553c31471a95184d397bf72eb3)](https://www.codacy.com/app/r-hannuschka/ngx-fileupload?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=r-hannuschka/ngx-fileupload&amp;utm_campaign=Badge_Grade)
 [![DeepScan grade](https://deepscan.io/api/teams/6017/projects/7879/branches/86957/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=6017&pid=7879&bid=86957)
+[![codecov](https://codecov.io/gh/r-hannuschka/ngx-fileupload/branch/master/graph/badge.svg)](https://codecov.io/gh/r-hannuschka/ngx-fileupload)
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
 
 Angular 8+ async fileupload with progressbar
 
-![ngx-fileupload.gif](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/ngx-fileupload.gif)
-
+[![ngx file upload demo on youtube](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/ngx-fileupload.png?raw=true)](http://www.youtube.com/watch?v=KpHKw0AEOqg)
 ___
 
 ## Installation

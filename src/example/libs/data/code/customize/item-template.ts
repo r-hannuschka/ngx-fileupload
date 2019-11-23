@@ -78,7 +78,7 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
         this.destroy$ = null;
         this.uploads = null;
         this.storage = null;
-        itemTemplate}
+    }
 
     public drop(files: File[]) {
         const uploadOptions: UploadOptions = { url: 'http://localhost:3000/upload' };

@@ -1,8 +1,8 @@
 import { Component, TemplateRef, Input, OnInit, OnDestroy, Inject } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { Validator, ValidationFn } from "../../../data/api/validation";
-import { UploadRequest, UploadStorage, UploadOptions } from "../../upload";
+import { Validator, ValidationFn, UploadOptions, UploadRequest } from "../../api";
+import { UploadStorage } from "../../upload";
 import { NgxFileUploadFactory } from "../../utils";
 import { FileUploadItemContext } from "./upload-item.component";
 
@@ -72,7 +72,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
         this.destroyed$.next(true);
 
         /** we handle our own storage so destroy this one */
-        if (!this.uploadStorageSet) {
+        if (!this.uploadStorageSet && this.uploadStorage) {
             this.uploadStorage.destroy();
             this.uploadStorage = null;
         }
@@ -82,8 +82,14 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      * files get dropped
      */
     public dropFiles(files: File[]) {
+
+        if (!files.length) {
+            return;
+        }
+
         const uploads = this.uploadFactory.createUploadRequest(
             files, this.uploadOptions, this.validator);
+
         this.uploadStorage.add(uploads);
     }
 
@@ -92,9 +98,11 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      */
     private registerStoreEvents() {
         this.uploadStorage.change()
-            .pipe(takeUntil(this.destroyed$))
+            .pipe( takeUntil(this.destroyed$))
             .subscribe({
-                next: (uploads) => this.uploads = uploads
+                next: (uploads) => {
+                    this.uploads = uploads;
+                }
             });
     }
 }

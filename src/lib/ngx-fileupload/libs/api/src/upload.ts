@@ -95,11 +95,13 @@ export interface UploadRequest {
     start(): void;
 }
 
-export interface UploadStoreConfig {
+export interface UploadStorageConfig {
     /**
      * max count of uploads at once, set to -1 for no limit
      */
     concurrentUploads: number;
+
+    enableAutoStart?: boolean;
 }
 
 /**

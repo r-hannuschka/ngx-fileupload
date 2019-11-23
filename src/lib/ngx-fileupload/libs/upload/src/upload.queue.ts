@@ -8,8 +8,6 @@ export class UploadQueue {
 
     private queuedUploads: UploadRequest[] = [];
 
-    private progressingUploads: UploadRequest[] = [];
-
     private concurrentCount = -1;
 
     private observedUploads = new WeakSet<UploadRequest>();
@@ -24,7 +22,6 @@ export class UploadQueue {
 
     public destroy() {
         this.queuedUploads      = null;
-        this.progressingUploads = null;
         this.active             = null;
     }
 
@@ -47,8 +44,7 @@ export class UploadQueue {
              */
             tap((isStartAble: boolean) => {
                 if (!isStartAble) {
-                    request.uploadFile.state = UploadState.PENDING;
-                    this.queuedUploads.push(request);
+                    this.writeToQueue(request);
                 }
             })
         );
@@ -68,24 +64,21 @@ export class UploadQueue {
             const uploadComplete$ = change$
                 .pipe(filter(() => request.isCompleted(true)), take(1));
 
-            change$
-                .pipe(
-                    filter((upload) => upload.state === UploadState.START),
-                    takeUntil(merge(request.destroyed, uploadComplete$))
-                )
-                .subscribe({
-                    next: ()     => this.requestStarting(request),
-                    complete: () => this.requestCompleted(request)
-                });
+            change$.pipe(
+                filter((upload) => upload.state === UploadState.START),
+                takeUntil(merge(request.destroyed, uploadComplete$))
+            ).subscribe({
+                next: () => this.active += 1,
+                complete: () => {
+                    this.requestCompleted(request);
+                }
+            });
         }
     }
 
-    /**
-     * a new request is starting
-     */
-    private requestStarting(req: UploadRequest) {
-        this.active += 1;
-        this.progressingUploads.push(req);
+    private writeToQueue(request: UploadRequest) {
+        request.uploadFile.state = UploadState.PENDING;
+        this.queuedUploads = [...this.queuedUploads, request];
     }
 
     /**
@@ -95,7 +88,7 @@ export class UploadQueue {
     private requestCompleted(request: UploadRequest) {
         this.isInUploadQueue(request)
             ? this.removeFromQueue(request)
-            : this.startNextInQueue(request);
+            : this.startNextInQueue();
 
         this.observedUploads.delete(request);
     }
@@ -118,8 +111,7 @@ export class UploadQueue {
      * try to start next upload in queue, returns false if no further uploads
      * exists
      */
-    private startNextInQueue(request: UploadRequest) {
-        this.progressingUploads = this.progressingUploads.filter((upload) => upload !== request);
+    private startNextInQueue() {
         this.active = Math.max(this.active - 1, 0);
         if (this.queuedUploads.length > 0) {
             const nextUpload = this.queuedUploads.shift();

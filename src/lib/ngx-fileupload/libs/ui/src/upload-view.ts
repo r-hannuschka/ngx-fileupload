@@ -98,7 +98,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      */
     private registerStoreEvents() {
         this.uploadStorage.change()
-            .pipe(takeUntil(this.destroyed$))
+            .pipe( takeUntil(this.destroyed$))
             .subscribe({
                 next: (uploads) => {
                     this.uploads = uploads;

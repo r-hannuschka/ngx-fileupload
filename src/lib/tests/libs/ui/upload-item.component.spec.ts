@@ -134,7 +134,6 @@ describe( "NgxFileUploadItemComponent:", () => {
         };
 
         fileUpload.uploadFile.validationErrors = validationErrors;
-        fileUpload.uploadFile.isInvalid  = true;
 
         testComponent.uploads = [fileUpload];
         fixture.detectChanges();

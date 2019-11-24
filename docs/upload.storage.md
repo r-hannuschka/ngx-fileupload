@@ -109,31 +109,13 @@ export class MyComponent implements OnInit {
 
 | name | params | description |
 |---|---|---|
-|add | UploadRequest| adds new UploadRequest to storage |
-|add | UploadRequest[]| adds multiple UploadRequests to storage |
-|remove | string | remove upload request from storage by given **UploadRequest.requestId** |
-|remove | UploadRequest | remove upload from storage by given **UploadRequest** |
+|add | UploadRequest &#x007C; UploadRequest[] | adds new UploadRequest to storage |
+|remove | UploadRequest &#x007C; string | remove upload request from storage by given **UploadRequest.requestId** or UploadRequest |
 |purge  |  | remove all uploads which has canceled, invalid or upload completed with success, uploads which requests completes with an error will not removed since we could retry them |
 |startAll || starts all idle uploads |
 |stopAll || stops all uploads and remove them from storage |
 |removeInvalid || remove all invalid uploads from storage|
 |destroy|| destroys storage|
-
-### Interface QueueState
-
-```ts
-export interface QueueState {
-    /**
-     * all uploads which has state pending
-     */
-    pending: UploadRequest[];
-
-    /**
-     * all uploads which has beens started and currently running
-     */
-    processing: UploadRequest[];
-}
-```
 
 ### UploadStorage Configuration
 

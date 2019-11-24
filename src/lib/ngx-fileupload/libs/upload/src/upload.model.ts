@@ -59,8 +59,4 @@ export class UploadModel implements FileUpload {
     public progress = 0;
 
     public hasError = false;
-
-    public get isInvalid(): boolean {
-        return this.state === UploadState.INVALID;
-    }
 }

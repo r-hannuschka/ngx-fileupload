@@ -1,5 +1,5 @@
 import { timer } from "rxjs";
-import { UploadRequest } from "../../api";
+import { UploadRequest, UploadControl } from "../../api";
 
 /**
  * remote control for a single upload, will passed
@@ -16,13 +16,9 @@ import { UploadRequest } from "../../api";
  *
  * <ngx-fileupload-item *ngFor="item of uploads" [template]="myItemTemplate" [upload]="item"></ngx-fileUpload-item>
  */
-export class UploadControl {
+export class Control implements UploadControl {
 
-    /**
-     */
-    public constructor(
-        private fileUpload: UploadRequest
-    ) {}
+    public constructor(private upload: UploadRequest) {}
 
     /**
      * if upload has been failed (http error) it has not completed
@@ -32,7 +28,7 @@ export class UploadControl {
      */
     public retry(event?: MouseEvent) {
         this.handleEvent(event);
-        this.fileUpload.retry();
+        this.upload.retry();
     }
 
     /**
@@ -40,7 +36,7 @@ export class UploadControl {
      */
     public start(event?: MouseEvent) {
         this.handleEvent(event);
-        this.fileUpload.start();
+        this.upload.start();
     }
 
     /**
@@ -54,13 +50,13 @@ export class UploadControl {
          * through.
          */
         timer(0).subscribe({
-            next: () => this.fileUpload.cancel()
+            next: () => this.upload.cancel()
         });
     }
 
     public remove(event?: MouseEvent) {
         this.handleEvent(event);
-        this.fileUpload.destroy();
+        this.upload.destroy();
     }
 
     private handleEvent(event?: MouseEvent) {

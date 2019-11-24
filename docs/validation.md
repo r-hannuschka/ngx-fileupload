@@ -1,7 +1,5 @@
 # NgxFileupload Validation
 
-## NgxFileupload >= 2.0.0
-
 This is just a pre validation a file could uploaded or not, for real validation u should allways validate serverside. If no Validators are submitted all Files could uploaded to server. We dont serve pre defined validators yet, since we dont know which validators you will need.
 
 ### implement
@@ -172,80 +170,4 @@ export class CustomValidationGroup extends GroupedValidator {
         return validationResult;
     }
 }
-```
-
----
-
-## NgxFileupload 1.0.x
-
-validators/max-size.validator.ts
-
-```ts
-import {
-    NgxFileUploadValidation,
-    ValidationResult
-} from "@r-hannuschka/ngx-fileupload";
-
-export class MaxUploadSizeValidator implements NgxFileUploadValidator {
-
-    /**
-     * validate max upload size to 1MB
-     */
-    public validate(file: File): ValidationResult {
-        const valid = (file.size / (1024 * 1024)) < 1;
-        const error = !valid ? "Max file size 1MByte" : "";
-        return { valid, error };
-    }
-}
-```
-
-app-upload.module.ts
-
-We create a own module for validation to keep main module clean, you can add as many validators you want if needed. If no Validators are passed all files will uploaded to server.
-
-```ts
-import { NgModule } from "@angular/core";
-import {
-    NgxFileUploadModule,
-    NGX_FILEUPLOAD_VALIDATOR
-} from "@r-hannuschka/ngx-fileupload";
-import { MaxUploadSizeValidator } from "./validators/max-size.validator";
-
-@NgModule({
-    exports: [ NgxFileUploadModule ],
-    imports: [ NgxFileUploadModule ],
-    providers: [{
-        provide: NGX_FILEUPLOAD_VALIDATOR,
-        useClass: MaxUploadSizeValidator,
-        multi: true
-    }, {
-        provide: NGX_FILEUPLOAD_VALIDATOR,
-        useClass: SomeOtherValidator,
-        multi: true
-    }],
-})
-export class AppUploadModule { }
-```
-
-app.module.ts
-
-simply import AppUploadModule into main module
-
-```ts
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
-import { AppComponent } from "./app.component";
-import { AppUploadModule } from "./app-upload.module";
-
-@NgModule( {
-    declarations: [
-        AppComponent
-    ],
-    imports: [
-        AppUploadModule,
-        BrowserModule
-    ],
-    bootstrap: [AppComponent],
-} )
-export class AppModule { }
 ```

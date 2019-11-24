@@ -1,7 +1,7 @@
 
-import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Output, EventEmitter, AfterViewInit } from "@angular/core";
-import { UploadControl } from "../../upload";
-import { UploadRequest, UploadState, FileUpload } from "../../api";
+import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, AfterViewInit } from "@angular/core";
+import { Control } from "../../upload";
+import { UploadRequest, UploadState, FileUpload, UploadControl } from "../../api";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
@@ -61,19 +61,8 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
         this.fileUpload = request;
         this.context = {
             data: {...request.uploadFile},
-            ctrl: new UploadControl(request)
+            ctrl: new Control(request)
         };
-    }
-
-    @Output()
-    public completed: EventEmitter<UploadRequest>;
-
-    @Output()
-    public stateChange: EventEmitter<UploadRequest>;
-
-    public constructor() {
-        this.completed   = new EventEmitter();
-        this.stateChange = new EventEmitter();
     }
 
     /**

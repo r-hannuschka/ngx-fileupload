@@ -33,6 +33,7 @@ export class UploadToolbarComponent {
     }
 
     public drop(files: File[]) {
+        console.log(this.validator);
         const uploadOptions: UploadOptions = { url: this.url };
         this.storage.add(
             this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator));

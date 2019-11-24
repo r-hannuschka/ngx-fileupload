@@ -1,6 +1,6 @@
 export const TS = `
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
-import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest, UploadApi } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest, UploadState } from "@r-hannuschka/ngx-fileupload";
 import { NgxFileDropEntry, FileSystemFileEntry } from "ngx-file-drop";
 import { takeUntil, tap } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -17,7 +17,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
     public uploadStorage: UploadStorage;
 
     /** UploadState enum so we could use this in template */
-    public states = UploadApi.UploadState;
+    public states = UploadState;
 
     /** upload options */
     private uploadOptions: UploadOptions = {

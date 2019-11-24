@@ -37,16 +37,8 @@ class UploadComponent {
 
 | name | type | description | mandatory |
 |---|---|---|---|
-| template | TemplateRef<FileUploadItemContext> | the template which should used to show upload informations | false |
+| template | TemplateRef&lt;FileUploadItemContext&gt; | the template which should used to show upload informations | false |
 | upload | [FileUpload](../src/lib/ngx-fileupload/services/file-upload.ts#37) | the UploadRequest which sould visualized | true |
-
-## @Output
-
-| name | type | description |
-|---|---|---|
-| changed | EventEmitter:UploadModel | @deprecated emits if upload state has been changed |
-| completed | EventEmitter:FileUpload | emits if upload has been completed, this not includes file upload contains errors (ServerResponse Error) or invalidated |
-| stateChange | EventEmitter:FileUpload | emits if upload state has been changed |
 
 ## Custom Template
 
@@ -89,46 +81,6 @@ to fill our template with life there is a context to the template injected, cont
 
 > This is a very simple view, to see all a full template take a look on [Default Upload Item Template](../src/lib/ngx-fileupload/components/ngx-fileupload-item.component.html)
 
->There are 2 other important reasons when to define a custom item template.
->
->__Validation__:
->
->as allready mentionned we use an interface which is very much the same as [ValidationErrors](https://angular.io/api/forms/ValidationErrors), but the problem is you can write everything you want since this is defined as any and has no fixed type. To handle this we following only this format:
->```json
->{
->    [key:string]: string
->}
->```
->
->__Response__
->
->this is the same for response we just implement a custom interface for a [UploadResponse](../src/lib/ngx-fileupload/model/upload.ts#13), to have errors and response body
-into one object and.
-> 
-> Response.errors could be any since we dont know what your server will return if something failed, so we support for errors: string|string[] to show this up correctly
->
-> @example error response from server:
-> ```ts
-> /** i know it is nodejs */
-> res.status(401).send("not authorized to upload any files");
-> // or 
-> res.status(400).send(["invalid file size", "invalid file type"]);
-> ```
->
-> Response.body very much the same (it has to be a JSON but content), this is not that critical since angular response.body allways exists, so we just copy all data from
-> response.body to our response and looking for a property messsage, if this not exists it will fallback to a default success message "name of file, uploaded"
-> 
-> @example
-> 
-> ```ts
-> res.status(200).send({
->    message: 'File was uploaded',
->    data: ...
-> })
-> ```
-> 
-> If you expect diffrent Validation Errors or Server Responses (Error / Success) u have to implement your own item template to show informations.
-
 
 ## Template Context
 
@@ -138,17 +90,37 @@ Since the component could load a custom template we have to provide some data / 
 
     | name | type | description |
     |---|---|---|
+    | hasError | boolean | true if upload was completed but with an error response.errors is not empty |
     | name | string | name of file |
     | progress | number | progress in percent |
     | response   | [UploadResponse](../src/lib/ngx-fileupload/model/upload.ts#13) | Holds response from server after upload has been completed (success / error) |
     | size | number | size of file |
     | state | string | current state of upload, one of [canceled, queued, progress, error,  uploaded, invalid] |
+    | type | string | mime type of file which should uploaded |
     | uploaded | number | uploaded size in byte |
-    | validation | [UploadValidation](../src/lib/ngx-fileupload/model/upload.ts#19) | show validation errors for upload if validator if added |
-    | hasError | boolean | upload requests has been completed but with an response error |
-    | isInvalid | boolean | upload request is invalid |
-    | isPending | boolean | upload request has been started but has to wait |
-    | requestId | string | current request id |
+    | validationErrors | {[validatorName: string]: string} or NULL | Object with key value if file is invalid or NULL |
+
+- @example data with validation error
+
+    ```
+    {
+        "hasError": false,
+        "name": "demo_fileupload (1).mp4",
+        "progress": 0,
+        "response": {
+            "body": null,
+            "errors": null,
+            "success": null
+        },
+        "size": 1864736,
+        "state": 0,
+        "type": "video/mp4",
+        "uploaded": 0,
+        "validationErrors": {
+            "isImage": "not a valid image file"
+        }
+    }
+    ```
 
 - ctrl
 
@@ -157,8 +129,11 @@ Since the component could load a custom template we have to provide some data / 
     | retry | if an uploads failed you could retry upload the file, unless it is simply invalid |
     | start | starts request to upload a file to server |
     | stop | cancel upload, this will set state of upload to canceled |
-    | remove | destroys an upload, will remove the upload from store / queue |
+    | remove | destroys an upload and removes the upload from store |
+
+### Interface UploadControl
 
 ## Further reading
 
+- [API](./api.md)
 - [Upload Directive](./upload-directive.md)

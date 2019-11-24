@@ -17,6 +17,17 @@ export enum UploadState {
     COMPLETED = 6
 }
 
+export interface UploadControl {
+
+    retry(): void;
+
+    start(): void;
+
+    stop(): void;
+
+    remove(): void;
+}
+
 export interface UploadValidation {
     errors: ValidationErrors | null;
 }
@@ -42,8 +53,6 @@ export interface FileUpload {
     progress: number;
 
     hasError: boolean;
-
-    isInvalid: boolean;
 }
 
 export interface UploadRequest {

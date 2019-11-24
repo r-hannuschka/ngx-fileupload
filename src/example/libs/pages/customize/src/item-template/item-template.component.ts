@@ -54,8 +54,4 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
         this.destroy$ = null;
     }
-
-    public removeUpload(requestId) {
-        this.storage.remove(requestId);
-    }
 }

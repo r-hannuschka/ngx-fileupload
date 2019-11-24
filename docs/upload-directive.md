@@ -43,7 +43,8 @@ class UploadComponent implements OnInit {
     }
 
     public ngOnDestroy() {
-        /** @todo implement */
+        this.destroyed.next(true);
+        this.storage.destroy();
     }
 
     /**

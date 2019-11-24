@@ -34,6 +34,7 @@ Watch [Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) to see ngx fileup
 
 To get more detailed informations please check out the docs
 
+- [API](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/api.md)
 - [File Browser](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-directive.md)
 - [NgxFileUploadFactory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md)
 - [Upload Component](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-component.md)

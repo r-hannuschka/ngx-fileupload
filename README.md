@@ -34,6 +34,7 @@ Watch [Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) to see ngx fileup
 
 To get more detailed informations please check out the docs
 
+- [API](./docs/api.md)
 - [File Browser](./docs/upload-directive.md)
 - [NgxFileUploadFactory](./docs/factory.md)
 - [Storage](./docs/upload.storage.md)
@@ -102,13 +103,13 @@ npm start
 npm run e2e
 
 # unit tests
-ng test ngx-fileupload
+npm run test
 ```
 
 ## Roadmap
 
 - ~~reimplement e2e tests~~
-- reimplement unit tests
+- ~~reimplement unit tests~~
 - ~~better state management for uploads~~
 - ~~add option to limit processing max uploads at once~~
 

@@ -1,6 +1,6 @@
 export const HTML = `
 <!-- define custom template which should used for each upload -->
-<ng-template #uploadRequestTemplate let-upload="data" let-ctrl="ctrl">
+<ng-template #itemTemplate let-upload="data" let-ctrl="ctrl">
     <!--
         @see tab template for full template
     -->
@@ -100,19 +100,16 @@ export const TEMPLATE = `
             <span class="title text-truncate">{{upload.name}}</span>
 
             <div class="actions btn-group">
-                <app-ui--button (dispatch)="ctrl.start()" [class]="'btn-upload btn-sm'" [disabled]="upload.state !== uploadStates.IDLE" *ngIf="!upload.completed">
+                <app-ui--button
+                    (dispatch)="ctrl.start()"
+                    [class]="'btn-upload btn-sm'"
+                    [disabled]="upload.state !== uploadStates.IDLE"
+                    *ngIf="!upload.completed">
+
                     <i class="icon-left icon-upload"></i>
                 </app-ui--button>
 
-                <!-- @todo move check into pipe to clean up template -->
-                <app-ui--button (dispatch)="ctrl.stop()"
-                    [disabled]="
-                        upload.state === uploadStates.COMPLETED ||
-                        upload.state === uploadStates.CANCELED  ||
-                        upload.state === uploadStates.INVALID   ||
-                        upload.state === uploadStates.IDLE
-                    "
-                    [class]="'btn.cancel btn-sm'">
+                <app-ui--button (dispatch)="ctrl.stop()" [disabled]= "!(upload | isCancelAble)" [class]="'btn.cancel btn-sm'">
                     <i class="icon-left icon-canceled"></i>
                 </app-ui--button>
 
@@ -140,19 +137,43 @@ export const TEMPLATE = `
             </div>
         </div>
 
-        <div class="card-footer" *ngIf="upload.state === uploadStates.COMPLETED || upload.isInvalid">
+        <div class="card-footer" *ngIf="upload.state === uploadStates.COMPLETED || upload.validationErrors">
+
             <!-- response completed show error / success -->
             <ng-container *ngIf="upload.state === uploadStates.COMPLETED"
                 [ngTemplateOutlet]="upload.hasError ? errorTemplate : successTemplate"
                 [ngTemplateOutletContext]="{data: upload.hasError ? upload.response.errors : upload.name}" >
             </ng-container>
 
-            <ng-container *ngIf="upload.isInvalid"
+            <ng-container *ngIf="upload.validationErrors"
                 [ngTemplateOutlet]="invalidTemplate"
                 [ngTemplateOutletContext]="{data: upload.validationErrors}" >
             </ng-container>
         </div>
     </div>
+</ng-template>
+
+<!-- upload error template -->
+<ng-template #errorTemplate let-errors="data">
+    <ul class="errors">
+        <li *ngFor="let error of errors" class="error">{{error}}</li>
+    </ul>
+</ng-template>
+
+<!-- upload success template -->
+<ng-template #successTemplate let-name="data">
+    <span class="success">
+        {{name}} successful uploaded
+    </span>
+</ng-template>
+
+<!-- upload validation error template -->
+<ng-template #invalidTemplate let-validationErrors="data">
+    <ul class="errors">
+        <li class="error" *ngFor="let error of validationErrors | keyvalue">
+            {{error.value}}
+        </li>
+    </ul>
 </ng-template>
 `;
 

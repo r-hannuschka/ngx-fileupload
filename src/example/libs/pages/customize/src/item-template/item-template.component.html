@@ -16,14 +16,7 @@
                     <i class="icon-left icon-upload"></i>
                 </app-ui--button>
 
-                <!-- @todo move disabled check into pipe to clean up template -->
-                <app-ui--button (dispatch)="ctrl.stop()"
-                    [disabled]= "
-                        upload.state === uploadStates.COMPLETED ||
-                        upload.state === uploadStates.CANCELED ||
-                        upload.state === uploadStates.INVALID ||
-                        upload.state === uploadStates.IDLE"
-                    [class]="'btn.cancel btn-sm'">
+                <app-ui--button (dispatch)="ctrl.stop()" [disabled]="!(upload | isCancelAble)" [class]="'btn.cancel btn-sm'">
                     <i class="icon-left icon-canceled"></i>
                 </app-ui--button>
 

@@ -37,6 +37,7 @@ To get more detailed informations please check out the docs
 - [API](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/api.md)
 - [File Browser](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-directive.md)
 - [NgxFileUploadFactory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md)
+- [Pipes](./docs/pipes.md)
 - [Upload Component](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-component.md)
 - [Upload Item](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload-item.md)
 - [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload.storage.md)

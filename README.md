@@ -37,6 +37,7 @@ To get more detailed informations please check out the docs
 - [API](./docs/api.md)
 - [File Browser](./docs/upload-directive.md)
 - [NgxFileUploadFactory](./docs/factory.md)
+- [Pipes](./docs/pipes.md)
 - [Storage](./docs/upload.storage.md)
 - [Upload Component](./docs/upload-component.md)
 - [Upload Item](./docs/upload-item.md)

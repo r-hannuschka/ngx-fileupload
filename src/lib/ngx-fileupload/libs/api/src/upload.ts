@@ -109,8 +109,15 @@ export interface UploadStorageConfig {
      * max count of uploads at once, set to -1 for no limit
      */
     concurrentUploads: number;
-
+    /**
+     * if set to true it will automatically starts uploads
+     */
     enableAutoStart?: boolean;
+    /**
+     * if set it will remove success full completed uploads after a specific
+     * amount of time.
+     */
+    removeCompleted?: number;
 }
 
 /**

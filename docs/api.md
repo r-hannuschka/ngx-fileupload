@@ -151,6 +151,8 @@ interface UploadStorageConfig {
     concurrentUploads?: number;
 
     enableAutoUpload?: boolean;
+
+    removeCompleted?: number;
 }
 ```
 

@@ -1,6 +1,6 @@
 import { UploadStorage, UploadState } from "@r-hannuschka/ngx-fileupload";
 import { UploadRequestMock, UploadModel } from "../../mockup";
-import { take, takeWhile, tap } from "rxjs/operators";
+import { take, takeWhile, tap, skip } from "rxjs/operators";
 
 describe("ngx-fileupload/libs/upload/upload.storage", () => {
 
@@ -126,8 +126,8 @@ describe("ngx-fileupload/libs/upload/upload.storage", () => {
         const uploadRequest3 = new UploadRequestMock(fileUpload3);
 
         const startSpyUR1 = spyOn(uploadRequest1, "start").and.callFake(() => void 0);
-        const startSpyUR2 = spyOn(uploadRequest2, "start").and.callFake(() => uploadRequest2.change$.next());
-        const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next());
+        const startSpyUR2 = spyOn(uploadRequest2, "start").and.callFake(() => uploadRequest2.change$.next(uploadRequest2.uploadFile));
+        const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.uploadFile));
 
         storage.change()
             .pipe(take(1))
@@ -211,5 +211,28 @@ describe("ngx-fileupload/libs/upload/upload.storage", () => {
             });
 
         autoStartStorage.add(uploadRequest1);
+    });
+
+    it ("should remove completed uploads after 1 second", (done) => {
+
+        const autoStartStorage = new UploadStorage({
+            concurrentUploads: 1,
+            enableAutoStart: false,
+            removeCompleted: 1000
+        });
+
+        const fileUpload = new UploadModel();
+        const uploadRequest = new UploadRequestMock(fileUpload);
+
+        autoStartStorage.change()
+            .pipe(skip(1), take(1))
+            .subscribe({
+                next: (req: UploadRequestMock[]) => expect(req).toEqual([]),
+                complete: () => done()
+            });
+
+        autoStartStorage.add(uploadRequest);
+        uploadRequest.uploadFile.state = UploadState.COMPLETED;
+        uploadRequest.applyChange();
     });
 });

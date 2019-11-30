@@ -1,7 +1,7 @@
-import { Observable, Subject, ReplaySubject } from "rxjs";
-import { buffer, takeUntil, distinctUntilKeyChanged, tap, take, auditTime, map } from "rxjs/operators";
+import { Observable, Subject, ReplaySubject, timer } from "rxjs";
+import { buffer, takeUntil, distinctUntilKeyChanged, tap, take, auditTime, map, filter, switchMap } from "rxjs/operators";
+import { UploadRequest, UploadStorageConfig, FileUpload, UploadState } from "../../api";
 import { UploadQueue } from "./upload.queue";
-import { UploadRequest, UploadStorageConfig } from "../../api";
 
 const defaultStoreConfig: UploadStorageConfig = {
     concurrentUploads: 5,
@@ -65,19 +65,37 @@ export class UploadStorage {
      * register for changes and destroy on upload request
      */
     private registerUploadEvents(request: UploadRequest): void {
+
         if (!request.isInvalid()) {
             this.uploadQueue.register(request);
-            request.change.pipe(
-                distinctUntilKeyChanged("state"),
-                takeUntil(request.destroyed),
-            )
-            .subscribe(() => this.uploadStateChange$.next());
+            this.handleRequestChange(request);
         }
 
         request.destroyed.pipe(
             tap(() => this.uploads.delete(request.requestId)),
             take(1)
         ).subscribe(() => this.uploadDestroy$.next());
+    }
+
+    /**
+     * register to request change events, this will notify all observers
+     * if state from upload state has been changed, this will not notify
+     * if amount of uploaded size has been changed
+     */
+    private handleRequestChange(request: UploadRequest) {
+        const isAutoRemove = !isNaN(this.storeConfig.removeCompleted) || false;
+        request.change.pipe(
+            distinctUntilKeyChanged("state"),
+            /* notify observers upload state has been changed */
+            tap(() => this.uploadStateChange$.next()),
+            /* only continue if completed with no errors and autoremove is enabled */
+            filter((upload: FileUpload) => upload.state === UploadState.COMPLETED && !upload.hasError && isAutoRemove),
+            /** wait for given amount of time before we remove item */
+            switchMap(() => timer(this.storeConfig.removeCompleted)),
+            /* automatically unsubscribe if request gets destroyed */
+            takeUntil(request.destroyed),
+        )
+        .subscribe(() => this.remove(request));
     }
 
     /**

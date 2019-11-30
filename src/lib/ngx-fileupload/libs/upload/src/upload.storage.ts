@@ -1,5 +1,5 @@
-import { Observable, Subject, ReplaySubject, of, timer } from "rxjs";
-import { buffer, takeUntil, distinctUntilKeyChanged, tap, take, auditTime, map, delay, filter, switchMap } from "rxjs/operators";
+import { Observable, Subject, ReplaySubject, timer } from "rxjs";
+import { buffer, takeUntil, distinctUntilKeyChanged, tap, take, auditTime, map, filter, switchMap } from "rxjs/operators";
 import { UploadRequest, UploadStorageConfig, FileUpload, UploadState } from "../../api";
 import { UploadQueue } from "./upload.queue";
 

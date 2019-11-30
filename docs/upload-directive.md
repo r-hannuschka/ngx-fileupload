@@ -6,8 +6,7 @@ Simple file drop zone and file browser, listen to add event to get files which w
 
 ```ts
 import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
-import { UploadRequest, UploadStorage, UploadOptions } from "../../upload";
-import { NgxFileUploadFactory } from "../../utils";
+import { NgxFileUploadFactory, UploadRequest, UploadStorage, UploadOptions } from "@r-hannuschka/ngx-fileupload";
 
 @Compononent({
     template: `

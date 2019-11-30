@@ -7,9 +7,13 @@ with [Upload Directive](./upload-directive.md).
 ## Implement
 
 ```ts
+...
+import { NgxFileUploadFactory, UploadOptions, UploadRequest, UploadStorage } from "@r-hannuschka/ngx-fileupload";
+...
+
 @Compononent({
     template: `
-        <div [ngxFileUpload]="url" (add)="onUploadAdd($event)"> ... </div>
+        <div ngxFileUpload (add)="dropFiles($event)"> ... </div>
 
         <div class="fileupload list>
             <ngx-fileupload-item *ngFor="upload of uploads" [upload]="upload">
@@ -18,17 +22,43 @@ with [Upload Directive](./upload-directive.md).
     `,
     selector: 'app-upload-component'
 })
-class UploadComponent {
+class UploadComponent implements OnInit {
 
-    public url = "...";
+    public uploads: UploadRequest[];
 
-    public uploads: NgxFileUpload[];
+    private storage: UploadStorage;
+
+    private destroyed$: Subject<boolean> = new Subject();
+
+    public constructor(
+        @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
+    ) {
+        this.storage = new UploadStorage({
+            concurrentUploads: 2,
+            enableAutoUpload: true
+        });
+    }
+
+    public ngOnInit() {
+        this.storage.change
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((requests: UploadRequest[]) => this.uploads = requests);
+    }
+
+    public ngOnDestroy() {
+        this.destroyed$.next(true);
+        this.destroyed$.complete();
+
+        this.storage.destroy();
+    }
 
     /**
-     * @param uploads:NgxFileUpload which has been created from selected / dropped files
+     * files get dropped
      */
-    public onUploadAdd(uploads: NgxFileUpload[]) {
-        this.uploads = this.uploads.concat(uploads);
+    public dropFiles(files: File[]) {
+        const options: UploadOptions = {url: "http://dev/null" };
+        const uploads = this.uploadFactory.createUploadRequest(files, options);
+        this.uploadStorage.add(uploads);
     }
 }
 ```

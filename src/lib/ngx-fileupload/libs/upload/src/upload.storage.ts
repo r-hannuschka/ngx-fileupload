@@ -1,11 +1,12 @@
-import { Observable, Subject, ReplaySubject } from "rxjs";
-import { buffer, takeUntil, distinctUntilKeyChanged, tap, take, auditTime, map, delay, filter } from "rxjs/operators";
+import { Observable, Subject, ReplaySubject, of, timer } from "rxjs";
+import { buffer, takeUntil, distinctUntilKeyChanged, tap, take, auditTime, map, delay, filter, switchMap } from "rxjs/operators";
 import { UploadRequest, UploadStorageConfig, FileUpload, UploadState } from "../../api";
 import { UploadQueue } from "./upload.queue";
 
 const defaultStoreConfig: UploadStorageConfig = {
     concurrentUploads: 5,
-    enableAutoStart: false
+    enableAutoStart: false,
+    removeCompleted: 5000
 };
 
 export class UploadStorage {
@@ -84,22 +85,18 @@ export class UploadStorage {
      */
     private handleRequestChange(request: UploadRequest) {
         const isAutoRemove = !isNaN(this.storeConfig.removeCompleted) || false;
-
         request.change.pipe(
             distinctUntilKeyChanged("state"),
             /* notify observers upload state has been changed */
             tap(() => this.uploadStateChange$.next()),
             /* only continue if completed with no errors and autoremove is enabled */
             filter((upload: FileUpload) => upload.state === UploadState.COMPLETED && !upload.hasError && isAutoRemove),
-            /* delay response by given number on remove completed and then remove it automatically */
-            delay(this.storeConfig.removeCompleted),
+            /** wait for given amount of time before we remove item */
+            switchMap(() => timer(this.storeConfig.removeCompleted)),
             /* automatically unsubscribe if request gets destroyed */
             takeUntil(request.destroyed),
         )
-        .subscribe({
-            next: () => this.remove(request),
-            complete: () => console.log("completed")
-        });
+        .subscribe(() => this.remove(request));
     }
 
     /**

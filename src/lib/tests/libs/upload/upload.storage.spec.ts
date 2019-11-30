@@ -126,8 +126,8 @@ describe("ngx-fileupload/libs/upload/upload.storage", () => {
         const uploadRequest3 = new UploadRequestMock(fileUpload3);
 
         const startSpyUR1 = spyOn(uploadRequest1, "start").and.callFake(() => void 0);
-        const startSpyUR2 = spyOn(uploadRequest2, "start").and.callFake(() => uploadRequest2.change$.next());
-        const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next());
+        const startSpyUR2 = spyOn(uploadRequest2, "start").and.callFake(() => uploadRequest2.change$.next(uploadRequest2.uploadFile));
+        const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.uploadFile));
 
         storage.change()
             .pipe(take(1))

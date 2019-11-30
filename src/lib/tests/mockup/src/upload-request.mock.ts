@@ -84,6 +84,6 @@ export class UploadRequestMock implements UploadRequest {
     }
 
     public applyChange() {
-        this.change$.next(this.uploadFile);
+        this.change$.next({...this.uploadFile});
     }
 }

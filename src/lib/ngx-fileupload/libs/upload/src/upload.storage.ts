@@ -5,8 +5,7 @@ import { UploadQueue } from "./upload.queue";
 
 const defaultStoreConfig: UploadStorageConfig = {
     concurrentUploads: 5,
-    enableAutoStart: false,
-    removeCompleted: 5000
+    enableAutoStart: false
 };
 
 export class UploadStorage {

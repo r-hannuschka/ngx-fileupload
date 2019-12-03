@@ -67,7 +67,7 @@
     "protractor": "5.4.2",
     "ts-node": "8.5.4",
     "tsickle": "0.37.1",
-    "tslint": "5.20.0",
+    "tslint": "5.20.1",
     "typescript": "3.5.3",
     "watch": "1.0.2",
     "zone.js": "0.9.1"

@@ -13,7 +13,11 @@
   "automerge": false,
   "extends": [
     "config:base",
-    "schedule:earlyMondays"
+    "schedule": [
+      "after 10pm every weekday",
+      "before 5am every weekday",
+      "every weekend"
+    ]
   ],
   "timezone": "Europe/Berlin"
 }

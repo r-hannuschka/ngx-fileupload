@@ -11,13 +11,13 @@
   ],
   "assignees": ["r-hannuschka"],
   "automerge": false,
-  "extends": [
-    "config:base",
-    "schedule": [
+  "schedule": [
       "after 10pm every weekday",
       "before 5am every weekday",
       "every weekend"
-    ]
+  ]
+  "extends": [
+    "config:base"
   ],
   "timezone": "Europe/Berlin"
 }

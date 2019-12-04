@@ -26,6 +26,14 @@ const fakeUploadProvider: Provider = {
     multi: true
 };
 
+export function getHighlightLanguages() {
+    return {
+        typescript: () => import("highlight.js/lib/languages/typescript"),
+        scss: () => import("highlight.js/lib/languages/scss"),
+        xml: () => import("highlight.js/lib/languages/xml")
+    }
+}
+
 @NgModule({
     declarations: [
         AppComponent
@@ -53,11 +61,7 @@ const fakeUploadProvider: Provider = {
         {
             provide: HIGHLIGHT_OPTIONS,
             useValue: {
-                languages: {
-                    typescript: () => import("highlight.js/lib/languages/typescript"),
-                    scss: () => import("highlight.js/lib/languages/scss"),
-                    xml: () => import("highlight.js/lib/languages/xml")
-                }
+                languages: getHighlightLanguages()
             }
         }
     ]

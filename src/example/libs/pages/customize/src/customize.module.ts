@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { HighlightModule } from "ngx-highlightjs";
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { NgxFileUploadModule } from "projects/ngx-fileupload/public-api";
 import { IgxTabsModule } from "igniteui-angular";
 
 import { UiModule } from "@ngx-fileupload-example/ui";

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { isImage, isZipFile, MaxUploadSizeValidator } from "@ngx-fileupload-example/utils/validators";
-import { ValidationBuilder, GroupedValidator } from "@r-hannuschka/ngx-fileupload";
+import { ValidationBuilder, GroupedValidator } from "projects/ngx-fileupload/public-api";
 import * as ExampleCode from "@ngx-fileupload-example/data/code/validation/group-multiple";
 import * as Validators from "@ngx-fileupload-example/data/code/utils/validators";
 

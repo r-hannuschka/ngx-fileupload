@@ -1,0 +1,90 @@
+<ng-template #defaultUploadItem let-upload="data" let-ctrl="ctrl">
+
+    <div class="upload-item">
+        <div class="upload-item--header">
+            <span class="title">
+                {{upload.name}}
+            </span>
+
+            <!-- remove upload completly -->
+            <button type="button" class="action-remove item-action--remove" (click)="ctrl.remove();">
+                <i class="ngx-fileupload-icon--remove"></i>
+            </button>
+        </div>
+
+        <div class="upload-item--body">
+            <!-- upload state icon -->
+            <div class="upload-item--state">
+                <i [ngClass]="[
+                    'ngx-fileupload-icon--' + (upload.state | stateToString),
+                    upload.state === uploadState.COMPLETED
+                        ? upload.hasError ? 'error' : 'success'
+                        : ''
+                ]"></i>
+            </div>
+
+            <!-- file progress: current state | progressbar -->
+            <div class="upload-item--progress">
+                <div class="progressbar">
+                    <span class="label-size">{{upload.size | fileSize}}</span>
+                    <div class="progressbar-inner" [ngStyle]="{width: upload.progress + '%'}"></div>
+                </div>
+            </div>
+
+            <!-- upload actions: cancel | retry -->
+            <div class="upload-item--actions">
+                <!-- start upload action -->
+                <button type="button" class="item-action--upload" (click)="ctrl.start()"
+                    *ngIf="!upload.hasError && upload.state !== uploadState.CANCELED"
+                    [disabled]="upload.state !== uploadState.IDLE">
+                    <i class="ngx-fileupload-icon--upload"></i>
+                </button>
+
+                <!-- retry upload action -->
+                <button type="button" class="item-action--reload"
+                    (click)="ctrl.retry()"
+                    *ngIf="upload.hasError || upload.state === uploadState.CANCELED">
+                    <i class="ngx-fileupload-icon--reload"></i>
+                </button>
+
+                <!-- cancel active upload -->
+                <button type="button"
+                    [disabled]="!(upload | isCancelAble)" class="item-action--cancel" (click)="ctrl.stop($event);">
+                    <i class="ngx-fileupload-icon--cancel"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- footer to display validation / upload errors or success notes -->
+        <div class="upload-item--footer">
+
+            <!-- show validation errors -->
+            <ul *ngIf="upload.validationErrors" class="upload-item--validation">
+                <li *ngFor="let error of upload.validationErrors | keyvalue : returnZero" class="message">
+                    {{error.value}}
+                </li>
+            </ul>
+
+            <ng-container *ngIf="upload.state === uploadState.COMPLETED">
+                <ul *ngIf="upload.response.errors" class="upload-item--response-errors">
+                    <li *ngFor="let error of upload.response.errors" class="message error">
+                        {{error}}
+                    </li>
+                </ul>
+
+                <p class="message success" *ngIf="!upload.response.errors">
+                    <ng-container *ngIf="upload.response.body && upload.response.body.message; else uploadSuccess">
+                        {{upload.response.body.message}}
+                    </ng-container>
+                    <ng-template #uploadSuccess>
+                        {{upload.name}} uploaded
+                    </ng-template>
+                </p>
+            </ng-container>
+
+        </div>
+    </div>
+</ng-template>
+
+<!-- display item template at this point -->
+<ng-container [ngTemplateOutlet]="itemTpl" [ngTemplateOutletContext]="context"></ng-container>

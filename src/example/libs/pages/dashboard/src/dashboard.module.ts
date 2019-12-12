@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { RouterModule } from "@angular/router";
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { NgxFileUploadModule } from "projects/ngx-fileupload/public-api";
 import { UiModule } from "@ngx-fileupload-example/ui";
 
 @NgModule({

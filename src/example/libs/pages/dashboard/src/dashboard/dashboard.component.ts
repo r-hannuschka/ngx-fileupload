@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { UploadStorage } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage } from "projects/ngx-fileupload/public-api";
 import { ExampleUploadStorage } from "@ngx-fileupload-example/data/base/upload-storage";
 
 @Component({

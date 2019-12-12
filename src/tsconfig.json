@@ -19,15 +19,15 @@
       "dom"
     ],
     "paths": {
-      /**
-       * path like npm import
-       */
+      "@ngx-file-upload/core": [
+        "dist/core"
+      ],
+      "@ngx-file-upload/ui": [
+        "project/ui/src/public-api"
+      ],
       "@r-hannuschka/ngx-fileupload": [
         "lib/public-api"
       ],
-      /**
-       * paths for fileupload example
-       */
       "@ngx-fileupload-example/utils/api/upload": [
         "example/utils/validators"
       ],
@@ -46,9 +46,6 @@
       "@ngx-fileupload-example/utils/*": [
         "example/libs/utils/*"
       ],
-      /**
-       * paths for fileupload library
-       */
       "@lib/utils/*": [
         "lib/ngx-fileupload/libs/utils/*"
       ],

@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { NgxFileUploadModule } from "projects/ngx-fileupload/public-api";
 import { UiModule } from "@ngx-fileupload-example/ui";
 import { NgxFileDropModule } from "ngx-file-drop";
 import { IgxTabsModule } from "igniteui-angular";

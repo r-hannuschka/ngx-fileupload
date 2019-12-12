@@ -3,7 +3,7 @@ import { NgModule, Provider } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { environment } from "../environments/environment";
 
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { NgxFileUploadModule } from "projects/ngx-fileupload/public-api";
 import { IgxIconModule } from "igniteui-angular";
 import { HighlightModule, HIGHLIGHT_OPTIONS } from "ngx-highlightjs";
 

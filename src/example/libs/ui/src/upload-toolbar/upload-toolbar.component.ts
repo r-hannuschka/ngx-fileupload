@@ -1,5 +1,5 @@
 import { Component, Input, Inject } from "@angular/core";
-import { Validator, UploadStorage, UploadOptions, NgxFileUploadFactory } from "@r-hannuschka/ngx-fileupload";
+import { Validator, UploadStorage, UploadOptions, NgxFileUploadFactory } from "projects/ngx-fileupload/public-api";
 
 @Component({
     selector: "app-ui--upload-toolbar",

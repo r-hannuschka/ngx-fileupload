@@ -1,0 +1,31 @@
+{
+  "name": "@ngx-file-upload/core",
+  "version": "0.0.1",
+  "description": "Angular file upload core package for async file uploads in angular containing validation, upload queue and async uploading.",
+  "repository": {
+    "url": "https://github.com/r-hannuschka/ngx-fileupload",
+    "type": "git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ngx",
+    "async",
+    "angular",
+    "angular 8",
+    "file",
+    "upload",
+    "fileupload",
+    "progressbar",
+    "upload queue",
+    "queue"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^8.2.14",
+    "@angular/core": "^8.2.14"
+  },
+  "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
+  "bugs": {
+    "url": "https://github.com/r-hannuschka/ngx-fileupload/issues"
+  },
+  "homepage": "https://r-hannuschka.github.io/ngx-fileupload"
+}

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { UploadStorage } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage } from "projects/ngx-fileupload/public-api";
 import * as ExampleCodeData from "@ngx-fileupload-example/data/code/auto-upload/auto-upload";
 
 @Component({

@@ -1,0 +1,167 @@
+$ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
+
+@import '../../../assets//scss/variables';
+@import '../../../assets/scss/icons';
+
+:host {
+
+    display: block;
+    color: map-get($colors, 'dark');
+
+    .upload-item {
+        display: flex;
+        flex-direction: column;
+        padding: .25rem .5rem;
+        border-radius: .4rem;
+        border: 1px solid #E4E4E4;
+
+        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+50,f7f7f7+100 */
+        background: #FDFDFD; /* Old browsers */
+        background: -moz-linear-gradient(top,  #FDFDFD 50%, #F7F7F7 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #FDFDFD 50%,#F7F7F7 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #FDFDFD 50%,#F7F7F7 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    }
+
+    /*
+       Upload Item Header
+    */
+    .upload-item--header {
+
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid darken(#FDFDFD, 8);
+        padding: 0 0 .25rem;
+        margin: 0 0 .25rem;
+
+        .title {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .action-remove {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            background: transparent;
+            align-self: center;
+            line-height: .9rem;
+            font-size: .9rem;
+            color: map-get($colors, dark);
+        }
+    }
+
+    /*
+       Upload Item Body
+    */
+    .upload-item--body {
+        margin: .5rem 0 0;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+
+        .upload-item--state {
+            font-size: .85rem;
+        }
+    }
+
+    .upload-item--actions,
+    .upload-item--state {
+        flex: 0;
+    }
+
+    .upload-item--progress {
+        flex: 1;
+        display: flex;
+        margin: 0 .5rem;
+        padding: 0 .5rem;
+        border: 1px solid #E4E4E4;
+        border-width: 0 1px;
+
+        .progressbar {
+            flex: 1;
+            height: 1rem;
+            border-radius: .5rem;
+            overflow: hidden;
+            padding: 1px;
+            border: 1px solid #E4E4E4;
+            position: relative;
+        }
+
+        .label-size {
+            position: absolute;
+            z-index: 5;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: .8rem;
+        }
+
+        .progressbar-inner {
+            height: 100%;
+            background: map-get($colors, 'progress');
+            border-radius: .5rem;
+            transition: width .25s linear;
+        }
+    }
+
+    .upload-item--actions {
+
+        display: flex;
+
+        button {
+            display: flex;
+            padding: 0;
+            color: map-get($colors, dark);
+            cursor: pointer;
+            outline: none;
+            background: transparent;
+            line-height: 1rem;
+            border: 0;
+            font-size: 1rem;
+            margin: 0 .5rem 0 0;
+
+            &:last-child {
+                margin: 0;
+            }
+
+            &:disabled {
+                color: lighten(map-get($colors, dark), 50%);
+                cursor: default;
+            }
+        }
+
+        .item-action--reload, 
+        .item-action--cancel {
+            font-size: .9rem;
+        }
+    }
+
+    /**
+     * Upload Item Footer
+     */
+    .upload-item--footer {
+        font-size: .8rem;
+
+        .message {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: 1.1rem;
+            text-align: left;
+
+            &.error {
+                color: map-get($map: $colors, $key: 'red');
+            }
+
+            &.success {
+                color: map-get($map: $colors, $key: 'green');
+            }
+        }
+
+        ul {
+            margin: .5rem 0 0;
+            padding: 0;
+            list-style-type: none;
+        }
+    }
+}

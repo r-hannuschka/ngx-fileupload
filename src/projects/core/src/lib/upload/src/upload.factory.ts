@@ -1,7 +1,8 @@
 import { InjectionToken, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UploadOptions, UploadState, ValidationFn, Validator, UploadRequest } from "../../api";
-import { Upload, UploadModel } from "../../upload";
+import { UploadModel } from './upload.model';
+import { Upload } from './upload.request';
 
 export interface NgxFileUploadFactory {
     createUploadRequest<T extends File | File[]>(

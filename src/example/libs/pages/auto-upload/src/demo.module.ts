@@ -1,14 +1,14 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { IgxTabsModule } from "igniteui-angular";
-import { NgxFileUploadModule } from "projects/ngx-fileupload/public-api";
 import { UiModule } from "@ngx-fileupload-example/ui";
 import { DemoComponent } from "./demo/demo";
 import { HighlightModule } from "ngx-highlightjs";
+import { NgxFileUploadUiModule } from '@ngx-file-upload/ui';
 
 @NgModule({
     imports: [
-        NgxFileUploadModule,
+        NgxFileUploadUiModule,
         UiModule,
         RouterModule.forChild([{
             path: "auto-upload",

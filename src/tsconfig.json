@@ -23,7 +23,7 @@
         "dist/core"
       ],
       "@ngx-file-upload/ui": [
-        "project/ui/src/public-api"
+        "dist/ui"
       ],
       "@r-hannuschka/ngx-fileupload": [
         "lib/public-api"

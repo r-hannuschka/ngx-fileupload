@@ -25,4 +25,4 @@ import { FileSizePipe, StateToStringPipe, CancelAblePipe } from "./utils";
         CancelAblePipe
     ]
 })
-export class NgxFileUploadModule {}
+export class NgxFileUploadUiModule {}

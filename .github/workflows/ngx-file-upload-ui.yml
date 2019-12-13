@@ -76,7 +76,7 @@ jobs:
       - name: build packages
         run: |
           cd src
-          ng build ui
+          npm run build -- ui
 
       - name: unit tests
         run: |

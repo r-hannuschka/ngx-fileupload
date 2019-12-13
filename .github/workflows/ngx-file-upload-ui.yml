@@ -84,9 +84,9 @@ jobs:
           cd src
           npm run github-actions:unit-tests-ui
 
-      - name: codecov-core
+      - name: codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }} #required
           file: ./src/coverage/ui/lcov.info
-          flags: ngx-file-upload/ui
+          flags: ui

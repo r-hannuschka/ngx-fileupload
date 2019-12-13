@@ -88,7 +88,7 @@ describe("NgxFileUpload/libs/upload", () => {
                 filter((upload: FileUpload) => upload.state === UploadState.CANCELED)
             )
             .subscribe({
-                next: (upload: FileUpload) => {
+                next: () => {
                     expect(request.isCanceled()).toBeTruthy();
                     expect(request.isCompleted()).toBeTruthy();
                     done();
@@ -101,7 +101,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
         // have to call this for cancel otherwise it will not verify ?
         // this request is fucking canceled, could not send any events to this one
-        const req = httpMock.expectOne(url);
+        httpMock.expectOne(url);
     });
 
     it("should retry if request has been canceled", (done) => {
@@ -111,7 +111,7 @@ describe("NgxFileUpload/libs/upload", () => {
                 filter((upload: FileUpload) => upload.state === UploadState.CANCELED)
             )
             .subscribe({
-                next: (upload: FileUpload) => {
+                next: () => {
                     expect(request.isCanceled()).toBeTruthy();
                     done();
                 }
@@ -123,7 +123,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
         // have to call this for cancel otherwise it will not verify ?
         // this request is fucking canceled, could not send any events to this one
-        const req = httpMock.expectOne(url);
+        httpMock.expectOne(url);
     });
 
     it("should cancel only running uploads", () => {

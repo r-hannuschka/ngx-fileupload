@@ -1,0 +1,138 @@
+
+name: ngx-file-upload/core
+
+on: [push]
+
+jobs:
+
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.8'
+
+      - name: npm cache
+        uses: actions/cache@v1
+        id: npm-cache
+        with:
+            path: ./src/node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
+
+      - name: install dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: |
+          cd src
+          npm ci
+
+      - name: install puppeteer
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: |
+          cd src
+          npm i puppeteer@chrome-78
+
+      - name: update webdriver
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: |
+          cd src
+          npm run webdriver:update
+
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: npm cache
+        uses: actions/cache@v1
+        with:
+            path: ./src/node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
+
+      - name: lint
+        run: |
+          cd src
+          npm run lint -- ngx-fileupload
+
+  e2e-chrome:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: npm cache
+        uses: actions/cache@v1
+        with:
+            path: ./src/node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
+
+      - name: protractor e2e tests
+        run: |
+          cd src
+          npm run github-actions:e2e-chrome
+
+  e2e-firefox:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: npm cache
+        uses: actions/cache@v1
+        with:
+            path: ./src/node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
+
+      - name: protractor e2e tests
+        run: |
+          cd src
+          npm run github-actions:e2e-firefox
+
+  unit-tests:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: npm cache
+        uses: actions/cache@v1
+        with:
+            path: ./src/node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
+      
+      - name: build packages
+        run: |
+          cd src
+          ng build core
+          ng build ui
+
+      - name: unit tests
+        run: |
+          cd src
+          npm run github-actions:unit-tests-core
+
+      - name: codecov-core
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} #required
+          file: ./src/coverage/core/lcov.info
+          flags: ngx-file-upload/core
+
+      - name: codecov-ui
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} #required
+          file: ./src/coverage/core/lcov.info
+          flags: ngx-file-upload/ui

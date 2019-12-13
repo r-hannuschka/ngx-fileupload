@@ -2,7 +2,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 import { HighlightModule } from "ngx-highlightjs";
 import { IgxTabsModule } from "igniteui-angular";
 
@@ -11,6 +10,7 @@ import { IsImageValidationComponent } from "./is-image/is-image.component";
 import { GroupAndComponent } from "./group-and/group-and.component";
 import { GroupOrComponent } from "./group-or/group-or.component";
 import { GroupMultipleComponent } from "./group-multiple/group-multiple.component";
+import { NgxFileUploadUiModule } from '@ngx-file-upload/ui';
 
 @NgModule({
     imports: [
@@ -22,7 +22,7 @@ import { GroupMultipleComponent } from "./group-multiple/group-multiple.componen
                 uploadOverlay: true
             }
         }]),
-        NgxFileUploadModule,
+        NgxFileUploadUiModule,
         HighlightModule,
         IgxTabsModule
     ],

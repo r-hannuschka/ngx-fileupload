@@ -1,0 +1,32 @@
+{
+  "name": "@ngx-file-upload/ui",
+  "version": "0.0.1",
+  "description": "ngx file upload ui components",
+  "repository": {
+    "url": "https://github.com/r-hannuschka/ngx-fileupload",
+    "type": "git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ngx",
+    "async",
+    "angular",
+    "angular 8",
+    "file",
+    "upload",
+    "fileupload",
+    "progressbar",
+    "upload queue",
+    "queue"
+  ],
+  "peerDependencies": {
+    "@ngx-file-upload/core": "^0.0.1",
+    "@angular/common": "^8.2.14",
+    "@angular/core": "^8.2.14"
+  },
+  "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
+  "bugs": {
+    "url": "https://github.com/r-hannuschka/ngx-fileupload/issues"
+  },
+  "homepage": "https://r-hannuschka.github.io/ngx-fileupload"
+}

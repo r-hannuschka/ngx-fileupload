@@ -3,7 +3,6 @@ import { NgModule, Provider } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { environment } from "../environments/environment";
 
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
 import { IgxIconModule } from "igniteui-angular";
 import { HighlightModule, HIGHLIGHT_OPTIONS } from "ngx-highlightjs";
 
@@ -19,6 +18,8 @@ import { Dashboard } from "@ngx-fileupload-example/page/dashboard";
 import { ValidationPage } from "@ngx-fileupload-example/page/validation";
 import { DropZone } from "@ngx-fileupload-example/page/drop-zone";
 import { AutoUploadDemo } from "@ngx-fileupload-example/page/auto-upload";
+
+import { NgxFileUploadCoreModule } from '@ngx-file-upload/core';
 
 const fakeUploadProvider: Provider = {
     provide: HTTP_INTERCEPTORS,
@@ -41,7 +42,7 @@ export function getHighlightLanguages() {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        NgxFileUploadModule,
+        NgxFileUploadCoreModule,
         RouterModule.forRoot([], {useHash: true}),
         IgxIconModule,
         HighlightModule,

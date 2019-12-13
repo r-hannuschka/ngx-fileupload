@@ -1,0 +1,15 @@
+<ngx-file-upload-toolbar [storage]="uploadStorage"></ngx-file-upload-toolbar>
+
+<div class="upload--body fileupload" ngxFileUpload (add)="dropFiles($event)">
+
+    <div *ngIf="!uploads.length" class="file-browser">
+        <i class="ngx-fileupload-icon--add"></i>
+        <span>Drag/Drop files here or click</span>
+    </div>
+
+    <div *ngIf="uploads.length" class="file-upload--list">
+        <ngx-file-upload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate" >
+        </ngx-file-upload-item>
+    </div>
+</div>
+

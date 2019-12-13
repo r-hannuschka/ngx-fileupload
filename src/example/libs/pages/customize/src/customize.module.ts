@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { HighlightModule } from "ngx-highlightjs";
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { NgxFileUploadUiModule } from '@ngx-file-upload/ui';
 import { IgxTabsModule } from "igniteui-angular";
 
 import { UiModule } from "@ngx-fileupload-example/ui";
@@ -14,7 +14,7 @@ import { ItemTemplateComponent } from "./item-template/item-template.component";
     imports: [
         CommonModule,
         RouterModule.forChild(ItemTemplateRoutes),
-        NgxFileUploadModule,
+        NgxFileUploadUiModule,
         UiModule,
         HighlightModule,
         IgxTabsModule

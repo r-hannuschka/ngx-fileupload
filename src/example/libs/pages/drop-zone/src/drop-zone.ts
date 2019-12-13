@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { NgxFileUploadModule } from "@r-hannuschka/ngx-fileupload";
+import { NgxFileUploadUiModule } from '@ngx-file-upload/ui';
 import { UiModule } from "@ngx-fileupload-example/ui";
 import { NgxFileDropModule } from "ngx-file-drop";
 import { IgxTabsModule } from "igniteui-angular";
@@ -12,7 +12,7 @@ import { DropZoneComponent } from "./ui/drop-zone";
 @NgModule({
     imports: [
         CommonModule,
-        NgxFileUploadModule,
+        NgxFileUploadUiModule,
         UiModule,
         NgxFileDropModule,
         IgxTabsModule,

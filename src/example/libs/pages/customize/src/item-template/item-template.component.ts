@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
-import { UploadStorage, UploadRequest, UploadState } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage, UploadRequest, UploadState } from "../ngx-fileupload/public-api";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 

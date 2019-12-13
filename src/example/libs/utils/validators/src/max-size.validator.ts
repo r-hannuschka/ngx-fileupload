@@ -1,4 +1,4 @@
-import { Validator, ValidationErrors } from "@r-hannuschka/ngx-fileupload";
+import { Validator, ValidationErrors } from "../ngx-fileupload/public-api";
 
 export class MaxUploadSizeValidator implements Validator {
 

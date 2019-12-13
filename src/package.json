@@ -30,7 +30,7 @@
     "@angular/platform-browser": "8.2.14",
     "@angular/platform-browser-dynamic": "8.2.14",
     "@angular/router": "8.2.14",
-    "highlight.js": "9.17.0",
+    "highlight.js": "9.17.1",
     "igniteui-angular": "8.2.12",
     "ngx-customscrollbar": "2.0.2",
     "ngx-file-drop": "8.0.8",
@@ -54,7 +54,7 @@
     "codelyzer": "5.2.0",
     "express": "4.17.1",
     "express-fileupload": "1.1.6",
-    "https-proxy-agent": "3.0.1",
+    "https-proxy-agent": "4.0.0",
     "jasmine-core": "3.5.0",
     "jasmine-spec-reporter": "4.2.1",
     "karma": "4.4.1",
@@ -74,6 +74,6 @@
     "zone.js": "0.9.1"
   },
   "resolutions": {
-    "https-proxy-agent": "3.0.1"
+    "https-proxy-agent": "4.0.0"
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { FileUpload, UploadControl } from "projects/ngx-fileupload/public-api";
+import { FileUpload, UploadControl } from "../ngx-fileupload/public-api";
 
 @Component({
     selector: "app-ui--upload-item-simple",

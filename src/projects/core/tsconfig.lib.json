@@ -21,6 +21,8 @@
   },
   "exclude": [
     "src/test.ts",
-    "**/*.spec.ts"
+    "src/tests/**/*.spec.ts",
+    "src/mockup/**/*.ts",
+    "node_modules"
   ]
 }

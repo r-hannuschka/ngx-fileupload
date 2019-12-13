@@ -16,7 +16,6 @@ export class UploadStorage {
     private storeConfig: UploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
     private uploadDestroy$: Subject<boolean> = new Subject();
-
     private uploadStateChange$: Subject<void> = new Subject();
 
     public constructor(config: UploadStorageConfig = null) {

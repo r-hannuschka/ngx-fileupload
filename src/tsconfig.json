@@ -11,6 +11,8 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -22,8 +24,17 @@
       "@ngx-file-upload/core": [
         "dist/core"
       ],
+      "@ngx-file-upload/dev/core/*": [
+        "projects/core/src/*"
+      ],
       "@ngx-file-upload/ui": [
         "dist/ui"
+      ],
+      "@ngx-file-upload/dev/ui/*": [
+        "projects/ui/src/*"
+      ],
+      "@ngx-file-upload/testing": [
+        "projects/testing/mockup"
       ],
       "@r-hannuschka/ngx-fileupload": [
         "lib/public-api"

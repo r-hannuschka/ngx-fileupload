@@ -14,7 +14,7 @@ import { UploadRequest, UploadControl } from "@ngx-file-upload/core";
  *     <button type="button"                        (click)="uploadCtrl.cancel()">cancel</button>
  * </ng-template>
  *
- * <ngx-fileupload-item *ngFor="item of uploads" [template]="myItemTemplate" [upload]="item"></ngx-fileUpload-item>
+ * <ngx-file-upload-item *ngFor="item of uploads" [template]="myItemTemplate" [upload]="item"></ngx-fileUpload-item>
  */
 export class Control implements UploadControl {
 
@@ -42,7 +42,7 @@ export class Control implements UploadControl {
     /**
      * cancel / stop single upload
      */
-    public stop(event?: MouseEvent) {
+    public stop() {
         /**
          * add delay from 0 before we cancel the event
          * if we dont it could happen, the element is removed

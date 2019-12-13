@@ -1,4 +1,4 @@
-<ngx-fileupload-toolbar [storage]="uploadStorage"></ngx-fileupload-toolbar>
+<ngx-file-upload-toolbar [storage]="uploadStorage"></ngx-file-upload-toolbar>
 
 <div class="upload--body fileupload" ngxFileUpload (add)="dropFiles($event)">
 
@@ -8,8 +8,8 @@
     </div>
 
     <div *ngIf="uploads.length" class="file-upload--list">
-        <ngx-fileupload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate" >
-        </ngx-fileupload-item>
+        <ngx-file-upload-item *ngFor="let item of uploads" [upload]="item" [template]="itemTemplate" >
+        </ngx-file-upload-item>
     </div>
 </div>
 

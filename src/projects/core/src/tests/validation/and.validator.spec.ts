@@ -1,7 +1,7 @@
-import { AndValidator } from "projects/ngx-fileupload/public-api";
-import { ValidatorMockFactory } from "../../mockup/src/validator.factory";
+import { AndValidator } from "@ngx-file-upload/dev/core/public-api";
+import { ValidatorMockFactory } from "@ngx-file-upload/testing";
 
-describe("ngx-fileupload/libs/validation/and", () => {
+describe("@ngx-file-upload/core/validation/and", () => {
 
     const uploadFile = new File(["upload testing"], "upload.txt", { type: "text/plain"});
     let validationGroup: AndValidator;

@@ -1,7 +1,7 @@
-import { OrValidator } from "projects/ngx-fileupload/public-api";
-import { ValidatorMockFactory } from "../../mockup/src/validator.factory";
+import { OrValidator } from "@ngx-file-upload/dev/core/public-api";
+import { ValidatorMockFactory } from "@ngx-file-upload/testing";
 
-describe("ngx-fileupload/libs/validation/or", () => {
+describe("@ngx-file-upload/core/validation/or", () => {
 
     const uploadFile = new File([""], "or-validator-test.txt", { type: "text/plain"});
     let orValidationGroup: OrValidator;

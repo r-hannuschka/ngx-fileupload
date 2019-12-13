@@ -19,10 +19,12 @@
     "upload queue",
     "queue"
   ],
+  "dependencies": {
+    "@ngx-file-upload/core": "^0.0.1"
+  },
   "peerDependencies": {
     "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "@ngx-file-upload/core": "^0.0.1"
+    "@angular/core": "^8.2.14"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
   "bugs": {

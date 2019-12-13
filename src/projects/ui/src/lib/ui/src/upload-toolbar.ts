@@ -11,7 +11,7 @@ interface InfoData {
 }
 
 @Component({
-    selector: "ngx-fileupload-toolbar",
+    selector: "ngx-file-upload-toolbar",
     templateUrl: "upload-toolbar.html",
     styleUrls: ["./upload-toolbar.scss"]
 })

@@ -14,7 +14,7 @@ export interface FileUploadItemContext {
  * view for upload
  */
 @Component({
-    selector: "ngx-fileupload-item",
+    selector: "ngx-file-upload-item",
     templateUrl: "upload-item.component.html",
     styleUrls: ["./upload-item.component.scss"],
 })

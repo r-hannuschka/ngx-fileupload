@@ -5,7 +5,7 @@ import { Validator, ValidationFn, UploadOptions, UploadRequest, NgxFileUploadFac
 import { FileUploadItemContext } from "./upload-item.component";
 
 @Component({
-    selector: "ngx-fileupload",
+    selector: "ngx-file-upload",
     styleUrls: ["./upload-view.scss"],
     templateUrl: "upload-view.html",
 })

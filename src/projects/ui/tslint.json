@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "lib",
+      "ngxFileUpload",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "lib",
+      "ngx-file-upload",
       "kebab-case"
     ]
   }

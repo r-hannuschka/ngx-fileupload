@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, Input } from "@angular/core";
-import { UploadStorage, UploadRequest, UploadState, FileUpload } from "projects/ngx-fileupload/public-api";
+import { UploadStorage, UploadRequest, UploadState, FileUpload } from "../ngx-fileupload/public-api";
 import { takeUntil, takeWhile } from "rxjs/operators";
 import { Subject, merge } from "rxjs";
 import { ViewportControl } from "ngx-customscrollbar";

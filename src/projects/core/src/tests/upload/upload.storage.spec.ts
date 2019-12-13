@@ -1,8 +1,8 @@
-import { UploadStorage, UploadState } from "projects/ngx-fileupload/public-api";
-import { UploadRequestMock, UploadModel } from "../../mockup";
+import { UploadStorage, UploadState } from "@ngx-file-upload/dev/core/public-api";
+import { UploadRequestMock, UploadModel } from "@ngx-file-upload/testing";
 import { take, takeWhile, tap, skip } from "rxjs/operators";
 
-describe("ngx-fileupload/libs/upload/upload.storage", () => {
+describe("@ngx-file-upload/core/upload.storage", () => {
 
     let storage: UploadStorage;
 
@@ -228,7 +228,10 @@ describe("ngx-fileupload/libs/upload/upload.storage", () => {
             .pipe(skip(1), take(1))
             .subscribe({
                 next: (req: UploadRequestMock[]) => expect(req).toEqual([]),
-                complete: () => done()
+                complete: () => {
+                    autoStartStorage.destroy();
+                    done();
+                }
             });
 
         autoStartStorage.add(uploadRequest);

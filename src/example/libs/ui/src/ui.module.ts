@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { NgxFileUploadModule } from "projects/ngx-fileupload/public-api";
+import { NgxFileUploadModule } from "../ngx-fileupload/public-api";
 import { NgxCustomScrollbarModule } from "ngx-customscrollbar";
 
 import { HeaderComponent } from "./header/header.component";

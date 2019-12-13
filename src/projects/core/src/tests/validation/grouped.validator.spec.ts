@@ -1,5 +1,5 @@
-import { GroupedValidator, ValidationErrors } from "projects/ngx-fileupload/public-api";
-import { ValidatorMockFactory } from "../../mockup/src/validator.factory";
+import { GroupedValidator, ValidationErrors } from "@ngx-file-upload/dev/core/public-api";
+import { ValidatorMockFactory } from "@ngx-file-upload/testing";
 
 class ValidatorGroupMock extends GroupedValidator {
 
@@ -12,7 +12,7 @@ class ValidatorGroupMock extends GroupedValidator {
     }
 }
 
-describe("ngx-fileupload/libs/validation/group", () => {
+describe("@ngx-file-upload/core/validation/group", () => {
 
     const uploadFile = new File(["upload testing"], "upload.txt", { type: "text/plain"});
     const validator1 = ValidatorMockFactory.invalid();

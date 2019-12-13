@@ -1,8 +1,8 @@
 
-import { NgxFileUploadFactory } from "projects/ngx-fileupload/public-api";
 import { TestBed, inject } from "@angular/core/testing";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { ValidatorMockFactory } from "../../mockup";
+import { NgxFileUploadFactory } from "@ngx-file-upload/dev/core/public-api";
+import { ValidatorMockFactory } from "@ngx-file-upload/testing";
 
 describe("NgxFileUpload/libs/utils/factory", () => {
 

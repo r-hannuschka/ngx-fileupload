@@ -1,5 +1,5 @@
-import { UploadQueue, UploadState } from "projects/ngx-fileupload/public-api";
-import { UploadRequestMock, UploadModel } from "../../mockup";
+import { UploadQueue, UploadState } from "@ngx-file-upload/dev/core/public-api";
+import { UploadRequestMock, UploadModel } from "@ngx-file-upload/testing";
 
 describe("ngx-fileupload/libs/upload/upload.queue", () => {
 

@@ -119,7 +119,7 @@ describe( "NgxFileUploadItemComponent:", () => {
         fixture.detectChanges();
 
         /** set progress to 20 */
-        fileUpload.uploadFile.uploaded = 20;
+        fileUpload.file.uploaded = 20;
         fileUpload.applyChange();
         fixture.detectChanges();
 
@@ -134,7 +134,7 @@ describe( "NgxFileUploadItemComponent:", () => {
             error2: "invalid name"
         };
 
-        fileUpload.uploadFile.validationErrors = validationErrors;
+        fileUpload.file.validationErrors = validationErrors;
 
         testComponent.uploads = [fileUpload];
         fixture.detectChanges();

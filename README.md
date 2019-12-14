@@ -5,15 +5,23 @@
 [![codecov](https://codecov.io/gh/r-hannuschka/ngx-fileupload/branch/master/graph/badge.svg)](https://codecov.io/gh/r-hannuschka/ngx-fileupload)
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
 
-Angular 8 Monorepo for file uploads with angular.
+Angular 8 Mono Repo for asynchronous file uploads.
+
+Formerly @ r-hannuschka / ngx-fileupload library which has now been divided into 2 areas.
+
+- ngx-file-upload / core which only contain services / classes to enable file upload with Angular
+- ngx-file-upload / ui which contains the components / pipes to provide a UI.
+
+This ensures that if a completely own UI is to be built (without ngx-file-upload / ui) the overhead of SCSS, fonts, images and components no longer exists.
+
 
 [![ngx file upload demo on youtube](./docs/ngx-fileupload.png)](http://www.youtube.com/watch?v=KpHKw0AEOqg)
 
 | | |   |
 |---|---|---|
-| [![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/core/badge.svg?branch=development)](https://github.com/r-hannuschka/ngx-fileupload/tree/development/src/projects/core) | core files for async file uploads with angular | [![npm](https://img.shields.io/npm/v/@ngx-file-upload/core.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@r-hannuschka/ngx-fileupload) |
-| [![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/ui/badge.svg?branch=development)](https://github.com/r-hannuschka/ngx-fileupload/tree/development/src/projects/ui) | ui components for ngx-file-upload | [![npm](https://img.shields.io/npm/v/@ngx-file-upload/ui.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@r-hannuschka/ngx-fileupload) |
-
+| [![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/core/badge.svg?branch=development)](https://github.com/r-hannuschka/ngx-fileupload/tree/development/src/projects/core) | core files for async file uploads with angular | [![npm](https://img.shields.io/npm/v/@ngx-file-upload/core.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@ngx-file-upload/core) |
+| [![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/ui/badge.svg?branch=development)](https://github.com/r-hannuschka/ngx-fileupload/tree/development/src/projects/ui) | ui components for ngx-file-upload | [![npm](https://img.shields.io/npm/v/@ngx-file-upload/ui.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@ngx-file-upload/ui) |
+| [![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-fileupload/badge.svg?tag=3.4.3)](https://github.com/r-hannuschka/ngx-fileupload/tree/3.4.3) | full package contains (ui and core) (no longer maintained) | [![npm](https://img.shields.io/npm/v/@r-hannuschka/ngx-fileupload.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@r-hannuschka/ngx-fileupload) |
 
 ## Demo
 

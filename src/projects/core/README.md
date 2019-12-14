@@ -6,7 +6,18 @@
 [![codecov](https://codecov.io/gh/r-hannuschka/ngx-fileupload/branch/master/graph/badge.svg)](https://codecov.io/gh/r-hannuschka/ngx-fileupload)
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
 
-Angular 8 file upload core dateien für asynchronen datei upload. Dieses Package enthält keine UI Komponenten um möglichst klein zu bleiben und die Freiheit zu gewährleisten die gesammte Oberfläche selbst zu gestalten ohne den Overhead von Styles, Bildern und Fonts mit zu bringen welcher gear nicht benötigt wird.
+Angular 8 file upload core files for asynchronous file upload. This package does not contain any UI components in order to stay as small as possible and to guarantee the freedom to design the entire surface yourself without bringing the overhead of styles, images and fonts that are not required.
+
+This library contains
+
+- Storage to store all uploads and used them app wide or only in component.
+- A queue to limit the number of active uploads and upload more later. 
+- Validation
+- ansychronous file uploads with live progress update.
+ 
+
+
+
 
 ## @Install
 
@@ -137,6 +148,9 @@ export class AppComponent implements OnInit {
 |Upload Queue  | part of upload storage and controls how many uploads run at the same time | - |
 |Validation    | Validation Classes for upload requests                                    | [Vaidation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)|
 
+## @ngx-file-upload/ui
+
+[![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/ui/badge.svg?branch=development)](https://github.com/r-hannuschka/ngx-fileupload/tree/development/src/projects/ui) [![npm](https://img.shields.io/npm/v/@ngx-file-upload/ui.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@ngx-file-upload/ui)
 
 ## @Credits
 

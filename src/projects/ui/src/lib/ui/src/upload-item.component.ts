@@ -60,7 +60,7 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
     public set upload(request: UploadRequest) {
         this.fileUpload = request;
         this.context = {
-            data: {...request.uploadFile},
+            data: {...request.file},
             ctrl: new Control(request)
         };
     }

@@ -16,12 +16,12 @@ npm i --save @ngx-file-upload/core
 
 ## Features
 
-|Name          | short description                                                         |                                                                                                        |
-|--------------|---------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-|Upload Storage| simple upload storage which holds all upload requests and controls them   | [Docs: Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload.storage.md)|
-|Upload Factory| factory to create new upload requests which can added to upload storage   | [Docs: NgxFileUploadFactory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md) | 
+|Name          | Short Description                                                         | Docs                                                                                               |
+|--------------|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+|Upload Storage| simple upload storage which holds all upload requests and controls them   | [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload.storage.md)|
+|Upload Factory| factory to create new upload requests which can added to upload storage   | [Upload Factory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md) | 
 |Upload Queue  | part of upload storage and controls how many uploads run at the same time | - |
-|Validation    | Validation Classes for upload requests                                    | [Docs: Vaidation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)|
+|Validation    | Validation Classes for upload requests                                    | [Vaidation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)|
 
 ## Example
 

@@ -28,7 +28,7 @@ export class Upload implements UploadRequest {
         return this.destroyed$.asObservable();
     }
 
-    public get uploadFile(): FileUpload {
+    public get file(): FileUpload {
         return this.upload;
     }
 
@@ -121,7 +121,7 @@ export class Upload implements UploadRequest {
      */
     public retry() {
         if (this.isRequestCompleted() && this.hasError() || this.isCanceled()) {
-            this.upload = new UploadModel(this.upload.file);
+            this.upload = new UploadModel(this.upload.raw);
             this.start();
         }
     }
@@ -187,10 +187,10 @@ export class Upload implements UploadRequest {
         if (this.options.formData.enabled) {
             const formData = new FormData();
             const label    = this.options.formData.name;
-            formData.append(label, this.upload.file, this.upload.name);
+            formData.append(label, this.upload.raw, this.upload.name);
             return formData;
         }
-        return this.upload.file;
+        return this.upload.raw;
     }
 
     /**

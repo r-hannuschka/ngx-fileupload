@@ -1,11 +1,11 @@
 import { Observable, Subject, ReplaySubject, timer } from "rxjs";
-import { buffer, takeUntil, distinctUntilKeyChanged, tap, take, auditTime, map, filter, switchMap } from "rxjs/operators";
+import { takeUntil, distinctUntilKeyChanged, tap, take, filter, switchMap } from "rxjs/operators";
 import { UploadRequest, UploadStorageConfig, FileUpload, UploadState } from "../../api";
 import { UploadQueue } from "./upload.queue";
 
 const defaultStoreConfig: UploadStorageConfig = {
     concurrentUploads: 5,
-    enableAutoStart: false
+    autoStart: false
 };
 
 export class UploadStorage {
@@ -15,8 +15,6 @@ export class UploadStorage {
     private uploadQueue: UploadQueue;
     private storeConfig: UploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
-    private uploadDestroy$: Subject<boolean> = new Subject();
-    private uploadStateChange$: Subject<void> = new Subject();
 
     public constructor(config: UploadStorageConfig = null) {
         this.change$     = new ReplaySubject(1);
@@ -24,9 +22,6 @@ export class UploadStorage {
 
         this.storeConfig = {...defaultStoreConfig, ...(config || {})};
         this.uploadQueue.concurrent = this.storeConfig.concurrentUploads;
-
-        this.registerUploadStateChanged();
-        this.registerUploadDestroyEvent();
     }
 
     /**
@@ -34,10 +29,7 @@ export class UploadStorage {
      * gets removed or added
      */
     public change(): Observable<UploadRequest[]> {
-        return this.change$.pipe(
-            buffer(this.change$.pipe(auditTime(50))),
-            map((changes: UploadRequest[][]) => changes.slice(-1)[0])
-        );
+        return this.change$;
     }
 
     /**
@@ -73,7 +65,7 @@ export class UploadStorage {
         request.destroyed.pipe(
             tap(() => this.uploads.delete(request.requestId)),
             take(1)
-        ).subscribe(() => this.uploadDestroy$.next());
+        ).subscribe(() => this.notifyObserver());
     }
 
     /**
@@ -86,7 +78,7 @@ export class UploadStorage {
         request.change.pipe(
             distinctUntilKeyChanged("state"),
             /* notify observers upload state has been changed */
-            tap(() => this.uploadStateChange$.next()),
+            tap(() => this.notifyObserver()),
             /* only continue if completed with no errors and autoremove is enabled */
             filter((upload: FileUpload) => upload.state === UploadState.COMPLETED && !upload.hasError && isAutoRemove),
             /** wait for given amount of time before we remove item */
@@ -102,7 +94,7 @@ export class UploadStorage {
      * finalize operations
      */
     private afterUploadsAdd(requests: UploadRequest[]): void {
-        if (this.storeConfig.enableAutoStart) {
+        if (this.storeConfig.autoStart) {
             requests.forEach((uploadRequest) => uploadRequest.start());
         }
     }
@@ -135,13 +127,9 @@ export class UploadStorage {
         /** destroy change stream */
         this.destroyed$.complete();
         this.change$.complete();
-        this.uploadDestroy$.complete();
-        this.uploadStateChange$.complete();
 
         this.destroyed$ = null;
         this.change$ = null;
-        this.uploadDestroy$ = null;
-        this.uploadStateChange$ = null;
         this.uploadQueue = null;
         this.uploads = null;
     }
@@ -195,31 +183,6 @@ export class UploadStorage {
             }
         });
         this.notifyObserver();
-    }
-
-    /**
-     * upload state has been changed from
-     * idle to pending
-     */
-    private registerUploadStateChanged() {
-        this.uploadStateChange$
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe({
-                next: () => this.notifyObserver()
-            });
-    }
-
-    /**
-     * registers to uploads destroy event, since multiple uploads
-     * can destroyed in short amount of time we buffer them at least for 10ms.
-     * and then remove them from list and notify observer
-     */
-    private registerUploadDestroyEvent() {
-        this.uploadDestroy$
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe({
-                next: () => this.notifyObserver()
-            });
     }
 
     /**

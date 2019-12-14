@@ -1,0 +1,24 @@
+<ngx-dropzone (change)="onSelect($event)">
+	<ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
+
+	<ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
+		(removed)="onRemove(upload)" 
+		[file]="upload.file.raw"
+		[removable]="true"
+	>
+        <ngx-dropzone-label>
+
+			<span class="state">
+				State: {{upload.file.state}}
+			</span>
+
+			<!-- add progressbar -->
+			<app-ui--progressbar-circle [circleData]="{height: 70, width: 70, radius: 30}" [progress]="upload.file.progress" >
+			</app-ui--progressbar-circle>
+
+			<span class="label">
+				{{ upload.file.name }}
+			</span>
+		</ngx-dropzone-label>
+    </ngx-dropzone-image-preview>
+</ngx-dropzone>

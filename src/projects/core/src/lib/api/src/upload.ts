@@ -34,7 +34,7 @@ export interface UploadValidation {
 
 export interface FileUpload {
 
-    readonly file: File;
+    readonly raw: File;
 
     readonly size: number;
 
@@ -65,7 +65,7 @@ export interface UploadRequest {
      */
     readonly change: Observable<FileUpload>;
 
-    readonly uploadFile: FileUpload;
+    readonly file: FileUpload;
 
     readonly destroyed: Observable<boolean>;
 
@@ -112,7 +112,7 @@ export interface UploadStorageConfig {
     /**
      * if set to true it will automatically starts uploads
      */
-    enableAutoStart?: boolean;
+    autoStart?: boolean;
     /**
      * if set it will remove success full completed uploads after a specific
      * amount of time.

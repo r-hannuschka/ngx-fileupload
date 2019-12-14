@@ -9,7 +9,7 @@ export class UploadModel implements FileUpload {
      * Creates an instance of UploadFile.
      */
     public constructor(file: File) {
-        this.file = file;
+        this.raw  = file;
         this.size = file.size;
         this.type = file.type;
         this.name = file.name;
@@ -18,7 +18,7 @@ export class UploadModel implements FileUpload {
     /**
      * get raw file
      */
-    public readonly file: File;
+    public readonly raw: File;
 
     /**
      * returns filesize in byte

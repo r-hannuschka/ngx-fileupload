@@ -21,4 +21,5 @@ export const MainMenuItems: MenuItem[] = [
     {label: "Automatic Upload", route: "auto-upload"},
     {label: "Validation", route: "validation"},
     {label: "Ngx File Drop", route: "drop-zone"},
+    {label: "Ngx Dropzone", route: "ngx-dropzone"},
 ];

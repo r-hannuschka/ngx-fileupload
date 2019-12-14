@@ -16,7 +16,7 @@ export class DemoComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.storage = new UploadStorage({
             concurrentUploads: 2,
-            enableAutoStart: true
+            autoStart: true
         });
     }
 

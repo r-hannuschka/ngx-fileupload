@@ -1,6 +1,5 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { NgxCustomScrollbarModule } from "ngx-customscrollbar";
 
 import { HeaderComponent } from "./header/header.component";
 import { HeaderMenuComponent } from "./header-menu/header-menu.component";
@@ -10,7 +9,6 @@ import { ProgressbarCircleComponent } from "./progressbar-circle/progressbar-cir
 import { UploadToolbarComponent } from "./upload-toolbar/upload-toolbar.component";
 import { UploadItemSimpleComponent } from "./upload-item-simple/upload-item-simple.component";
 import { IgxIconModule, IgxIconService } from "igniteui-angular";
-import { UploadOverviewComponent } from "./upload-overview/upload-overview";
 import { ProgressbarComponent } from "./progressbar/progressbar";
 
 import * as Icons from "projects/example/libs/data/ui/icons";
@@ -22,7 +20,6 @@ import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
         RouterModule,
         IgxIconModule,
         NgxFileUploadUiModule,
-        NgxCustomScrollbarModule
     ],
     exports: [
         ButtonComponent,
@@ -31,8 +28,6 @@ import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
         ProgressbarComponent,
         UploadToolbarComponent,
         UploadItemSimpleComponent,
-        UploadOverviewComponent,
-        NgxCustomScrollbarModule
     ],
     declarations: [
         ButtonComponent,
@@ -41,7 +36,6 @@ import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
         ProgressbarCircleComponent,
         UploadToolbarComponent,
         UploadItemSimpleComponent,
-        UploadOverviewComponent,
         ProgressbarComponent
     ],
     providers: [],

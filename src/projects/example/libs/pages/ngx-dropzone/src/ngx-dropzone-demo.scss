@@ -1,0 +1,58 @@
+:host {
+
+    app-ui--progressbar-circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    ngx-dropzone-label {
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        span {
+            color: #FFF;
+            padding: 0 .3rem;
+            text-align: left;
+        }
+
+        span.label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    ::ng-deep {
+
+        ngx-dropzone-remove-badge {
+            z-index: 10;
+        }
+
+        svg {
+            opacity: .8;
+        }
+
+        svg circle {
+            stroke: darken(#FFF, 50%);
+            stroke-width: .5rem;
+
+            &.progress {
+                stroke-width: .5rem;
+                stroke: #FFF;
+            }
+        }
+
+        svg text {
+            fill: #FFF;
+            font-size: .7rem;
+            transform: translateY(6px) !important;
+        }
+    }
+}

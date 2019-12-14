@@ -33,6 +33,7 @@
     "highlight.js": "9.17.1",
     "igniteui-angular": "8.2.12",
     "ngx-customscrollbar": "2.0.2",
+    "ngx-dropzone": "^2.2.2",
     "ngx-file-drop": "8.0.8",
     "ngx-highlightjs": "4.0.0",
     "rxjs": "6.5.3",

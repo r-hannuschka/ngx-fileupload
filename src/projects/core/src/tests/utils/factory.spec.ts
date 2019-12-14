@@ -16,7 +16,7 @@ describe("NgxFileUpload/libs/utils/factory", () => {
         const file = new File(["@r-hannuschka/ngx-fileupload"], "file1.txt");
         const upload = factory.createUploadRequest(file, {url: "/dev/null"}, null);
 
-        expect(upload.uploadFile.file).toEqual(file);
+        expect(upload.file.raw).toEqual(file);
     }));
 
     it("should create multiple UploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
@@ -24,7 +24,7 @@ describe("NgxFileUpload/libs/utils/factory", () => {
         const file2 = new File(["@r-hannuschka/ngx-fileupload"], "file2.txt");
 
         const uploads = factory.createUploadRequest([file1, file2], {url: "/dev/null"});
-        const uploadedFiles = uploads.map((req) => req.uploadFile.file);
+        const uploadedFiles = uploads.map((req) => req.file.raw);
 
         expect(uploads.length).toBe(2);
         expect(uploadedFiles).toEqual([file1, file2]);

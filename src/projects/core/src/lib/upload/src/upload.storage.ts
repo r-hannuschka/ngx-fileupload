@@ -161,6 +161,7 @@ export class UploadStorage {
     public startAll() {
         this.uploads.forEach((upload) => {
             if (upload.isIdle()) {
+                console.log(upload.requestId);
                 upload.start();
             }
         });

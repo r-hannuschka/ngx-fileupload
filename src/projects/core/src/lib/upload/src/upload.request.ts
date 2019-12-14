@@ -64,6 +64,7 @@ export class Upload implements UploadRequest {
     }
 
     public destroy() {
+
         this.finalizeUpload();
         this.destroyed$.next(true);
         this.destroyed$.complete();

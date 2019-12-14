@@ -1,6 +1,6 @@
 import { UploadStorage, UploadState } from "@ngx-file-upload/dev/core/public-api";
 import { UploadRequestMock, UploadModel } from "@ngx-file-upload/testing";
-import { take, takeWhile, tap, skip } from "rxjs/operators";
+import { take, takeWhile, tap, auditTime } from "rxjs/operators";
 
 describe("@ngx-file-upload/core/upload.storage", () => {
 
@@ -64,10 +64,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         spyOn(uploadRequest1, "destroy").and.callFake(() => uploadRequest1.destroy$.next(true));
 
         storage.change()
-            .pipe(take(1))
+            .pipe(auditTime(20))
             .subscribe({
-                next: (requests) => expect(requests).toEqual([uploadRequest2]),
-                complete: () => done()
+                next: (requests) => (expect(requests).toEqual([uploadRequest2]), done()),
             });
 
         storage.add([uploadRequest1, uploadRequest2]);
@@ -82,10 +81,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         spyOn(uploadRequest1, "destroy").and.callFake(() => uploadRequest1.destroy$.next(true));
 
         storage.change()
-            .pipe(take(1))
+            .pipe(auditTime(20))
             .subscribe({
-                next: (requests) => expect(requests).toEqual([uploadRequest2]),
-                complete: () => done()
+                next: (requests) => (expect(requests).toEqual([uploadRequest2]), done()),
             });
 
         storage.add([uploadRequest1, uploadRequest2]);
@@ -102,10 +100,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const uploadRequest3 = new UploadRequestMock(fileUpload3);
 
         storage.change()
-            .pipe(take(1))
+            .pipe(auditTime(20))
             .subscribe({
-                next: (requests) => expect(requests).toEqual([uploadRequest3]),
-                complete: () => done()
+                next: (requests) => (expect(requests).toEqual([uploadRequest3]), done()),
             });
 
         storage.add([uploadRequest1, uploadRequest2, uploadRequest3]);
@@ -126,13 +123,13 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const uploadRequest3 = new UploadRequestMock(fileUpload3);
 
         const startSpyUR1 = spyOn(uploadRequest1, "start").and.callFake(() => void 0);
-        const startSpyUR2 = spyOn(uploadRequest2, "start").and.callFake(() => uploadRequest2.change$.next(uploadRequest2.uploadFile));
-        const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.uploadFile));
+        const startSpyUR2 = spyOn(uploadRequest2, "start").and.callFake(() => uploadRequest2.change$.next(uploadRequest2.file));
+        const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.file));
 
         storage.change()
-            .pipe(take(1))
+            .pipe(auditTime(20))
             .subscribe({
-                complete: () =>  {
+                next: () => {
                     expect(startSpyUR1).not.toHaveBeenCalled();
                     expect(startSpyUR2).toHaveBeenCalled();
                     expect(startSpyUR3).toHaveBeenCalled();
@@ -140,9 +137,8 @@ describe("@ngx-file-upload/core/upload.storage", () => {
                 }
             });
 
-        storage.add([uploadRequest1, uploadRequest2, uploadRequest3]);
-
         fileUpload1.state = UploadState.PENDING;
+        storage.add([uploadRequest1, uploadRequest2, uploadRequest3]);
         storage.startAll();
     });
 
@@ -154,10 +150,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const uploadRequest2 = new UploadRequestMock(fileUpload2);
 
         storage.change()
-            .pipe(take(1))
+            .pipe(auditTime(20))
             .subscribe({
-                next: (requests) => expect(requests).toEqual([uploadRequest2]),
-                complete: () => done()
+                next: (requests) => (expect(requests).toEqual([uploadRequest2]), done())
             });
 
         storage.add([uploadRequest1, uploadRequest2]);
@@ -179,7 +174,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
                 takeWhile((requests) => requests.length > 0)
             )
             .subscribe({
-                complete: () => {
+                next: () => {
                     expect(changeSpy).toHaveBeenCalledTimes(1);
                     done();
                 }
@@ -195,16 +190,16 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
         const autoStartStorage = new UploadStorage({
             concurrentUploads: 1,
-            enableAutoStart: true
+            autoStart: true
         });
 
         const fileUpload1 = new UploadModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
 
         autoStartStorage.change()
-            .pipe(take(1))
+            .pipe(auditTime(20))
             .subscribe({
-                complete: () => {
+                next: () => {
                     expect(uploadRequest1.isProgress()).toBeTruthy();
                     done();
                 }
@@ -217,7 +212,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
         const autoStartStorage = new UploadStorage({
             concurrentUploads: 1,
-            enableAutoStart: false,
+            autoStart: false,
             removeCompleted: 1000
         });
 
@@ -225,17 +220,17 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const uploadRequest = new UploadRequestMock(fileUpload);
 
         autoStartStorage.change()
-            .pipe(skip(1), take(1))
+            .pipe(auditTime(1200))
             .subscribe({
-                next: (req: UploadRequestMock[]) => expect(req).toEqual([]),
-                complete: () => {
+                next: (req: UploadRequestMock[]) => {
+                    expect(req).toEqual([]),
                     autoStartStorage.destroy();
                     done();
                 }
             });
 
         autoStartStorage.add(uploadRequest);
-        uploadRequest.uploadFile.state = UploadState.COMPLETED;
+        uploadRequest.file.state = UploadState.COMPLETED;
         uploadRequest.applyChange();
     });
 });

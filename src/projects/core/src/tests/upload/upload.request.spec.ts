@@ -32,7 +32,7 @@ describe("NgxFileUpload/libs/upload", () => {
         const uploadFile = new UploadModel();
         const testRequest = new Upload(httpClient, uploadFile, {url});
 
-        expect(testRequest.uploadFile).toBe(uploadFile);
+        expect(testRequest.file).toBe(uploadFile);
     });
 
     it("should submit post request", (done) => {
@@ -57,7 +57,7 @@ describe("NgxFileUpload/libs/upload", () => {
         noFormDataRequest.start();
 
         const mockReq = httpMock.expectOne(url);
-        expect(mockReq.request.body).toBe(testUploadFile.file);
+        expect(mockReq.request.body).toBe(testUploadFile.raw);
         mockReq.flush("we are done here"); // Complete Request with response
     });
 
@@ -154,7 +154,7 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should notify observer if hook change state", () => {
         const spy = jasmine.createSpy("cancel");
 
-        request.beforeStart(of(false).pipe(tap(() => request.uploadFile.state = UploadState.PENDING)));
+        request.beforeStart(of(false).pipe(tap(() => request.file.state = UploadState.PENDING)));
 
         // expect request change will not called
         request.change.subscribe(() => spy());
@@ -167,12 +167,12 @@ describe("NgxFileUpload/libs/upload", () => {
         const hookCalls = [];
 
         const hook1 = of(true).pipe(
-            tap(() => (hookCalls.push("hook1"), request.uploadFile.state = UploadState.PENDING)),
+            tap(() => (hookCalls.push("hook1"), request.file.state = UploadState.PENDING)),
             delay(2000)
         );
 
         const hook2 = of(false).pipe(
-            tap(() => (hookCalls.push("hook2"), request.uploadFile.state = UploadState.INVALID))
+            tap(() => (hookCalls.push("hook2"), request.file.state = UploadState.INVALID))
         );
 
         request.beforeStart(hook1);
@@ -255,7 +255,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
         /** start again */
         request.retry();
-        expect(request.uploadFile.state).toBe(UploadState.START);
+        expect(request.file.state).toBe(UploadState.START);
 
         const req = httpMock.expectOne(url);
         req.flush("");
@@ -272,7 +272,7 @@ describe("NgxFileUpload/libs/upload", () => {
         expect(request.hasError()).toBeTruthy();
 
         request.retry();
-        expect(request.uploadFile.state).toBe(UploadState.START);
+        expect(request.file.state).toBe(UploadState.START);
 
         const retryReq = httpMock.expectOne(url);
         retryReq.flush("");
@@ -280,8 +280,8 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should not restart upload which allready completed", () => {
         const startSpy = spyOn(request, "start").and.callThrough();
-        request.uploadFile.state = UploadState.COMPLETED;
-        request.uploadFile.response = {success: true, body: null, errors: []};
+        request.file.state = UploadState.COMPLETED;
+        request.file.response = {success: true, body: null, errors: []};
         request.retry();
         expect(startSpy).not.toHaveBeenCalled();
     });

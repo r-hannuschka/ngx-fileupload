@@ -111,18 +111,14 @@ export class AppComponent implements OnInit {
 	<ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
 		(removed)="onRemove(upload)" 
 		[file]="upload.file.raw"
-		[removable]="true">
+        [removable]="true">
+
         <ngx-dropzone-label>
+            Name: {{ upload.file.name }}<br />
+            State: {{upload.file.state}}<br />
+            Progress: {{upload.file.progress}} %
+        </ngx-dropzone-label>
 
-			<span class="state">
-                State: {{upload.file.state}}<br />
-                Progress: {{upload.file.progress}}
-			</span>
-
-			<span class="label">
-				{{ upload.file.name }}
-			</span>
-		</ngx-dropzone-label>
     </ngx-dropzone-image-preview>
 </ngx-dropzone>
 ```

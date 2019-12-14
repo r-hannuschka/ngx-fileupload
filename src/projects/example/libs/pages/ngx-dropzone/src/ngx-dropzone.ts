@@ -26,9 +26,8 @@ export class NgxDropZoneDemoComponent implements OnInit {
     }
 
     ngOnInit() {
-      // i think we need only call this if we add / remove uploads
-      this.storage.change()
-        .subscribe(uploads => this.uploads = uploads);
+        this.storage.change()
+          .subscribe(uploads => this.uploads = uploads);
     }
  
     public onSelect(event) {

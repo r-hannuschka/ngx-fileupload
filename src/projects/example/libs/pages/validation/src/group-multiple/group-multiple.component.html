@@ -1,0 +1,30 @@
+<h3>Nested Validation Groups</h3>
+
+<p>Combine multiple groups, First Group will validate zip OR image. This result will combined with a third validator maxFileSize. So file will valid if we handle an image- or zip file and file size is less then or equal 512kb.</p>
+
+<igx-tabs>
+    <igx-tabs-group label="Demo">
+        <ngx-file-upload [url]="'http://localhost:3000/upload'" [validator]="validator"></ngx-file-upload>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Typescript">
+        <pre><code [highlight]="exampleCode.validationGroupMultiple"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Html">
+        <pre><code [highlight]="exampleCode.HTML"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Validator: isImage">
+        <pre><code [highlight]="codeValidator.IMAGE_VALIDATOR"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Validator: isZip">
+        <pre><code [highlight]="codeValidator.IS_ZIP_VALIDATOR"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Validator: MaxFileSize">
+        <pre><code [highlight]="codeValidator.MAX_SIZE_VALIDATOR"></code></pre>
+    </igx-tabs-group>
+
+</igx-tabs>

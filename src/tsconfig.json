@@ -40,22 +40,22 @@
         "lib/public-api"
       ],
       "@ngx-fileupload-example/utils/api/upload": [
-        "example/utils/validators"
+        "projects/example/utils/validators"
       ],
       "@ngx-fileupload-example/utils/validators": [
-        "example/libs/utils/validators"
+        "projects/example/libs/utils/validators"
       ],
       "@ngx-fileupload-example/page/*": [
-        "example/libs/pages/*"
+        "projects/example/libs/pages/*"
       ],
       "@ngx-fileupload-example/ui": [
-        "example/libs/ui"
+        "projects/example/libs/ui"
       ],
       "@ngx-fileupload-example/data/*": [
-        "example/libs/data/*"
+        "projects/example/libs/data/*"
       ],
       "@ngx-fileupload-example/utils/*": [
-        "example/libs/utils/*"
+        "projects/example/libs/utils/*"
       ],
       "@lib/utils/*": [
         "lib/ngx-fileupload/libs/utils/*"

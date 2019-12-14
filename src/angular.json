@@ -11,30 +11,30 @@
         }
       },
       "root": "",
-      "sourceRoot": "example",
+      "sourceRoot": "projects/example",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/ngx-fileupload-example",
-            "index": "example/index.html",
-            "main": "example/main.ts",
-            "polyfills": "example/polyfills.ts",
-            "tsConfig": "example/tsconfig.app.json",
+            "index": "projects/example/index.html",
+            "main": "projects/example/main.ts",
+            "polyfills": "projects/example/polyfills.ts",
+            "tsConfig": "projects/example/tsconfig.app.json",
             "aot": false,
             "assets": [
-              "example/favicon.ico",
-              "example/assets"
+              "projects/example/favicon.ico",
+              "projects/example/assets"
             ],
             "styles": [
               "node_modules/bootstrap-scss/bootstrap.scss",
-              "example/styles.scss"
+              "projects/example/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "example/assets/scss",
-                "example/assets"
+                "projects/example/assets/scss",
+                "projects/example/assets"
               ]
             },
             "scripts": []
@@ -43,8 +43,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "example/environments/environment.ts",
-                  "with": "example/environments/environment.prod.ts"
+                  "replace": "projects/example/environments/environment.ts",
+                  "with": "projects/example/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -67,8 +67,8 @@
             "demo": {
               "fileReplacements": [
                 {
-                  "replace": "example/environments/environment.ts",
-                  "with": "example/environments/environment.demo.ts"
+                  "replace": "projects/example/environments/environment.ts",
+                  "with": "projects/example/environments/environment.demo.ts"
                 }
               ],
               "optimization": true,
@@ -91,8 +91,8 @@
             "e2e": {
               "fileReplacements": [
                 {
-                  "replace": "example/environments/environment.ts",
-                  "with": "example/environments/environment.e2e.ts"
+                  "replace": "projects/example/environments/environment.ts",
+                  "with": "projects/example/environments/environment.e2e.ts"
                 }
               ]
             }

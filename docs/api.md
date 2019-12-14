@@ -17,7 +17,7 @@ export interface FileUploadItemContext {
 ```
 export interface FileUpload {
 
-    readonly file: File;
+    readonly raw: File;
 
     readonly size: number;
 
@@ -95,7 +95,7 @@ interface UploadRequest {
 
     readonly change: Observable<FileUpload>;
 
-    readonly uploadFile: FileUpload;
+    readonly file: FileUpload;
 
     readonly destroyed: Observable<boolean>;
 
@@ -150,7 +150,7 @@ interface UploadStorageConfig {
 
     concurrentUploads?: number;
 
-    enableAutoUpload?: boolean;
+    autoUpload?: boolean;
 
     removeCompleted?: number;
 }

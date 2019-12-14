@@ -131,6 +131,7 @@ export class AppComponent implements OnInit {
 
 |Name          | Short Description                                                         | Docs                                                                                               |
 |--------------|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+|API| all interfaces   | [API](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/api.md)|
 |Upload Storage| simple upload storage which holds all upload requests and controls them   | [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload.storage.md)|
 |Upload Factory| factory to create new upload requests which can added to upload storage   | [Upload Factory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md) | 
 |Upload Queue  | part of upload storage and controls how many uploads run at the same time | - |

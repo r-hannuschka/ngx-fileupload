@@ -20,7 +20,7 @@
     "queue"
   ],
   "peerDependencies": {
-    "@ngx-file-upload/core": "^0.0.1",
+    "@ngx-file-upload/core": "^0.0.1 || ^1.0.0",
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14"
   },

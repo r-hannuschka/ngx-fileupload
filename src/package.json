@@ -72,7 +72,7 @@
     "tslint": "5.20.1",
     "typescript": "3.5.3",
     "watch": "1.0.2",
-    "zone.js": "0.9.1"
+    "zone.js": "0.10.2"
   },
   "resolutions": {
     "https-proxy-agent": "4.0.0"

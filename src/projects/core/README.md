@@ -8,13 +8,130 @@
 
 Angular 8 file upload core dateien für asynchronen datei upload. Dieses Package enthält keine UI Komponenten um möglichst klein zu bleiben und die Freiheit zu gewährleisten die gesammte Oberfläche selbst zu gestalten ohne den Overhead von Styles, Bildern und Fonts mit zu bringen welcher gear nicht benötigt wird.
 
-## Install
+## @Install
 
 ```bash
 npm i --save @ngx-file-upload/core
 ```
 
-## Features
+## @Example
+
+This example uses ngx-dropzone module which also provides some ui components for a drop zone and preview. We could simply use this and put our own stuff on top of this.
+
+- only 2 Uploads on same time all other will queued
+- all uploads will persist in storage, so we have an provider we could on other components to get current uploads.
+- uploads will start automatically if they put into queue
+- uploads will removed automatically after 5 seconds if they completed
+
+### app.module.ts
+
+```ts
+import { BrowserModule } from "@angular/platform-browser";
+import { CommonModule } from "@angular/common";
+import { NgModule, Provider } from "@angular/core";
+import { NgxFileUploadCoreModule } from "@ngx-file-upload/core";
+import { NgxDropzoneModule } from "ngx-dropzone";
+
+import { AppComponent } from "./app.component";
+
+@NgModule({
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        // app module
+        CommonModule
+        NgxDropzoneModule,
+        NgxFileUploadCoreModule,
+    ],
+    bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+---
+
+### app.component.ts
+
+```ts
+import { Component, OnInit, Inject } from '@angular/core';
+import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest } from "@ngx-file-upload/core";
+
+@Component({
+    selector: "app-component",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"]
+})
+export class AppComponent implements OnInit {
+
+    public uploads: UploadRequest[] = [];
+
+    private storage: UploadStorage;
+
+    private uploadOptions: UploadOptions;
+
+    constructor(
+      @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
+    ) {
+        this.storage = new UploadStorage({
+          concurrentUploads: 2,
+          autoStart: true,
+          removeCompleted: 5000 // remove completed after 5 seconds
+        });
+
+        this.uploadOptions = {url: "http://localhost:3000/upload"};
+    }
+
+    ngOnInit() {
+      this.storage.change()
+        .subscribe(uploads => this.uploads = uploads);
+    }
+ 
+    public onSelect(event) {
+      const addedFiles: File[] = event.addedFiles;
+
+      if (addedFiles.length) {
+        const uploads = this.uploadFactory.createUploadRequest(addedFiles, this.uploadOptions);
+        this.storage.add(uploads);
+      }
+    }
+     
+    public onRemove(upload: UploadRequest) {
+      this.storage.remove(upload);
+    }
+}
+```
+
+---
+
+### app.component.html
+```html
+<ngx-dropzone (change)="onSelect($event)">
+	<ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
+	<ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
+		(removed)="onRemove(upload)" 
+		[file]="upload.file.raw"
+		[removable]="true">
+        <ngx-dropzone-label>
+
+			<span class="state">
+                State: {{upload.file.state}}<br />
+                Progress: {{upload.file.progress}}
+			</span>
+
+			<span class="label">
+				{{ upload.file.name }}
+			</span>
+		</ngx-dropzone-label>
+    </ngx-dropzone-image-preview>
+</ngx-dropzone>
+```
+
+## @Demo
+
+[Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) can be found here.
+
+## @Docs
 
 |Name          | Short Description                                                         | Docs                                                                                               |
 |--------------|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
@@ -23,13 +140,8 @@ npm i --save @ngx-file-upload/core
 |Upload Queue  | part of upload storage and controls how many uploads run at the same time | - |
 |Validation    | Validation Classes for upload requests                                    | [Vaidation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)|
 
-## Example
 
-## Demo
-
-[Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) can be found here.
-
-## Credits
+## @Credits
 
 Special thanks for code reviews, great improvements and ideas to
 

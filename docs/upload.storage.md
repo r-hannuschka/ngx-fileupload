@@ -126,7 +126,7 @@ export interface UploadStorageConfig {
     /** how many upload requests could handled at once in queue */
     concurrentUploads?: number;
 
-    enableAutoUpload?: boolean;
+    autoUpload?: boolean;
 
     removeCompleted?: number;
 }

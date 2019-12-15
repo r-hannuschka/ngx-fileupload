@@ -1,6 +1,6 @@
 export const TS = `
 import { InjectionToken } from "@angular/core";
-import { UploadStorage } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage } from "@ngx-file-upload/core";
 
 export const ExampleUploadStorage = new InjectionToken<UploadStorage>("Customize Template Upload Storage", {
     providedIn: "root",

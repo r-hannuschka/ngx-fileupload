@@ -6,7 +6,6 @@ import { HeaderMenuComponent } from "./header-menu/header-menu.component";
 import { RouterModule } from "@angular/router";
 import { ButtonComponent } from "./button/button.component";
 import { UploadToolbarComponent } from "./upload-toolbar/upload-toolbar.component";
-import { UploadItemSimpleComponent } from "./upload-item-simple/upload-item-simple.component";
 import { IgxIconModule, IgxIconService } from "igniteui-angular";
 import { ProgressbarComponent } from "./progressbar/progressbar";
 
@@ -25,14 +24,12 @@ import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
         HeaderComponent,
         ProgressbarComponent,
         UploadToolbarComponent,
-        UploadItemSimpleComponent,
     ],
     declarations: [
         ButtonComponent,
         HeaderComponent,
         HeaderMenuComponent,
         UploadToolbarComponent,
-        UploadItemSimpleComponent,
         ProgressbarComponent
     ],
     providers: [],

@@ -3,10 +3,10 @@ import { CommonModule } from "@angular/common";
 
 import { UploadViewComponent } from "./common/src/upload-view";
 
-import { UploadToolbarModule } from "./toolbar/main";
-import { ProgressBarModule } from "./progressbar/main";
-import { FileBrowserModule } from "./file-browser/main";
-import { UploadItemModule } from "./upload-item/main";
+import { NgxFileUploadUiToolbarModule } from "./toolbar/main";
+import { NgxFileUploadUiProgressbarModule } from "./progressbar/main";
+import { NgxFileUploadUiFileBrowserModule } from "./file-browser/main";
+import { NgxFileUploadUiItemModule } from "./upload-item/main";
 import { NgxFileUploadUiCommonModule } from "./common/main";
 
 @NgModule({
@@ -15,18 +15,19 @@ import { NgxFileUploadUiCommonModule } from "./common/main";
     ],
     imports: [
         CommonModule,
-        FileBrowserModule,
+        NgxFileUploadUiProgressbarModule,
         NgxFileUploadUiCommonModule,
-        ProgressBarModule,
-        UploadToolbarModule,
-        UploadItemModule
+        NgxFileUploadUiToolbarModule,
+        NgxFileUploadUiItemModule,
+        NgxFileUploadUiFileBrowserModule
     ],
     exports: [
-        FileBrowserModule,
         NgxFileUploadUiCommonModule,
-        ProgressBarModule,
-        UploadItemModule,
-        UploadToolbarModule,
+        NgxFileUploadUiProgressbarModule,
+        NgxFileUploadUiCommonModule,
+        NgxFileUploadUiToolbarModule,
+        NgxFileUploadUiItemModule,
+        NgxFileUploadUiFileBrowserModule,
         UploadViewComponent,
     ]
 })

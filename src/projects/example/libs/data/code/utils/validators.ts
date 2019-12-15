@@ -1,5 +1,5 @@
 export const IMAGE_VALIDATOR = `
-import { ValidationErrors } from "@r-hannuschka/ngx-fileupload";
+import { ValidationErrors } from "@ngx-file-upload/core";
 
 /**
  * defines a validation function which should return
@@ -18,7 +18,7 @@ export function isImage(file: File): ValidationErrors {
 }`;
 
 export const MAX_SIZE_VALIDATOR = `
-import { Validator, ValidationErrors } from "@r-hannuschka/ngx-fileupload";
+import { Validator, ValidationErrors } from "@ngx-file-upload/core";
 
 export class MaxUploadSizeValidator implements Validator {
 
@@ -61,7 +61,7 @@ export class MaxUploadSizeValidator implements Validator {
 }`;
 
 export const IS_ZIP_VALIDATOR = `
-import { ValidationErrors } from "@r-hannuschka/ngx-fileupload";
+import { ValidationErrors } from "@ngx-file-upload/core";
 
 export function isZipFile(file: File): ValidationErrors | null {
 

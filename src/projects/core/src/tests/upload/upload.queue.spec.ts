@@ -25,12 +25,12 @@ describe("ngx-fileupload/libs/upload/upload.queue", () => {
         const request2 = new UploadRequestMock(new UploadModel());
 
         spyOn(request1, "start").and.callFake(() => request1.hooks[0].subscribe(() => (
-            request1.file.state = UploadState.START,
+            request1.data.state = UploadState.START,
             request1.applyChange()
         )));
 
         spyOn(request2, "start").and.callFake(() => request2.hooks[0].subscribe(() =>
-            expect(request2.file.state).toBe(UploadState.PENDING)
+            expect(request2.data.state).toBe(UploadState.PENDING)
         ));
 
         queue.concurrent = 1; // concurrent uploads are 0, we could literally upload nothing
@@ -58,7 +58,7 @@ describe("ngx-fileupload/libs/upload/upload.queue", () => {
         request2.start();
 
         // finish request 1
-        request1.file.state = UploadState.COMPLETED;
+        request1.data.state = UploadState.COMPLETED;
         request1.applyChange();
 
         /** should started 2 times */
@@ -84,7 +84,7 @@ describe("ngx-fileupload/libs/upload/upload.queue", () => {
         request2.destroy();
 
         // finish request 1
-        request1.file.state = UploadState.COMPLETED;
+        request1.data.state = UploadState.COMPLETED;
         request1.applyChange();
 
         /** should called only 1 time */

@@ -5,7 +5,6 @@ import { takeUntil } from "rxjs/operators";
 
 import * as ExampleCodeData from "projects/example/libs/data/code/customize/item-template";
 import * as uiItemTemplateData from "projects/example/libs/data/code/customize/item-template";
-import * as uiProgressbarCircleData from "projects/example/libs/data/code/ui/progressbar-circle";
 import * as codeUploadStorage from "projects/example/libs/data/code/common/upload-storage";
 import { ExampleUploadStorage } from "projects/example/libs/data/base/upload-storage";
 
@@ -19,8 +18,6 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
     public code = ExampleCodeData;
 
     public codeUiItemTemplate = uiItemTemplateData;
-
-    public codeUiProgressbar = uiProgressbarCircleData;
 
     public codeUploadStorage = codeUploadStorage;
 
@@ -53,5 +50,17 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
         this.destroy$.next(true);
         this.destroy$.complete();
         this.destroy$ = null;
+    }
+
+    public cancelUpload(upload: UploadRequest) {
+        upload.cancel();
+    }
+
+    public removeUpload(upload: UploadRequest) {
+        this.storage.remove(upload);
+    }
+
+    public startUpload(upload: UploadRequest) {
+        upload.start();
     }
 }

@@ -32,7 +32,7 @@ export interface UploadValidation {
     errors: ValidationErrors | null;
 }
 
-export interface FileUpload {
+export interface UploadRequestData {
 
     readonly raw: File;
 
@@ -63,9 +63,9 @@ export interface UploadRequest {
      * returns observable which notify if file upload state
      * has been changed
      */
-    readonly change: Observable<FileUpload>;
+    readonly change: Observable<UploadRequestData>;
 
-    readonly file: FileUpload;
+    readonly data: UploadRequestData;
 
     readonly destroyed: Observable<boolean>;
 

@@ -1,6 +1,6 @@
 export const TS = `
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
-import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest, UploadState } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest, UploadState } from "@ngx-file-upload/core";
 import { NgxFileDropEntry, FileSystemFileEntry } from "ngx-file-drop";
 import { takeUntil, tap } from "rxjs/operators";
 import { Subject } from "rxjs";

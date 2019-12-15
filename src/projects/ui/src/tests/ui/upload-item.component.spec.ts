@@ -7,7 +7,7 @@ import { ValidationErrors} from "@ngx-file-upload/core";
 import { UploadModel, UploadRequestMock } from "@ngx-file-upload/testing";
 
 import { NgxFileUploadUiCommonModule } from "@ngx-file-upload/dev/ui/lib/common/main";
-import { UploadItemModule } from "@ngx-file-upload/dev/ui/lib/upload-item/main";
+import { NgxFileUploadUiItemModule } from "@ngx-file-upload/dev/ui/lib/upload-item/main";
 import { UploadItemComponent, FileUploadItemContext } from "@ngx-file-upload/dev/ui/lib/upload-item/src/upload-item";
 
 @Component({
@@ -50,7 +50,7 @@ describe( "NgxFileUploadItemComponent:", () => {
             imports: [
                 CommonModule,
                 NgxFileUploadUiCommonModule,
-                UploadItemModule,
+                NgxFileUploadUiItemModule,
             ],
             declarations: [
                 TestItemComponent
@@ -120,7 +120,7 @@ describe( "NgxFileUploadItemComponent:", () => {
         fixture.detectChanges();
 
         /** set progress to 20 */
-        fileUpload.file.uploaded = 20;
+        fileUpload.data.uploaded = 20;
         fileUpload.applyChange();
         fixture.detectChanges();
 
@@ -135,7 +135,7 @@ describe( "NgxFileUploadItemComponent:", () => {
             error2: "invalid name"
         };
 
-        fileUpload.file.validationErrors = validationErrors;
+        fileUpload.data.validationErrors = validationErrors;
 
         testComponent.uploads = [fileUpload];
         fixture.detectChanges();

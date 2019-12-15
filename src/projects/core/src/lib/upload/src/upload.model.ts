@@ -1,9 +1,9 @@
-import { FileUpload, UploadState, UploadResponse, ValidationErrors } from "../../api";
+import { UploadRequestData, UploadState, UploadResponse, ValidationErrors } from "../../api";
 
 /**
  * Represents a file which will be uploaded
  */
-export class UploadModel implements FileUpload {
+export class UploadModel implements UploadRequestData {
 
     /**
      * Creates an instance of UploadFile.

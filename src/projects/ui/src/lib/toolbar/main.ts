@@ -8,5 +8,5 @@ import { UploadToolbarComponent } from "./src/toolbar";
     declarations: [UploadToolbarComponent],
     providers: [],
 })
-export class UploadToolbarModule {
+export class NgxFileUploadUiToolbarModule {
 }

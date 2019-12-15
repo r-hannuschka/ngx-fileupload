@@ -1,5 +1,6 @@
 # ngx file upload / core
 
+[![npm](https://img.shields.io/npm/v/@ngx-file-upload/core.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@ngx-file-upload/core)
 ![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/core/badge.svg?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/dc2f1a553c31471a95184d397bf72eb3)](https://www.codacy.com/app/r-hannuschka/ngx-fileupload?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=r-hannuschka/ngx-fileupload&amp;utm_campaign=Badge_Grade)
 [![DeepScan grade](https://deepscan.io/api/teams/6017/projects/7879/branches/86957/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=6017&pid=7879&bid=86957)
@@ -138,11 +139,11 @@ export class AppComponent implements OnInit {
 
 |Name          | Short Description                                                         | Docs                                                                                               |
 |--------------|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-|API| all interfaces   | [API](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/api.md)|
-|Upload Storage| simple upload storage which holds all upload requests and controls them   | [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload.storage.md)|
-|Upload Factory| factory to create new upload requests which can added to upload storage   | [Upload Factory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md) | 
+|API| all interfaces   | [API](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/core/api.md)|
+|Upload Storage| simple upload storage which holds all upload requests and controls them   | [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/core/upload.storage.md)|
+|Upload Factory| factory to create new upload requests which can added to upload storage   | [Upload Factory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/core/factory.md) | 
 |Upload Queue  | part of upload storage and controls how many uploads run at the same time | - |
-|Validation    | Validation Classes for upload requests                                    | [Vaidation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)|
+|Validation    | Validation Classes for upload requests                                    | [Vaidation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/core/validation.md)|
 
 ### @ngx-file-upload/ui
 

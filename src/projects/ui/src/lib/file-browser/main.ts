@@ -7,4 +7,4 @@ import { FileBrowserDirective } from "./src/file-browser";
     declarations: [FileBrowserDirective],
     providers: [],
 })
-export class FileBrowserModule { }
+export class NgxFileUploadUiFileBrowserModule { }

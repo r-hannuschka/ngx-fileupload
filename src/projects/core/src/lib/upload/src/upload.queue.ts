@@ -77,7 +77,7 @@ export class UploadQueue {
     }
 
     private writeToQueue(request: UploadRequest) {
-        request.file.state = UploadState.PENDING;
+        request.data.state = UploadState.PENDING;
         this.queuedUploads = [...this.queuedUploads, request];
     }
 

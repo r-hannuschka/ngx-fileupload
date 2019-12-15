@@ -7,4 +7,4 @@ import { ProgressbarCircleComponent } from "./src/progressbar-circle";
     declarations: [ProgressbarCircleComponent],
     providers: [],
 })
-export class ProgressBarModule { }
+export class NgxFileUploadUiProgressbarModule { }

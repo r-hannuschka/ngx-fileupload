@@ -12,7 +12,7 @@ Angular 8 components for @ ngx-file-upload / core to create a UI. All components
 
 ### @dependencies
 
-[![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/core/badge.svg?branch=development)](https://github.com/r-hannuschka/ngx-fileupload/tree/master/src/projects/core) [![npm](https://img.shields.io/npm/v/@ngx-file-upload/core.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@ngx-file-upload/core)
+[![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/core/badge.svg?branch=master)](https://github.com/r-hannuschka/ngx-fileupload/tree/master/src/projects/core) [![npm](https://img.shields.io/npm/v/@ngx-file-upload/core.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@ngx-file-upload/core)
 
 ### @Install
 
@@ -63,14 +63,15 @@ app.component.html
 <ul>
     <!-- array of UploadRequests -->
     <li *ngFor="upload of uploads">
-        <div>State: {{upload | stateToString }}</div>
-        <div>Size:  {{upload | fileSize }}</div>
-        <button [disabled]="!(upload | isCancelAble)">Cancel</div>
+        <div>State: {{upload.file.state | stateToString }}</div>
+        <div>Uploaded: {{upload.file.uploaded | fileSize }}</div>
+        <div>Size: {{upload.file.size | fileSize }}</div>
+        <button [disabled]="!(upload.file | isCancelAble)">Cancel</div>
     </li>
 </ul>
 ```
 
-Read Docs for more Informations: [Upload Item](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/ui/pipes.md)
+Read Docs for more Informations: [Pipes](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/ui/pipes.md)
 
 ---
 
@@ -272,9 +273,6 @@ Read Docs for more Informations: [Upload File Browser](https://github.com/r-hann
 ### @Demo
 
 [Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) can be found here.
-
-### @Docs
-
 
 ### @Credits
 

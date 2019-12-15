@@ -1,61 +1,62 @@
 <!-- template for each upload -->
-<ng-template #itemTemplate let-upload="data" let-ctrl="ctrl" #custom>
+<ng-template #itemTemplate let-upload="upload" #custom>
 
-    <div class="card upload">
+    <div class="card-wrapper">
 
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span class="title text-truncate">{{upload.name}}</span>
+        <div class="card upload">
 
-            <div class="actions btn-group">
-                <app-ui--button
-                    (dispatch)="ctrl.start()"
-                    [class]="'btn-upload btn-sm'"
-                    [disabled]="upload.state !== uploadStates.IDLE"
-                    *ngIf="!upload.completed">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="title text-truncate">{{upload.data.name}}</span>
 
-                    <i class="icon-left icon-upload"></i>
-                </app-ui--button>
+                <div class="actions btn-group">
+                    <button
+                        (click)="startUpload(upload)"
+                        class="btn upload btn-sm"
+                        [disabled]="upload.data.state !== uploadStates.IDLE" >
+                        <i class="icon-left icon-upload"></i>
+                    </button>
 
-                <app-ui--button (dispatch)="ctrl.stop()" [disabled]="!(upload | isCancelAble)" [class]="'btn.cancel btn-sm'">
-                    <i class="icon-left icon-canceled"></i>
-                </app-ui--button>
+                    <button (click)="cancelUpload(upload)" [disabled]="!(upload.data | isCancelAble)" class="btn cancel btn-sm">
+                        <i class="icon-left icon-canceled"></i>
+                    </button>
 
-                <app-ui--button (dispatch)="ctrl.remove()">
-                    <i class="icon-left icon-cancel"></i>
-                </app-ui--button>
-            </div>
-        </div>
-
-        <div class="card-body">
-            <div class="progressbar">
-                <ngx-file-upload-ui--progressbar-circle
-                    [circleData]="{height: 100, width: 100, radius: 40}"
-                    [progress]="upload.progress" >
-                </ngx-file-upload-ui--progressbar-circle>
+                    <button (click)="removeUpload(upload)" class="btn btn-sm delete">
+                        <i class="icon-left icon-cancel"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="col details col-auto">
-                <dl>
-                    <dt class="label">State</dt>
-                    <dd class="value text-truncate">{{upload.state | stateToString}}</dd>
-                    <dt class="label">Uploaded</dt>
-                    <dd class="value text-truncate">{{upload.uploaded | fileSize}} / {{upload.size | fileSize}}</dd>
-                </dl>
+            <div class="card-body">
+                <div class="progressbar">
+                    <ngx-file-upload-ui--progressbar-circle
+                        [circleData]="{height: 100, width: 100, radius: 40}"
+                        [progress]="upload.data.progress" >
+                    </ngx-file-upload-ui--progressbar-circle>
+                </div>
+
+                <div class="col details col-auto">
+                    <dl>
+                        <dt class="label">State</dt>
+                        <dd class="value text-truncate">{{upload.data.state | stateToString}}</dd>
+                        <dt class="label">Uploaded</dt>
+                        <dd class="value text-truncate">{{upload.data.uploaded | fileSize}} / {{upload.data.size | fileSize}}</dd>
+                    </dl>
+                </div>
             </div>
-        </div>
 
-        <div class="card-footer" *ngIf="upload.state === uploadStates.COMPLETED || upload.validationErrors">
+            <div class="card-footer" *ngIf="upload.isCompleted() || upload.isInvalid()">
 
-            <!-- response completed show error / success -->
-            <ng-container *ngIf="upload.state === uploadStates.COMPLETED"
-                [ngTemplateOutlet]="upload.hasError ? errorTemplate : successTemplate"
-                [ngTemplateOutletContext]="{data: upload.hasError ? upload.response.errors : upload.name}" >
-            </ng-container>
+                <!-- response completed show error / success -->
+                <ng-container *ngIf="upload.data.state === uploadStates.COMPLETED"
+                    [ngTemplateOutlet]="upload.data.hasError ? errorTemplate : successTemplate"
+                    [ngTemplateOutletContext]="{data: upload.data.hasError ? upload.data.response.errors : upload.data.name}" >
+                </ng-container>
 
-            <ng-container *ngIf="upload.validationErrors"
-                [ngTemplateOutlet]="invalidTemplate"
-                [ngTemplateOutletContext]="{data: upload.validationErrors}" >
-            </ng-container>
+                <ng-container *ngIf="upload.data.validationErrors"
+                    [ngTemplateOutlet]="invalidTemplate"
+                    [ngTemplateOutletContext]="{data: upload.data.validationErrors}" >
+                </ng-container>
+            </div>
         </div>
     </div>
 </ng-template>
@@ -101,14 +102,19 @@
 
                 <!-- fileuploads goes here -->
                 <div class="card-list">
-                    <ng-container *ngFor="let upload of uploads">
-                        <ngx-file-upload-ui--item [template]="itemTemplate" [upload]="upload"></ngx-file-upload-ui--item>
+                    <ng-container *ngFor="let upload of uploads" 
+                        [ngTemplateOutlet]="itemTemplate"
+                        [ngTemplateOutletContext]="{upload: upload}" >
                     </ng-container>
                 </div>
             </div>
         </igx-tabs-group>
 
-        <igx-tabs-group label="Typescript">
+        <igx-tabs-group label="Module">
+            <pre><code [highlight]="code.MODULE"></code></pre>
+        </igx-tabs-group>
+
+        <igx-tabs-group label="Component">
             <pre><code [highlight]="code.TYPESCRIPT"></code></pre>
         </igx-tabs-group>
 
@@ -120,20 +126,8 @@
             <pre><code [highlight]="codeUiItemTemplate.TEMPLATE"></code></pre>
         </igx-tabs-group>
 
-        <igx-tabs-group label="SCSS">
-            <pre><code [highlight]="codeUiItemTemplate.SCSS"></code></pre>
-        </igx-tabs-group>
-
         <igx-tabs-group label="Storage">
             <pre><code [highlight]="codeUploadStorage.TS"></code></pre>
-        </igx-tabs-group>
-
-        <igx-tabs-group label="Ui Progressbar Circle TS">
-            <pre><code [highlight]="codeUiProgressbar.TYPESCRIPT"></code></pre>
-        </igx-tabs-group>
-
-        <igx-tabs-group label="Ui Progressbar Circle Html">
-            <pre><code [highlight]="codeUiProgressbar.HTML"></code></pre>
         </igx-tabs-group>
     </igx-tabs>
 </section>

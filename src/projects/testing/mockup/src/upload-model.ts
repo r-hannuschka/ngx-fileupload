@@ -1,8 +1,8 @@
-import { UploadResponse, UploadState, ValidationErrors, FileUpload } from "@ngx-file-upload/core";
+import { UploadResponse, UploadState, ValidationErrors, UploadRequestData } from "@ngx-file-upload/core";
 
-const file = new File(["@r-hannuschka/ngx-fileupload unit tests"], "upload-file.txt", {type: "plain/text"});
+const file = new File(["ngx file upload unit tests"], "upload-file.txt", {type: "plain/text"});
 
-export class UploadModel implements FileUpload {
+export class UploadModel implements UploadRequestData {
 
     public constructor() {
         this.raw = file;

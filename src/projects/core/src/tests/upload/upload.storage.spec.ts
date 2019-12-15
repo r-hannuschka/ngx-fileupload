@@ -123,8 +123,8 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const uploadRequest3 = new UploadRequestMock(fileUpload3);
 
         const startSpyUR1 = spyOn(uploadRequest1, "start").and.callFake(() => void 0);
-        const startSpyUR2 = spyOn(uploadRequest2, "start").and.callFake(() => uploadRequest2.change$.next(uploadRequest2.file));
-        const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.file));
+        const startSpyUR2 = spyOn(uploadRequest2, "start").and.callFake(() => uploadRequest2.change$.next(uploadRequest2.data));
+        const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.data));
 
         storage.change()
             .pipe(auditTime(20))
@@ -230,7 +230,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
             });
 
         autoStartStorage.add(uploadRequest);
-        uploadRequest.file.state = UploadState.COMPLETED;
+        uploadRequest.data.state = UploadState.COMPLETED;
         uploadRequest.applyChange();
     });
 });

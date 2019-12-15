@@ -10,7 +10,7 @@ export const HTML = `
 
 export const TYPESCRIPT = `
 import { Component } from "@angular/core";
-import { ValidationFn } from "@r-hannuschka/ngx-fileupload";
+import { ValidationFn } from "@ngx-file-upload/core";
 import { isImage } from "@ngx-fileupload-example/utils/validators";
 
 @Component({

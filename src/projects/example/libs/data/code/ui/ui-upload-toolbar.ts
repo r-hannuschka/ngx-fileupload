@@ -23,7 +23,7 @@ export const HTML = `
 
 export const TYPESCRIPT = `
 import { Component, Output, Input, EventEmitter } from "@angular/core";
-import { Upload, Validator } from "@r-hannuschka/ngx-fileupload";
+import { Upload, Validator } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-ui--upload-toolbar",

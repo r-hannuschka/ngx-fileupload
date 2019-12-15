@@ -1,6 +1,6 @@
 import { Observable, Subject, ReplaySubject, timer } from "rxjs";
 import { takeUntil, distinctUntilKeyChanged, tap, take, filter, switchMap } from "rxjs/operators";
-import { UploadRequest, UploadStorageConfig, FileUpload, UploadState } from "../../api";
+import { UploadRequest, UploadStorageConfig, UploadRequestData, UploadState } from "../../api";
 import { UploadQueue } from "./upload.queue";
 
 const defaultStoreConfig: UploadStorageConfig = {
@@ -80,7 +80,7 @@ export class UploadStorage {
             /* notify observers upload state has been changed */
             tap(() => this.notifyObserver()),
             /* only continue if completed with no errors and autoremove is enabled */
-            filter((upload: FileUpload) => upload.state === UploadState.COMPLETED && !upload.hasError && isAutoRemove),
+            filter((upload: UploadRequestData) => upload.state === UploadState.COMPLETED && !upload.hasError && isAutoRemove),
             /** wait for given amount of time before we remove item */
             switchMap(() => timer(this.storeConfig.removeCompleted)),
             /* automatically unsubscribe if request gets destroyed */

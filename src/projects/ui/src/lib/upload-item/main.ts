@@ -12,4 +12,4 @@ import { UploadItemComponent } from "./src/upload-item";
     declarations: [UploadItemComponent],
     providers: [],
 })
-export class UploadItemModule { }
+export class NgxFileUploadUiItemModule { }

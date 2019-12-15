@@ -47,7 +47,7 @@ export const HTML = `
 
 export const TYPESCRIPT = `
 import { Component, Input } from "@angular/core";
-import { UploadData, UploadControl } from "@r-hannuschka/ngx-fileupload";
+import { UploadData, UploadControl } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-ui--upload-item-simple",

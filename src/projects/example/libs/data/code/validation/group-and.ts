@@ -3,7 +3,7 @@ export * from "./is-image";
 export const validationGroupAnd = `
 import { Component, OnInit } from "@angular/core";
 import { isImage, MaxUploadSizeValidator } from "@ngx-fileupload-example/utils/validators";
-import { ValidationBuilder, GroupedValidator } from "@r-hannuschka/ngx-fileupload";
+import { ValidationBuilder, GroupedValidator } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-validation--validation-group",

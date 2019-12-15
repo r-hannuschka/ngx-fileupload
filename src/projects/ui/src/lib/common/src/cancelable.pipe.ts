@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { FileUpload, UploadState } from "@ngx-file-upload/core";
+import { UploadRequestData, UploadState } from "@ngx-file-upload/core";
 
 /**
  * returns true if an upload could be canceled
@@ -13,7 +13,7 @@ import { FileUpload, UploadState } from "@ngx-file-upload/core";
 })
 export class CancelAblePipe implements PipeTransform {
 
-    transform(upload: FileUpload): boolean {
+    transform(upload: UploadRequestData): boolean {
         let isCancelAble = upload.state === UploadState.PENDING;
         isCancelAble     = isCancelAble || upload.state === UploadState.START;
         isCancelAble     = isCancelAble || upload.state === UploadState.PROGRESS;

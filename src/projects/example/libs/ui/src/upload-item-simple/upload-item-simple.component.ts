@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { FileUpload } from "@ngx-file-upload/core";
+import { UploadRequestData } from "@ngx-file-upload/core";
 import { Control } from "@ngx-file-upload/ui";
 
 @Component({
@@ -10,7 +10,7 @@ import { Control } from "@ngx-file-upload/ui";
 export class UploadItemSimpleComponent {
 
     @Input()
-    public upload: FileUpload;
+    public upload: UploadRequestData;
 
     @Input()
     public control: Control;

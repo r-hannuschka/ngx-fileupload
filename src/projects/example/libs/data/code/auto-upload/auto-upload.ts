@@ -1,6 +1,6 @@
 export const TS = `
 import { Component, OnInit } from "@angular/core";
-import { UploadStorage } from "@r-hannuschka/ngx-fileupload";
+import { UploadStorage } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-auto-upload-demo",

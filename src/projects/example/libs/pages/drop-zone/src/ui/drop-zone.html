@@ -24,7 +24,7 @@
 </ng-template>
 
 <ng-template #example>
-    <ngx-file-upload-toolbar [storage]="uploadStorage"></ngx-file-upload-toolbar>
+    <ngx-file-upload-ui--toolbar [storage]="uploadStorage"></ngx-file-upload-ui--toolbar>
 
     <ngx-file-drop (onFileDrop)="drop($event)" 
         [dropZoneLabel]="'Drop or'"
@@ -34,7 +34,7 @@
     </ngx-file-drop>
 
     <div class="files">
-        <ngx-file-upload-item *ngFor="let upload of uploads" [template]="itemTemplate" [upload]="upload"></ngx-file-upload-item>
+        <ngx-file-upload-ui--item *ngFor="let upload of uploads" [template]="itemTemplate" [upload]="upload"></ngx-file-upload-ui--item>
     </div>
 </ng-template>
 

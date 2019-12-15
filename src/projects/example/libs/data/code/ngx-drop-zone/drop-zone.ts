@@ -48,7 +48,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
         let get = 0;
 
         files.forEach((file) => {
-            if (file.dataEntry.isFile) {
+            if (file.fileEntry.isFile) {
                 const dropped = file.fileEntry as FileSystemFileEntry;
 
                 dropped.file((droppedFile: File) => {

@@ -1,34 +1,39 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
-import { FileBrowserDirective } from "./ui/src/file-browser";
-import { UploadItemComponent } from "./ui/src/upload-item.component";
-import { UploadToolbarComponent } from "./ui/src/upload-toolbar";
-import { UploadViewComponent } from "./ui/src/upload-view";
+import { FileBrowserDirective } from "./common/src/file-browser";
+import { UploadItemComponent } from "./common/src/upload-item.component";
+import { UploadViewComponent } from "./common/src/upload-view";
 
 import { CancelAblePipe } from "./utils/src/cancelable.pipe";
 import { FileSizePipe } from "./utils/src/file-size.pipe";
 import { StateToStringPipe } from "./utils/src/state-to-string.pipe";
+import { UploadToolbarModule } from './toolbar';
+import { ProgressBarModule } from './progressbar';
 
 @NgModule({
     declarations: [
         FileBrowserDirective,
         UploadItemComponent,
         UploadViewComponent,
-        UploadToolbarComponent,
         StateToStringPipe,
         FileSizePipe,
         CancelAblePipe
     ],
-    imports: [ CommonModule ],
+    imports: [
+        CommonModule,
+        UploadToolbarModule,
+        ProgressBarModule
+    ],
     exports: [
         FileBrowserDirective,
         UploadItemComponent,
         UploadViewComponent,
-        UploadToolbarComponent,
         StateToStringPipe,
         FileSizePipe,
-        CancelAblePipe
+        CancelAblePipe,
+        ProgressBarModule,
+        UploadToolbarModule
     ]
 })
 export class NgxFileUploadUiModule {}

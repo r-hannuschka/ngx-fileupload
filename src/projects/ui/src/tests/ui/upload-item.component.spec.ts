@@ -1,11 +1,14 @@
 import { CommonModule } from "@angular/common";
-import { Component, HostListener, TemplateRef, ViewChild } from "@angular/core";
+import { Component, HostListener, TemplateRef, ViewChild, Type } from "@angular/core";
 import { ComponentFixture, async, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 
 import { ValidationErrors} from "@ngx-file-upload/core";
-import { StateToStringPipe, CancelAblePipe, FileSizePipe, UploadItemComponent, FileUploadItemContext } from "@ngx-file-upload/dev/ui/public-api";
 import { UploadModel, UploadRequestMock } from "@ngx-file-upload/testing";
+
+import { NgxFileUploadUiCommonModule } from "@ngx-file-upload/dev/ui/lib/common/main";
+import { UploadItemModule } from "@ngx-file-upload/dev/ui/lib/upload-item/main";
+import { UploadItemComponent, FileUploadItemContext } from "@ngx-file-upload/dev/ui/lib/upload-item/src/upload-item";
 
 @Component({
     template: `
@@ -14,7 +17,7 @@ import { UploadModel, UploadRequestMock } from "@ngx-file-upload/testing";
             <div class="size">{{upload.size}}</div>
             <div class="uploaded">{{upload.uploaded}}</div>
         </ng-template>
-        <ngx-file-upload-item *ngFor="let item of uploads" [upload]="item" [template]="customTemplate"></ngx-file-upload-item>
+        <ngx-file-upload-ui--item *ngFor="let item of uploads" [upload]="item" [template]="customTemplate"></ngx-file-upload-ui--item>
     `
 })
 class TestItemComponent {
@@ -46,13 +49,11 @@ describe( "NgxFileUploadItemComponent:", () => {
         TestBed.configureTestingModule( {
             imports: [
                 CommonModule,
+                NgxFileUploadUiCommonModule,
+                UploadItemModule,
             ],
             declarations: [
-                TestItemComponent,
-                UploadItemComponent,
-                StateToStringPipe,
-                FileSizePipe,
-                CancelAblePipe
+                TestItemComponent
             ]
         }).compileComponents();
     }));
@@ -71,8 +72,8 @@ describe( "NgxFileUploadItemComponent:", () => {
         fixture.detectChanges();
 
         const uploadItemComponent = fixture.debugElement
-            .query(By.css("ngx-file-upload-item"))
-            .injector.get(UploadItemComponent);
+            .query(By.css("ngx-file-upload-ui--item"))
+            .injector.get<UploadItemComponent>(UploadItemComponent as Type<UploadItemComponent>);
 
         expect(uploadItemComponent.itemTpl).toBeDefined();
     });
@@ -82,8 +83,8 @@ describe( "NgxFileUploadItemComponent:", () => {
         fixture.detectChanges();
 
         const uploadItemComponent = fixture.debugElement
-            .query(By.css("ngx-file-upload-item"))
-            .injector.get(UploadItemComponent);
+            .query(By.css("ngx-file-upload-ui--item"))
+            .injector.get<UploadItemComponent>(UploadItemComponent as Type<UploadItemComponent>);
 
         expect(uploadItemComponent.itemTpl).toBeDefined();
     });
@@ -95,8 +96,8 @@ describe( "NgxFileUploadItemComponent:", () => {
         fixture.detectChanges();
 
         const uploadItemComponent = fixture.debugElement
-            .query(By.css("ngx-file-upload-item"))
-            .injector.get(UploadItemComponent);
+            .query(By.css("ngx-file-upload-ui--item"))
+            .injector.get<UploadItemComponent>(UploadItemComponent as Type<UploadItemComponent>);
 
         expect(uploadItemComponent.itemTpl).toBeDefined();
     });
@@ -106,8 +107,8 @@ describe( "NgxFileUploadItemComponent:", () => {
         testComponent.uploads = [fileUpload];
         fixture.detectChanges();
 
-        const uploadItem = fixture.debugElement.query(By.css("ngx-file-upload-item"));
-        const uploadItemComponent = uploadItem.injector.get(UploadItemComponent);
+        const uploadItem = fixture.debugElement.query(By.css("ngx-file-upload-ui--item"));
+        const uploadItemComponent = uploadItem.injector.get<UploadItemComponent>(UploadItemComponent as Type<UploadItemComponent>);
 
         expect(uploadItemComponent.itemTpl).toBe(testComponent.template);
         expect(uploadItem.nativeElement.innerHTML).toContain("upload-file.txt");
@@ -123,7 +124,7 @@ describe( "NgxFileUploadItemComponent:", () => {
         fileUpload.applyChange();
         fixture.detectChanges();
 
-        const uploaded = fixture.debugElement.query(By.css("ngx-file-upload-item .uploaded"));
+        const uploaded = fixture.debugElement.query(By.css("ngx-file-upload-ui--item .uploaded"));
         expect(uploaded.nativeNode.textContent).toBe("20");
     });
 
@@ -139,7 +140,7 @@ describe( "NgxFileUploadItemComponent:", () => {
         testComponent.uploads = [fileUpload];
         fixture.detectChanges();
 
-        const uploaded = fixture.debugElement.queryAll(By.css("ngx-file-upload-item .upload-item--validation li"));
+        const uploaded = fixture.debugElement.queryAll(By.css("ngx-file-upload-ui--item .upload-item--validation li"));
         expect(uploaded.length).toBe(2);
 
         const messages = uploaded.map((element) => element.nativeNode.textContent.trim());
@@ -151,7 +152,7 @@ describe( "NgxFileUploadItemComponent:", () => {
         testComponent.uploads = [fileUpload];
         fixture.detectChanges();
 
-        const uploadItem = fixture.debugElement.query(By.css("ngx-file-upload-item"));
+        const uploadItem = fixture.debugElement.query(By.css("ngx-file-upload-ui--item"));
         const clickSpy   = spyOn(testComponent, "onClick");
 
         uploadItem.nativeElement.click();

@@ -3,7 +3,7 @@ import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, Afte
 import { UploadRequest, UploadState, FileUpload, UploadControl } from "@ngx-file-upload/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { Control } from "../../utils";
+import { Control } from "./upload.control";
 
 export interface FileUploadItemContext {
     data: FileUpload;
@@ -14,9 +14,9 @@ export interface FileUploadItemContext {
  * view for upload
  */
 @Component({
-    selector: "ngx-file-upload-item",
-    templateUrl: "upload-item.component.html",
-    styleUrls: ["./upload-item.component.scss"],
+    selector: "ngx-file-upload-ui--item",
+    templateUrl: "upload-item.html",
+    styleUrls: ["./upload-item.scss"],
 })
 export class UploadItemComponent implements AfterViewInit, OnDestroy {
 

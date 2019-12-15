@@ -6,7 +6,7 @@ import { Subject } from "rxjs";
 import { debounceTime, take } from "rxjs/operators";
 
 import { UploadStorage, UploadRequest, UploadState } from "@ngx-file-upload/core";
-import { UploadToolbarComponent } from "@ngx-file-upload/dev/ui/public-api";
+import { UploadToolbarComponent } from "@ngx-file-upload/dev/ui/lib/toolbar/src/toolbar";
 import { UploadRequestMock, UploadModel } from "@ngx-file-upload/testing";
 
 describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {

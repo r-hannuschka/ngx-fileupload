@@ -2,7 +2,7 @@ import { Component, TemplateRef, Input, OnInit, OnDestroy, Inject } from "@angul
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Validator, ValidationFn, UploadOptions, UploadRequest, NgxFileUploadFactory, UploadStorage  } from "@ngx-file-upload/core";
-import { FileUploadItemContext } from "./upload-item.component";
+import { FileUploadItemContext } from "../../upload-item/src/upload-item";
 
 @Component({
     selector: "ngx-file-upload",

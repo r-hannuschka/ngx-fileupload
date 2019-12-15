@@ -4,7 +4,7 @@ import { CommonModule } from "@angular/common";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 import { UploadStorage, NgxFileUploadFactory } from "@ngx-file-upload/core";
-import { UploadViewComponent, UploadItemComponent, UploadToolbarComponent, CancelAblePipe, StateToStringPipe, FileSizePipe } from "@ngx-file-upload/dev/ui/public-api";
+import { UploadViewComponent, NgxFileUploadUiModule } from "@ngx-file-upload/dev/ui/public-api";
 import { NgxFileuploadFactoryMock, UploadStorageMock } from "@ngx-file-upload/testing";
 
 describe( "Upload Component:", () => {
@@ -17,15 +17,10 @@ describe( "Upload Component:", () => {
             imports: [
                 CommonModule,
                 NoopAnimationsModule,
-                HttpClientTestingModule
+                HttpClientTestingModule,
+                NgxFileUploadUiModule
             ],
             declarations: [
-                UploadViewComponent,
-                UploadItemComponent,
-                UploadToolbarComponent,
-                CancelAblePipe,
-                StateToStringPipe,
-                FileSizePipe
             ],
             providers: [{
                 provide: NgxFileUploadFactory,

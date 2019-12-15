@@ -1,5 +1,5 @@
 import { UploadState } from "@ngx-file-upload/core";
-import { StateToStringPipe } from "@ngx-file-upload/dev/ui/public-api";
+import { StateToStringPipe } from "@ngx-file-upload/dev/ui/lib/common/src/state-to-string.pipe";
 
 describe("ngx-file-upload/libs/utils/state-to-string.pipe", () => {
 

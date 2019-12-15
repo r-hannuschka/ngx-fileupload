@@ -1,5 +1,6 @@
 # ngx file upload / core
 
+[![npm](https://img.shields.io/npm/v/@ngx-file-upload/core.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@ngx-file-upload/core)
 ![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/core/badge.svg?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/dc2f1a553c31471a95184d397bf72eb3)](https://www.codacy.com/app/r-hannuschka/ngx-fileupload?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=r-hannuschka/ngx-fileupload&amp;utm_campaign=Badge_Grade)
 [![DeepScan grade](https://deepscan.io/api/teams/6017/projects/7879/branches/86957/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=6017&pid=7879&bid=86957)
@@ -15,13 +16,13 @@ This library contains
 - Validation
 - ansychronous file uploads with live progress update.
 
-## @Install
+### @Install
 
 ```bash
 npm i --save @ngx-file-upload/core
 ```
 
-## @Example
+### @Example
 
 This example uses ngx-dropzone module which also provides some ui components for a drop zone and preview. We could simply use this and put our own stuff on top of this.
 
@@ -30,7 +31,7 @@ This example uses ngx-dropzone module which also provides some ui components for
 - uploads will start automatically if they put into queue
 - uploads will removed automatically after 5 seconds if they completed
 
-### app.module.ts
+#### app.module.ts
 
 ```ts
 import { BrowserModule } from "@angular/platform-browser";
@@ -58,7 +59,7 @@ export class AppModule {}
 
 ---
 
-### app.component.ts
+#### app.component.ts
 
 ```ts
 import { Component, OnInit, Inject } from '@angular/core';
@@ -111,7 +112,7 @@ export class AppComponent implements OnInit {
 
 ---
 
-### app.component.html
+#### app.component.html
 ```html
 <ngx-dropzone (change)="onSelect($event)">
 	<ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
@@ -130,25 +131,25 @@ export class AppComponent implements OnInit {
 </ngx-dropzone>
 ```
 
-## @Demo
+### @Demo
 
 [Demo](https://r-hannuschka.github.io/ngx-fileupload/#/) can be found here.
 
-## @Docs
+### @Docs
 
 |Name          | Short Description                                                         | Docs                                                                                               |
 |--------------|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-|API| all interfaces   | [API](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/api.md)|
-|Upload Storage| simple upload storage which holds all upload requests and controls them   | [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/upload.storage.md)|
-|Upload Factory| factory to create new upload requests which can added to upload storage   | [Upload Factory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/factory.md) | 
+|API| all interfaces   | [API](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/core/api.md)|
+|Upload Storage| simple upload storage which holds all upload requests and controls them   | [Upload Storage](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/core/upload.storage.md)|
+|Upload Factory| factory to create new upload requests which can added to upload storage   | [Upload Factory](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/core/factory.md) | 
 |Upload Queue  | part of upload storage and controls how many uploads run at the same time | - |
-|Validation    | Validation Classes for upload requests                                    | [Vaidation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/validation.md)|
+|Validation    | Validation Classes for upload requests                                    | [Vaidation](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/core/validation.md)|
 
-## @ngx-file-upload/ui
+### @ngx-file-upload/ui
 
 [![](https://github.com/r-hannuschka/ngx-fileupload/workflows/ngx-file-upload/ui/badge.svg?branch=development)](https://github.com/r-hannuschka/ngx-fileupload/tree/development/src/projects/ui) [![npm](https://img.shields.io/npm/v/@ngx-file-upload/ui.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/@ngx-file-upload/ui)
 
-## @Credits
+### @Credits
 
 Special thanks for code reviews, great improvements and ideas to
 
@@ -156,11 +157,11 @@ Special thanks for code reviews, great improvements and ideas to
 |:-:|:-:|:-:|
 |[![alt Konrad Mattheis](https://avatars2.githubusercontent.com/u/1100969?s=60&v=4)](https://github.com/konne)<br />Konrad Mattheis| [<img src="https://avatars3.githubusercontent.com/u/17725886?s=60&v=4" width=60 alt="Thomas Haenig" />](https://github.com/thomashaenig)<br />Thomas Haenig| [![alt Alexander Görlich](https://avatars0.githubusercontent.com/u/13659581?s=60&v=4)](https://github.com/AlexanderGoerlich)  <br />Alexander Görlich|
 
-## Author
+### Author
 
 Ralf Hannuschka [Github](https://github.com/r-hannuschka)
 
-## Other Modules
+### Other Modules
 
 - [ngx-responsivemenu](https://github.com/r-hannuschka/ngx-responsivemenu)
 

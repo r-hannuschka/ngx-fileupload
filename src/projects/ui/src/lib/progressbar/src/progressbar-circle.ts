@@ -1,17 +1,28 @@
 import { Component, Input } from "@angular/core";
-import { ProgressbarCircle } from "projects/example/libs/data/base/data";
+
+export interface CanvasCircleProperties {
+
+    /** svg height */
+    height: number;
+
+    /** svg width */
+    width: number;
+
+    /** circle radius */
+    radius: number;
+}
 
 @Component({
-    selector: "app-ui--progressbar-circle",
-    templateUrl: "progressbar-circle.component.html",
-    styleUrls: ["./progressbar-circle.component.scss"]
+    selector: "ngx-file-upload-ui--progressbar-circle",
+    templateUrl: "progressbar-circle.html",
+    styleUrls: ["./progressbar-circle.scss"]
 })
 export class ProgressbarCircleComponent {
 
     public data;
 
     @Input()
-    public set circleData(data: ProgressbarCircle) {
+    public set circleData(data: CanvasCircleProperties) {
         const circumferences = 2 * Math.PI * data.radius;
         const offset = circumferences;
         const cx = data.width / 2;

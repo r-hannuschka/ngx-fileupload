@@ -28,10 +28,10 @@
 
         <div class="card-body">
             <div class="progressbar">
-                <app-ui--progressbar-circle
+                <ngx-file-upload-ui--progressbar-circle
                     [circleData]="{height: 100, width: 100, radius: 40}"
                     [progress]="upload.progress" >
-                </app-ui--progressbar-circle>
+                </ngx-file-upload-ui--progressbar-circle>
             </div>
 
             <div class="col details col-auto">
@@ -102,7 +102,7 @@
                 <!-- fileuploads goes here -->
                 <div class="card-list">
                     <ng-container *ngFor="let upload of uploads">
-                        <ngx-file-upload-item [template]="itemTemplate" [upload]="upload"></ngx-file-upload-item>
+                        <ngx-file-upload-ui--item [template]="itemTemplate" [upload]="upload"></ngx-file-upload-ui--item>
                     </ng-container>
                 </div>
             </div>

@@ -6,7 +6,7 @@ import { By } from "@angular/platform-browser";
 
 import {
     FileBrowserDirective,
-} from "../../lib/common";
+} from "../../lib/common/main";
 
 @Component({
     template: `

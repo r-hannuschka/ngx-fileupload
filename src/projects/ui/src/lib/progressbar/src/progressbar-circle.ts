@@ -13,7 +13,7 @@ export interface CanvasCircleProperties {
 }
 
 @Component({
-    selector: "app-ui--progressbar-circle",
+    selector: "ngx-file-upload-ui--progressbar-circle",
     templateUrl: "progressbar-circle.html",
     styleUrls: ["./progressbar-circle.scss"]
 })

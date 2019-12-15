@@ -7,6 +7,7 @@ import { HighlightModule } from "ngx-highlightjs";
 import { NgxDropzoneModule } from "ngx-dropzone";
 import { NgxDropZoneDemoComponent } from "./ngx-dropzone";
 import { UiModule } from '@ngx-fileupload-example/ui';
+import { ProgressBarModule } from "@ngx-file-upload/ui";
 
 @NgModule({
     imports: [
@@ -15,6 +16,7 @@ import { UiModule } from '@ngx-fileupload-example/ui';
         UiModule,
         IgxTabsModule,
         HighlightModule,
+        ProgressBarModule,
         RouterModule.forChild([
         {
             path: "ngx-dropzone",

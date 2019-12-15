@@ -272,7 +272,7 @@
           }
         }
       }
-    },
+    }
   },
   "defaultProject": "ngx-fileupload-example",
   "cli": {

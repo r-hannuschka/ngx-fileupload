@@ -1,12 +1,12 @@
 import { ComponentFixture, async, TestBed } from "@angular/core/testing";
-import { Component, } from "@angular/core";
+import { Component, Type, } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { By } from "@angular/platform-browser";
 
 import {
     FileBrowserDirective,
-} from "../../lib/common/main";
+} from "@ngx-file-upload/dev/ui/lib/file-browser/src/file-browser";
 
 @Component({
     template: `
@@ -60,7 +60,7 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
         fixture.detectChanges();
         const uploadsAdd = spyOn(testComponent, "onUploadsAdd").and.callThrough();
         const dropZone  = fixture.debugElement.query(By.directive(FileBrowserDirective));
-        const directive = dropZone.injector.get(FileBrowserDirective);
+        const directive = dropZone.injector.get<FileBrowserDirective>(FileBrowserDirective as Type<FileBrowserDirective>);
 
         directive.disabled = true;
 

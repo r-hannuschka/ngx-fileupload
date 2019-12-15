@@ -3,9 +3,9 @@ import { CommonModule } from "@angular/common";
 
 import { UploadViewComponent } from "./common/src/upload-view";
 
-import { UploadToolbarModule } from './toolbar/main';
-import { ProgressBarModule } from './progressbar/main';
-import { FileBrowserModule } from './file-browser/main';
+import { UploadToolbarModule } from "./toolbar/main";
+import { ProgressBarModule } from "./progressbar/main";
+import { FileBrowserModule } from "./file-browser/main";
 import { UploadItemModule } from "./upload-item/main";
 import { NgxFileUploadUiCommonModule } from "./common/main";
 

@@ -1,4 +1,4 @@
-import { FileSizePipe } from "@ngx-file-upload/dev/ui/public-api";
+import { FileSizePipe } from "@ngx-file-upload/dev/ui/lib/common/src/file-size.pipe";
 
 describe("ngx-file-upload/libs/utils/file-size.pipe", () => {
 

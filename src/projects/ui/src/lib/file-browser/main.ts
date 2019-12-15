@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 import { FileBrowserDirective } from "./src/file-browser";
 
 @NgModule({

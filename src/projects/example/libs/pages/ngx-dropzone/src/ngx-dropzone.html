@@ -1,5 +1,5 @@
 <ngx-dropzone (change)="onSelect($event)">
-	<ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
+	<ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
 
 	<ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
 		(removed)="onRemove(upload)" 
@@ -8,7 +8,7 @@
 	>
 		<ngx-dropzone-label>
 			<span class="state">
-				State: {{upload.file.state}}
+				State: {{upload.file.state | stateToString }}
 			</span>
 
 			<!-- add progressbar -->

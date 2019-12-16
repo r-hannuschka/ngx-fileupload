@@ -1,6 +1,6 @@
 {
   "name": "@ngx-file-upload/core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Angular file upload core package for async file uploads in angular containing validation, upload queue and async uploading.",
   "repository": {
     "url": "https://github.com/r-hannuschka/ngx-fileupload/tree/master/src/projects/core",

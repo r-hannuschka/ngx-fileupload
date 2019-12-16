@@ -63,10 +63,10 @@ app.component.html
 <ul>
     <!-- array of UploadRequests -->
     <li *ngFor="upload of uploads">
-        <div>State: {{upload.file.state | stateToString }}</div>
-        <div>Uploaded: {{upload.file.uploaded | fileSize }}</div>
-        <div>Size: {{upload.file.size | fileSize }}</div>
-        <button [disabled]="!(upload.file | isCancelAble)">Cancel</div>
+        <div>State: {{upload.data.state | stateToString }}</div>
+        <div>Uploaded: {{upload.data.uploaded | fileSize }}</div>
+        <div>Size: {{upload.data.size | fileSize }}</div>
+        <button [disabled]="!(upload.data.state | isCancelAble)">Cancel</div>
     </li>
 </ul>
 ```
@@ -113,7 +113,7 @@ app.component.html
         <!-- circle progressbar -->
         <ngx-file-upload-ui--progressbar-circle
             [circleData]="{height: 70, width: 70, radius: 30}"
-            [progress]="upload.file.progress"
+            [progress]="upload.data.progress"
         ></ngx-file-upload-ui--progressbar-circle>
     </li>
 </ul>

@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "ngx file upload ui components",
   "repository": {
-    "url": "https://github.com/r-hannuschka/ngx-fileupload",
+    "url": "https://github.com/r-hannuschka/ngx-fileupload/tree/master/src/projects/ui",
     "type": "git"
   },
   "license": "MIT",

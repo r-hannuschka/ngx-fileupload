@@ -49,7 +49,7 @@
 
                 <!-- cancel active upload -->
                 <button type="button"
-                    [disabled]="!(upload | isCancelAble)" class="item-action--cancel" (click)="ctrl.stop($event);">
+                    [disabled]="!(upload.state | isCancelAble)" class="item-action--cancel" (click)="ctrl.stop($event);">
                     <i class="ngx-fileupload-icon--cancel"></i>
                 </button>
             </div>

@@ -143,7 +143,7 @@ export const TEMPLATE = `
                         <i class="icon-left icon-upload"></i>
                     </button>
 
-                    <button (click)="cancelUpload(upload)" [disabled]="!(upload.data | isCancelAble)" class="btn cancel btn-sm">
+                    <button (click)="cancelUpload(upload)" [disabled]="!(upload.data.state | isCancelAble)" class="btn cancel btn-sm">
                         <i class="icon-left icon-canceled"></i>
                     </button>
 

@@ -1,3 +1,15 @@
+## [1.0.6]
+
+### Features
+
+* **ui:** isCancelAble pipe now takes an UploadState as argument and no longer UploadRequestData
+
+### Bug Fixes
+
+* **ui:** fixed docs
+
+
+
 ## [1.0.3](https://github.com/r-hannuschka/ngx-fileupload/compare/4.0.2...4.0.3) (2019-12-16)
 
 ### Bug Fixes

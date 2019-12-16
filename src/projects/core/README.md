@@ -87,7 +87,7 @@ export class AppComponent implements OnInit {
           removeCompleted: 5000 // remove completed after 5 seconds
         });
 
-        this.uploadOptions = {url: "http://localhost:3000/upload"};
+        this.uploadOptions = {url: "http://localhost:3000/gallery/add"};
     }
 
     ngOnInit() {
@@ -113,21 +113,24 @@ export class AppComponent implements OnInit {
 ---
 
 #### app.component.html
+
+For uploading images
+
 ```html
 <ngx-dropzone (change)="onSelect($event)">
 	<ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
 	<ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
 		(removed)="onRemove(upload)" 
-		[file]="upload.file.raw"
-        [removable]="true">
+		[file]="upload.data.raw"
+    [removable]="true"
+  >
+    <ngx-dropzone-label>
+        Name: {{ upload.data.name }}<br />
+        State: {{upload.data.state}}<br />
+        Progress: {{upload.data.progress}}%
+    </ngx-dropzone-label>
 
-        <ngx-dropzone-label>
-            Name: {{ upload.file.name }}<br />
-            State: {{upload.file.state}}<br />
-            Progress: {{upload.file.progress}} %
-        </ngx-dropzone-label>
-
-    </ngx-dropzone-image-preview>
+  </ngx-dropzone-image-preview>
 </ngx-dropzone>
 ```
 

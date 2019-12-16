@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/r-hannuschka/ngx-fileupload/compare/4.0.2...4.0.3) (2019-12-16)
+
+### Bug Fixes
+
+* **core:** upate docs example for core ([937103d](https://github.com/r-hannuschka/ngx-fileupload/commit/937103d873458e04ac3e0c70bf7152758c03b45a))
+
+
 ## [1.0.2](https://github.com/r-hannuschka/ngx-fileupload/compare/4.0.1...4.0.2) (2019-12-16)
 
 ### Bug Fixes

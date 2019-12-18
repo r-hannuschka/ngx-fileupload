@@ -1,0 +1,28 @@
+<!--
+<div class="progressbar" role="progressbar" [ngStyle]="{'flex-basis': progressed + '%'}"></div>
+-->
+<svg xmlns="http://www.w3.org/2000/svg" #progressbar>
+
+    <line x1="0"
+          y1="50%"
+          y2="50%" 
+          shape-rendering="crispEdges"
+          style="stroke-dashoffset: 0;"
+          [attr.x2]="fullWidth"
+          [ngStyle]="{'stroke-dasharray': dashArrayCSS}">
+    </line>
+    
+    <line [attr.x1]="0" 
+          [attr.x2]="fullWidth"
+          y1="50%"
+          y2="50%" 
+          shape-rendering="crispEdges"
+          [ngStyle]="
+            {
+                'stroke-dashoffset': progressedWidth,
+                'stroke-dasharray': dashArrayCSS,
+                'transform': 'translateX(' + progressedWidth + 'px)'
+            }
+        ">
+    </line>
+</svg>

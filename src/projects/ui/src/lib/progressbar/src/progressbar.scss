@@ -1,0 +1,21 @@
+:host {
+
+    display: flex;
+    height: 1rem;
+
+    svg {
+        height: 1rem;
+        width: 100%;
+
+        line {
+            stroke-width: .5rem;
+            stroke: green;
+        }
+
+        line:nth-child(2) {
+            border: 20px solid;
+            stroke: #3E3E3E;
+            transition: stroke-dashoffset .15s linear, transform .15s linear;
+        }
+    }
+}

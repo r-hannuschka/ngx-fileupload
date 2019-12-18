@@ -52,7 +52,7 @@
     "@types/node": "8.10.59",
     "angular-cli-ghpages": "0.6.0",
     "bootstrap-scss": "4.4.1",
-    "codelyzer": "5.2.0",
+    "codelyzer": "5.2.1",
     "express": "4.17.1",
     "express-fileupload": "1.1.6",
     "https-proxy-agent": "4.0.0",

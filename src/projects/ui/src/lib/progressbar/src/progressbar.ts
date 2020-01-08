@@ -38,10 +38,10 @@ export class ProgressbarComponent implements OnInit {
 
     private progressbarParts = 1;
 
-    @ViewChild('progressbar', {read: ElementRef, static: true})
+    @ViewChild("progressbar", {read: ElementRef, static: true})
     private progressbar: ElementRef<SVGElement>;
 
-    @ViewChild('progressLine', {read: ElementRef, static: true})
+    @ViewChild("progressLine", {read: ElementRef, static: true})
     private progressLine: ElementRef<SVGLineElement>;
 
     public constructor(
@@ -60,7 +60,7 @@ export class ProgressbarComponent implements OnInit {
 
     /**
      * animate progress
-     * 
+     *
      * @see https://javascript.info/js-animation
      */
     public updateProgress() {
@@ -69,8 +69,8 @@ export class ProgressbarComponent implements OnInit {
         const self  = this;
         const el    = this.progressLine.nativeElement;
 
-        const tarProgress  = this.progressBuffer.shift(); // new progress state
-        const oldProgress  = parseInt(el.getAttribute("x2"), 10); // old progress state
+        const tarProgress = this.progressBuffer.shift(); // new progress state
+        const oldProgress = parseInt(el.getAttribute("x2"), 10); // old progress state
 
         this.isAnimated = true;
 
@@ -79,7 +79,7 @@ export class ProgressbarComponent implements OnInit {
             // should add to service so we dont have to get this multiple times
             requestAnimationFrame(function animate(time) {
                 // timeFraction goes from 0 to 1
-                let timeFraction = Math.min((time - start) / 250, 1);
+                const timeFraction = Math.min((time - start) / 250, 1);
 
                 // const progress = 1 - Math.sin(Math.acos(timeFraction));
                 const progress = timeFraction;

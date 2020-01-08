@@ -36,7 +36,7 @@
     <div class="files">
         <div *ngFor="let upload of uploads">
             {{upload.data.progress}}
-            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress"></ngx-file-upload-ui--progressbar>
+            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="5"></ngx-file-upload-ui--progressbar>
         </div>
     </div>
 </ng-template>

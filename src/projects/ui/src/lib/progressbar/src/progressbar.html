@@ -5,24 +5,22 @@
 
     <line x1="0"
           y1="50%"
+          x2="100%"
           y2="50%" 
           shape-rendering="crispEdges"
           style="stroke-dashoffset: 0;"
-          [attr.x2]="fullWidth"
           [ngStyle]="{'stroke-dasharray': dashArrayCSS}">
     </line>
     
-    <line [attr.x1]="0" 
-          [attr.x2]="fullWidth"
+    <line 
+          #progressLine
+          x1="0" 
+          x2="0"
           y1="50%"
           y2="50%" 
           shape-rendering="crispEdges"
-          [ngStyle]="
-            {
-                'stroke-dashoffset': progressedWidth,
-                'stroke-dasharray': dashArrayCSS,
-                'transform': 'translateX(' + progressedWidth + 'px)'
-            }
+          [ngStyle]=" {'stroke-dasharray': dashArrayCSS}">
         ">
     </line>
+
 </svg>

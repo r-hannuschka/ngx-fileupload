@@ -10,6 +10,14 @@ export class ProgressbarComponent implements OnInit {
     public dashArrayCSS = `1`;
 
     @Input()
+    public animate = true;
+
+    @Input()
+    public set duration(duration: number) {
+        this.animationDuration = Math.max(duration, 0);
+    }
+
+    @Input()
     public set gap(gap: number) {
         this.progressbarGap = Math.max(gap, 1);
     }
@@ -22,15 +30,13 @@ export class ProgressbarComponent implements OnInit {
     @Input()
     public set progress(progress: number) {
         if (progress > 0) {
-            this.progressBuffer.push(progress);
-
-            if (!this.isAnimated) {
-                this.updateProgress();
-            }
+            this.updateProgress(progress);
         }
     }
 
-    private progressbarGap = 0;
+    private animationDuration = 250;
+
+    private progressbarGap = 1;
 
     private progressBuffer: number[] = [];
 
@@ -53,9 +59,22 @@ export class ProgressbarComponent implements OnInit {
         const {width} = this.progressbar.nativeElement.getBoundingClientRect();
 
         /** calculate dasharray */
-        const widthWithoutGap = width - (this.progressbarParts * this.progressbarGap);
-        const dashArrayWidth  = widthWithoutGap / this.progressbarParts;
-        this.dashArrayCSS = `${dashArrayWidth} ${this.progressbarGap}`;
+        const gap = this.progressbarParts === 1 ? 0 : this.progressbarGap;
+        const widthWithoutGap = width - (this.progressbarParts * gap);
+        const dashArrayWidth  = Math.ceil(widthWithoutGap / this.progressbarParts);
+
+        this.dashArrayCSS = `${dashArrayWidth} ${gap}`;
+    }
+
+    public updateProgress(progress: number) {
+
+        if (this.animate) {
+            this.isAnimated ? this.progressBuffer.push(progress) : this.animateProgress(progress);
+            return;
+        }
+
+        const el = this.progressLine.nativeElement;
+        this.renderer.setAttribute(el, "x2", `${progress}%`);
     }
 
     /**
@@ -63,13 +82,13 @@ export class ProgressbarComponent implements OnInit {
      *
      * @see https://javascript.info/js-animation
      */
-    public updateProgress() {
+    private animateProgress(progress?: number) {
 
         const start = performance.now();
         const self  = this;
         const el    = this.progressLine.nativeElement;
 
-        const tarProgress = this.progressBuffer.shift(); // new progress state
+        const curProgress = progress || this.progressBuffer.shift(); // new progress state
         const oldProgress = parseInt(el.getAttribute("x2"), 10); // old progress state
 
         this.isAnimated = true;
@@ -79,14 +98,14 @@ export class ProgressbarComponent implements OnInit {
             // should add to service so we dont have to get this multiple times
             requestAnimationFrame(function animate(time) {
                 // timeFraction goes from 0 to 1
-                const timeFraction = Math.min((time - start) / 250, 1);
+                const timeFraction = Math.min((time - start) / self.animationDuration, 1);
 
                 // const progress = 1 - Math.sin(Math.acos(timeFraction));
-                const progress = timeFraction;
+                const progressed = timeFraction;
 
                 // set progressed state
-                const progressDelta = tarProgress - oldProgress;
-                const newProgress   = oldProgress + (progress * progressDelta);
+                const progressDelta = curProgress - oldProgress;
+                const newProgress   = oldProgress + (progressed * progressDelta);
                 self.renderer.setAttribute(el, "x2", `${newProgress}%`);
 
                 if (timeFraction < 1) {
@@ -95,7 +114,7 @@ export class ProgressbarComponent implements OnInit {
                 }
 
                 if (self.progressBuffer.length > 0) {
-                    self.updateProgress();
+                    self.animateProgress();
                     return;
                 }
 

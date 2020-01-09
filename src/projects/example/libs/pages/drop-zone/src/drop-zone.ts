@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { NgxFileUploadUiProgressbarModule, NgxFileUploadUiCommonModule, NgxFileUploadUiToolbarModule } from '@ngx-file-upload/ui';
+import { NgxFileUploadUiProgressbarModule, NgxFileUploadUiCommonModule, NgxFileUploadUiToolbarModule } from "@ngx-file-upload/ui";
 import { NgxFileDropModule } from "ngx-file-drop";
 import { IgxTabsModule } from "igniteui-angular";
 import { HighlightModule } from "ngx-highlightjs";

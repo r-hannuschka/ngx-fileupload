@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild, ElementRef } from "@angular/core";
 
 export interface CanvasCircleProperties {
     /** circle radius */
@@ -19,7 +19,7 @@ class ProgressbarCircleData {
     templateUrl: "progressbar-circle.html",
     styleUrls: ["./progressbar-circle.scss"]
 })
-export class ProgressbarCircleComponent implements OnInit, AfterViewInit {
+export class ProgressbarCircleComponent implements OnInit {
 
     public data: ProgressbarCircleData = new ProgressbarCircleData();
 
@@ -34,7 +34,6 @@ export class ProgressbarCircleComponent implements OnInit, AfterViewInit {
     private circleGap = 1;
 
     public constructor(
-        private zone: NgZone
     ) {}
 
     @ViewChild("progressbar", {read: ElementRef, static: true})

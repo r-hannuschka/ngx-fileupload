@@ -34,7 +34,9 @@
     </ngx-file-drop>
 
     <div class="files">
-        <ngx-file-upload-ui--item *ngFor="let upload of uploads" [template]="itemTemplate" [upload]="upload"></ngx-file-upload-ui--item>
+        <div *ngFor="let upload of uploads">
+            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="4"></ngx-file-upload-ui--progressbar>
+        </div>
     </div>
 </ng-template>
 

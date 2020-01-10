@@ -117,11 +117,29 @@ app.component.html
     </li>
 </ul>
 ```
+app.component.scss
+
+```scss
+:host {
+
+    .upload-item::ng-deep {
+
+        .progressbar.back {
+            stroke: darken(#006494, 10);
+        }
+
+        .progressbar.progress {
+            stroke: #0582CA;
+        }
+    }
+}
+```
 
 #### @Input
 
 | name | type | description | default |
 |---|---|---|---|
+| progress | number | progress in % | 0 |
 | parts | number | number of parts to shown [part]="5" eq 20% | 1 |
 | gap | number | space between parts | 1 |
 | animate | boolean | disable / enable animation | true |

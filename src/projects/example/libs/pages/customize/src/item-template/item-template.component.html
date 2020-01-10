@@ -29,9 +29,10 @@
             <div class="card-body">
                 <div class="progressbar">
                     <ngx-file-upload-ui--progressbar-circle
-                        [circleData]="{height: 100, width: 100, radius: 40}"
+                        [radius]="40" [parts]="6"
                         [progress]="upload.data.progress" >
                     </ngx-file-upload-ui--progressbar-circle>
+
                 </div>
 
                 <div class="col details col-auto">

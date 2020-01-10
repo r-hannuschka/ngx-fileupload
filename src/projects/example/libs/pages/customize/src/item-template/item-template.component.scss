@@ -131,6 +131,9 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
 
             .progressbar {
 
+                height: 100px;
+                width: 100px;
+
                 ::ng-deep {
                     svg circle {
                         stroke: lighten(map-get($colors, black), 10%);

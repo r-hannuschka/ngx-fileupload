@@ -1,9 +1,9 @@
 <!--
 <div class="progressbar" role="progressbar" [ngStyle]="{'flex-basis': progressed + '%'}"></div>
 -->
-<svg xmlns="http://www.w3.org/2000/svg" #progressbar>
+<svg xmlns="http://www.w3.org/2000/svg" #progressbar class="progressbar">
 
-    <line class="progressbar back"
+    <line class="background"
           x1="0"
           y1="50%"
           x2="100%"
@@ -11,10 +11,10 @@
           shape-rendering="crispEdges"
           style="stroke-dashoffset: 0;"
           [ngStyle]="{'stroke-dasharray': dashArrayCSS}">
-    </line> class="progressbar progress"
+    </line>
     
     <line 
-          class="progressbar progress"
+          class="progress"
           #progressLine
           x1="0" 
           x2="0"
@@ -22,8 +22,5 @@
           y2="50%" 
           shape-rendering="crispEdges"
           [ngStyle]=" {'stroke-dasharray': dashArrayCSS}">
-        ">
     </line>
-
-
 </svg>

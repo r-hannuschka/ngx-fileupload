@@ -66,7 +66,7 @@ export class ProgressbarComponent implements OnInit {
         this.dashArrayCSS = `${dashArrayWidth} ${gap}`;
     }
 
-    public updateProgress(progress: number) {
+    private updateProgress(progress: number) {
 
         if (this.animate) {
             this.isAnimated ? this.progressBuffer.push(progress) : this.animateProgress(progress);
@@ -97,6 +97,7 @@ export class ProgressbarComponent implements OnInit {
 
             // should add to service so we dont have to get this multiple times
             requestAnimationFrame(function animate(time) {
+
                 // timeFraction goes from 0 to 1
                 const timeFraction = Math.min((time - start) / self.animationDuration, 1);
 

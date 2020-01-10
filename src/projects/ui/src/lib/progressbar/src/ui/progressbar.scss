@@ -1,18 +1,20 @@
 :host {
+    display: block;
 
-    svg {
+    .progressbar  {
 
         width: 100%;
+        height: 1rem;
 
-        .progressbar {
+        line {
             stroke-width: .5rem;
         }
 
-        .progressbar.back {
+        .background {
             stroke: darken(#006494, 10);
         }
 
-        .progressbar.progress {
+        .progress {
             stroke: #0582CA;
         }
     }

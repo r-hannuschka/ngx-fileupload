@@ -23,18 +23,15 @@ export class ProgressbarCircleComponent implements OnInit {
 
     public data: ProgressbarCircleData = new ProgressbarCircleData();
 
-    public renderAble = false;
-
     public dashArray = `1`;
 
-    public isReady = false;
+    public maskId = Math.random().toString(32);
 
     private circleParts = 1;
 
     private circleGap = 1;
 
-    public constructor(
-    ) {}
+    public constructor() {}
 
     @ViewChild("progressbar", {read: ElementRef, static: true})
     private progressbar: ElementRef<SVGElement>;
@@ -42,7 +39,6 @@ export class ProgressbarCircleComponent implements OnInit {
     @Input()
     public set radius(radius: number) {
         this.data.radius = radius;
-        this.updateData();
     }
 
     @Input()
@@ -52,23 +48,26 @@ export class ProgressbarCircleComponent implements OnInit {
 
     @Input()
     public set gap(gap: number) {
-        this.circleGap = Math.max(gap, 0);
+        this.circleGap = Math.max(gap, 1);
     }
 
     @Input()
     set progress(progressed: number) {
         /** calculate new offset */
-        const progressedOffset = ((100 - progressed) / 100) * this.data.circumferences;
-        this.data.offset = progressedOffset;
         this.data.progress = progressed;
+        this.updateOffset();
     }
 
     public ngOnInit() {
-    }
-
-    public ngOnAfterViewInit() {
-        this.initializeData();
-        this.isReady = true;
+        /** 
+         * quick fix, by default if we add new elements it will work correctly without timeout
+         * this problem only exists if data comes out of a storage so it will renders to fast it seems
+         * and have no width / height.
+         * 
+         * neither afterViewInit, zone.onStable was working for this issue, so i dont know
+         * any good solution for this, except using timeout of 0 to ensure dom and is rendered correctly
+         */
+        setTimeout(() => this.initializeData(), 0);
     }
 
     private initializeData() {
@@ -76,20 +75,18 @@ export class ProgressbarCircleComponent implements OnInit {
         const {width, height} = this.progressbar.nativeElement.getBoundingClientRect();
         const sideLength  = Math.min(width, height);
 
-        console.log(sideLength);
-
         this.data.cx     = sideLength / 2;
         this.data.cy     = sideLength / 2;
         this.data.radius = this.data.radius || this.calcRadius(sideLength);
+        this.data.circumferences = 2 * Math.PI * this.data.radius;
 
-        this.updateData();
-
+        this.updateOffset();
         this.calcDashArray();
     }
 
-    private updateData() {
-        this.data.circumferences = 2 * Math.PI * this.data.radius;
-        this.data.offset = this.data.circumferences;
+    /** calculate dasharray offset for mask */
+    private updateOffset() {
+        this.data.offset = ((100 - this.data.progress) / 100) * this.data.circumferences;
     }
 
     /**
@@ -104,9 +101,8 @@ export class ProgressbarCircleComponent implements OnInit {
     }
 
     private calcDashArray() {
-
         const partWidth = (this.data.circumferences / this.circleParts);
-        const gap       = partWidth - Math.floor(partWidth) + this.circleGap;
+        const gap       = this.circleParts === 1 ? 0 : partWidth - Math.floor(partWidth) + this.circleGap;
         this.dashArray = `${partWidth - gap} ${gap}`;
     }
 }

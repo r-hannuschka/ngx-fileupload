@@ -77,7 +77,7 @@ Read Docs for more Informations: [Pipes](https://github.com/r-hannuschka/ngx-fil
 
 #### NgxFileUploadUiProgressbarModule
 
-![ngx-file-upload/ui/progressbar-circle](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/bin/progressbar-circle.png)
+![ngx-file-upload/ui/progressbar-circle](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/bin/progressbar-circle.png)
 
 Contains progress bars for visualization of the upload progress.
 
@@ -151,7 +151,7 @@ app.component.scss
 
 #### NgxFileUploadUiItemModule
 
-![ngx-file-upload/ui/upload-item](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/bin/upload-item.png)
+![ngx-file-upload/ui/upload-item](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/bin/upload-item.png)
 
 Contains customize able upload item
 
@@ -194,7 +194,7 @@ Read Docs for more Informations: [Upload Item](https://github.com/r-hannuschka/n
 
 #### NgxFileUploadUiToolbarModule
 
-![ngx-file-upload/ui/toolbar](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/bin/toolbar.png)
+![ngx-file-upload/ui/toolbar](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/bin/toolbar.png)
 
 Contains UploadToolbar for visualisation of current upload progress and control to start, stop or clean up uploads.
 

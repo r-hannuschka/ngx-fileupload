@@ -1,10 +1,20 @@
 :host {
 
+    svg {
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+
     svg circle {
         transition: stroke-dashoffset .15s linear;
     }
 
     svg text {
         transform: translateY(calc(1rem / 2));
+    }
+
+    svg circle.mask {
+        stroke: #FFF !important;
     }
 }

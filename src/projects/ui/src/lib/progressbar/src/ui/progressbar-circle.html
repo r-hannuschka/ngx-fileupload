@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" #progressbar>
+
+    <circle class="progress-bar"
+        attr.r="{{data.radius}}"
+        attr.cx="{{data.cx}}"
+        attr.cy="{{data.cy}}" 
+        fill="transparent"
+        [attr.stroke-dasharray]="dashArray"
+    ></circle>
+
+    <!-- progresssbar circle -->
+    <circle class="progress" 
+        attr.r="{{data.radius}}"
+        attr.cx="{{data.cx}}"
+        attr.cy="{{data.cy}}" 
+        [attr.stroke-dasharray]="dashArray"
+        mask="url(#progressMask)"
+        fill="transparent">
+    </circle>
+
+    <mask id="progressMask">
+
+        <circle class="progress mask"
+            attr.r="{{data.radius}}"
+            attr.cx="{{data.cx}}"
+            attr.cy="{{data.cy}}" 
+            [attr.stroke-dasharray]="this.data.circumferences"
+            [attr.stroke-dashoffset]="this.data.offset"
+            stroke="white"
+            fill="black">
+        </circle>
+    </mask>
+
+    <text attr.x={{data.cx}} attr.y="{{data.cy}}" text-anchor="middle" font-size="1rem" fill="black">{{data.progress}} %</text>
+</svg>

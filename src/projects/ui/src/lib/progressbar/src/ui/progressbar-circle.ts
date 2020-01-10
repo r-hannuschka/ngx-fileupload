@@ -59,11 +59,11 @@ export class ProgressbarCircleComponent implements OnInit {
     }
 
     public ngOnInit() {
-        /** 
+        /**
          * quick fix, by default if we add new elements it will work correctly without timeout
          * this problem only exists if data comes out of a storage so it will renders to fast it seems
          * and have no width / height.
-         * 
+         *
          * neither afterViewInit, zone.onStable was working for this issue, so i dont know
          * any good solution for this, except using timeout of 0 to ensure dom and is rendered correctly
          */

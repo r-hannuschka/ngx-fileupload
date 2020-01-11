@@ -10,6 +10,8 @@
 ## [1.0.6]
 
 ### Features
+
+
 * **ui:** isCancelAble pipe now takes an UploadState as argument and no longer UploadRequestData
 
 ### Bug Fixes

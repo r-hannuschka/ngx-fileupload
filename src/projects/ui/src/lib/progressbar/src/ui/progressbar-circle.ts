@@ -104,6 +104,11 @@ export class ProgressbarCircleComponent implements OnInit {
      * calculate circle radius if no one is passed
      */
     private calcRadius(sideLength): number {
+
+        if (sideLength === 0) {
+            return 0;
+        }
+
         const strokeProgress   = getComputedStyle(this.progressbar.nativeElement.querySelector("circle.progress")).strokeWidth;
         const strokeBackground = getComputedStyle(this.progressbar.nativeElement.querySelector("circle.progress-bar")).strokeWidth;
         const strokeWidth      = Math.max(parseFloat(strokeProgress), parseFloat(strokeBackground));

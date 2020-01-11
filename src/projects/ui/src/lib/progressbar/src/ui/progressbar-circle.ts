@@ -1,9 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from "@angular/core";
-
-export interface CanvasCircleProperties {
-    /** circle radius */
-    radius: number;
-}
+import { Component, Input, ViewChild, ElementRef, OnInit, NgZone } from "@angular/core";
 
 class ProgressbarCircleData {
     radius = 0;
@@ -31,8 +26,6 @@ export class ProgressbarCircleComponent implements OnInit {
 
     private circleGap = 1;
 
-    public constructor() {}
-
     @ViewChild("progressbar", {read: ElementRef, static: true})
     private progressbar: ElementRef<SVGElement>;
 
@@ -58,30 +51,48 @@ export class ProgressbarCircleComponent implements OnInit {
         this.updateOffset();
     }
 
+    public constructor(
+        private zone: NgZone
+    ) {}
+
     public ngOnInit() {
-        /**
-         * quick fix, by default if we add new elements it will work correctly without timeout
-         * this problem only exists if data comes out of a storage so it will renders to fast it seems
-         * and have no width / height.
-         *
-         * neither afterViewInit, zone.onStable was working for this issue, so i dont know
-         * any good solution for this, except using timeout of 0 to ensure dom and is rendered correctly
-         */
-        setTimeout(() => this.initializeData(), 0);
+        this.initializeData(performance.now());
     }
 
-    private initializeData() {
+    /**
+     * initialize data, currently we running into a problem if data comes straight
+     * from storage, then the css properties are not set correctly but element is allready
+     * rendered. Seems it belongs to a document fragment but not the page / parent component.
+     * 
+     * So we need to run into an loop to ensure we have all data we need, this loop will break
+     * after 100ms to ensure we dont run into infinite loop and take what we have.
+     * 
+     * Neither zone.onStable nor afterViewInit are working for me here. Maybe afterViewChecked but this 
+     * will trigger multiple times.
+     * 
+     * @todo check for better ways to solve this without loop
+     * @todo think about second option make size and radius mandatory could be bad for responsive design but will work without loop
+     */
+    private initializeData(start: number, time = 0) {
 
         const {width, height} = this.progressbar.nativeElement.getBoundingClientRect();
         const sideLength  = Math.min(width, height);
 
-        this.data.cx     = sideLength / 2;
-        this.data.cy     = sideLength / 2;
-        this.data.radius = this.data.radius || this.calcRadius(sideLength);
-        this.data.circumferences = 2 * Math.PI * this.data.radius;
+        // start work arround here, will only triggered if data comes from storage / cache
+        if (sideLength === 0 && (time - start) / 100 < 1) {
+            this.zone.runOutsideAngular(() => {
+                requestAnimationFrame((ellapsed) => this.initializeData(start, ellapsed));
+            });
+        } else {
+            this.data.cx = sideLength / 2;
+            this.data.cy = sideLength / 2;
 
-        this.updateOffset();
-        this.calcDashArray();
+            this.data.radius = this.data.radius || this.calcRadius(sideLength) || 0;
+            this.data.circumferences = 2 * Math.PI * this.data.radius;
+
+            this.updateOffset();
+            this.calcDashArray();
+        }
     }
 
     /** calculate dasharray offset for mask */

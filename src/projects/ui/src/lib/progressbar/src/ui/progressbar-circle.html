@@ -7,8 +7,7 @@
         fill="transparent"
         shape-rendering="geometricPrecision"
         [attr.stroke-dasharray]="dashArray"
-        [attr.mask]="'url(#inverted-' + maskId +')'"
-    ></circle>
+        [attr.mask]="'url(#inverted-' + maskId +')'"></circle>
 
     <!-- progresssbar circle -->
     <circle class="progress" 
@@ -29,7 +28,7 @@
         of both progressbar circles
     -->
     <mask id="{{maskId}}">
-        <circle class="progress mask"
+        <circle class="progress mask" [ngClass]="data.progress > 0 ? 'animate' : ''"
             attr.r="{{data.radius}}"
             attr.cx="{{data.cx}}"
             attr.cy="{{data.cy}}" 
@@ -41,7 +40,7 @@
     </mask>
 
     <mask id="inverted-{{maskId}}">
-        <circle class="progress-bar mask"
+        <circle class="progress-bar mask" [ngClass]="data.progress > 0 ? 'animate' : ''"
             attr.r="{{data.radius}}"
             attr.cx="{{data.cx}}"
             attr.cy="{{data.cy}}" 
@@ -50,7 +49,6 @@
             fill="black">
         </circle>
     </mask>
-
 </svg>
 
 <span>{{data.progress}} %</span>

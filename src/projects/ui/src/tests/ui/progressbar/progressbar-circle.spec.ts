@@ -7,7 +7,16 @@ import { NgxFileUploadUiProgressbarModule, ProgressbarCircleComponent } from "@n
 import { By } from "@angular/platform-browser";
 
 @Component({
-    template: `<ngx-file-upload-ui--progressbar-circle></ngx-file-upload-ui--progressbar-circle>`
+    template: `
+        <style>
+            ngx-file-upload-ui--progressbar-circle {
+                height: 200px;
+                width: 200px;
+                display: block;
+            } 
+        </style>
+        <ngx-file-upload-ui--progressbar-circle></ngx-file-upload-ui--progressbar-circle>
+    `
 })
 class TestItemComponent {
 }
@@ -36,9 +45,6 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
 
     it("should show error if no data settings are set", () => {
         fixture.detectChanges();
-
         console.log(progressbar.nativeElement);
-
-        // dash array should be width 0
     });
 });

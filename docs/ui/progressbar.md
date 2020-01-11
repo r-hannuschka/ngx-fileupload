@@ -6,6 +6,7 @@ Contains progress bars for visualization of the upload progress.
 
 ![ngx-file-upload/ui/progressbar-circle](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/bin/progressbar-circle.png)
 
+Circle Progressbar which can be split into parts with gap or display completly as one. Can be animated by css.
 
 app.module.ts
 
@@ -18,12 +19,10 @@ import { NgxFileUploadUiProgressbarModule } from "@ngx-file-upload/ui";
 @NgModule({
     imports: [
         CommonModule,
-        NgxFileUploadCoreModule
+        NgxFileUploadCoreModule,
         NgxFileUploadUiProgressbarModule,
     ])],
-    declarations: [...],
-    entryComponents: [...],
-    providers: [],
+    declarations: [app.component.ts]
 })
 export class AppModule { }
 ```
@@ -36,9 +35,9 @@ app.component.html
     <li *ngFor="upload of uploads" class="upload-item">
         <!-- circle progressbar -->
         <ngx-file-upload-ui--progressbar-circle
-            [circleData]="{height: 70, width: 70, radius: 30}"
-            [progress]="upload.data.progress"
-        ></ngx-file-upload-ui--progressbar-circle>
+            class="progressbar"
+            [progress]="upload.data.progress">
+        </ngx-file-upload-ui--progressbar-circle>
     </li>
 </ul>
 ```
@@ -48,28 +47,36 @@ app.component.scss
 ```css
 :host {
 
-    ...
+    .upload-item .progressbar::ng-deep {
+        height: 100px;
+        width: 100px;
 
-    .upload-item::ng-deep {
-
-        /** progressbars */
-        svg circle {
-            stroke: darken(#FFF, 50%);
-            stroke-width: .5rem;
+        circle {
+            stroke: lighten(#0D1F2D, 10%);
+            stroke-width: .9rem;
 
             &.progress {
-                stroke: #FFF;
+                stroke-width: .9rem;
+                stroke: #0582CA;
             }
         }
 
-        /** percentage view */
-        svg text {
-            fill: #FFF;
-            font-size: .7rem;
+        /** text label */
+        span {
+            color: #0D1F2D;
         }
     }
 }
 ```
+
+#### @Input
+
+| name | type | description | default |
+|---|---|---|---|
+| progress | number | progress in % | 0 |
+| parts | number | number of parts to shown | 1 |
+| gap | number | space between parts | 1 |
+| radius | number | radius of circle | default svg(width\|height) / 2 |
 
 ---
 

@@ -77,75 +77,21 @@ Read Docs for more Informations: [Pipes](https://github.com/r-hannuschka/ngx-fil
 
 #### NgxFileUploadUiProgressbarModule
 
-![ngx-file-upload/ui/progressbar-circle](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/bin/progressbar-circle.png)
-
 Contains progress bars for visualization of the upload progress.
 
-- CircleProgressbar
+#### CircleProgressbar
 
-app.module.ts
+![ngx-file-upload/ui/progressbar-circle](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/bin/progressbar-circle.png)
 
-```ts
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { NgxFileUploadCoreModule } from "@ngx-file-upload/core";
-import { NgxFileUploadUiProgressbarModule } from "@ngx-file-upload/ui";
+Circle Progressbar which can be split into parts with gap or display completly as one. Can be animated by css.
 
-@NgModule({
-    imports: [
-        CommonModule,
-        NgxFileUploadCoreModule
-        NgxFileUploadUiProgressbarModule,
-    ])],
-    declarations: [...],
-    entryComponents: [...],
-    providers: [],
-})
-export class AppModule { }
-```
+#### Progressbar
 
-app.component.html
+![ngx-file-upload/ui/progressbar-circle](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/bin/progressbar.png)
 
-```html
-<ul>
-    <!-- array of UploadRequests -->
-    <li *ngFor="upload of uploads" class="upload-item">
-        <!-- circle progressbar -->
-        <ngx-file-upload-ui--progressbar-circle
-            [circleData]="{height: 70, width: 70, radius: 30}"
-            [progress]="upload.data.progress"
-        ></ngx-file-upload-ui--progressbar-circle>
-    </li>
-</ul>
-```
+Progressbar which can be split into parts with gap or display completly as one. Can be animated by css.
 
-app.component.scss
-
-```css
-:host {
-
-    ...
-
-    .upload-item::ng-deep {
-
-        /** progressbars */
-        svg circle {
-            stroke: darken(#FFF, 50%);
-            stroke-width: .5rem;
-
-            &.progress {
-                stroke: #FFF;
-            }
-        }
-
-        /** percentage view */
-        svg text {
-            fill: #FFF;
-            font-size: .7rem;
-        }
-    }
-}
-```
+Read Docs for more Informations: [ProgressbarModule](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/ui/progressbar.md)
 
 ---
 

@@ -1,10 +1,26 @@
 :host {
 
-    svg circle {
+    display: block;
+    position: relative;
+
+    svg {
+        height: 100%;
+        width: 100%;
+        transform: rotate(-90deg);
+    }
+
+    svg circle.mask {
+        stroke: #FFF !important;
+    }
+
+    svg circle.mask.animate {
         transition: stroke-dashoffset .15s linear;
     }
 
-    svg text {
-        transform: translateY(calc(1rem / 2));
+    span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 }

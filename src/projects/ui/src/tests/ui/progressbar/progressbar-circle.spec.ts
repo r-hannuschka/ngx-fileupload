@@ -13,7 +13,7 @@ import { By } from "@angular/platform-browser";
                 height: 200px;
                 width: 200px;
                 display: block;
-            } 
+            }
         </style>
         <ngx-file-upload-ui--progressbar-circle></ngx-file-upload-ui--progressbar-circle>
     `
@@ -55,14 +55,14 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
         const circle = progressbar.query(By.css("circle"));
         const {r, cx, cy} = circle.attributes;
         const {strokeWidth} = getComputedStyle(circle.nativeElement);
-        const radius    = 100 - parseInt(strokeWidth, 10) / 2
+        const radius    = 100 - parseInt(strokeWidth, 10) / 2;
         // dasharray are circumferences and 0 with only one part
         const dashArray = `${2 * radius * Math.PI} 0`;
 
         expect(cx).toEqual("100");
         expect(cy).toEqual("100");
         expect(r).toEqual(radius.toString());
-        expect(circle.attributes['stroke-dasharray']).toEqual(dashArray);
+        expect(circle.attributes["stroke-dasharray"]).toEqual(dashArray);
     });
 
     it("should render radius of 40", () => {
@@ -87,7 +87,7 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
         // value of dash array
         const rest = partWidth % Math.floor(partWidth);
         const dashArray      = `${partWidth - rest - 1} ${rest + 1}`;
-        expect(circle.attributes['stroke-dasharray']).toEqual(dashArray);
+        expect(circle.attributes["stroke-dasharray"]).toEqual(dashArray);
     });
 
     it("should render 2 parts with a gap of 2", () => {
@@ -105,7 +105,7 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
         // value of dash array
         const rest = partWidth % Math.floor(partWidth);
         const dashArray      = `${partWidth - rest - 2} ${rest + 2}`;
-        expect(circle.attributes['stroke-dasharray']).toEqual(dashArray);
+        expect(circle.attributes["stroke-dasharray"]).toEqual(dashArray);
     });
 
     it("should set progress", () => {
@@ -123,7 +123,7 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
 
         // extract rest of division for part width, so we get integer value for first
         // value of dash array
-        expect(circle.attributes['stroke-dashoffset']).toEqual(offset.toString());
+        expect(circle.attributes["stroke-dashoffset"]).toEqual(offset.toString());
     });
 
     it("should have initial side length of 0 but get 100 on second try ", fakeAsync(() => {

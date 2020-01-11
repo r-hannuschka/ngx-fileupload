@@ -63,13 +63,13 @@ export class ProgressbarCircleComponent implements OnInit {
      * initialize data, currently we running into a problem if data comes straight
      * from storage, then the css properties are not set correctly but element is allready
      * rendered. Seems it belongs to a document fragment but not the page / parent component.
-     * 
+     *
      * So we need to run into an loop to ensure we have all data we need, this loop will break
      * after 100ms to ensure we dont run into infinite loop and take what we have.
-     * 
-     * Neither zone.onStable nor afterViewInit are working for me here. Maybe afterViewChecked but this 
+     *
+     * Neither zone.onStable nor afterViewInit are working for me here. Maybe afterViewChecked but this
      * will trigger multiple times.
-     * 
+     *
      * @todo check for better ways to solve this without loop
      * @todo think about second option make size and radius mandatory could be bad for responsive design but will work without loop
      */

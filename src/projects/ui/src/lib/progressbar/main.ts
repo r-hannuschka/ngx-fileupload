@@ -1,10 +1,3 @@
-import { NgModule } from "@angular/core";
-import { ProgressbarCircleComponent } from "./src/progressbar-circle";
-
-@NgModule({
-    imports: [],
-    exports: [ ProgressbarCircleComponent ],
-    declarations: [ProgressbarCircleComponent],
-    providers: [],
-})
-export class NgxFileUploadUiProgressbarModule { }
+export * from "./src/progressbar.module";
+export * from "./src/ui/progressbar";
+export * from "./src/ui/progressbar-circle";

@@ -130,21 +130,20 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
             }
 
             .progressbar {
-
                 ::ng-deep {
-                    svg circle {
-                        stroke: lighten(map-get($colors, black), 10%);
-                        stroke-width: .75rem;
-
-                        &.progress {
-                            stroke-width: .8rem;
-                            stroke: map-get($colors, blue);
-                        }
+                    svg {
+                        height: 100px;
+                        width: 100px;
                     }
 
-                    svg text {
-                        font-size: .7rem;
-                        transform: translate(0, .3rem);
+                    svg circle {
+                        stroke: lighten(map-get($colors, black), 10%);
+                        stroke-width: .9rem;
+
+                        &.progress {
+                            stroke-width: .9rem;
+                            stroke: map-get($colors, blue);
+                        }
                     }
                 }
             }

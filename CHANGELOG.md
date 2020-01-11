@@ -1,6 +1,16 @@
+## [1.1.0](https://github.com/r-hannuschka/ngx-fileupload/compare/4.0.3...4.1.0) (2020-01-11)
+
+### Features
+
+- rework circle progressbar (breaking change)
+- add new default progressbar
+- update dependencies
+
+
 ## [1.0.6]
 
 ### Features
+
 
 * **ui:** isCancelAble pipe now takes an UploadState as argument and no longer UploadRequestData
 

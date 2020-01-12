@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/r-hannuschka/ngx-fileupload/compare/4.1.1...4.1.2) (2020-01-12)
+
+### Bug Fixes
+
+* **fix(example):** fixed outdated examples [49322e0](https://github.com/r-hannuschka/ngx-fileupload/commit/49322e0e361736153e8f63cf05527ad27717c377)
+* **fix(docu):** fixed documentation
+
+
 ## [1.1.1](https://github.com/r-hannuschka/ngx-fileupload/compare/4.1.0...4.1.1) (2020-01-12)
 
 ### Bug Fixes

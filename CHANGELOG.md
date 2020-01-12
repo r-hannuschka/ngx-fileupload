@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/r-hannuschka/ngx-fileupload/compare/4.1.0...4.1.1) (2020-01-12)
+
+### Bug Fixes
+
+* **fix(ui/circle-progressbar):** fixed bug mask not rendered correctly [d61acbd](https://github.com/r-hannuschka/ngx-fileupload/commit/d61acbd5f979af09c8251b9d6bec4fe5c37a863c)
+
+
 ## [1.1.0](https://github.com/r-hannuschka/ngx-fileupload/compare/4.0.3...4.1.0) (2020-01-11)
 
 ### Features

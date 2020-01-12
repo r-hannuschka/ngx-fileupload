@@ -9,10 +9,9 @@ import { By } from "@angular/platform-browser";
 @Component({
     template: `
         <style>
-            ngx-file-upload-ui--progressbar-circle {
+            ngx-file-upload-ui--progressbar-circle svg {
                 height: 200px;
                 width: 200px;
-                display: block;
             }
         </style>
         <ngx-file-upload-ui--progressbar-circle></ngx-file-upload-ui--progressbar-circle>
@@ -50,6 +49,11 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
     });
 
     it("should set correct dimensions", () => {
+
+        const svg = progressbar.query(By.css("svg"));
+        svg.nativeElement.style.width  = "200px";
+        svg.nativeElement.style.height = "200px";
+
         fixture.detectChanges();
 
         const circle = progressbar.query(By.css("circle"));
@@ -59,8 +63,8 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
         // dasharray are circumferences and 0 with only one part
         const dashArray = `${2 * radius * Math.PI} 0`;
 
-        expect(cx).toEqual("100");
-        expect(cy).toEqual("100");
+        expect(cx).toEqual("50%");
+        expect(cy).toEqual("50%");
         expect(r).toEqual(radius.toString());
         expect(circle.attributes["stroke-dasharray"]).toEqual(dashArray);
     });
@@ -147,29 +151,27 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
         fixture.detectChanges();
 
         const circle = progressbar.query(By.css("circle"));
-        const {r, cx, cy} = circle.attributes;
+        const {r} = circle.attributes;
 
-        expect(cx).toEqual("100");
-        expect(cy).toEqual("100");
         expect(r).toEqual("40");
     }));
 
     it("should have initial side length of 0 but get 100 on second try ", fakeAsync(() => {
+
+        const svg = progressbar.query(By.css("svg"));
+        svg.nativeElement.style.width  = "0";
+        svg.nativeElement.style.height = "0";
+
         progressbar.componentInstance.parts = 2;
         progressbar.componentInstance.gap = 2;
-
-        progressbar.nativeElement.style.width = 0;
-        progressbar.nativeElement.style.height = 0;
 
         fixture.detectChanges();
         tick(performance.now() + 160);
         fixture.detectChanges();
 
         const circle = progressbar.query(By.css("circle"));
-        const {r, cx, cy} = circle.attributes;
+        const {r} = circle.attributes;
 
-        expect(cx).toEqual("0");
-        expect(cy).toEqual("0");
         expect(r).toEqual("0");
     }));
 });

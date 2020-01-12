@@ -2,8 +2,6 @@ import { Component, Input, ViewChild, ElementRef, OnInit, NgZone } from "@angula
 
 class ProgressbarCircleData {
     radius = 0;
-    cx = 50;
-    cy = 50;
     circumferences = 0;
     offset = 0;
     progress = 0;
@@ -79,14 +77,11 @@ export class ProgressbarCircleComponent implements OnInit {
         const sideLength  = Math.min(width, height);
 
         // start work arround here, will only triggered if data comes from storage / cache
-        if (sideLength === 0 && (time - start) / 100 < 1) {
+        if (!this.data.radius && sideLength === 0 && (time - start) / 100 < 1) {
             this.zone.runOutsideAngular(() => {
                 requestAnimationFrame((ellapsed) => this.initializeData(start, ellapsed));
             });
         } else {
-            this.data.cx = sideLength / 2;
-            this.data.cy = sideLength / 2;
-
             this.data.radius = this.data.radius || this.calcRadius(sideLength) || 0;
             this.data.circumferences = 2 * Math.PI * this.data.radius;
 

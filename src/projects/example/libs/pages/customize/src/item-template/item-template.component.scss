@@ -138,10 +138,9 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
 
                     svg circle {
                         stroke: lighten(map-get($colors, black), 10%);
-                        stroke-width: .9rem;
+                        stroke-width: 14px;
 
                         &.progress {
-                            stroke-width: .9rem;
                             stroke: map-get($colors, blue);
                         }
                     }

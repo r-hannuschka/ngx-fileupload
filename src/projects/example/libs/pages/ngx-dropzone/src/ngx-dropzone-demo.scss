@@ -1,10 +1,19 @@
+$icomoon-font-path: "../../../../assets/fonts" !default;
+
+@import '~igniteui-angular/lib/core/styles/themes/index';
+@import "variables";
+@import "icons";
+
 :host {
 
-    app-ui--progressbar-circle {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    ::ng-deep {
+        @include igx-tabs($dark-tabs);
+    }
+
+    ngx-dropzone {
+        border-style: solid;
+        border-width: 0 2px 2px;
+        border-radius: 0;
     }
 
     ngx-dropzone-label {
@@ -29,30 +38,37 @@
         }
     }
 
+    ngx-file-upload-ui--progressbar-circle {
+
+        ::ng-deep {
+
+            svg {
+                opacity: .8;
+                height: 72px;
+                width: 72px;
+            }
+
+            svg circle {
+                stroke: darken(#FFF, 50%);
+                stroke-width: .5rem;
+
+                &.progress {
+                    stroke-width: .5rem;
+                    stroke: #FFF;
+                }
+            }
+
+            span {
+                font-size: .7rem;
+                color: #FFF;
+            }
+        }
+    }
+
     ::ng-deep {
 
         ngx-dropzone-remove-badge {
             z-index: 10;
-        }
-
-        svg {
-            opacity: .8;
-        }
-
-        svg circle {
-            stroke: darken(#FFF, 50%);
-            stroke-width: .5rem;
-
-            &.progress {
-                stroke-width: .5rem;
-                stroke: #FFF;
-            }
-        }
-
-        svg text {
-            fill: #FFF;
-            font-size: .7rem;
-            transform: translateY(6px) !important;
         }
     }
 }

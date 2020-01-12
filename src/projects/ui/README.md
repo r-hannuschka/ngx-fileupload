@@ -89,7 +89,8 @@ Circle Progressbar which can be split into parts with gap or display completly a
 
 ![ngx-file-upload/ui/progressbar-circle](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/docs/bin/progressbar.png)
 
-Progressbar which can be split into parts with gap or display completly as one. Can be animated by css.
+Progressbar which can be split into parts with gap or display completly as one. Could not animated via css but animation is included and can
+turned off.
 
 Read Docs for more Informations: [ProgressbarModule](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/ui/progressbar.md)
 

@@ -10,7 +10,7 @@ import { IsImageValidationComponent } from "./is-image/is-image.component";
 import { GroupAndComponent } from "./group-and/group-and.component";
 import { GroupOrComponent } from "./group-or/group-or.component";
 import { GroupMultipleComponent } from "./group-multiple/group-multiple.component";
-import { NgxFileUploadUiModule } from '@ngx-file-upload/ui';
+import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
 
 @NgModule({
     imports: [

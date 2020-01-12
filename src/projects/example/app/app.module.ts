@@ -32,7 +32,7 @@ export function getHighlightLanguages() {
         typescript: () => import("highlight.js/lib/languages/typescript"),
         scss: () => import("highlight.js/lib/languages/scss"),
         xml: () => import("highlight.js/lib/languages/xml")
-    }
+    };
 }
 
 @NgModule({

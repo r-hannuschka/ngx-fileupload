@@ -11,7 +11,7 @@ import { NgxDropZoneDemoComponent } from "./ngx-dropzone";
         CommonModule,
         NgxDropzoneModule,
         /**
-         * !notice import of NgxFileUploadCoreModule only required in root of app
+         * !notice required import of NgxFileUploadCoreModule only in root of app
          */
         NgxFileUploadCoreModule,
         /**

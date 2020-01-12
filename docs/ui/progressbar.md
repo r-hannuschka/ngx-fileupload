@@ -8,6 +8,25 @@ Contains progress bars for visualization of the upload progress.
 
 Circle Progressbar which can be split into parts with gap or display completly as one. Can be animated by css.
 
+---
+**NOTE**
+
+For Circle Progressbar the svg element should allways get equal width / height with scsss.
+
+```scss
+
+:host {
+    ngx-file-upload-ui--progressbar-circle {
+        svg {
+            height: 100px;
+            width: 100px;
+        }
+    }
+}
+```
+
+---
+
 app.module.ts
 
 ```ts

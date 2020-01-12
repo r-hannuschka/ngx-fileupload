@@ -1,54 +1,57 @@
 <svg xmlns="http://www.w3.org/2000/svg" #progressbar>
 
     <circle class="progress-bar"
-        attr.r="{{data.radius}}"
-        attr.cx="{{data.cx}}"
-        attr.cy="{{data.cy}}" 
+        cx="50%"
+        cy="50%"
         fill="transparent"
         shape-rendering="geometricPrecision"
+        [attr.r]="data.radius"
         [attr.stroke-dasharray]="dashArray"
         [attr.mask]="'url(#inverted-' + maskId +')'"></circle>
 
     <!-- progresssbar circle -->
     <circle class="progress" 
-        attr.r="{{data.radius}}"
-        attr.cx="{{data.cx}}"
-        attr.cy="{{data.cy}}" 
+        cx="50%"
+        cy="50%"
+        [attr.r]="data.radius"
         [attr.stroke-dasharray]="dashArray"
         [attr.mask]="'url(#' + maskId +')'"
         shape-rendering="geometricPrecision"
         fill="transparent">
     </circle>
 
-    <!-- 
+    <!--
         declare masks for circles
 
         first mask show progress, second mask remove progressbar background
         if both circles overlap, the edges looks a bit ugly so ensure we only see one
         of both progressbar circles
     -->
-    <mask id="{{maskId}}">
-        <circle class="progress mask" [ngClass]="data.progress > 0 ? 'animate' : ''"
-            attr.r="{{data.radius}}"
-            attr.cx="{{data.cx}}"
-            attr.cy="{{data.cy}}" 
-            attr.stroke-dasharray="{{data.circumferences}}"
-            attr.stroke-dashoffset="{{data.offset}}"
-            stroke="white"
-            fill="black">
-        </circle>
-    </mask>
-
-    <mask id="inverted-{{maskId}}">
-        <circle class="progress-bar mask" [ngClass]="data.progress > 0 ? 'animate' : ''"
-            attr.r="{{data.radius}}"
-            attr.cx="{{data.cx}}"
-            attr.cy="{{data.cy}}" 
-            attr.stroke-dasharray="{{data.circumferences}}"
-            attr.stroke-dashoffset="{{data.offset - data.circumferences}}"
-            fill="black">
-        </circle>
-    </mask>
+    <defs>
+        <mask id="{{maskId}}" maskUnits="userSpaceOnUse">
+            <circle class="progress mask" [ngClass]="data.progress > 0 ? 'animate' : ''"
+                shape-rendering="geometricPrecision"
+                cx="50%"
+                cy="50%"
+                [attr.r]="data.radius"
+                [attr.stroke-dasharray]="data.circumferences"
+                [attr.stroke-dashoffset]="data.offset"
+                stroke="white"
+                fill="black">
+            </circle>
+        </mask>
+        <mask id="inverted-{{maskId}}" maskUnits="userSpaceOnUse">
+            <circle class="progress-bar mask" [ngClass]="data.progress > 0 ? 'animate' : ''"
+                shape-rendering="geometricPrecision"
+                cx="50%"
+                cy="50%"
+                [attr.r]="data.radius"
+                [attr.stroke-dasharray]="data.circumferences"
+                [attr.stroke-dashoffset]="data.offset - data.circumferences"
+                fill="black">
+            </circle>
+        </mask>
+    </defs>
 </svg>
 
 <span>{{data.progress}} %</span>

@@ -4,17 +4,15 @@
     position: relative;
 
     svg {
-        height: 100%;
-        width: 100%;
         transform: rotate(-90deg);
-    }
 
-    svg circle.mask {
-        stroke: #FFF !important;
-    }
+        circle.mask {
+            stroke: #FFF !important;
+        }
 
-    svg circle.mask.animate {
-        transition: stroke-dashoffset .15s linear;
+        circle.mask.animate {
+            transition: stroke-dashoffset .15s linear;
+        }
     }
 
     span {

@@ -1,3 +1,36 @@
+export const MODULE = `
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { NgxFileUploadCoreModule } from "@ngx-file-upload/core";
+import { NgxFileUploadUiProgressbarModule, NgxFileUploadUiCommonModule, NgxFileUploadUiToolbarModule } from "@ngx-file-upload/ui";
+import { NgxFileDropModule } from "ngx-file-drop";
+
+import { DropZoneComponent } from "./ui/drop-zone";
+
+@NgModule({
+    imports: [
+        CommonModule,
+        NgxFileDropModule,
+        /**
+         * !notice required import of NgxFileUploadCoreModule only in root of app
+         */
+        NgxFileUploadCoreModule,
+        /**
+         * NgxFileUploadUiCommonModule for pipes
+         * NgxFileUploadUiProgressbarModule for circle progressbar
+         * NgxFileUploadUiToolbarModule for toolbar
+         */
+        NgxFileUploadUiCommonModule,
+        NgxFileUploadUiProgressbarModule,
+        NgxFileUploadUiToolbarModule
+    ])],
+    declarations: [DropZoneComponent],
+    providers: [],
+})
+export class DropZone { }
+`;
+
+
 export const TS = `
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
 import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest, UploadState } from "@ngx-file-upload/core";
@@ -87,35 +120,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
 `;
 
 export const HTML = `
-<!-- SECTION TEMPLATES -->
-<ng-template #itemTemplate let-upload="data" let-ctrl="ctrl">
-    <div class="upload-item">
-        <div class="label"><p>{{upload.name}}</p></div>
-
-        <!-- bootstrap progressbar -->
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" [ngStyle]="{width: upload.progress + '%'}"></div>
-        </div>
-
-        <div class="actions" [ngSwitch]="upload.state">
-            <!-- only icons -->
-            <span class="state" *ngSwitchCase="states.PENDING"><i class="icon-pending"></i></span>
-            <span class="state" *ngSwitchCase="states.START"><i class="icon-connect"></i></span>
-            <span class="state" *ngSwitchCase="states.PROGRESS"><i class="icon-progress"></i></span>
-            <span class="state" *ngSwitchCase="states.COMPLETED">
-                <i [ngClass]="upload.hasError ? 'icon-warning' : 'icon-success'"></i>
-            </span>
-
-            <!-- action buttons -->
-            <button type="button" class="btn state" *ngSwitchDefault (click)="ctrl.start()">
-                <i class="icon-upload"></i>
-            </button>
-            <button type="button" class="btn state" (click)="ctrl.remove()"><i class="icon-cancel"></i></button>
-        </div>
-    </div>
-</ng-template>
-
-<ngx-fileupload-toolbar [storage]="uploadStorage"></ngx-fileupload-toolbar>
+<ngx-file-upload-ui--toolbar [storage]="uploadStorage"></ngx-file-upload-ui--toolbar>
 
 <ngx-file-drop (onFileDrop)="drop($event)"
     [dropZoneLabel]="'Drop or'"
@@ -125,6 +130,67 @@ export const HTML = `
 </ngx-file-drop>
 
 <div class="files">
-    <ngx-fileupload-item *ngFor="let upload of uploads" [template]="itemTemplate" [upload]="upload"></ngx-fileupload-item>
+    <div *ngFor="let upload of uploads" class="upload">
+        <div class="data">
+            <span class="name">{{upload.data.name}}</span>
+            <span class="uploaded">{{upload.data.uploaded | fileSize}} | {{upload.data.progress}}%</span>
+            <span class="state">{{upload.data.state | stateToString}}</span>
+        </div>
+
+        <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="1">
+        </ngx-file-upload-ui--progressbar>
+    </div>
 </div>
+`;
+
+export const SCSS = `
+:host {
+
+    .files {
+        height: 30vh;
+        overflow-y: auto;
+        padding: 0 1rem;
+        border: 1px solid map-get($colors, darkBlue);
+        border-top-width: 0;
+
+        .upload {
+            margin: 0 0 1rem;
+            &:last-child { margin: 0; }
+        }
+
+        .upload .data {
+            display: flex;
+
+            span:first-child:after {
+                content: "";
+                border: 1px solid map-get($colors, darkBlue);
+                border-width: 0 1px 0 0;
+                margin: 0 0 0 .5rem;
+            }
+
+            span:nth-child(2) {
+                margin: 0 .5rem;
+            }
+
+            .uploaded {
+                flex: 1;
+            }
+        }
+    }
+
+    ::ng-deep {
+        .ngx-fileupload__ngx-file-drop {
+            border: 1px solid map-get($colors, darkBlue);
+
+            .ngx-file-drop__content {
+                height: auto;
+                padding: 1rem;
+            }
+        }
+
+        .ngx-file-drop__drop-zone-label {
+            margin-right: .4rem;
+        }
+    }
+}
 `;

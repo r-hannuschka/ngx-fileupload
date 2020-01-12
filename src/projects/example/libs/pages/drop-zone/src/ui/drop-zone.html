@@ -1,28 +1,3 @@
-<!-- SECTION TEMPLATES -->
-<ng-template #itemTemplate let-upload="data" let-ctrl="ctrl">
-    <div class="upload-item">
-        <div class="label"><p>{{upload.name}}</p></div>
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" [ngStyle]="{width: upload.progress + '%'}"></div>
-        </div>
-        <div class="actions" [ngSwitch]="upload.state">
-            <!-- only icons -->
-            <span class="state" *ngSwitchCase="states.PENDING"><i class="icon-pending"></i></span>
-            <span class="state" *ngSwitchCase="states.START"><i class="icon-connect"></i></span>
-            <span class="state" *ngSwitchCase="states.PROGRESS"><i class="icon-progress"></i></span>
-            <span class="state" *ngSwitchCase="states.COMPLETED">
-                <i [ngClass]="upload.hasError ? 'icon-warning' : 'icon-success'"></i>
-            </span>
-
-            <!-- action buttons -->
-            <button type="button" class="btn state" *ngSwitchDefault (click)="ctrl.start()">
-                <i class="icon-upload"></i>
-            </button>
-            <button type="button" class="btn state" (click)="ctrl.remove()"><i class="icon-cancel"></i></button>
-        </div>
-    </div>
-</ng-template>
-
 <ng-template #example>
     <ngx-file-upload-ui--toolbar [storage]="uploadStorage"></ngx-file-upload-ui--toolbar>
 
@@ -34,8 +9,14 @@
     </ngx-file-drop>
 
     <div class="files">
-        <div *ngFor="let upload of uploads">
-            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="4"></ngx-file-upload-ui--progressbar>
+        <div *ngFor="let upload of uploads" class="upload">
+            <div class="data">
+                <span class="name">{{upload.data.name}}</span>
+                <span class="uploaded">{{upload.data.uploaded | fileSize}} | {{upload.data.progress}}%</span>
+                <span class="state">{{upload.data.state | stateToString}}</span>
+            </div>
+
+            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="1"></ngx-file-upload-ui--progressbar>
         </div>
     </div>
 </ng-template>
@@ -60,12 +41,20 @@
         <ng-container [ngTemplateOutlet]="example"></ng-container>
     </igx-tabs-group>
 
+    <igx-tabs-group label="Module">
+        <pre><code [highlight]="code.MODULE"></code></pre>
+    </igx-tabs-group>
+
     <igx-tabs-group label="Typescript">
         <pre><code [highlight]="code.TS"></code></pre>
     </igx-tabs-group>
 
     <igx-tabs-group label="Html">
         <pre><code [highlight]="code.HTML"></code></pre>
+    </igx-tabs-group>
+
+    <igx-tabs-group label="Scss">
+        <pre><code [highlight]="code.SCSS"></code></pre>
     </igx-tabs-group>
 
 </igx-tabs>

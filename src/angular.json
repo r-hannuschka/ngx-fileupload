@@ -168,41 +168,6 @@
         }
       }
     },
-    "ngx-fileupload": {
-      "projectType": "library",
-      "root": "lib/ngx-fileupload",
-      "sourceRoot": "lib/ngx-fileupload",
-      "prefix": "ngx-fileupload",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "lib/tsconfig.lib.json",
-            "project": "lib/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "lib/tests/main.ts",
-            "tsConfig": "lib/tests/tsconfig.spec.json",
-            "karmaConfig": "lib/tests/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "lib/tsconfig.lib.json",
-              "lib/tests/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
     "core": {
       "projectType": "library",
       "root": "projects/core",

@@ -27,7 +27,7 @@ export const HTML = `
     <!-- fileuploads -->
     <div class="card-list">
         <div class="card-list">
-            <ng-container *ngFor="let upload of uploads" 
+            <ng-container *ngFor="let upload of uploads"
                 [ngTemplateOutlet]="itemTemplate"
                 [ngTemplateOutletContext]="{upload: upload}">
             </ng-container>
@@ -126,7 +126,7 @@ export class CustomizPage {}
 
 export const TEMPLATE = `
 <!-- template for each upload -->
-<ng-template #itemTemplate let-upload="upload" #custom>
+<ng-template #itemTemplate let-upload="upload">
 
     <div class="card-wrapper">
 
@@ -155,9 +155,7 @@ export const TEMPLATE = `
 
             <div class="card-body">
                 <div class="progressbar">
-                    <ngx-file-upload-ui--progressbar-circle
-                        [circleData]="{height: 100, width: 100, radius: 40}"
-                        [progress]="upload.data.progress" >
+                    <ngx-file-upload-ui--progressbar-circle [parts]="2" [progress]="upload.data.progress">
                     </ngx-file-upload-ui--progressbar-circle>
                 </div>
 

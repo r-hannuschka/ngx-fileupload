@@ -4,7 +4,7 @@ import { IgxTabsModule } from "igniteui-angular";
 import { UiModule } from "projects/example/libs/ui";
 import { DemoComponent } from "./demo/demo";
 import { HighlightModule } from "ngx-highlightjs";
-import { NgxFileUploadUiModule } from '@ngx-file-upload/ui';
+import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
 
 @NgModule({
     imports: [

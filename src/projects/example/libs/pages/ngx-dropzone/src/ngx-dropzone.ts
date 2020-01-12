@@ -1,8 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from "@angular/core";
 import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest } from "@ngx-file-upload/core";
+import * as ExampleCodeData from "projects/example/libs/data/code/ngx-dropzone/drop-zone";
 
 @Component({
-    selector: "ngx-dropzone-demo",
+    selector: "app-ngx-dropzone-demo",
     templateUrl: "./ngx-dropzone.html",
     styleUrls: ["./ngx-dropzone-demo.scss"]
 })
@@ -10,7 +11,9 @@ export class NgxDropZoneDemoComponent implements OnInit {
 
     public uploads: UploadRequest[] = [];
 
-    private storage: UploadStorage;
+    public code = ExampleCodeData;
+
+    public storage: UploadStorage;
 
     private uploadOptions: UploadOptions;
 
@@ -29,13 +32,13 @@ export class NgxDropZoneDemoComponent implements OnInit {
         this.storage.change()
           .subscribe(uploads => this.uploads = uploads);
     }
- 
+
     public onSelect(event) {
       const addedFiles: File[] = event.addedFiles;
       const uploads = this.uploadFactory.createUploadRequest(addedFiles, this.uploadOptions);
       this.storage.add(uploads);
     }
-     
+
     public onRemove(upload: UploadRequest) {
       this.storage.remove(upload);
     }

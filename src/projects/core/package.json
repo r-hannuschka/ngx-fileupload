@@ -20,8 +20,8 @@
     "queue"
   ],
   "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14"
+    "@angular/common": "^8.2.14 || ^9.0.0",
+    "@angular/core": "^8.2.14 || ^9.0.0"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
   "bugs": {

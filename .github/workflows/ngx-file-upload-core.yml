@@ -15,29 +15,11 @@ jobs:
         with:
           node-version: '12.8'
 
-      - name: npm cache
-        uses: actions/cache@v1
-        id: npm-cache
-        with:
-            path: ./src/node_modules
-            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
-
       - name: install dependencies
-        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: |
           cd src
-          npm ci
-
-      - name: install puppeteer
-        if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: |
-          cd src
+          npm i
           npm i puppeteer@chrome-78
-
-      - name: update webdriver
-        if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: |
-          cd src
           npm run webdriver:update
 
   lint:
@@ -47,12 +29,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-
-      - name: npm cache
-        uses: actions/cache@v1
-        with:
-            path: ./src/node_modules
-            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
 
       - name: lint
         run: |
@@ -66,12 +42,6 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v1
-
-      - name: npm cache
-        uses: actions/cache@v1
-        with:
-            path: ./src/node_modules
-            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
       
       - name: build packages
         run: |

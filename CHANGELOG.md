@@ -70,3 +70,5 @@
 * auto remove uploads after given amount of time ([0035f90](https://github.com/r-hannuschka/ngx-fileupload/commit/0035f907ab7ca392cbdb1ae74af0aeed86cae483)), closes [#174](https://github.com/r-hannuschka/ngx-fileupload/issues/174)
 * split into core and ui library ([1dddcfd](https://github.com/r-hannuschka/ngx-fileupload/commit/1dddcfd957c7a63d205b4712b363e89d1d1096ca))
 * update app to use highlight.js v4 ([4279fa6](https://github.com/r-hannuschka/ngx-fileupload/commit/4279fa650d14b380de95c8bfc1b8e2ec9841de6a))
+
+* **feat:** implement connections settings webview [07062c4](https://github.com/PLH-Coding/vsqlik/commit/07062c4c2cc28de475cd92f9bfb97a5f354acdd3)

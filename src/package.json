@@ -31,7 +31,7 @@
     "@angular/platform-browser-dynamic": "9.0.0",
     "@angular/router": "9.0.0",
     "highlight.js": "9.18.1",
-    "igniteui-angular": "8.2.18",
+    "igniteui-angular": "^9.0.0-rc.3",
     "ngx-customscrollbar": "2.0.2",
     "ngx-dropzone": "2.2.2",
     "ngx-file-drop": "8.0.8",
@@ -68,11 +68,11 @@
     "ng-packagr": "9.0.0",
     "protractor": "5.4.3",
     "ts-node": "8.6.2",
-    "tsickle": "0.37.1",
+    "tsickle": "^0.38.0",
     "tslint": "5.20.1",
-    "typescript": "3.5.3",
+    "typescript": "^3.7.5",
     "watch": "1.0.2",
-    "zone.js": "0.9.1"
+    "zone.js": "^0.10.2"
   },
   "resolutions": {
     "https-proxy-agent": "4.0.0"

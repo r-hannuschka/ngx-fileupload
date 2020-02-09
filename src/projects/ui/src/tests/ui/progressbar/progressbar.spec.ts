@@ -46,8 +46,8 @@ describe( "ngx-file-upload/libs/ui/progressbar", () => {
         const dashArrayProgressbar = progressbar.query(By.css(".progressbar .progress")).styles["stroke-dasharray"];
 
         // dash array should be width 0
-        expect(dashArrayBackground).toBe(`${parseInt(width, 10)} 0`);
-        expect(dashArrayProgressbar).toBe(`${parseInt(width, 10)} 0`);
+        expect(dashArrayBackground).toBe(`${parseInt(width, 10)}, 0`);
+        expect(dashArrayProgressbar).toBe(`${parseInt(width, 10)}, 0`);
     });
 
     it("should set dasharray for 5 parts with 1px gap", () => {
@@ -62,8 +62,8 @@ describe( "ngx-file-upload/libs/ui/progressbar", () => {
         const dashArrayProgressbar = progressbar.query(By.css(".progressbar .progress")).styles["stroke-dasharray"];
 
         /** as we set to 254px width, 5 parts = 50px each, 4 time gap 1px each makes total of 254px */
-        expect(dashArrayBackground).toBe(`50 1`);
-        expect(dashArrayProgressbar).toBe(`50 1`);
+        expect(dashArrayBackground).toBe(`50, 1`);
+        expect(dashArrayProgressbar).toBe(`50, 1`);
     });
 
     it("should set dasharray ", () => {
@@ -78,8 +78,8 @@ describe( "ngx-file-upload/libs/ui/progressbar", () => {
         const dashArrayProgressbar = progressbar.query(By.css(".progressbar .progress")).styles["stroke-dasharray"];
 
         /** as we set to 254px width, 5 parts = 50px each, 4 time gap 1px each makes total of 254px */
-        expect(dashArrayBackground).toBe(`50 1`);
-        expect(dashArrayProgressbar).toBe(`50 1`);
+        expect(dashArrayBackground).toBe(`50, 1`);
+        expect(dashArrayProgressbar).toBe(`50, 1`);
     });
 
     it("should update progressed line if no progress is set", () => {
@@ -89,9 +89,8 @@ describe( "ngx-file-upload/libs/ui/progressbar", () => {
         progressbarComponent.animate = false;
         // set progress to 20%
         progressbarComponent.progress = 20;
-
         fixture.detectChanges();
-        const {x2} = progressbar.query(By.css(".progressbar .progress")).attributes;
+        const x2 = progressbar.query(By.css(".progressbar .progress")).nativeElement.getAttribute("x2");
         expect(x2).toBe("20%");
     });
 
@@ -103,7 +102,7 @@ describe( "ngx-file-upload/libs/ui/progressbar", () => {
         // set progress to 20%
         progressbarComponent.progress = 0;
         fixture.detectChanges();
-        const {x2} = progressbar.query(By.css(".progressbar .progress")).attributes;
+        const x2 = progressbar.query(By.css(".progressbar .progress")).nativeElement.getAttribute("x2");
         expect(x2).toBe("0");
     });
 
@@ -116,7 +115,7 @@ describe( "ngx-file-upload/libs/ui/progressbar", () => {
         progressbarComponent.progress = 20;
         tick(performance.now() + 1200);
 
-        const {x2} = progressbar.query(By.css(".progressbar .progress")).attributes;
+        const x2 = progressbar.query(By.css(".progressbar .progress")).nativeElement.getAttribute("x2");
         expect(x2).toBe("20%");
     }));
 
@@ -133,8 +132,7 @@ describe( "ngx-file-upload/libs/ui/progressbar", () => {
         progressbarComponent.progress = 40;
 
         tick(performance.now() + 2100);
-
-        const {x2} = progressbar.query(By.css(".progressbar .progress")).attributes;
+        const x2 = progressbar.query(By.css(".progressbar .progress")).nativeElement.getAttribute("x2");
         expect(x2).toBe("40%");
     }));
 });

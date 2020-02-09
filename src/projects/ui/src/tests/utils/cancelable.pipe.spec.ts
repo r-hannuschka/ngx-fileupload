@@ -1,4 +1,4 @@
-import { UploadState } from "@ngx-file-upload/core";
+import { NgxFileUploadState } from "@ngx-file-upload/core";
 import { CancelAblePipe } from "@ngx-file-upload/dev/ui/lib/common/src/cancelable.pipe";
 
 describe("ngx-file-upload/libs/utils/cancelable.pipe", () => {
@@ -10,23 +10,23 @@ describe("ngx-file-upload/libs/utils/cancelable.pipe", () => {
     });
 
     it ("it should be cancelable if state is pending", () => {
-        const result = pipe.transform(UploadState.PENDING);
+        const result = pipe.transform(NgxFileUploadState.PENDING);
         expect(result).toBeTruthy();
     });
 
     it ("it should be cancelable if state is progress", () => {
-        const result = pipe.transform(UploadState.PROGRESS);
+        const result = pipe.transform(NgxFileUploadState.PROGRESS);
         expect(result).toBeTruthy();
     });
 
     it ("it should be cancelable if state is start", () => {
-        const result = pipe.transform(UploadState.START);
+        const result = pipe.transform(NgxFileUploadState.START);
         expect(result).toBeTruthy();
     });
 
     it ("it should not be cancelable on state canceled, completed, invalid and idle", () => {
-        const states = [UploadState.CANCELED, UploadState.COMPLETED, UploadState.INVALID, UploadState.IDLE];
-        const result: boolean[] = states.map((state: UploadState) => {
+        const states = [NgxFileUploadState.CANCELED, NgxFileUploadState.COMPLETED, NgxFileUploadState.INVALID, NgxFileUploadState.IDLE];
+        const result: boolean[] = states.map((state: NgxFileUploadState) => {
             return pipe.transform(state);
         });
 

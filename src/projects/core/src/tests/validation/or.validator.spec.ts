@@ -1,13 +1,13 @@
-import { OrValidator } from "@ngx-file-upload/dev/core/public-api";
+import { NgxFileUploadOrValidator } from "@ngx-file-upload/dev/core/public-api";
 import { ValidatorMockFactory } from "@ngx-file-upload/testing";
 
 describe("@ngx-file-upload/core/validation/or", () => {
 
     const uploadFile = new File([""], "or-validator-test.txt", { type: "text/plain"});
-    let orValidationGroup: OrValidator;
+    let orValidationGroup: NgxFileUploadOrValidator;
 
     beforeAll(() => {
-        orValidationGroup = new OrValidator();
+        orValidationGroup = new NgxFileUploadOrValidator();
     });
 
     beforeEach(() => {

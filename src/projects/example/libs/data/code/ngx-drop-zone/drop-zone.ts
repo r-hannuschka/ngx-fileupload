@@ -33,7 +33,7 @@ export class DropZone { }
 
 export const TS = `
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
-import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest, UploadState } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadFactory, NgxFileUploadOptions, NgxFileUploadRequest, NgxFileUploadState } from "@ngx-file-upload/core";
 import { NgxFileDropEntry, FileSystemFileEntry } from "ngx-file-drop";
 import { takeUntil, tap } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -45,15 +45,15 @@ import { Subject } from "rxjs";
 })
 export class DropZoneComponent implements OnDestroy, OnInit {
 
-    public uploads: UploadRequest[] = [];
+    public uploads: NgxFileUploadRequest[] = [];
 
-    public uploadStorage: UploadStorage;
+    public uploadStorage: NgxFileUploadStorage;
 
-    /** UploadState enum so we could use this in template */
-    public states = UploadState;
+    /** NgxFileUploadState enum so we could use this in template */
+    public states = NgxFileUploadState;
 
     /** upload options */
-    private uploadOptions: UploadOptions = {
+    private uploadOptions: NgxFileUploadOptions = {
         url: "http://localhost:3000/upload/gallery",
         formData: {
             enabled: true,
@@ -66,7 +66,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
     constructor(
         @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
     ) {
-        this.uploadStorage = new UploadStorage({
+        this.uploadStorage = new NgxFileUploadStorage({
             concurrentUploads: 2
         });
     }
@@ -75,7 +75,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
      * files get dropped
      */
     public drop(files: NgxFileDropEntry[]) {
-        const requests: UploadRequest[] = [];
+        const requests: NgxFileUploadRequest[] = [];
 
         let required = files.length;
         let get = 0;

@@ -30,7 +30,7 @@ export class AppModule { }
 
 export const TS = `
 import { Component, OnInit, Inject } from "@angular/core";
-import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadFactory, NgxFileUploadOptions, NgxFileUploadRequest } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-ngx-dropzone-demo",
@@ -39,16 +39,16 @@ import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest } fro
 })
 export class NgxDropZoneDemoComponent implements OnInit {
 
-    public uploads: UploadRequest[] = [];
+    public uploads: NgxFileUploadRequest[] = [];
 
-    public storage: UploadStorage;
+    public storage: NgxFileUploadStorage;
 
-    private uploadOptions: UploadOptions;
+    private uploadOptions: NgxFileUploadOptions;
 
     constructor(
       @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
     ) {
-        this.storage = new UploadStorage({
+        this.storage = new NgxFileUploadStorage({
           concurrentUploads: 2,
           autoStart: true,
           removeCompleted: 5000 // remove completed after 5 seconds
@@ -67,7 +67,7 @@ export class NgxDropZoneDemoComponent implements OnInit {
       this.storage.add(uploads);
     }
 
-    public onRemove(upload: UploadRequest) {
+    public onRemove(upload: NgxFileUploadRequest) {
       this.storage.remove(upload);
     }
 

@@ -39,7 +39,7 @@ export const HTML = `
 
 export const TYPESCRIPT = `
 import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
-import { UploadStorage, UploadRequest, UploadState, NgxFileUploadFactory } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadRequest, NgxFileUploadState, NgxFileUploadFactory } from "@ngx-file-upload/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { ExampleUploadStorage } from "@ngx-fileupload-example/data/base/upload-storage";
@@ -51,21 +51,21 @@ import { ExampleUploadStorage } from "@ngx-fileupload-example/data/base/upload-s
 })
 export class ItemTemplateComponent implements OnInit, OnDestroy {
 
-    public uploadStates = UploadState;
+    public uploadStates = NgxFileUploadState;
 
-    public uploads: UploadRequest[] = [];
+    public uploads: NgxFileUploadRequest[] = [];
 
     public destroy$: Subject<boolean> = new Subject();
 
     public constructor(
-        @Inject(ExampleUploadStorage) public storage: UploadStorage,
+        @Inject(ExampleUploadStorage) public storage: NgxFileUploadStorage,
         @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
     ) {}
 
     public ngOnInit() {
         this.storage.change()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((requests: UploadRequest[]) => this.uploads = requests);
+            .subscribe((requests: NgxFileUploadRequest[]) => this.uploads = requests);
     }
 
     public ngOnDestroy() {
@@ -86,20 +86,20 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
         this.storage.stopAll();
     }
 
-    public cancelUpload(upload: UploadRequest) {
+    public cancelUpload(upload: NgxFileUploadRequest) {
         upload.cancel();
     }
 
-    public removeUpload(upload: UploadRequest) {
+    public removeUpload(upload: NgxFileUploadRequest) {
         this.storage.remove(upload);
     }
 
-    public startUpload(upload: UploadRequest) {
+    public startUpload(upload: NgxFileUploadRequest) {
         upload.start();
     }
 
     public drop(files: File[]) {
-        const uploadOptions: UploadOptions = { url: this.url };
+        const uploadOptions: NgxFileUploadOptions = { url: this.url };
         const requests = this.uploadFactory.createUploadRequest(files, uploadOptions);
         this.storage.add(requests);
     }

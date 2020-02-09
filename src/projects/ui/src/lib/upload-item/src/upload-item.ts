@@ -1,13 +1,13 @@
 
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, AfterViewInit } from "@angular/core";
-import { UploadRequest, UploadState, UploadRequestData, UploadControl } from "@ngx-file-upload/core";
+import { NgxFileUploadRequest, NgxFileUploadState, NgxFileUploadRequestData, NgxFileUploadControl } from "@ngx-file-upload/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Control } from "./upload.control";
 
 export interface FileUploadItemContext {
-    data: UploadRequestData;
-    ctrl: UploadControl;
+    data: NgxFileUploadRequestData;
+    ctrl: NgxFileUploadControl;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface FileUploadItemContext {
 })
 export class UploadItemComponent implements AfterViewInit, OnDestroy {
 
-    public uploadState = UploadState;
+    public uploadState = NgxFileUploadState;
 
     /**
      * template context which is bound to rendered template
@@ -30,7 +30,7 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
     /**
      * file upload which should bound to this view
      */
-    private fileUpload: UploadRequest;
+    private fileUpload: NgxFileUploadRequest;
 
     /**
      * save subscription here,  since we have only 1 sub
@@ -57,7 +57,7 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
      * sets upload we want to bind with current view
      */
     @Input()
-    public set upload(request: UploadRequest) {
+    public set upload(request: NgxFileUploadRequest) {
         this.fileUpload = request;
         this.context = {
             data: {...request.data},
@@ -86,7 +86,7 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
         this.fileUpload.change
             .pipe(takeUntil(this.destroyed))
             .subscribe({
-                next: (fileUpload: UploadRequestData) => {
+                next: (fileUpload: NgxFileUploadRequestData) => {
                     return this.context.data = fileUpload;
                 }
             });

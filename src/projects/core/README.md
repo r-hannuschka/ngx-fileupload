@@ -63,7 +63,7 @@ export class AppModule {}
 
 ```ts
 import { Component, OnInit, Inject } from '@angular/core';
-import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadFactory, NgxFileUploadOptions, NgxFileUploadRequest } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-component",
@@ -72,16 +72,16 @@ import { UploadStorage, NgxFileUploadFactory, UploadOptions, UploadRequest } fro
 })
 export class AppComponent implements OnInit {
 
-    public uploads: UploadRequest[] = [];
+    public uploads: NgxFileUploadRequest[] = [];
 
-    private storage: UploadStorage;
+    private storage: NgxFileUploadStorage;
 
-    private uploadOptions: UploadOptions;
+    private uploadOptions: NgxFileUploadOptions;
 
     constructor(
       @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
     ) {
-        this.storage = new UploadStorage({
+        this.storage = new NgxFileUploadStorage({
           concurrentUploads: 2,
           autoStart: true,
           removeCompleted: 5000 // remove completed after 5 seconds
@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
       }
     }
      
-    public onRemove(upload: UploadRequest) {
+    public onRemove(upload: NgxFileUploadRequest) {
       this.storage.remove(upload);
     }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { isImage, MaxUploadSizeValidator } from "projects/example/libs/utils/validators";
-import { ValidationBuilder, GroupedValidator } from "@ngx-file-upload/core";
+import { NgxFileUploadValidationBuilder, NgxFileUploadGroupedvalidator } from "@ngx-file-upload/core";
 import * as ExampleCode from "projects/example/libs/data/code/validation/group-and";
 import * as Validators from "projects/example/libs/data/code/utils/validators";
 
@@ -10,7 +10,7 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
 })
 export class GroupAndComponent implements OnInit {
 
-    public validator: GroupedValidator;
+    public validator: NgxFileUploadGroupedvalidator;
 
     public exampleCode = ExampleCode;
 
@@ -21,7 +21,7 @@ export class GroupAndComponent implements OnInit {
         /** set max file upload size to 512kb */
         const maxUploadSize: number = 512 * 1024;
 
-        this.validator = ValidationBuilder.and(
+        this.validator = NgxFileUploadValidationBuilder.and(
             isImage, new MaxUploadSizeValidator(maxUploadSize)
         );
     }

@@ -1,11 +1,11 @@
 export const IMAGE_VALIDATOR = `
-import { ValidationErrors } from "@ngx-file-upload/core";
+import { NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
 
 /**
  * defines a validation function which should return
- * ValidationErrors if invalid or Null if valid
+ * NgxFileUploadValidationErrors if invalid or Null if valid
  */
-export function isImage(file: File): ValidationErrors {
+export function isImage(file: File): NgxFileUploadValidationErrors {
 
     /**
      * very easy check, would be better to check for mime type
@@ -18,9 +18,9 @@ export function isImage(file: File): ValidationErrors {
 }`;
 
 export const MAX_SIZE_VALIDATOR = `
-import { Validator, ValidationErrors } from "@ngx-file-upload/core";
+import { NgxFileUploadValidator, NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
 
-export class MaxUploadSizeValidator implements Validator {
+export class MaxUploadSizeValidator implements NgxFileUploadValidator {
 
     private units = ["Byte", "kb", "mb", "gb"];
 
@@ -36,7 +36,7 @@ export class MaxUploadSizeValidator implements Validator {
         this.maxSize = size || 1024 * 1024;
     }
 
-    public validate(file: File): ValidationErrors | null {
+    public validate(file: File): NgxFileUploadValidationErrors | null {
         const valid = (file.size / this.maxSize) < 1;
 
         if (file.size / this.maxSize > 1) {
@@ -61,9 +61,9 @@ export class MaxUploadSizeValidator implements Validator {
 }`;
 
 export const IS_ZIP_VALIDATOR = `
-import { ValidationErrors } from "@ngx-file-upload/core";
+import { NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
 
-export function isZipFile(file: File): ValidationErrors | null {
+export function isZipFile(file: File): NgxFileUploadValidationErrors | null {
 
     const validMime = [
         "application/zip",

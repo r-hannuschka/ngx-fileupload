@@ -1,11 +1,11 @@
 import { Observable, Subject } from "rxjs";
-import { UploadRequestData, UploadRequest, UploadState } from "@ngx-file-upload/core";
+import { NgxFileUploadRequestData, NgxFileUploadRequest, NgxFileUploadState } from "@ngx-file-upload/core";
 import { take } from "rxjs/operators";
 
 /**
  * represents a single fileupload
  */
-export class UploadRequestMock implements UploadRequest {
+export class UploadRequestMock implements NgxFileUploadRequest {
 
     destroy$: Subject<boolean>;
 
@@ -15,11 +15,11 @@ export class UploadRequestMock implements UploadRequest {
 
     requestId;
 
-    public data: UploadRequestData;
+    public data: NgxFileUploadRequestData;
 
-    change$: Subject<UploadRequestData>;
+    change$: Subject<NgxFileUploadRequestData>;
 
-    public constructor(model: UploadRequestData) {
+    public constructor(model: NgxFileUploadRequestData) {
         this.data = model;
         this.change$ = new Subject();
         this.destroy$ = new Subject();
@@ -27,7 +27,7 @@ export class UploadRequestMock implements UploadRequest {
     }
 
     isCanceled(): boolean {
-        return this.data.state === UploadState.CANCELED;
+        return this.data.state === NgxFileUploadState.CANCELED;
     }
 
     retry(): void {
@@ -44,17 +44,17 @@ export class UploadRequestMock implements UploadRequest {
     }
 
     isCompleted(): boolean {
-        return this.data.state === UploadState.COMPLETED;
+        return this.data.state === NgxFileUploadState.COMPLETED;
     }
 
     isIdle(): boolean {
-        return this.data.state === UploadState.IDLE;
+        return this.data.state === NgxFileUploadState.IDLE;
     }
 
     start(): void {
         this.hooks.forEach((hook) => hook.pipe(take(1)).subscribe((start) => {
             if (start) {
-                this.data.state = UploadState.START;
+                this.data.state = NgxFileUploadState.START;
                 this.applyChange();
             }
         }));
@@ -68,18 +68,18 @@ export class UploadRequestMock implements UploadRequest {
     }
 
     isInvalid(): boolean {
-        return this.data.state === UploadState.INVALID;
+        return this.data.state === NgxFileUploadState.INVALID;
     }
 
     isPending(): boolean {
-        return this.data.state === UploadState.PENDING;
+        return this.data.state === NgxFileUploadState.PENDING;
     }
 
     isProgress(): boolean {
-        return this.data.state === UploadState.PROGRESS || this.data.state === UploadState.START;
+        return this.data.state === NgxFileUploadState.PROGRESS || this.data.state === NgxFileUploadState.START;
     }
 
-    public get change(): Observable<UploadRequestData> {
+    public get change(): Observable<NgxFileUploadRequestData> {
         return this.change$.asObservable();
     }
 

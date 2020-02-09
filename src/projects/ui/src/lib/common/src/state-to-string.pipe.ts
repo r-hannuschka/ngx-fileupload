@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { UploadState } from "@ngx-file-upload/core";
+import { NgxFileUploadState } from "@ngx-file-upload/core";
 
 /**
  * converts upload state to string value
@@ -13,15 +13,15 @@ import { UploadState } from "@ngx-file-upload/core";
 })
 export class StateToStringPipe implements PipeTransform {
 
-    transform(state: UploadState): string {
+    transform(state: NgxFileUploadState): string {
 
         switch (state) {
-            case UploadState.CANCELED:  return "canceled";
-            case UploadState.PENDING:   return "pending";
-            case UploadState.PROGRESS:  return "progress";
-            case UploadState.COMPLETED: return "completed";
-            case UploadState.START:     return "start";
-            case UploadState.INVALID:   return "invalid";
+            case NgxFileUploadState.CANCELED:  return "canceled";
+            case NgxFileUploadState.PENDING:   return "pending";
+            case NgxFileUploadState.PROGRESS:  return "progress";
+            case NgxFileUploadState.COMPLETED: return "completed";
+            case NgxFileUploadState.START:     return "start";
+            case NgxFileUploadState.INVALID:   return "invalid";
             default:                    return "idle";
         }
     }

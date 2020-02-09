@@ -1,26 +1,26 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Subject, Observable, merge, of, concat } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
-import { UploadState, UploadResponse, UploadRequest, UploadOptions, UploadRequestData} from "../../api";
-import { UploadModel } from "./upload.model";
+import { NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadRequest, NgxFileUploadOptions, NgxFileUploadRequestData} from "../../api";
+import { NgxFileUploadModel } from "./upload.model";
 
 /**
  * represents a single file upload
  */
-export class Upload implements UploadRequest {
+export class NgxFileUpload implements NgxFileUploadRequest {
 
     private cancel$: Subject<boolean> = new Subject();
-    private change$: Subject<UploadRequestData> = new Subject();
+    private change$: Subject<NgxFileUploadRequestData> = new Subject();
     private destroyed$: Subject<boolean> = new Subject();
 
-    private options: UploadOptions = {
+    private options: NgxFileUploadOptions = {
         url: "",
         formData: { enabled: true, name: "file" }
     };
 
     private hooks: {beforeStart: Observable<boolean>[]} = { beforeStart: [] };
 
-    public get change(): Observable<UploadRequestData> {
+    public get change(): Observable<NgxFileUploadRequestData> {
         return this.change$.asObservable();
     }
 
@@ -28,19 +28,19 @@ export class Upload implements UploadRequest {
         return this.destroyed$.asObservable();
     }
 
-    public get data(): UploadRequestData {
+    public get data(): NgxFileUploadRequestData {
         return this.upload;
     }
 
     public requestId: string;
 
     /**
-     * create UploadRequest service
+     * create NgxFileUploadRequest service
      */
     public constructor(
         private http: HttpClient,
-        private upload: UploadRequestData,
-        options: UploadOptions
+        private upload: NgxFileUploadRequestData,
+        options: NgxFileUploadOptions
     ) {
         this.options = {...this.options, ...options};
     }
@@ -57,7 +57,7 @@ export class Upload implements UploadRequest {
      */
     public cancel() {
         if (this.isProgress() || this.isPending()) {
-            this.upload.state = UploadState.CANCELED;
+            this.upload.state = NgxFileUploadState.CANCELED;
             this.notifyObservers();
             this.cancel$.next(true);
         }
@@ -81,39 +81,39 @@ export class Upload implements UploadRequest {
      * sends back an error response
      */
     public hasError(): boolean {
-        return this.upload.state === UploadState.COMPLETED && !this.upload.response.success;
+        return this.upload.state === NgxFileUploadState.COMPLETED && !this.upload.response.success;
     }
 
     public isCompleted(ignoreError = false): boolean {
         let isCompleted = this.isRequestCompleted();
         isCompleted = isCompleted && (ignoreError || !this.hasError());
-        isCompleted = isCompleted || this.upload.state === UploadState.CANCELED;
+        isCompleted = isCompleted || this.upload.state === NgxFileUploadState.CANCELED;
         return isCompleted;
     }
 
     public isCanceled(): boolean {
-        return this.upload.state === UploadState.CANCELED;
+        return this.upload.state === NgxFileUploadState.CANCELED;
     }
 
     public isInvalid(): boolean {
-        return this.upload.state === UploadState.INVALID;
+        return this.upload.state === NgxFileUploadState.INVALID;
     }
 
     public isProgress(): boolean {
-        return this.upload.state === UploadState.PROGRESS || this.upload.state === UploadState.START;
+        return this.upload.state === NgxFileUploadState.PROGRESS || this.upload.state === NgxFileUploadState.START;
     }
 
     public isPending(): boolean {
-        return this.upload.state === UploadState.PENDING;
+        return this.upload.state === NgxFileUploadState.PENDING;
     }
 
     public isIdle(): boolean {
-        return this.upload.state === UploadState.IDLE;
+        return this.upload.state === NgxFileUploadState.IDLE;
     }
 
     /** returns true if request has been completed even on error */
     public isRequestCompleted() {
-        return this.upload.state === UploadState.COMPLETED;
+        return this.upload.state === NgxFileUploadState.COMPLETED;
     }
 
     /**
@@ -122,7 +122,7 @@ export class Upload implements UploadRequest {
      */
     public retry() {
         if (this.isRequestCompleted() && this.hasError() || this.isCanceled()) {
-            this.upload = new UploadModel(this.upload.raw);
+            this.upload = new NgxFileUploadModel(this.upload.raw);
             this.start();
         }
     }
@@ -138,7 +138,7 @@ export class Upload implements UploadRequest {
 
         this.beforeStartHook$.pipe(
             filter(isAllowedToStart => isAllowedToStart),
-            tap(() => (this.upload.state = UploadState.START, this.notifyObservers())),
+            tap(() => (this.upload.state = NgxFileUploadState.START, this.notifyObservers())),
             switchMap(() => this.startUploadRequest()),
         ).subscribe({
             next:  (event: HttpEvent<string>) => this.handleHttpEvent(event),
@@ -202,13 +202,13 @@ export class Upload implements UploadRequest {
         let errors: any[] = response.error instanceof ProgressEvent || response.status === 404 ? response.message : response.error;
         errors = Array.isArray(errors) ? errors : [errors];
 
-        const uploadResponse: UploadResponse = {
+        const uploadResponse: NgxFileUploadResponse = {
             success: false,
             body: null,
             errors
         };
 
-        this.upload.state    = UploadState.COMPLETED;
+        this.upload.state    = NgxFileUploadState.COMPLETED;
         this.upload.response = uploadResponse;
         this.upload.hasError = true;
         this.notifyObservers();
@@ -232,7 +232,7 @@ export class Upload implements UploadRequest {
         const loaded   = event.loaded;
         const progress = loaded * 100 / this.upload.size;
 
-        this.upload.state = UploadState.PROGRESS;
+        this.upload.state = NgxFileUploadState.PROGRESS;
         this.upload.uploaded = loaded;
         this.upload.progress = Math.min(Math.round(progress), 100);
 
@@ -243,13 +243,13 @@ export class Upload implements UploadRequest {
      * upload completed with an success
      */
     private handleResponse(res: HttpResponse<any>) {
-        const uploadResponse: UploadResponse = {
+        const uploadResponse: NgxFileUploadResponse = {
             success: res.ok,
             body: res.body,
             errors: null
         };
         this.upload.response = uploadResponse;
-        this.upload.state    = UploadState.COMPLETED;
+        this.upload.state    = NgxFileUploadState.COMPLETED;
         this.notifyObservers();
         this.finalizeUpload();
     }

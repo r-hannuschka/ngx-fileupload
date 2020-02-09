@@ -32,7 +32,7 @@ containing all UI modules, should imported if all resources should be used.
 
 Includes following Pipes
 
-- StateToStringPipe - converts UploadState to string value
+- StateToStringPipe - converts NgxFileUploadState to string value
 - FileSizePipe - converts file size into human readable value
 - IsCancelAblePipe - returns true if upload can canceled
 

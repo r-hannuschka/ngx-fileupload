@@ -1,10 +1,10 @@
 import { InjectionToken } from "@angular/core";
-import { UploadStorage } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage } from "@ngx-file-upload/core";
 
-export const ExampleUploadStorage = new InjectionToken<UploadStorage>("Example Upload Storage", {
+export const ExampleUploadStorage = new InjectionToken<NgxFileUploadStorage>("Example Upload Storage", {
     providedIn: "root",
     factory: () => {
-        return new UploadStorage({
+        return new NgxFileUploadStorage({
             concurrentUploads: 3
         });
     }

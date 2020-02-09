@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { UploadStorage } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage } from "@ngx-file-upload/core";
 import { ExampleUploadStorage } from "projects/example/libs/data/base/upload-storage";
 
 @Component({
@@ -10,7 +10,7 @@ import { ExampleUploadStorage } from "projects/example/libs/data/base/upload-sto
 export class DashboardComponent implements OnInit {
 
     constructor(
-        @Inject(ExampleUploadStorage) public storage: UploadStorage
+        @Inject(ExampleUploadStorage) public storage: NgxFileUploadStorage
     ) { }
 
     ngOnInit() { }

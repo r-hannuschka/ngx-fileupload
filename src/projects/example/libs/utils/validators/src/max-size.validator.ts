@@ -1,6 +1,6 @@
-import { Validator, ValidationErrors } from "@ngx-file-upload/core";
+import { NgxFileUploadValidator, NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
 
-export class MaxUploadSizeValidator implements Validator {
+export class MaxUploadSizeValidator implements NgxFileUploadValidator {
 
     private units = ["Byte", "kb", "mb", "gb"];
 
@@ -16,7 +16,7 @@ export class MaxUploadSizeValidator implements Validator {
         this.maxSize = size || 1024 * 1024;
     }
 
-    public validate(file: File): ValidationErrors | null {
+    public validate(file: File): NgxFileUploadValidationErrors | null {
         if (file.size / this.maxSize > 1) {
             return {
                 maxFileSizeValidator: `max file size ${this.toUnits(this.maxSize)}`

@@ -1,9 +1,9 @@
-export interface ValidationErrors {
+export interface NgxFileUploadValidationErrors {
     [key: string]: any;
 }
 
-export type ValidationFn = (file: File) => ValidationErrors | null;
+export type NgxFileUploadValidationFn = (file: File) => NgxFileUploadValidationErrors | null;
 
-export interface Validator {
-    validate(file: File): ValidationErrors | null;
+export interface NgxFileUploadValidator {
+    validate(file: File): NgxFileUploadValidationErrors | null;
 }

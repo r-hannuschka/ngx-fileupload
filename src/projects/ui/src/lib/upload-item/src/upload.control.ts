@@ -1,5 +1,5 @@
 import { timer } from "rxjs";
-import { UploadRequest, UploadControl } from "@ngx-file-upload/core";
+import { NgxFileUploadRequest, NgxFileUploadControl } from "@ngx-file-upload/core";
 
 /**
  * remote control for a single upload, will passed
@@ -16,9 +16,9 @@ import { UploadRequest, UploadControl } from "@ngx-file-upload/core";
  *
  * <ngx-file-upload-item *ngFor="item of uploads" [template]="myItemTemplate" [upload]="item"></ngx-fileUpload-item>
  */
-export class Control implements UploadControl {
+export class Control implements NgxFileUploadControl {
 
-    public constructor(private upload: UploadRequest) {}
+    public constructor(private upload: NgxFileUploadRequest) {}
 
     /**
      * if upload has been failed (http error) it has not completed

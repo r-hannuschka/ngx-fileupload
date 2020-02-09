@@ -1,6 +1,6 @@
 export const TS = `
 import { Component, OnInit } from "@angular/core";
-import { UploadStorage } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-auto-upload-demo",
@@ -9,10 +9,10 @@ import { UploadStorage } from "@ngx-file-upload/core";
 })
 export class DemoComponent implements OnInit, OnDestroy {
 
-    public storage: UploadStorage;
+    public storage: NgxFileUploadStorage;
 
     ngOnInit() {
-        this.storage = new UploadStorage({
+        this.storage = new NgxFileUploadStorage({
             concurrentUploads: 2,
             enableAutoStart: true
         });

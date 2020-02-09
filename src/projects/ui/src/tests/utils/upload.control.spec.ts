@@ -1,14 +1,14 @@
-import { UploadRequest } from "@ngx-file-upload/core";
+import { NgxFileUploadRequest } from "@ngx-file-upload/core";
 import { Control } from "@ngx-file-upload/dev/ui/public-api";
 
 import { fakeAsync, tick } from "@angular/core/testing";
 describe("ngx-fileupload/libs/upload/upload-control", () => {
 
-    let fileUpload: UploadRequest;
+    let fileUpload: NgxFileUploadRequest;
     let uploadCtrl: Control;
 
     beforeEach(() => {
-        fileUpload = jasmine.createSpyObj("UploadRequest", {
+        fileUpload = jasmine.createSpyObj("NgxFileUploadRequest", {
             retry: () => {},
             start: () => {},
             cancel: () => {},

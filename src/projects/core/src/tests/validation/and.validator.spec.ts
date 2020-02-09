@@ -1,13 +1,13 @@
-import { AndValidator } from "@ngx-file-upload/dev/core/public-api";
+import { NgxFileUploadAndValidator } from "@ngx-file-upload/dev/core/public-api";
 import { ValidatorMockFactory } from "@ngx-file-upload/testing";
 
 describe("@ngx-file-upload/core/validation/and", () => {
 
     const uploadFile = new File(["upload testing"], "upload.txt", { type: "text/plain"});
-    let validationGroup: AndValidator;
+    let validationGroup: NgxFileUploadAndValidator;
 
     beforeAll(() => {
-        validationGroup = new AndValidator();
+        validationGroup = new NgxFileUploadAndValidator();
     });
 
     beforeEach(() => {

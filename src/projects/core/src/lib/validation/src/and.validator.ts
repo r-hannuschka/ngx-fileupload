@@ -1,11 +1,11 @@
-import { GroupedValidator } from "./grouped.validator";
-import { ValidationErrors } from "../../api";
+import { NgxFileUploadGroupedvalidator } from "./grouped.validator";
+import { NgxFileUploadValidationErrors } from "../../api";
 
-export class AndValidator extends GroupedValidator {
+export class NgxFileUploadAndValidator extends NgxFileUploadGroupedvalidator {
 
-    public validate(file: File): ValidationErrors | null {
+    public validate(file: File): NgxFileUploadValidationErrors | null {
 
-        const validationResult: ValidationErrors = {};
+        const validationResult: NgxFileUploadValidationErrors = {};
         let hasErrors = false;
 
         for (const validator of this.validators) {

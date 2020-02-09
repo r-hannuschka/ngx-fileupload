@@ -1,7 +1,7 @@
-import { UploadStorage } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage } from "@ngx-file-upload/core";
 import { Observable, of } from "rxjs";
 
-export class UploadStorageMock extends UploadStorage {
+export class UploadStorageMock extends NgxFileUploadStorage {
 
     public change(): Observable<any> {
         return of([]);

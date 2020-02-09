@@ -5,16 +5,16 @@ import { By } from "@angular/platform-browser";
 import { Subject } from "rxjs";
 import { debounceTime, take } from "rxjs/operators";
 
-import { UploadStorage, UploadRequest, UploadState } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadRequest, NgxFileUploadState } from "@ngx-file-upload/core";
 import { UploadToolbarComponent } from "@ngx-file-upload/dev/ui/lib/toolbar/src/toolbar";
-import { UploadRequestMock, UploadModel } from "@ngx-file-upload/testing";
+import { UploadRequestMock, NgxFileUploadModel } from "@ngx-file-upload/testing";
 
 describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
 
-    let storage: UploadStorage;
+    let storage: NgxFileUploadStorage;
     let fixture: ComponentFixture<UploadToolbarComponent>;
     let testComponent: UploadToolbarComponent;
-    const changeMock: Subject<UploadRequest[]> = new Subject();
+    const changeMock: Subject<NgxFileUploadRequest[]> = new Subject();
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -28,7 +28,7 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
     }));
 
     beforeEach(() => {
-        storage = new UploadStorage();
+        storage = new NgxFileUploadStorage();
         spyOn(storage, "change").and.returnValue(changeMock.asObservable());
 
         fixture = TestBed.createComponent(UploadToolbarComponent);
@@ -50,7 +50,7 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
 
     it("upload button should be enabled if one idle item is in list", (done) => {
 
-        const uploadFile = new UploadModel();
+        const uploadFile = new NgxFileUploadModel();
         const upload = new UploadRequestMock(uploadFile);
         fixture.detectChanges();
 
@@ -71,8 +71,8 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
 
     it("upload button should be disabled if no idle uploads in list", (done) => {
 
-        const uploadFile = new UploadModel();
-        uploadFile.state = UploadState.PENDING;
+        const uploadFile = new NgxFileUploadModel();
+        uploadFile.state = NgxFileUploadState.PENDING;
         const upload = new UploadRequestMock(uploadFile);
         fixture.detectChanges();
 
@@ -93,7 +93,7 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
 
     it("upload button should call start all on storage", (done) => {
         const spy = spyOn(storage, "startAll").and.returnValue(void 0);
-        const uploadFile = new UploadModel();
+        const uploadFile = new NgxFileUploadModel();
         const upload = new UploadRequestMock(uploadFile);
 
         fixture.detectChanges();
@@ -121,8 +121,8 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
 
     it("purge button should be disabled if no completed or invalid upload in storage", (done) => {
 
-        const uploadFile = new UploadModel();
-        uploadFile.state = UploadState.PENDING;
+        const uploadFile = new NgxFileUploadModel();
+        uploadFile.state = NgxFileUploadState.PENDING;
         const upload = new UploadRequestMock(uploadFile);
         fixture.detectChanges();
 
@@ -142,8 +142,8 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
     });
 
     it("purge button should be enabled an completed or invalid upload in storage", (done) => {
-        const uploadFile = new UploadModel();
-        uploadFile.state = UploadState.INVALID;
+        const uploadFile = new NgxFileUploadModel();
+        uploadFile.state = NgxFileUploadState.INVALID;
         const upload = new UploadRequestMock(uploadFile);
         fixture.detectChanges();
 
@@ -164,8 +164,8 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
 
     it("purge button should call purge on storage", (done) => {
         const spy = spyOn(storage, "purge").and.returnValue(void 0);
-        const uploadFile = new UploadModel();
-        uploadFile.state = UploadState.INVALID;
+        const uploadFile = new NgxFileUploadModel();
+        uploadFile.state = NgxFileUploadState.INVALID;
         const upload = new UploadRequestMock(uploadFile);
         fixture.detectChanges();
 
@@ -196,7 +196,7 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
     });
 
     it("remove button should be enabled if any upload is in list", (done) => {
-        const uploadFile = new UploadModel();
+        const uploadFile = new NgxFileUploadModel();
         const upload = new UploadRequestMock(uploadFile);
         fixture.detectChanges();
 
@@ -218,7 +218,7 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
     it("remove all button should call stopAll on storage", (done) => {
 
         const spy = spyOn(storage, "stopAll").and.returnValue(void 0);
-        const uploadFile = new UploadModel();
+        const uploadFile = new NgxFileUploadModel();
         const upload = new UploadRequestMock(uploadFile);
         fixture.detectChanges();
 
@@ -239,8 +239,8 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
     });
 
     it("purge and start all button should be disabled if all uploads are progressing", (done) => {
-        const uploadFile = new UploadModel();
-        uploadFile.state = UploadState.PROGRESS;
+        const uploadFile = new NgxFileUploadModel();
+        uploadFile.state = NgxFileUploadState.PROGRESS;
         const upload = new UploadRequestMock(uploadFile);
         fixture.detectChanges();
 

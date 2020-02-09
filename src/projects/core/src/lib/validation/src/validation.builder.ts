@@ -1,15 +1,15 @@
-import { GroupedValidator } from "./grouped.validator";
-import { AndValidator } from "./and.validator";
-import { OrValidator } from "./or.validator";
-import { Validator, ValidationFn } from "../../api";
+import { NgxFileUploadGroupedvalidator } from "./grouped.validator";
+import { NgxFileUploadAndValidator } from "./and.validator";
+import { NgxFileUploadOrValidator } from "./or.validator";
+import { NgxFileUploadValidation } from "../../api";
 
-export class ValidationBuilder {
+export class NgxFileUploadValidationBuilder {
 
-    public static and(...validators: Array<Validator|ValidationFn>): GroupedValidator {
-        return new AndValidator(validators);
+    public static and(...validators: Array<NgxFileUploadValidation>): NgxFileUploadGroupedvalidator {
+        return new NgxFileUploadAndValidator(validators);
     }
 
-    public static or(...validators: Array<Validator|ValidationFn>): GroupedValidator {
-        return new OrValidator(validators);
+    public static or(...validators: Array<NgxFileUploadValidation>): NgxFileUploadGroupedvalidator {
+        return new NgxFileUploadOrValidator(validators);
     }
 }

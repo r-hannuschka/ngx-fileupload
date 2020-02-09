@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
-import { UploadStorage, UploadRequest, UploadState } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadRequest, NgxFileUploadState } from "@ngx-file-upload/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
@@ -23,14 +23,14 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
 
     public showDocs = false;
 
-    public uploadStates = UploadState;
+    public uploadStates = NgxFileUploadState;
 
-    public uploads: UploadRequest[] = [];
+    public uploads: NgxFileUploadRequest[] = [];
 
     public destroy$: Subject<boolean> = new Subject();
 
     public constructor(
-        @Inject(ExampleUploadStorage) public storage: UploadStorage
+        @Inject(ExampleUploadStorage) public storage: NgxFileUploadStorage
     ) {
     }
 
@@ -42,7 +42,7 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
         this.storage.change()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (requests: UploadRequest[]) => this.uploads = requests
+                next: (requests: NgxFileUploadRequest[]) => this.uploads = requests
             });
     }
 
@@ -52,15 +52,15 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
         this.destroy$ = null;
     }
 
-    public cancelUpload(upload: UploadRequest) {
+    public cancelUpload(upload: NgxFileUploadRequest) {
         upload.cancel();
     }
 
-    public removeUpload(upload: UploadRequest) {
+    public removeUpload(upload: NgxFileUploadRequest) {
         this.storage.remove(upload);
     }
 
-    public startUpload(upload: UploadRequest) {
+    public startUpload(upload: NgxFileUploadRequest) {
         upload.start();
     }
 }

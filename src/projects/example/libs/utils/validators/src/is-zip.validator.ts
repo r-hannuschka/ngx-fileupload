@@ -1,6 +1,6 @@
-import { ValidationErrors } from "@ngx-file-upload/core";
+import { NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
 
-export function isZipFile(file: File): ValidationErrors | null {
+export function isZipFile(file: File): NgxFileUploadValidationErrors | null {
 
     const validMime = [
         "application/zip",

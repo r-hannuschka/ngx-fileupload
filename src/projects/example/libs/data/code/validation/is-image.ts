@@ -10,7 +10,7 @@ export const HTML = `
 
 export const TYPESCRIPT = `
 import { Component } from "@angular/core";
-import { ValidationFn } from "@ngx-file-upload/core";
+import { NgxFileUploadValidationFn } from "@ngx-file-upload/core";
 import { isImage } from "@ngx-fileupload-example/utils/validators";
 
 @Component({
@@ -18,6 +18,6 @@ import { isImage } from "@ngx-fileupload-example/utils/validators";
     templateUrl: "is-image.component.html"
 })
 export class BaseComponent {
-    public validator: ValidationFn = isImage;
+    public validator: NgxFileUploadValidationFn = isImage;
 }
 `;

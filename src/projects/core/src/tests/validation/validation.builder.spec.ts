@@ -1,14 +1,14 @@
-import { ValidationBuilder, OrValidator, AndValidator} from "@ngx-file-upload/dev/core/public-api";
+import { NgxFileUploadValidationBuilder, NgxFileUploadOrValidator, NgxFileUploadAndValidator} from "@ngx-file-upload/dev/core/public-api";
 
 describe("@ngx-file-upload/core/validation/builder", () => {
 
     it ("it should create OR Group", () => {
-        const group = ValidationBuilder.or();
-        expect(group instanceof OrValidator).toBeTruthy();
+        const group = NgxFileUploadValidationBuilder.or();
+        expect(group instanceof NgxFileUploadOrValidator).toBeTruthy();
     });
 
     it ("it should create AND Group", () => {
-        const group = ValidationBuilder.and();
-        expect(group instanceof AndValidator).toBeTruthy();
+        const group = NgxFileUploadValidationBuilder.and();
+        expect(group instanceof NgxFileUploadAndValidator).toBeTruthy();
     });
 });

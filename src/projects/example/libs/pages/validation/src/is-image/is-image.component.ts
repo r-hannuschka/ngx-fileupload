@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { isImage } from "projects/example/libs/utils/validators";
-import { ValidationFn } from "@ngx-file-upload/core";
+import { NgxFileUploadValidationFn } from "@ngx-file-upload/core";
 import * as ExampleCode from "projects/example/libs/data/code/validation/is-image";
 import * as Validators from "projects/example/libs/data/code/utils/validators";
 
@@ -10,7 +10,7 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
 })
 export class IsImageValidationComponent {
 
-    public validator: ValidationFn = isImage;
+    public validator: NgxFileUploadValidationFn = isImage;
 
     public exampleCode = ExampleCode;
 

@@ -1,13 +1,13 @@
 import { Observable } from "rxjs";
-import { ValidationErrors } from "./validation";
+import { NgxFileUploadValidationErrors } from "./validation";
 
-export interface UploadResponse {
+export interface NgxFileUploadResponse {
     success: boolean;
     errors: any;
     body: any;
 }
 
-export enum UploadState {
+export enum NgxFileUploadState {
     INVALID   = 0,
     CANCELED  = 1,
     IDLE      = 2,
@@ -17,7 +17,7 @@ export enum UploadState {
     COMPLETED = 6
 }
 
-export interface UploadControl {
+export interface NgxFileUploadControl {
 
     retry(): void;
 
@@ -29,10 +29,10 @@ export interface UploadControl {
 }
 
 export interface UploadValidation {
-    errors: ValidationErrors | null;
+    errors: NgxFileUploadValidationErrors | null;
 }
 
-export interface UploadRequestData {
+export interface NgxFileUploadRequestData {
 
     readonly raw: File;
 
@@ -42,20 +42,20 @@ export interface UploadRequestData {
 
     readonly type: string;
 
-    response: UploadResponse;
+    response: NgxFileUploadResponse;
 
-    state: UploadState;
+    state: NgxFileUploadState;
 
     uploaded: number;
 
-    validationErrors: ValidationErrors | null;
+    validationErrors: NgxFileUploadValidationErrors | null;
 
     progress: number;
 
     hasError: boolean;
 }
 
-export interface UploadRequest {
+export interface NgxFileUploadRequest {
 
     requestId: string;
 
@@ -63,9 +63,9 @@ export interface UploadRequest {
      * returns observable which notify if file upload state
      * has been changed
      */
-    readonly change: Observable<UploadRequestData>;
+    readonly change: Observable<NgxFileUploadRequestData>;
 
-    readonly data: UploadRequestData;
+    readonly data: NgxFileUploadRequestData;
 
     readonly destroyed: Observable<boolean>;
 
@@ -104,7 +104,7 @@ export interface UploadRequest {
     start(): void;
 }
 
-export interface UploadStorageConfig {
+export interface NgxFileUploadStorageConfig {
     /**
      * max count of uploads at once, set to -1 for no limit
      */
@@ -123,7 +123,7 @@ export interface UploadStorageConfig {
 /**
  * Upload Options
  */
-export interface UploadOptions {
+export interface NgxFileUploadOptions {
 
     /**
      * url which should used to upload file

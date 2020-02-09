@@ -3,7 +3,7 @@ export * from "./is-image";
 export const validationGroupOr = `
 import { Component, OnInit } from "@angular/core";
 import { isImage, isZipFile } from "@ngx-fileupload-example/utils/validators";
-import { ValidationBuilder, GroupedValidator } from "@ngx-file-upload/core";
+import { NgxFileUploadValidationBuilder, NgxFileUploadGroupedvalidator } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-validation--group-or",
@@ -11,11 +11,11 @@ import { ValidationBuilder, GroupedValidator } from "@ngx-file-upload/core";
 })
 export class GroupOrComponent implements OnInit {
 
-    public validator: GroupedValidator;
+    public validator: NgxFileUploadGroupedvalidator;
 
     public ngOnInit() {
 
-        this.validator = ValidationBuilder.or(
+        this.validator = NgxFileUploadValidationBuilder.or(
             isImage, isZipFile
         );
     }

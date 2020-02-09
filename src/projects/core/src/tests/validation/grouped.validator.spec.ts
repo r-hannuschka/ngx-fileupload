@@ -1,13 +1,13 @@
-import { GroupedValidator, ValidationErrors } from "@ngx-file-upload/dev/core/public-api";
+import { NgxFileUploadGroupedvalidator, NgxFileUploadValidationErrors } from "@ngx-file-upload/dev/core/public-api";
 import { ValidatorMockFactory } from "@ngx-file-upload/testing";
 
-class ValidatorGroupMock extends GroupedValidator {
+class ValidatorGroupMock extends NgxFileUploadGroupedvalidator {
 
     public getValidators() {
         return this.validators;
     }
 
-    public validate(file: File ): ValidationErrors {
+    public validate(file: File ): NgxFileUploadValidationErrors {
         return this.execValidator(this.validators[0], file);
     }
 }

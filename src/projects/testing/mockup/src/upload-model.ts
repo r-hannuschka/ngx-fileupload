@@ -1,8 +1,8 @@
-import { UploadResponse, UploadState, ValidationErrors, UploadRequestData } from "@ngx-file-upload/core";
+import { NgxFileUploadResponse, NgxFileUploadState, NgxFileUploadValidationErrors, NgxFileUploadRequestData } from "@ngx-file-upload/core";
 
 const file = new File(["ngx file upload unit tests"], "upload-file.txt", {type: "plain/text"});
 
-export class UploadModel implements UploadRequestData {
+export class NgxFileUploadModel implements NgxFileUploadRequestData {
 
     public constructor() {
         this.raw = file;
@@ -11,7 +11,7 @@ export class UploadModel implements UploadRequestData {
         this.size = file.size;
     }
 
-    validation: ValidationErrors = null;
+    validation: NgxFileUploadValidationErrors = null;
 
     isInvalid = false;
 
@@ -23,15 +23,15 @@ export class UploadModel implements UploadRequestData {
 
     type = "plain/text";
 
-    response: UploadResponse = null;
+    response: NgxFileUploadResponse = null;
 
     isPending = false;
 
-    state: UploadState = UploadState.IDLE;
+    state: NgxFileUploadState = NgxFileUploadState.IDLE;
 
     uploaded = 0;
 
-    validationErrors: ValidationErrors | null = null;
+    validationErrors: NgxFileUploadValidationErrors | null = null;
 
     progress = 0;
 

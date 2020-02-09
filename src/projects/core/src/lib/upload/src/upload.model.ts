@@ -1,9 +1,9 @@
-import { UploadRequestData, UploadState, UploadResponse, ValidationErrors } from "../../api";
+import { NgxFileUploadRequestData, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors } from "../../api";
 
 /**
  * Represents a file which will be uploaded
  */
-export class UploadModel implements UploadRequestData {
+export class NgxFileUploadModel implements NgxFileUploadRequestData {
 
     /**
      * Creates an instance of UploadFile.
@@ -38,7 +38,7 @@ export class UploadModel implements UploadRequestData {
     /**
      * set response data if upload has been completed
      */
-    public response: UploadResponse = {
+    public response: NgxFileUploadResponse = {
         body: null,
         errors: null,
         success: null
@@ -47,14 +47,14 @@ export class UploadModel implements UploadRequestData {
     /**
      * set current upload state
      */
-    public state: UploadState = UploadState.IDLE;
+    public state: NgxFileUploadState = NgxFileUploadState.IDLE;
 
     /**
      * set uploaded size
      */
     public uploaded = 0;
 
-    public validationErrors: ValidationErrors = null;
+    public validationErrors: NgxFileUploadValidationErrors = null;
 
     public progress = 0;
 

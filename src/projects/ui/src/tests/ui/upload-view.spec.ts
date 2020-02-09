@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { CommonModule } from "@angular/common";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
-import { UploadStorage, NgxFileUploadFactory } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadFactory } from "@ngx-file-upload/core";
 import { UploadViewComponent, NgxFileUploadUiModule } from "@ngx-file-upload/dev/ui/public-api";
 import { NgxFileuploadFactoryMock, UploadStorageMock } from "@ngx-file-upload/testing";
 
@@ -38,7 +38,7 @@ describe( "Upload Component:", () => {
         fixture.detectChanges();
 
         expect(testComponent.uploadStorage).not.toBeUndefined();
-        expect(testComponent.uploadStorage instanceof UploadStorage).toBeTruthy();
+        expect(testComponent.uploadStorage instanceof NgxFileUploadStorage).toBeTruthy();
     });
 
     it( "should call UploadFactory empty files array is dropped", inject(

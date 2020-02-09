@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
-import { UploadRequest, UploadStorage } from "@ngx-file-upload/core";
+import { NgxFileUploadRequest, NgxFileUploadStorage } from "@ngx-file-upload/core";
 
 interface InfoData {
     error: number;
@@ -18,7 +18,7 @@ interface InfoData {
 export class UploadToolbarComponent implements OnInit, OnDestroy {
 
     @Input()
-    public storage: UploadStorage;
+    public storage: NgxFileUploadStorage;
 
     public uploadInfo: InfoData = { error: 0, pending: 0, idle: 0, progress: 0 };
 
@@ -64,14 +64,14 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
                 debounceTime(10),
                 takeUntil(this.destroyed$)
             )
-            .subscribe((uploads: UploadRequest[]) => {
+            .subscribe((uploads: NgxFileUploadRequest[]) => {
                 this.updateInfoBar(uploads);
                 this.isCleanable      = uploads.some(upload => upload.isCompleted(true) || upload.isInvalid());
                 this.hasUploadsInList = uploads.length > 0;
             });
     }
 
-    private updateInfoBar(uploads: UploadRequest[]) {
+    private updateInfoBar(uploads: NgxFileUploadRequest[]) {
         this.uploadInfo = uploads.reduce<InfoData>((data, upload) => {
             return {
                 error   : data.error    + (upload.hasError() || upload.isInvalid() ? 1 : 0),

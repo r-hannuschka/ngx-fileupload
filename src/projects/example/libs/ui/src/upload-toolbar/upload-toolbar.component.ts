@@ -1,5 +1,5 @@
 import { Component, Input, Inject } from "@angular/core";
-import { Validator, UploadStorage, UploadOptions, NgxFileUploadFactory } from "@ngx-file-upload/core";
+import { NgxFileUploadValidator, NgxFileUploadStorage, NgxFileUploadOptions, NgxFileUploadFactory } from "@ngx-file-upload/core";
 
 @Component({
     selector: "app-ui--upload-toolbar",
@@ -8,13 +8,13 @@ import { Validator, UploadStorage, UploadOptions, NgxFileUploadFactory } from "@
 export class UploadToolbarComponent {
 
     @Input()
-    validator: Validator;
+    validator: NgxFileUploadValidator;
 
     @Input()
     url: string;
 
     @Input()
-    public storage: UploadStorage;
+    public storage: NgxFileUploadStorage;
 
     public constructor(
         @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
@@ -33,7 +33,7 @@ export class UploadToolbarComponent {
     }
 
     public drop(files: File[]) {
-        const uploadOptions: UploadOptions = { url: this.url };
+        const uploadOptions: NgxFileUploadOptions = { url: this.url };
         this.storage.add(
             this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator));
     }

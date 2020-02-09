@@ -2,8 +2,8 @@ import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/http";
 import { Type } from "@angular/core";
-import { UploadRequest, UploadRequestData, UploadState, Upload } from "@ngx-file-upload/dev/core/public-api";
-import { UploadModel } from "@ngx-file-upload/testing";
+import { NgxFileUploadRequest, NgxFileUploadRequestData, NgxFileUploadState, NgxFileUpload } from "@ngx-file-upload/dev/core/public-api";
+import { NgxFileUploadModel } from "@ngx-file-upload/testing";
 import { tap, filter, delay } from "rxjs/operators";
 import { of } from "rxjs";
 
@@ -13,7 +13,7 @@ describe("NgxFileUpload/libs/upload", () => {
     let httpClient: HttpClient;
     let injector: TestBed;
     let httpMock: HttpTestingController;
-    let request: UploadRequest;
+    let request: NgxFileUploadRequest;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -21,16 +21,16 @@ describe("NgxFileUpload/libs/upload", () => {
         });
 
         injector   = getTestBed();
-        httpMock   = injector.get(HttpTestingController as Type<HttpTestingController>);
-        httpClient = injector.get(HttpClient as Type<HttpClient>);
+        httpMock   = injector.inject(HttpTestingController as Type<HttpTestingController>);
+        httpClient = injector.inject(HttpClient as Type<HttpClient>);
 
-        const uploadFile = new UploadModel();
-        request = new Upload(httpClient, uploadFile, {url});
+        const uploadFile = new NgxFileUploadModel();
+        request = new NgxFileUpload(httpClient, uploadFile, {url});
     });
 
     it("should have upload file", () => {
-        const uploadFile = new UploadModel();
-        const testRequest = new Upload(httpClient, uploadFile, {url});
+        const uploadFile = new NgxFileUploadModel();
+        const testRequest = new NgxFileUpload(httpClient, uploadFile, {url});
 
         expect(testRequest.data).toBe(uploadFile);
     });
@@ -49,8 +49,8 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should send file data directly in body if formdata is disbled", () => {
-        const testUploadFile = new UploadModel();
-        const noFormDataRequest = new Upload(httpClient, testUploadFile, {
+        const testUploadFile = new NgxFileUploadModel();
+        const noFormDataRequest = new NgxFileUpload(httpClient, testUploadFile, {
             url, formData: {enabled: false}
         });
 
@@ -62,14 +62,14 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should complete upload", (done) => {
-        const states: UploadState[] = [];
+        const states: NgxFileUploadState[] = [];
         request.change
             .pipe(
-                tap((data: UploadRequestData) => states.push(data.state)),
+                tap((data: NgxFileUploadRequestData) => states.push(data.state)),
             )
             .subscribe({
                 complete: () => {
-                    expect(states).toEqual([UploadState.START, UploadState.PROGRESS, UploadState.COMPLETED]);
+                    expect(states).toEqual([NgxFileUploadState.START, NgxFileUploadState.PROGRESS, NgxFileUploadState.COMPLETED]);
                     expect(request.isCompleted()).toBeTruthy();
                     done();
                 }
@@ -85,7 +85,7 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should cancel upload", (done) => {
         request.change
             .pipe(
-                filter((upload: UploadRequestData) => upload.state === UploadState.CANCELED)
+                filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.CANCELED)
             )
             .subscribe({
                 next: () => {
@@ -108,7 +108,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
         request.change
             .pipe(
-                filter((upload: UploadRequestData) => upload.state === UploadState.CANCELED)
+                filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.CANCELED)
             )
             .subscribe({
                 next: () => {
@@ -154,7 +154,7 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should notify observer if hook change state", () => {
         const spy = jasmine.createSpy("cancel");
 
-        request.beforeStart(of(false).pipe(tap(() => request.data.state = UploadState.PENDING)));
+        request.beforeStart(of(false).pipe(tap(() => request.data.state = NgxFileUploadState.PENDING)));
 
         // expect request change will not called
         request.change.subscribe(() => spy());
@@ -167,12 +167,12 @@ describe("NgxFileUpload/libs/upload", () => {
         const hookCalls = [];
 
         const hook1 = of(true).pipe(
-            tap(() => (hookCalls.push("hook1"), request.data.state = UploadState.PENDING)),
+            tap(() => (hookCalls.push("hook1"), request.data.state = NgxFileUploadState.PENDING)),
             delay(2000)
         );
 
         const hook2 = of(false).pipe(
-            tap(() => (hookCalls.push("hook2"), request.data.state = UploadState.INVALID))
+            tap(() => (hookCalls.push("hook2"), request.data.state = NgxFileUploadState.INVALID))
         );
 
         request.beforeStart(hook1);
@@ -189,10 +189,10 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should not start upload, is not pending or idle", () => {
-        const testUploadFile = new UploadModel();
-        testUploadFile.state = UploadState.INVALID;
+        const testUploadFile = new NgxFileUploadModel();
+        testUploadFile.state = NgxFileUploadState.INVALID;
 
-        const pendingRequest = new Upload(httpClient, testUploadFile, {url});
+        const pendingRequest = new NgxFileUpload(httpClient, testUploadFile, {url});
         const spy = jasmine.createSpy("cancel");
 
         // expect request change will not called
@@ -205,7 +205,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should completed but got error", (done) => {
         request.change
-            .pipe(filter((upload: UploadRequestData) => upload.state === UploadState.COMPLETED))
+            .pipe(filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.COMPLETED))
             .subscribe({
                 next: () => {
                     expect(request.hasError()).toBeTruthy();
@@ -226,7 +226,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should has been an error on 404", (done) => {
         request.change
-            .pipe(filter((upload: UploadRequestData) => upload.state === UploadState.COMPLETED))
+            .pipe(filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.COMPLETED))
             .subscribe({
                 next: () => {
                     expect(request.hasError()).toBeTruthy();
@@ -255,7 +255,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
         /** start again */
         request.retry();
-        expect(request.data.state).toBe(UploadState.START);
+        expect(request.data.state).toBe(NgxFileUploadState.START);
 
         const req = httpMock.expectOne(url);
         req.flush("");
@@ -272,7 +272,7 @@ describe("NgxFileUpload/libs/upload", () => {
         expect(request.hasError()).toBeTruthy();
 
         request.retry();
-        expect(request.data.state).toBe(UploadState.START);
+        expect(request.data.state).toBe(NgxFileUploadState.START);
 
         const retryReq = httpMock.expectOne(url);
         retryReq.flush("");
@@ -280,7 +280,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should not restart upload which allready completed", () => {
         const startSpy = spyOn(request, "start").and.callThrough();
-        request.data.state = UploadState.COMPLETED;
+        request.data.state = NgxFileUploadState.COMPLETED;
         request.data.response = {success: true, body: null, errors: []};
         request.retry();
         expect(startSpy).not.toHaveBeenCalled();

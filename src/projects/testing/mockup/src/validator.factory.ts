@@ -1,24 +1,24 @@
-import { Validator, ValidationErrors, ValidationFn } from "@ngx-file-upload/core";
+import { NgxFileUploadValidator, NgxFileUploadValidationErrors, NgxFileUploadValidationFn } from "@ngx-file-upload/core";
 
-class InvalidValidation implements Validator {
-    validate(): ValidationErrors | null {
+class InvalidValidation implements NgxFileUploadValidator {
+    validate(): NgxFileUploadValidationErrors | null {
         return {
             invalid: "this is an invalid file"
         };
     }
 }
 
-class ValidValidation implements Validator {
-    validate(): ValidationErrors | null {
+class ValidValidation implements NgxFileUploadValidator {
+    validate(): NgxFileUploadValidationErrors | null {
         return null;
     }
 }
 
-class DynamicNameValidation implements Validator {
+class DynamicNameValidation implements NgxFileUploadValidator {
 
     public constructor(private name: string) {}
 
-    validate(file: File): ValidationErrors | null {
+    validate(file: File): NgxFileUploadValidationErrors | null {
         if (file.name !== this.name) {
             return {
                 dynamicNameValidation: `invalid name: ${file.name}`
@@ -28,18 +28,18 @@ class DynamicNameValidation implements Validator {
     }
 }
 
-class InvalidFileValidator implements Validator {
+class InvalidFileValidator implements NgxFileUploadValidator {
 
-    validate(): ValidationErrors | null {
+    validate(): NgxFileUploadValidationErrors | null {
         return {
             invalidFile: "invalid file"
         };
     }
 }
 
-class InvalidFileSizeValidator implements Validator {
+class InvalidFileSizeValidator implements NgxFileUploadValidator {
 
-    validate(): ValidationErrors | null {
+    validate(): NgxFileUploadValidationErrors | null {
         return {
             invalidFileSize: "file should be at least 1 Petabyte! Bigger is better!"
         };
@@ -48,33 +48,33 @@ class InvalidFileSizeValidator implements Validator {
 
 export class ValidatorMockFactory {
 
-    public static invalid(): Validator {
+    public static invalid(): NgxFileUploadValidator {
         return new InvalidValidation();
     }
 
-    public static valid(): Validator {
+    public static valid(): NgxFileUploadValidator {
         return new ValidValidation();
     }
 
-    public static byName(name: string): Validator {
+    public static byName(name: string): NgxFileUploadValidator {
         return new DynamicNameValidation(name);
     }
 
-    public static invalidFile(): Validator {
+    public static invalidFile(): NgxFileUploadValidator {
         return new InvalidFileValidator();
     }
 
-    public static invalidFileSize(): Validator {
+    public static invalidFileSize(): NgxFileUploadValidator {
         return new InvalidFileSizeValidator();
     }
 
-    public static validValidationFn(): ValidationFn {
+    public static validValidationFn(): NgxFileUploadValidationFn {
         return () => {
             return null;
         };
     }
 
-    public static invalidValidationFn(): ValidationFn {
+    public static invalidValidationFn(): NgxFileUploadValidationFn {
         return () => {
             return {
                 invalidValidationFn: "invalid validation function called"

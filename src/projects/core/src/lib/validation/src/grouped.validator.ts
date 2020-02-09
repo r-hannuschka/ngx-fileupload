@@ -1,21 +1,21 @@
-import { Validator, ValidationErrors, ValidationFn } from "../../api";
+import { NgxFileUploadValidationErrors, NgxFileUploadValidation, NgxFileUploadValidator } from "../../api";
 
-export abstract class GroupedValidator implements Validator {
+export abstract class NgxFileUploadGroupedvalidator implements NgxFileUploadValidator {
 
-    protected validators: Array<Validator|ValidationFn>;
+    protected validators: Array<NgxFileUploadValidation>;
 
     public constructor(
-       validators?: Array<ValidationFn|Validator>
+       validators?: Array<NgxFileUploadValidation>
     ) {
         this.validators = Array.isArray(validators) ? validators : [];
     }
 
-    public abstract validate(file: File): ValidationErrors | null;
+    public abstract validate(file: File): NgxFileUploadValidationErrors | null;
 
     /**
      * add validators
      */
-    public add(...validators: Array<ValidationFn|Validator>): void {
+    public add(...validators: Array<NgxFileUploadValidation>): void {
         this.validators = this.validators.concat(validators);
     }
 
@@ -29,7 +29,10 @@ export abstract class GroupedValidator implements Validator {
     /**
      * executes validator and returns validation result
      */
-    protected execValidator(validator: Validator | ValidationFn, file: File): ValidationErrors | null {
+    protected execValidator(
+        validator: NgxFileUploadValidation,
+        file: File
+    ): NgxFileUploadValidationErrors | null {
         /** we handle a validator class directly */
         if ("validate" in validator) {
             return validator.validate(file);

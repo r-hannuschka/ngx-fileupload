@@ -3,8 +3,8 @@ import { Component, HostListener, TemplateRef, ViewChild, Type } from "@angular/
 import { ComponentFixture, async, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 
-import { ValidationErrors} from "@ngx-file-upload/core";
-import { UploadModel, UploadRequestMock } from "@ngx-file-upload/testing";
+import { NgxFileUploadValidationErrors} from "@ngx-file-upload/core";
+import { NgxFileUploadModel, UploadRequestMock } from "@ngx-file-upload/testing";
 
 import { NgxFileUploadUiCommonModule } from "@ngx-file-upload/dev/ui/lib/common/main";
 import { NgxFileUploadUiItemModule } from "@ngx-file-upload/dev/ui/lib/upload-item/main";
@@ -42,7 +42,7 @@ describe( "NgxFileUploadItemComponent:", () => {
     let fixture: ComponentFixture<TestItemComponent>;
     let testComponent: TestItemComponent;
     let fileUpload: UploadRequestMock;
-    let uploadModel: UploadModel;
+    let uploadModel: NgxFileUploadModel;
 
     beforeEach(async(() => {
 
@@ -60,7 +60,7 @@ describe( "NgxFileUploadItemComponent:", () => {
 
     beforeEach(() => {
 
-        uploadModel = new UploadModel();
+        uploadModel = new NgxFileUploadModel();
         fileUpload  = new UploadRequestMock(uploadModel);
 
         fixture = TestBed.createComponent(TestItemComponent);
@@ -130,7 +130,7 @@ describe( "NgxFileUploadItemComponent:", () => {
 
     it("should show validation errors", () => {
 
-        const validationErrors: ValidationErrors = {
+        const validationErrors: NgxFileUploadValidationErrors = {
             error1: "invalid file",
             error2: "invalid name"
         };

@@ -1,18 +1,18 @@
-import { UploadStorage, UploadState } from "@ngx-file-upload/dev/core/public-api";
-import { UploadRequestMock, UploadModel } from "@ngx-file-upload/testing";
+import { NgxFileUploadStorage, NgxFileUploadState } from "@ngx-file-upload/dev/core/public-api";
+import { UploadRequestMock, NgxFileUploadModel } from "@ngx-file-upload/testing";
 import { take, takeWhile, tap, auditTime } from "rxjs/operators";
 
 describe("@ngx-file-upload/core/upload.storage", () => {
 
-    let storage: UploadStorage;
+    let storage: NgxFileUploadStorage;
 
     beforeEach(() => {
-        storage = new UploadStorage();
+        storage = new NgxFileUploadStorage();
         storage.change();
     });
 
     it ("should add single upload", (done) => {
-        const fileUpload = new UploadModel();
+        const fileUpload = new NgxFileUploadModel();
         const uploadRequest = new UploadRequestMock(fileUpload);
 
         storage.change()
@@ -27,7 +27,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
     it ("should add multiple uploads at once", (done) => {
 
-        const fileUpload = new UploadModel();
+        const fileUpload = new NgxFileUploadModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload);
         const uploadRequest2 = new UploadRequestMock(fileUpload);
 
@@ -43,7 +43,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
     it ("should not add same request twice", (done) => {
 
-        const fileUpload = new UploadModel();
+        const fileUpload = new NgxFileUploadModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload);
 
         storage.change()
@@ -57,7 +57,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should remove request", (done) => {
-        const fileUpload = new UploadModel();
+        const fileUpload = new NgxFileUploadModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload);
         const uploadRequest2 = new UploadRequestMock(fileUpload);
 
@@ -74,7 +74,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should remove request by request id", (done) => {
-        const fileUpload = new UploadModel();
+        const fileUpload = new NgxFileUploadModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload);
         const uploadRequest2 = new UploadRequestMock(fileUpload);
 
@@ -91,9 +91,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should remove invalid and completed requests", (done) => {
-        const fileUpload1 = new UploadModel();
-        const fileUpload2 = new UploadModel();
-        const fileUpload3 = new UploadModel();
+        const fileUpload1 = new NgxFileUploadModel();
+        const fileUpload2 = new NgxFileUploadModel();
+        const fileUpload3 = new NgxFileUploadModel();
 
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
         const uploadRequest2 = new UploadRequestMock(fileUpload2);
@@ -107,16 +107,16 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
         storage.add([uploadRequest1, uploadRequest2, uploadRequest3]);
 
-        fileUpload1.state = UploadState.INVALID;
-        fileUpload2.state = UploadState.COMPLETED;
+        fileUpload1.state = NgxFileUploadState.INVALID;
+        fileUpload2.state = NgxFileUploadState.COMPLETED;
 
         storage.purge();
     });
 
     it ("should start all idle uploads", (done) => {
-        const fileUpload1 = new UploadModel();
-        const fileUpload2 = new UploadModel();
-        const fileUpload3 = new UploadModel();
+        const fileUpload1 = new NgxFileUploadModel();
+        const fileUpload2 = new NgxFileUploadModel();
+        const fileUpload3 = new NgxFileUploadModel();
 
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
         const uploadRequest2 = new UploadRequestMock(fileUpload2);
@@ -137,14 +137,14 @@ describe("@ngx-file-upload/core/upload.storage", () => {
                 }
             });
 
-        fileUpload1.state = UploadState.PENDING;
+        fileUpload1.state = NgxFileUploadState.PENDING;
         storage.add([uploadRequest1, uploadRequest2, uploadRequest3]);
         storage.startAll();
     });
 
     it ("should remove only invalid uploads", (done) => {
-        const fileUpload1 = new UploadModel();
-        const fileUpload2 = new UploadModel();
+        const fileUpload1 = new NgxFileUploadModel();
+        const fileUpload2 = new NgxFileUploadModel();
 
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
         const uploadRequest2 = new UploadRequestMock(fileUpload2);
@@ -157,12 +157,12 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
         storage.add([uploadRequest1, uploadRequest2]);
 
-        fileUpload1.state = UploadState.INVALID;
+        fileUpload1.state = NgxFileUploadState.INVALID;
         storage.removeInvalid();
     });
 
     it ("should not register to changes of invalid uploads", (done) => {
-        const fileUpload1 = new UploadModel();
+        const fileUpload1 = new NgxFileUploadModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
         uploadRequest1.requestId = "dontRegisterToInvalid";
 
@@ -180,7 +180,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
                 }
             });
 
-        fileUpload1.state = UploadState.INVALID;
+        fileUpload1.state = NgxFileUploadState.INVALID;
         storage.add([uploadRequest1]);
         uploadRequest1.change$.next();
         uploadRequest1.destroy();
@@ -188,12 +188,12 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
     it ("should start uploads automatically", (done) => {
 
-        const autoStartStorage = new UploadStorage({
+        const autoStartStorage = new NgxFileUploadStorage({
             concurrentUploads: 1,
             autoStart: true
         });
 
-        const fileUpload1 = new UploadModel();
+        const fileUpload1 = new NgxFileUploadModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
 
         autoStartStorage.change()
@@ -210,13 +210,13 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
     it ("should remove completed uploads after 1 second", (done) => {
 
-        const autoStartStorage = new UploadStorage({
+        const autoStartStorage = new NgxFileUploadStorage({
             concurrentUploads: 1,
             autoStart: false,
             removeCompleted: 1000
         });
 
-        const fileUpload = new UploadModel();
+        const fileUpload = new NgxFileUploadModel();
         const uploadRequest = new UploadRequestMock(fileUpload);
 
         autoStartStorage.change()
@@ -230,7 +230,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
             });
 
         autoStartStorage.add(uploadRequest);
-        uploadRequest.data.state = UploadState.COMPLETED;
+        uploadRequest.data.state = NgxFileUploadState.COMPLETED;
         uploadRequest.applyChange();
     });
 });

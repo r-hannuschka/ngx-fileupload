@@ -12,14 +12,14 @@ describe("NgxFileUpload/libs/utils/factory", () => {
         });
     });
 
-    it("should create single UploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
+    it("should create single NgxFileUploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
         const file = new File(["ngx file upload"], "file1.txt");
         const upload = factory.createUploadRequest(file, {url: "/dev/null"}, null);
 
         expect(upload.data.raw).toEqual(file);
     }));
 
-    it("should create multiple UploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
+    it("should create multiple NgxFileUploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
         const file1 = new File(["ngx file upload"], "file1.txt");
         const file2 = new File(["ngx file upload"], "file2.txt");
 

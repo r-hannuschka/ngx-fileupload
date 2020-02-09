@@ -1,24 +1,24 @@
 import { Observable, Subject, ReplaySubject, timer } from "rxjs";
 import { takeUntil, distinctUntilKeyChanged, tap, take, filter, switchMap } from "rxjs/operators";
-import { UploadRequest, UploadStorageConfig, UploadRequestData, UploadState } from "../../api";
-import { UploadQueue } from "./upload.queue";
+import { NgxFileUploadRequest, NgxFileUploadStorageConfig, NgxFileUploadRequestData, NgxFileUploadState } from "../../api";
+import { NgxFileUploadQueue } from "./upload.queue";
 
-const defaultStoreConfig: UploadStorageConfig = {
+const defaultStoreConfig: NgxFileUploadStorageConfig = {
     concurrentUploads: 5,
     autoStart: false
 };
 
-export class UploadStorage {
+export class NgxFileUploadStorage {
 
-    private change$: ReplaySubject<UploadRequest[]>;
-    private uploads: Map<string, UploadRequest> = new Map();
-    private uploadQueue: UploadQueue;
-    private storeConfig: UploadStorageConfig;
+    private change$: ReplaySubject<NgxFileUploadRequest[]>;
+    private uploads: Map<string, NgxFileUploadRequest> = new Map();
+    private uploadQueue: NgxFileUploadQueue;
+    private storeConfig: NgxFileUploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
 
-    public constructor(config: UploadStorageConfig = null) {
+    public constructor(config: NgxFileUploadStorageConfig = null) {
         this.change$     = new ReplaySubject(1);
-        this.uploadQueue = new UploadQueue();
+        this.uploadQueue = new NgxFileUploadQueue();
 
         this.storeConfig = {...defaultStoreConfig, ...(config || {})};
         this.uploadQueue.concurrent = this.storeConfig.concurrentUploads;
@@ -28,17 +28,17 @@ export class UploadStorage {
      * submits if any upload changes his state, uploads
      * gets removed or added
      */
-    public change(): Observable<UploadRequest[]> {
+    public change(): Observable<NgxFileUploadRequest[]> {
         return this.change$;
     }
 
     /**
      * add new upload to store
      */
-    public add(upload: UploadRequest | UploadRequest[]) {
+    public add(upload: NgxFileUploadRequest | NgxFileUploadRequest[]) {
         const requests = Array.isArray(upload) ? upload : [upload];
 
-        requests.forEach((request: UploadRequest) => {
+        requests.forEach((request: NgxFileUploadRequest) => {
             if (request.requestId && this.uploads.has(request.requestId)) {
                 return;
             }
@@ -55,7 +55,7 @@ export class UploadStorage {
     /**
      * register for changes and destroy on upload request
      */
-    private registerUploadEvents(request: UploadRequest): void {
+    private registerUploadEvents(request: NgxFileUploadRequest): void {
 
         if (!request.isInvalid()) {
             this.uploadQueue.register(request);
@@ -73,14 +73,14 @@ export class UploadStorage {
      * if state from upload state has been changed, this will not notify
      * if amount of uploaded size has been changed
      */
-    private handleRequestChange(request: UploadRequest) {
+    private handleRequestChange(request: NgxFileUploadRequest) {
         const isAutoRemove = !isNaN(this.storeConfig.removeCompleted) || false;
         request.change.pipe(
             distinctUntilKeyChanged("state"),
             /* notify observers upload state has been changed */
             tap(() => this.notifyObserver()),
             /* only continue if completed with no errors and autoremove is enabled */
-            filter((upload: UploadRequestData) => upload.state === UploadState.COMPLETED && !upload.hasError && isAutoRemove),
+            filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.COMPLETED && !upload.hasError && isAutoRemove),
             /** wait for given amount of time before we remove item */
             switchMap(() => timer(this.storeConfig.removeCompleted)),
             /* automatically unsubscribe if request gets destroyed */
@@ -93,7 +93,7 @@ export class UploadStorage {
      * uploads has been added and events are registered
      * finalize operations
      */
-    private afterUploadsAdd(requests: UploadRequest[]): void {
+    private afterUploadsAdd(requests: NgxFileUploadRequest[]): void {
         if (this.storeConfig.autoStart) {
             requests.forEach((uploadRequest) => uploadRequest.start());
         }
@@ -137,7 +137,7 @@ export class UploadStorage {
     /**
      * remove upload from store
      */
-    public remove(upload: UploadRequest | string) {
+    public remove(upload: NgxFileUploadRequest | string) {
         const id = typeof(upload) === "string" ? upload : upload.requestId;
         const request = this.uploads.get(id);
         request.destroy();

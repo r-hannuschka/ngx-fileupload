@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { isImage, isZipFile } from "projects/example/libs/utils/validators";
-import { ValidationBuilder, GroupedValidator } from "@ngx-file-upload/core";
+import { NgxFileUploadValidationBuilder, NgxFileUploadGroupedvalidator } from "@ngx-file-upload/core";
 import * as ExampleCode from "projects/example/libs/data/code/validation/group-or";
 import * as Validators from "projects/example/libs/data/code/utils/validators";
 
@@ -10,7 +10,7 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
 })
 export class GroupOrComponent implements OnInit {
 
-    public validator: GroupedValidator;
+    public validator: NgxFileUploadGroupedvalidator;
 
     public exampleCode = ExampleCode;
 
@@ -18,7 +18,7 @@ export class GroupOrComponent implements OnInit {
 
     public ngOnInit() {
 
-        this.validator = ValidationBuilder.or(
+        this.validator = NgxFileUploadValidationBuilder.or(
             isImage, isZipFile
         );
     }

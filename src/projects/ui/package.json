@@ -1,7 +1,7 @@
 {
   "name": "@ngx-file-upload/ui",
-  "version": "2.0.0",
-  "description": "ngx file upload ui components",
+  "version": "2.0.1",
+  "description": "Angular 9 File Uploads components for @ngx-file-upload/core",
   "repository": {
     "url": "https://github.com/r-hannuschka/ngx-fileupload/tree/master/src/projects/ui",
     "type": "git"
@@ -11,7 +11,7 @@
     "ngx",
     "async",
     "angular",
-    "angular 8",
+    "angular 9",
     "file",
     "upload",
     "fileupload",

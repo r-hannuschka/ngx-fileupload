@@ -1,4 +1,3 @@
-import { timer } from "rxjs";
 import { NgxFileUploadRequest, NgxFileUploadControl } from "@ngx-file-upload/core";
 
 /**
@@ -9,9 +8,9 @@ import { NgxFileUploadRequest, NgxFileUploadControl } from "@ngx-file-upload/cor
  * @example
  *
  * <ng-template let-uploadData="data" let-uploadCtrl="ctrl">
- *     <button type="button" *ngIf="!data.hasError" (click)="uploadCtrl.start()">start</button>
- *     <button type="button" *ngIf="data.hasError"  (click)="uploadCtrl.retry()">retry</button>
- *     <button type="button"                        (click)="uploadCtrl.cancel()">cancel</button>
+ *     <button type="button" *ngIf="!data.hasError" (click)="uploadCtrl.start($event)">start</button>
+ *     <button type="button" *ngIf="data.hasError"  (click)="uploadCtrl.retry($event)">retry</button>
+ *     <button type="button"                        (click)="uploadCtrl.cancel($event)">cancel</button>
  * </ng-template>
  *
  * <ngx-file-upload-item *ngFor="item of uploads" [template]="myItemTemplate" [upload]="item"></ngx-fileUpload-item>
@@ -34,32 +33,26 @@ export class Control implements NgxFileUploadControl {
     /**
      * start single upload
      */
-    public start(event?: MouseEvent) {
-        this.handleEvent(event);
+    public start($event?: MouseEvent) {
+        this.handleEvent($event);
         this.upload.start();
     }
 
     /**
      * cancel / stop single upload
      */
-    public stop() {
-        /**
-         * add delay from 0 before we cancel the event
-         * if we dont it could happen, the element is removed
-         * after fileUpload has been canceled and click event passes
-         * through.
-         */
-        timer(0).subscribe({
-            next: () => this.upload.cancel()
-        });
+    public stop($event?: MouseEvent) {
+        this.handleEvent($event);
+        this.upload.cancel();
     }
 
-    public remove(event?: MouseEvent) {
-        this.handleEvent(event);
+    public remove($event?: MouseEvent) {
+        this.handleEvent($event);
         this.upload.destroy();
     }
 
     private handleEvent(event?: MouseEvent) {
+        console.log(event);
         if (event && event instanceof MouseEvent) {
             event.stopPropagation();
         }

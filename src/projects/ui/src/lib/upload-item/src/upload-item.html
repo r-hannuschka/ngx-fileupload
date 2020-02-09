@@ -7,7 +7,7 @@
             </span>
 
             <!-- remove upload completly -->
-            <button type="button" class="action-remove item-action--remove" (click)="ctrl.remove();">
+            <button type="button" class="action-remove item-action--remove" (click)="ctrl.remove($event);">
                 <i class="ngx-fileupload-icon--remove"></i>
             </button>
         </div>
@@ -34,7 +34,7 @@
             <!-- upload actions: cancel | retry -->
             <div class="upload-item--actions">
                 <!-- start upload action -->
-                <button type="button" class="item-action--upload" (click)="ctrl.start()"
+                <button type="button" class="item-action--upload" (click)="ctrl.start($event)"
                     *ngIf="!upload.hasError && upload.state !== uploadState.CANCELED"
                     [disabled]="upload.state !== uploadState.IDLE">
                     <i class="ngx-fileupload-icon--upload"></i>
@@ -42,7 +42,7 @@
 
                 <!-- retry upload action -->
                 <button type="button" class="item-action--reload"
-                    (click)="ctrl.retry()"
+                    (click)="ctrl.retry($event)"
                     *ngIf="upload.hasError || upload.state === uploadState.CANCELED">
                     <i class="ngx-fileupload-icon--reload"></i>
                 </button>

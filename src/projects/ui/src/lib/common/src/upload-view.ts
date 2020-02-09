@@ -87,15 +87,12 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      * files get dropped
      */
     public dropFiles(files: File[]) {
+        if (files.length) {
+            const uploads = this.uploadFactory.createUploadRequest(
+                files, this.uploadOptions, this.validator);
 
-        if (!files.length) {
-            return;
+            this.uploadStorage.add(uploads);
         }
-
-        const uploads = this.uploadFactory.createUploadRequest(
-            files, this.uploadOptions, this.validator);
-
-        this.uploadStorage.add(uploads);
     }
 
     /**

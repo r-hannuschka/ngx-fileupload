@@ -29,12 +29,8 @@ $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
         overflow-y: auto;
     }
 
-    ngx-fileupload-item {
+    ngx-file-upload-ui--item:not(:last-child) {
         margin-bottom: .5rem;
-
-        &:last-child {
-            margin-bottom: 0;
-        }
     }
 
     .file-browser {

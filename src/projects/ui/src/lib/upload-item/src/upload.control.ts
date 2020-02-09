@@ -52,7 +52,6 @@ export class Control implements NgxFileUploadControl {
     }
 
     private handleEvent(event?: MouseEvent) {
-        console.log(event);
         if (event && event instanceof MouseEvent) {
             event.stopPropagation();
         }

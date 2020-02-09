@@ -8,7 +8,18 @@
 [![codecov](https://codecov.io/gh/r-hannuschka/ngx-fileupload/branch/master/graph/badge.svg)](https://codecov.io/gh/r-hannuschka/ngx-fileupload)
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
 
-Angular 8 components for @ ngx-file-upload / core to create a UI. All components were packed in separate modules which can be integrated and used separately as required.
+Angular 9 components for @ ngx-file-upload / core to create a UI. All components were packed in separate modules which can be integrated and used separately as required.
+
+### Angular 9
+
+This package is build with angular 9 and typescript ^3.7.5 which is not supported by angular 8 by default. Typings for 3.5.5 and 3.7.5 are diffrent, if u want use this package in Angular 8 Project update your Angular 8 Project to Typescript ^3.7.5.
+
+We also change all namespaces to have NgxFileUpload as prefix [@see breaking change 1.1.2 to 2.0.0](https://github.com/r-hannuschka/ngx-fileupload/commit/3bcf0be5d36609215af28bdeac7961e4602f88ad)
+
+
+### Angular 8
+
+Use [ngx-file-upload/ui v1.1.2](https://www.npmjs.com/package/@ngx-file-upload/ui/v/1.1.2), compiled with typescript 3.5.x which is used default by angular 8.
 
 ### @dependencies
 

@@ -33,7 +33,7 @@ export class UploadToolbarComponent {
     }
 
     public drop(files: File[]) {
-        const uploadOptions: NgxFileUploadOptions = { url: this.url };
+        const uploadOptions: NgxFileUploadOptions = { url: this.url, headers: { authorization: {token: "foofoo"}} };
         this.storage.add(
             this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator));
     }

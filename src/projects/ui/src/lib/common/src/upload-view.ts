@@ -7,7 +7,8 @@ import {
     NgxFileUploadOptions,
     NgxFileUploadRequest,
     NgxFileUploadFactory,
-    NgxFileUploadStorage
+    NgxFileUploadStorage,
+    NgxFileUploadHeaders
 } from "@ngx-file-upload/core";
 import { FileUploadItemContext } from "../../upload-item/src/upload-item";
 
@@ -32,6 +33,9 @@ export class UploadViewComponent implements OnInit, OnDestroy {
 
     @Input()
     public formDataName = "file";
+
+    @Input()
+    public headers: NgxFileUploadHeaders = null;
 
     @Input()
     public validator: NgxFileUploadValidator | NgxFileUploadValidationFn;
@@ -67,7 +71,8 @@ export class UploadViewComponent implements OnInit, OnDestroy {
             formData: {
                 enabled: this.useFormData,
                 name:    this.formDataName
-            }
+            },
+            headers: this.headers
         };
 
         this.registerStoreEvents();

@@ -41,12 +41,6 @@ MIT
 @angular/router
 MIT
 
-@ngx-file-upload/core
-MIT
-
-@ngx-file-upload/ui
-MIT
-
 bootstrap-scss
 MIT
 The MIT License (MIT)

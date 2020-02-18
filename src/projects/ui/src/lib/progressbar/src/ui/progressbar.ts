@@ -75,7 +75,6 @@ export class ProgressbarComponent implements OnInit {
 
         const el = this.progressLine.nativeElement;
         this.renderer.setAttribute(el, "x2", `${progress}%`);
-        console.log(el.getAttribute("x2"));
     }
 
     /**

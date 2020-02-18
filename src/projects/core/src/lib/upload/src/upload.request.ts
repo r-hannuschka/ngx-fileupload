@@ -1,4 +1,11 @@
-import { HttpClient, HttpEvent, HttpEventType, HttpProgressEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient,
+    HttpEvent,
+    HttpEventType,
+    HttpProgressEvent,
+    HttpResponse,
+    HttpErrorResponse,
+    HttpHeaders
+} from "@angular/common/http";
 import { Subject, Observable, merge, of, concat } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
 import { NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadRequest, NgxFileUploadOptions, NgxFileUploadRequestData} from "../../api";
@@ -173,9 +180,12 @@ export class NgxFileUpload implements NgxFileUploadRequest {
      */
     private startUploadRequest(): Observable<HttpEvent<string>> {
         const uploadBody = this.createUploadBody();
+        const headers    = this.createUploadHeaders();
+
         return this.http.post<string>(this.options.url, uploadBody, {
             reportProgress: true,
-            observe: "events"
+            observe: "events",
+            headers
         }).pipe(
             takeUntil(merge(this.cancel$, this.destroyed$)),
         );
@@ -192,6 +202,28 @@ export class NgxFileUpload implements NgxFileUploadRequest {
             return formData;
         }
         return this.upload.raw;
+    }
+
+    /**
+     * create upload request headers
+     */
+    private createUploadHeaders(): HttpHeaders | undefined {
+        if (this.options.headers) {
+            let headers = new HttpHeaders();
+
+            if (this.options.headers.authorization) {
+                const authHeader = this.options.headers.authorization;
+                headers = headers.append("Authorization", `${authHeader.key || "Bearer"} ${authHeader.token}`);
+            }
+
+            /** add additional headers which should send */
+            Object.keys(this.options.headers)
+                .filter((header)  => header !== "authorization")
+                .forEach((header) => headers = headers.append(header, this.options.headers[header] as string));
+
+            return headers;
+        }
+        return void 0;
     }
 
     /**

@@ -120,6 +120,16 @@ export interface NgxFileUploadStorageConfig {
     removeCompleted?: number;
 }
 
+interface AuthorizationHeader {
+    key?: string;
+    token: string;
+}
+
+export interface NgxFileUploadHeaders {
+    [key: string]: string | AuthorizationHeader;
+    authorization?: AuthorizationHeader;
+}
+
 /**
  * Upload Options
  */
@@ -146,4 +156,6 @@ export interface NgxFileUploadOptions {
          */
         name?: string;
     };
+
+    headers?: NgxFileUploadHeaders;
 }

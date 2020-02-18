@@ -69,4 +69,21 @@ describe( "Upload Component:", () => {
 
         expect(testComponent.uploadStorage).toBe(fakeStorage);
     });
+
+    it( "should add headers", () => {
+        const fakeStorage = new UploadStorageMock();
+        testComponent.storage = fakeStorage;
+        testComponent.headers = {
+            authorization: {
+                token: "my-token"
+            }
+        };
+        fixture.detectChanges();
+
+        expect(testComponent.headers).toEqual({
+            authorization: {
+                token: "my-token"
+            }
+        });
+    });
 });

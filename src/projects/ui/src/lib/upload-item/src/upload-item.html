@@ -77,11 +77,10 @@
                         {{upload.response.body.message}}
                     </ng-container>
                     <ng-template #uploadSuccess>
-                        {{upload.name}} uploaded
+                        {{upload.name}} {{i18n?.UPLOADED || "uploaded"}}
                     </ng-template>
                 </p>
             </ng-container>
-
         </div>
     </div>
 </ng-template>

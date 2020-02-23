@@ -22,7 +22,7 @@ export class StateToStringPipe implements PipeTransform {
             case NgxFileUploadState.COMPLETED: return "completed";
             case NgxFileUploadState.START:     return "start";
             case NgxFileUploadState.INVALID:   return "invalid";
-            default:                    return "idle";
+            default:                           return "idle";
         }
     }
 }

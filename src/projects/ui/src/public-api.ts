@@ -10,3 +10,5 @@ export * from "./lib/toolbar/main";
 export * from "./lib/upload-item/main";
 
 export * from "./lib/upload-item/src/upload.control";
+
+export { NgxFileUploadUiI18n, NGX_FILE_UPLOAD_UI_I18N } from "./lib/i18n";

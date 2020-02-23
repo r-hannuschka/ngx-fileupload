@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { NgxFileUploadRequest, NgxFileUploadStorage } from "@ngx-file-upload/core";
+import { NgxFileUploadUiI18nProvider, NgxFileUploadUiI18nKey, NgxFileUploadUiI18nToolbar } from "../../i18n";
 
 interface InfoData {
     error: number;
@@ -24,6 +25,8 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
 
     public hasUploadsInList = false;
 
+    public i18n: NgxFileUploadUiI18nToolbar;
+
     /**
      * true if we have completed or invalid uploads
      * in list
@@ -34,7 +37,12 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
      */
     private destroyed$: Subject<boolean> = new Subject();
 
+    public constructor(
+        private i18nProvider: NgxFileUploadUiI18nProvider
+    ) {}
+
     ngOnInit() {
+        this.i18n = this.i18nProvider.getI18n<NgxFileUploadUiI18nToolbar>(NgxFileUploadUiI18nKey.ToolBar);
         this.registerStoreChange();
     }
 

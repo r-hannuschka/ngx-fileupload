@@ -1,9 +1,10 @@
 
-import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, AfterViewInit } from "@angular/core";
+import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, AfterViewInit, OnInit } from "@angular/core";
 import { NgxFileUploadRequest, NgxFileUploadState, NgxFileUploadRequestData, NgxFileUploadControl } from "@ngx-file-upload/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Control } from "./upload.control";
+import { NgxFileUploadUiI18nProvider, NgxFileUploadUiI18nItem, NgxFileUploadUiI18nKey } from "../../i18n";
 
 export interface FileUploadItemContext {
     data: NgxFileUploadRequestData;
@@ -18,7 +19,7 @@ export interface FileUploadItemContext {
     templateUrl: "upload-item.html",
     styleUrls: ["./upload-item.scss"],
 })
-export class UploadItemComponent implements AfterViewInit, OnDestroy {
+export class UploadItemComponent implements AfterViewInit, OnInit, OnDestroy {
 
     public uploadState = NgxFileUploadState;
 
@@ -38,6 +39,8 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
      * unsubscribe directly
      */
     private destroyed: Subject<boolean> = new Subject();
+
+    public i18n: NgxFileUploadUiI18nItem;
 
     /**
      * set template which should be used for upload items, if no TemplateRef is passed
@@ -65,6 +68,10 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
         };
     }
 
+    public constructor(
+        private i18nProvider: NgxFileUploadUiI18nProvider
+    ) {}
+
     /**
      * ensure all click events will canceled
      * so we dont affect anything other
@@ -90,6 +97,10 @@ export class UploadItemComponent implements AfterViewInit, OnDestroy {
                     return this.context.data = fileUpload;
                 }
             });
+    }
+
+    ngOnInit() {
+        this.i18n = this.i18nProvider.getI18n<NgxFileUploadUiI18nItem>(NgxFileUploadUiI18nKey.UploadItem);
     }
 
     /**

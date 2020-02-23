@@ -105,6 +105,18 @@ export const HTML = `
 
 export const SCSS = `
 :host {
+    ngx-dropzone {
+        border-style: solid;
+        border-width: 0 2px 2px;
+        border-radius: 0;
+        padding: .2rem .5rem .2rem 0;
+    }
+
+    ngx-dropzone-image-preview {
+        height: 100%;
+        position: relative;
+        margin: 0 .5rem 0 0;
+    }
 
     ngx-dropzone-label {
         top: 0;
@@ -131,12 +143,9 @@ export const SCSS = `
     ngx-file-upload-ui--progressbar-circle {
 
         ::ng-deep {
+
             svg {
                 opacity: .8;
-                /**
-                 * !important set width and height for svg it will rotatet by -90deg
-                 * the circle starts on top and not right. So ensure height and width are equal.
-                 */
                 height: 72px;
                 width: 72px;
             }
@@ -159,9 +168,11 @@ export const SCSS = `
     }
 
     ::ng-deep {
+
         ngx-dropzone-remove-badge {
             z-index: 10;
         }
     }
 }
+
 `;

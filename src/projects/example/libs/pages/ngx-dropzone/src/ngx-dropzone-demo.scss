@@ -14,6 +14,13 @@ $icomoon-font-path: "../../../../assets/fonts" !default;
         border-style: solid;
         border-width: 0 2px 2px;
         border-radius: 0;
+        padding: .2rem .5rem .2rem 0;
+    }
+
+    ngx-dropzone-image-preview {
+        height: 100%;
+        position: relative;
+        margin: 0 .5rem 0 0;
     }
 
     ngx-dropzone-label {

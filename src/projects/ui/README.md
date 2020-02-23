@@ -31,6 +31,50 @@ Use [ngx-file-upload/ui v1.1.2](https://www.npmjs.com/package/@ngx-file-upload/u
 npm i --save @ngx-file-upload/ui @ngx-file-upload/core
 ```
 
+### Language Support
+
+To add a specific language to @ngx-file-upload/ui components create a new language file where you define custom translations which will only
+work for predefined components we provide with @ngx-file-upload/ui.
+
+```ts
+import { NGX_FILE_UPLOAD_UI_I18N, NgxFileUploadUiI18n } from "@ngx-file-upload/ui";
+
+/** 
+ * define translation json data all sections are optional
+ * if not set it will take default value
+ */
+const ngxFileUploadI18n: NgxFileUploadUiI18n = {
+    common: {
+        SELECT_FILES: "Select File"
+    },
+    item: {
+        UPLOADED: "uploaded"
+    },
+    toolbar: {
+        CLEAN_UP: "Remove invalid and completed",
+        REMOVE_ALL: "Remove all",
+        UPLOADS: "Progessing File Uploads",
+        UPLOAD_ALL: "Upload All"
+    }
+};
+
+@NgModule({
+    ...
+    providers: [
+        ...
+        /** 
+         * @optional bind language data to injection token 
+         * if not provided it will use default text labels
+         */
+        { provide: NGX_FILE_UPLOAD_UI_I18N, useValue: ngxFileUploadI18n },
+        ...
+})
+export class AppModule {
+}
+```
+
+Read Docs for more Informations: [Language Support](https://github.com/r-hannuschka/ngx-fileupload/blob/master/docs/ui/i18n.md)
+
 ### @Modules
 
 #### NgxFileUploadUiModule

@@ -11,6 +11,7 @@ import {
     NgxFileUploadHeaders
 } from "@ngx-file-upload/core";
 import { FileUploadItemContext } from "../../upload-item/src/upload-item";
+import { NgxFileUploadUiI18nProvider, NgxFileUploadUiI18nCommon, NgxFileUploadUiI18nKey } from "../../i18n";
 
 @Component({
     selector: "ngx-file-upload",
@@ -50,6 +51,8 @@ export class UploadViewComponent implements OnInit, OnDestroy {
 
     public uploads: NgxFileUploadRequest[] = [];
 
+    public i18n: NgxFileUploadUiI18nCommon;
+
     private destroyed$: Subject<boolean> = new Subject();
 
     private uploadStorageSet = false;
@@ -57,7 +60,8 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     private uploadOptions: NgxFileUploadOptions;
 
     public constructor(
-        @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
+        @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory,
+        private i18nProvider: NgxFileUploadUiI18nProvider
     ) { }
 
     public ngOnInit() {
@@ -65,6 +69,8 @@ export class UploadViewComponent implements OnInit, OnDestroy {
         if (!this.uploadStorage) {
             this.uploadStorage = new NgxFileUploadStorage();
         }
+
+        this.i18n = this.i18nProvider.getI18n<NgxFileUploadUiI18nCommon>(NgxFileUploadUiI18nKey.Common);
 
         this.uploadOptions = {
             url: this.url,

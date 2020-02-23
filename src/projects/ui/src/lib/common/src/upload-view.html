@@ -4,7 +4,7 @@
 
     <div *ngIf="!uploads.length" class="file-browser">
         <i class="ngx-fileupload-icon--add"></i>
-        <span>Drag/Drop files here or click</span>
+        <span>{{ i18n?.SELECT_FILES || "Drag/Drop files here or click"}}</span>
     </div>
 
     <div *ngIf="uploads.length" class="file-upload--list">

@@ -1,14 +1,18 @@
 <div class="actions">
     <button class="upload-all" [disabled]="uploadInfo.idle === 0" (click)="uploadAll()">
         <i class="ngx-fileupload-icon--upload"></i>
-        Upload
+        {{i18n?.UPLOAD_ALL || "Upload all"}}
     </button>
-    <button class="clean"      [disabled]="!isCleanable" (click)="cleanAll()">Clear</button>
-    <button class="remove-all" [disabled]="!hasUploadsInList" (click)="stopAll()">Remove</button>
+    <button class="clean" [disabled]="!isCleanable" (click)="cleanAll()">
+        {{i18n?.CLEAN_UP || "Clear"}}
+    </button>
+    <button class="remove-all" [disabled]="!hasUploadsInList" (click)="stopAll()">
+        {{i18n?.REMOVE_ALL || "Remove"}}
+    </button>
 </div>
 
 <div class="info">
-    Uploads:
+    {{ i18n?.UPLOADS || "Uploads" }}:
     <ul>
         <li>
             <i class="ngx-fileupload-icon--upload"></i>

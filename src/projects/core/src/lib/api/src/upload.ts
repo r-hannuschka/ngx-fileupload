@@ -127,7 +127,7 @@ interface AuthorizationHeader {
 
 export interface NgxFileUploadHeaders {
     [key: string]: string | AuthorizationHeader;
-    authorization?: AuthorizationHeader;
+    authorization?: string | AuthorizationHeader;
 }
 
 /**

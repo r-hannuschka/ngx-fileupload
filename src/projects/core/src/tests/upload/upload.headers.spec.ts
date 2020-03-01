@@ -23,6 +23,21 @@ describe("NgxFileUpload/libs/upload", () => {
         httpClient = injector.inject(HttpClient as Type<HttpClient>);
     });
 
+    it("should append authorization header if value is passed as string", () => {
+        const uploadFile = new NgxFileUploadModel();
+        const upload = new NgxFileUpload(httpClient, uploadFile, {
+            url,
+            headers: {
+                authorization: "01234567890abcdef"
+            }
+        });
+        upload.start();
+
+        const testRequest: TestRequest = httpMock.expectOne(url);
+        expect(testRequest.request.headers.has("Authorization")).toBeTruthy();
+        expect(testRequest.request.headers.get("Authorization")).toEqual(`Bearer 01234567890abcdef`);
+    });
+
     it("should add authorization header to request", () => {
         const uploadFile = new NgxFileUploadModel();
         const upload = new NgxFileUpload(httpClient, uploadFile, {

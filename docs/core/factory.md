@@ -8,11 +8,11 @@ Factory to create new UploadRequests
 ```ts
 ...
 import {
-    UploadStorage,
+    NgxFileUploadStorage,
     NgxFileUploadFactory,
-    UploadOptions,
-    UploadRequest
-} from "@r-hannuschka/ngx-fileupload";
+    NgxFileUploadOptions,
+    NgxFileUploadRequest
+} from "@ngx-file-upload/core"
 ...
 
 @Component({
@@ -46,7 +46,7 @@ export class MyComponent implements OnDestroy, OnInit {
      */
     public fileSelectOrDrop(file: File) {
 
-        const uploadRequest: UploadRequest = 
+        const uploadRequest: NgxFileUploadRequest = 
             this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions);
 
         this.uploadStorage.add(requests);
@@ -57,7 +57,7 @@ export class MyComponent implements OnDestroy, OnInit {
      */
     public multipleFiles(files: File[]) {
 
-        const uploadRequest: UploadRequest[] = 
+        const uploadRequest: NgxFileUploadRequest[] = 
             this.uploadFactory.createUploadRequest(files, this.uploadOptions);
 
         this.uploadStorage.add(requests);
@@ -65,7 +65,6 @@ export class MyComponent implements OnDestroy, OnInit {
 
     ...
 }
-
 ```
 
 ## API
@@ -74,27 +73,24 @@ export class MyComponent implements OnDestroy, OnInit {
 
 | name | params | create | description |
 |---|---|---|---|
-|createUploadRequest | File, UploadOptions [, ValidatorFn \| Validator] | UploadRequest | creates new UploadRequest which could added to storage |
-|createUploadRequest | File[], UploadOptions [, ValidatorFn \| Validator]  | UploadRequest[] | creates multiple UploadRequests which could added to storage |
+|createUploadRequest | File, NgxFileUploadOptions [, ValidatorFn \| Validator] | NgxFileUploadRequest | creates new UploadRequest which could added to storage |
+|createUploadRequest | File[], NgxFileUploadOptions [, ValidatorFn \| Validator]  | NgxFileUploadRequest[] | creates multiple UploadRequests which could added to storage |
 
-### Interface UploadOptions
+### Interface NgxFileUploadOptions
 
 ```ts
 export interface UploadOptions {
-
     /**
-     * url which should used to upload file
+     * url which should used to upload file this is mandatory
      */
     url: string;
-
     /**
      * form data options
      */
     formData?: {
-
         /**
          * if set to false, file will send through post body and not wrapped in
-         * FormData Object
+         * FormData Object default true
          */
         enabled: boolean;
         /**
@@ -108,8 +104,13 @@ export interface UploadOptions {
          */
         name?: string;
     };
+    /**
+     * add aditional headers to request
+     */
+    headers?: NgxFileUploadHeaders;
 }
 ```
+
 
 ### Interface NgxFileUploadFactory
 

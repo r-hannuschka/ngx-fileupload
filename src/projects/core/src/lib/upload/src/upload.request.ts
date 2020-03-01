@@ -161,9 +161,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
     private get beforeStartHook$(): Observable<boolean> {
 
         const initialState = this.upload.state;
-
         let hook$: Observable<boolean> = of(true);
-
         if (this.hooks.beforeStart.length) {
             hook$ = concat(...this.hooks.beforeStart)
             .pipe(
@@ -212,8 +210,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
             let headers = new HttpHeaders();
 
             if (this.options.headers.authorization) {
-                const authHeader = this.options.headers.authorization;
-                headers = headers.append("Authorization", `${authHeader.key || "Bearer"} ${authHeader.token}`);
+                headers = this.createAuthroizationHeader(headers);
             }
 
             /** add additional headers which should send */
@@ -224,6 +221,19 @@ export class NgxFileUpload implements NgxFileUploadRequest {
             return headers;
         }
         return void 0;
+    }
+
+    /**
+     * create authorization header which will send
+     */
+    private createAuthroizationHeader(headers: HttpHeaders): HttpHeaders {
+        const authHeader = this.options.headers.authorization;
+        if (typeof authHeader === "string") {
+            headers = headers.append("Authorization", `Bearer ${authHeader}`);
+        } else {
+            headers = headers.append("Authorization", `${authHeader.key || "Bearer"} ${authHeader.token}`);
+        }
+        return headers;
     }
 
     /**
@@ -260,14 +270,11 @@ export class NgxFileUpload implements NgxFileUploadRequest {
      * handle http progress event
      */
     private handleProgress(event: HttpProgressEvent) {
-
         const loaded   = event.loaded;
         const progress = loaded * 100 / this.upload.size;
-
         this.upload.state = NgxFileUploadState.PROGRESS;
         this.upload.uploaded = loaded;
         this.upload.progress = Math.min(Math.round(progress), 100);
-
         this.notifyObservers();
     }
 

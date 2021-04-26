@@ -30,7 +30,7 @@
     "@angular/platform-browser": "9.1.7",
     "@angular/platform-browser-dynamic": "9.1.7",
     "@angular/router": "9.1.7",
-    "highlight.js": "10.0.1",
+    "highlight.js": "10.7.2",
     "igniteui-angular": "9.0.12",
     "ngx-customscrollbar": "2.0.2",
     "ngx-dropzone": "2.2.2",

@@ -1,30 +1,49 @@
 <h3>Nested Validation Groups</h3>
 
-<p>Combine multiple groups, First Group will validate zip OR image. This result will combined with a third validator maxFileSize. So file will valid if we handle an image- or zip file and file size is less then or equal 512kb.</p>
+<p>Combine multiple groups, First Group will validate zip OR image. This result will combined with a third validator
+  maxFileSize. So file will valid if we handle an image- or zip file and file size is less then or equal 512kb.</p>
 
 <igx-tabs>
-    <igx-tabs-group label="Demo">
-        <ngx-file-upload [url]="'http://localhost:3000/upload'" [validator]="validator"></ngx-file-upload>
-    </igx-tabs-group>
 
-    <igx-tabs-group label="Typescript">
-        <pre><code [highlight]="exampleCode.validationGroupMultiple"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Demo</igx-tab-header>
+    <igx-tab-content>
+      <ngx-file-upload [url]="'http://localhost:3000/upload'" [validator]="validator"></ngx-file-upload>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="Html">
-        <pre><code [highlight]="exampleCode.HTML"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Typescript</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="exampleCode.validationGroupMultiple"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="NgxFileUploadValidator: isImage">
-        <pre><code [highlight]="codeValidator.IMAGE_VALIDATOR"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Html</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="exampleCode.HTML"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="NgxFileUploadValidator: isZip">
-        <pre><code [highlight]="codeValidator.IS_ZIP_VALIDATOR"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>NgxFileUploadValidator: isImage</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="codeValidator.IMAGE_VALIDATOR"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="NgxFileUploadValidator: MaxFileSize">
-        <pre><code [highlight]="codeValidator.MAX_SIZE_VALIDATOR"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>NgxFileUploadValidator: isZip</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="codeValidator.IS_ZIP_VALIDATOR"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
+  <igx-tab-item>
+    <igx-tab-header>Demo</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="codeValidator.MAX_SIZE_VALIDATOR"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 </igx-tabs>

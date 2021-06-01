@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const resolve = require("path").resolve;
 const dirname = require("path").dirname;
+const cors = require('cors');
 const letsLog = require("letslog");
 const fileUpload = require("express-fileupload");
 
@@ -44,6 +45,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+app.use(cors());
 app.use(fileUpload());
 
 app.post("/upload", function(req, res) {

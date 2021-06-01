@@ -1,4 +1,4 @@
-import { ComponentFixture, async, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { Component, Type, } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
@@ -30,7 +30,7 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
         file  = new File(["@r-hannuschka/ngx-file-upload"], "upload.txt", { type: "text/plain"});
     });
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule( {
             imports: [
                 CommonModule,

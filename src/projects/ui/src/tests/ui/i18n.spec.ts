@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { By } from "@angular/platform-browser";
-import { async, TestBed, ComponentFixture } from "@angular/core/testing";
+import { TestBed, ComponentFixture, waitForAsync } from "@angular/core/testing";
 import { UploadToolbarComponent } from "@ngx-file-upload/dev/ui/lib/toolbar/src/toolbar";
 import { NGX_FILE_UPLOAD_UI_I18N, NgxFileUploadUiI18n, UploadViewComponent, NgxFileUploadUiModule } from "../../public-api";
 import { NgxFileUploadStorage, NgxFileUploadFactory } from "@ngx-file-upload/core";
@@ -26,7 +26,7 @@ describe( "I18N:", () => {
 
         let fixture: ComponentFixture<UploadToolbarComponent>;
 
-        beforeEach(async(() => {
+        beforeEach(waitForAsync(() => {
             TestBed.configureTestingModule({
                 imports: [
                     CommonModule,
@@ -78,7 +78,7 @@ describe( "I18N:", () => {
 
         let fixture: ComponentFixture<UploadViewComponent>;
 
-        beforeEach(async(() => {
+        beforeEach(waitForAsync(() => {
             TestBed.configureTestingModule( {
                 imports: [
                     CommonModule,

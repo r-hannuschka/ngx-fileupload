@@ -1,131 +1,147 @@
 <!-- template for each upload -->
 <ng-template #itemTemplate let-upload="upload" #custom>
 
-    <div class="card-wrapper">
+  <div class="card-wrapper">
 
-        <div class="card upload">
+    <div class="card upload">
 
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span class="title text-truncate">{{upload.data.name}}</span>
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="title text-truncate">{{upload.data.name}}</span>
 
-                <div class="actions btn-group">
-                    <button
-                        (click)="startUpload(upload)"
-                        class="btn upload btn-sm"
-                        [disabled]="upload.data.state !== uploadStates.IDLE" >
-                        <i class="icon-left icon-upload"></i>
-                    </button>
+        <div class="actions btn-group">
+          <button (click)="startUpload(upload)" class="btn upload btn-sm"
+            [disabled]="upload.data.state !== uploadStates.IDLE">
+            <i class="icon-left icon-upload"></i>
+          </button>
 
-                    <button (click)="cancelUpload(upload)" [disabled]="!(upload.data.state | isCancelAble)" class="btn cancel btn-sm">
-                        <i class="icon-left icon-canceled"></i>
-                    </button>
+          <button (click)="cancelUpload(upload)" [disabled]="!(upload.data.state | isCancelAble)"
+            class="btn cancel btn-sm">
+            <i class="icon-left icon-canceled"></i>
+          </button>
 
-                    <button (click)="removeUpload(upload)" class="btn btn-sm delete">
-                        <i class="icon-left icon-cancel"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <div class="progressbar">
-                    <ngx-file-upload-ui--progressbar-circle [parts]="2" [progress]="upload.data.progress">
-                    </ngx-file-upload-ui--progressbar-circle>
-                </div>
-
-                <div class="col details col-auto">
-                    <dl>
-                        <dt class="label">State</dt>
-                        <dd class="value text-truncate">{{upload.data.state | stateToString}}</dd>
-                        <dt class="label">Uploaded</dt>
-                        <dd class="value text-truncate">{{upload.data.uploaded | fileSize}} / {{upload.data.size | fileSize}}</dd>
-                    </dl>
-                </div>
-            </div>
-
-            <div class="card-footer" *ngIf="upload.isCompleted() || upload.isInvalid()">
-
-                <!-- response completed show error / success -->
-                <ng-container *ngIf="upload.data.state === uploadStates.COMPLETED"
-                    [ngTemplateOutlet]="upload.data.hasError ? errorTemplate : successTemplate"
-                    [ngTemplateOutletContext]="{data: upload.data.hasError ? upload.data.response.errors : upload.data.name}" >
-                </ng-container>
-
-                <ng-container *ngIf="upload.data.validationErrors"
-                    [ngTemplateOutlet]="invalidTemplate"
-                    [ngTemplateOutletContext]="{data: upload.data.validationErrors}" >
-                </ng-container>
-            </div>
+          <button (click)="removeUpload(upload)" class="btn btn-sm delete">
+            <i class="icon-left icon-cancel"></i>
+          </button>
         </div>
+      </div>
+
+      <div class="card-body">
+        <div class="progressbar">
+          <ngx-file-upload-ui--progressbar-circle [parts]="2" [progress]="upload.data.progress">
+          </ngx-file-upload-ui--progressbar-circle>
+        </div>
+
+        <div class="col details col-auto">
+          <dl>
+            <dt class="label">State</dt>
+            <dd class="value text-truncate">{{upload.data.state | stateToString}}</dd>
+            <dt class="label">Uploaded</dt>
+            <dd class="value text-truncate">{{upload.data.uploaded | fileSize}} / {{upload.data.size | fileSize}}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="card-footer" *ngIf="upload.isCompleted() || upload.isInvalid()">
+
+        <!-- response completed show error / success -->
+        <ng-container *ngIf="upload.data.state === uploadStates.COMPLETED"
+          [ngTemplateOutlet]="upload.data.hasError ? errorTemplate : successTemplate"
+          [ngTemplateOutletContext]="{data: upload.data.hasError ? upload.data.response.errors : upload.data.name}">
+        </ng-container>
+
+        <ng-container *ngIf="upload.data.validationErrors" [ngTemplateOutlet]="invalidTemplate"
+          [ngTemplateOutletContext]="{data: upload.data.validationErrors}">
+        </ng-container>
+      </div>
     </div>
+  </div>
 </ng-template>
 
 <!-- upload error template -->
 <ng-template #errorTemplate let-errors="data">
-    <ul class="errors">
-        <li *ngFor="let error of errors" class="error">{{error}}</li>
-    </ul>
+  <ul class="errors">
+    <li *ngFor="let error of errors" class="error">{{error}}</li>
+  </ul>
 </ng-template>
 
 <!-- upload success template -->
 <ng-template #successTemplate let-name="data">
-    <span class="success">
-        {{name}} successful uploaded
-    </span>
+  <span class="success">
+    {{name}} successful uploaded
+  </span>
 </ng-template>
 
 <!-- upload validation error template -->
 <ng-template #invalidTemplate let-validationErrors="data">
-    <ul class="errors">
-        <li class="error" *ngFor="let error of validationErrors | keyvalue">
-            {{error.value}}
-        </li>
-    </ul>
+  <ul class="errors">
+    <li class="error" *ngFor="let error of validationErrors | keyvalue">
+      {{error.value}}
+    </li>
+  </ul>
 </ng-template>
 
 <h3>Custom Item Template</h3>
 
 <p>This example shows how to define a custom template which will be used for every upload in list.</p>
 <p>
-    Both Dashboard and Custom Item Template Page share the same Upload Storage. That means that both pages show the same
-    uploads (progress, state). So if you allready added Files in dashboard you will see them here again. And if you add Files here
-    you can see them in Dashboard.
+  Both Dashboard and Custom Item Template Page share the same Upload Storage. That means that both pages show the same
+  uploads (progress, state). So if you allready added Files in dashboard you will see them here again. And if you add
+  Files here
+  you can see them in Dashboard.
 </p>
 
 <section class="demo mb-3">
-    <igx-tabs>
+  <igx-tabs>
 
-        <igx-tabs-group label="Demo">
-            <div class="mt-3 ">
-                <app-ui--upload-toolbar [storage]="storage" [url]="'http://localhost:3000/upload'"></app-ui--upload-toolbar>
+    <igx-tab-item>
+      <igx-tab-header>Demo</igx-tab-header>
+      <igx-tab-content>
+        <div class="mt-3 ">
+          <app-ui--upload-toolbar [storage]="storage" [url]="'http://localhost:3000/upload'"></app-ui--upload-toolbar>
 
-                <!-- fileuploads goes here -->
-                <div class="card-list">
-                    <ng-container *ngFor="let upload of uploads" 
-                        [ngTemplateOutlet]="itemTemplate"
-                        [ngTemplateOutletContext]="{upload: upload}" >
-                    </ng-container>
-                </div>
-            </div>
-        </igx-tabs-group>
+          <!-- fileuploads goes here -->
+          <div class="card-list">
+            <ng-container *ngFor="let upload of uploads" [ngTemplateOutlet]="itemTemplate"
+              [ngTemplateOutletContext]="{upload: upload}">
+            </ng-container>
+          </div>
+        </div>
+      </igx-tab-content>
+    </igx-tab-item>
 
-        <igx-tabs-group label="Module">
-            <pre><code [highlight]="code.MODULE"></code></pre>
-        </igx-tabs-group>
+    <igx-tab-item>
+      <igx-tab-header>Module</igx-tab-header>
+      <igx-tab-content>
+        <pre><code [highlight]="code.MODULE"></code></pre>
+      </igx-tab-content>
+    </igx-tab-item>
 
-        <igx-tabs-group label="Component">
-            <pre><code [highlight]="code.TYPESCRIPT"></code></pre>
-        </igx-tabs-group>
+    <igx-tab-item>
+      <igx-tab-header>Component</igx-tab-header>
+      <igx-tab-content>
+        <pre><code [highlight]="code.TYPESCRIPT"></code></pre>
+      </igx-tab-content>
+    </igx-tab-item>
 
-        <igx-tabs-group label="Html">
-            <pre><code [highlight]="code.HTML"></code></pre>
-        </igx-tabs-group>
+    <igx-tab-item>
+      <igx-tab-header>Html</igx-tab-header>
+      <igx-tab-content>
+        <pre><code [highlight]="code.HTML"></code></pre>
+      </igx-tab-content>
+    </igx-tab-item>
 
-        <igx-tabs-group label="Item Template">
-            <pre><code [highlight]="codeUiItemTemplate.TEMPLATE"></code></pre>
-        </igx-tabs-group>
+    <igx-tab-item>
+      <igx-tab-header>Item Template</igx-tab-header>
+      <igx-tab-content>
+        <pre><code [highlight]="codeUiItemTemplate.TEMPLATE"></code></pre>
+      </igx-tab-content>
+    </igx-tab-item>
 
-        <igx-tabs-group label="Storage">
-            <pre><code [highlight]="codeUploadStorage.TS"></code></pre>
-        </igx-tabs-group>
-    </igx-tabs>
+    <igx-tab-item>
+      <igx-tab-header>Storage</igx-tab-header>
+      <igx-tab-content>
+        <pre><code [highlight]="codeUploadStorage.TS"></code></pre>
+      </igx-tab-content>
+    </igx-tab-item>
+  </igx-tabs>
 </section>

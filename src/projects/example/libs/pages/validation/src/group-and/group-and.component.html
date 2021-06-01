@@ -3,24 +3,39 @@
 <p>Add 2 validators as group which have to validate both (AND), max file size are 512kb and it have to be an image.</p>
 
 <igx-tabs>
-    <igx-tabs-group label="Demo">
-        <ngx-file-upload [url]="'http://localhost:3000/upload'" [validator]="validator"></ngx-file-upload>
-    </igx-tabs-group>
 
-    <igx-tabs-group label="Typescript">
-        <pre><code [highlight]="exampleCode.validationGroupAnd"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Demo</igx-tab-header>
+    <igx-tab-content>
+      <ngx-file-upload [url]="'http://localhost:3000/upload'" [validator]="validator"></ngx-file-upload>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="Html">
-        <pre><code [highlight]="exampleCode.HTML"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Typescript</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="exampleCode.validationGroupAnd"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="NgxFileUploadValidator: isImage">
-        <pre><code [highlight]="codeValidator.IMAGE_VALIDATOR"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Html</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="exampleCode.HTML"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="NgxFileUploadValidator: MaxSize">
-        <pre><code [highlight]="codeValidator.MAX_SIZE_VALIDATOR"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>NgxFileUploadValidator: isImage</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="codeValidator.IMAGE_VALIDATOR"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
+  <igx-tab-item>
+    <igx-tab-header>NgxFileUploadValidator: MaxSize</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="codeValidator.MAX_SIZE_VALIDATOR"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 </igx-tabs>

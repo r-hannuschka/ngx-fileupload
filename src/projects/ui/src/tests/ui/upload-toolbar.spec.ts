@@ -1,6 +1,6 @@
 
 import { CommonModule } from "@angular/common";
-import { async, TestBed, ComponentFixture } from "@angular/core/testing";
+import { TestBed, ComponentFixture, waitForAsync } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { Subject } from "rxjs";
 import { debounceTime, take } from "rxjs/operators";
@@ -16,7 +16,7 @@ describe( "ngx-file-upload/libs/ui/upload-toolbar:", () => {
     let testComponent: UploadToolbarComponent;
     const changeMock: Subject<NgxFileUploadRequest[]> = new Subject();
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 CommonModule,

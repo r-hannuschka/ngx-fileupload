@@ -1,58 +1,73 @@
 <ng-template #example>
-	<ngx-file-upload-ui--toolbar [storage]="storage"></ngx-file-upload-ui--toolbar>
-	<ngx-dropzone (change)="onSelect($event)" [accept]="'image/*'">
-		<ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
+  <ngx-file-upload-ui--toolbar [storage]="storage"></ngx-file-upload-ui--toolbar>
+  <ngx-dropzone (change)="onSelect($event)" [accept]="'image/*'">
+    <ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
 
-		<ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
-			(removed)="onRemove(upload)" 
-			[file]="upload.data.raw"
-			[removable]="true">
-			<ngx-dropzone-label>
-				<span class="state">
-					State: {{upload.data.state | stateToString }}
-				</span>
+    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
+      (removed)="onRemove(upload)" [file]="upload.data.raw" [removable]="true">
+      <ngx-dropzone-label>
+        <span class="state">
+          State: {{upload.data.state | stateToString }}
+        </span>
 
-				<!-- add progressbar -->
-				<ngx-file-upload-ui--progressbar-circle [progress]="upload.data.progress" [parts]="12" >
-				</ngx-file-upload-ui--progressbar-circle>
+        <!-- add progressbar -->
+        <ngx-file-upload-ui--progressbar-circle [progress]="upload.data.progress" [parts]="12">
+        </ngx-file-upload-ui--progressbar-circle>
 
-				<span class="label">
-					{{ upload.data.name }}
-				</span>
-			</ngx-dropzone-label>
-		</ngx-dropzone-image-preview>
-	</ngx-dropzone>
+        <span class="label">
+          {{ upload.data.name }}
+        </span>
+      </ngx-dropzone-label>
+    </ngx-dropzone-image-preview>
+  </ngx-dropzone>
 </ng-template>
 
 <p>
 
-	For this example we use <a target="blank" href="https://www.npmjs.com/package/ngx-dropzone">ngx-dropzone library</a>. 
-	We want only upload images and this library could also preview images which are uploaded very easy.
+  For this example we use <a target="blank" href="https://www.npmjs.com/package/ngx-dropzone">ngx-dropzone
+    library</a>.
+  We want only upload images and this library could also preview images which are uploaded very easy.
 </p>
 <ul>
-	<li>upload only images</li>
-	<li>start upload automaticalls</li>
-	<li>remove upload if completed after 5 seconds</li>
-	<li>concurrent uploads 2</li>
+  <li>upload only images</li>
+  <li>start upload automaticalls</li>
+  <li>remove upload if completed after 5 seconds</li>
+  <li>concurrent uploads 2</li>
 </ul>
 <igx-tabs>
-    <igx-tabs-group label="Demo">
-        <ng-container [ngTemplateOutlet]="example"></ng-container>
-	</igx-tabs-group>
 
-    <igx-tabs-group label="Module">
-        <pre><code [highlight]="code.MODULE"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Demo</igx-tab-header>
+    <igx-tab-content>
+      <ng-container [ngTemplateOutlet]="example"></ng-container>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="Component">
-        <pre><code [highlight]="code.TS"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Module</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="code.MODULE"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="Html">
-        <pre><code [highlight]="code.HTML"></code></pre>
-	</igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Component</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="code.TS"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tabs-group label="Scss">
-        <pre><code [highlight]="code.SCSS"></code></pre>
-    </igx-tabs-group>
+  <igx-tab-item>
+    <igx-tab-header>Html</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="code.HTML"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
+
+  <igx-tab-item>
+    <igx-tab-header>Scss</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="code.SCSS"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 </igx-tabs>

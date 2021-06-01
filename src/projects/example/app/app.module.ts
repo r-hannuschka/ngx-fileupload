@@ -42,7 +42,7 @@ export function getHighlightLanguages() {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot([], {useHash: true}),
+        RouterModule.forRoot([], { useHash: true, relativeLinkResolution: 'legacy' }),
         IgxIconModule,
         HighlightModule,
         // app module
@@ -63,6 +63,7 @@ export function getHighlightLanguages() {
         {
             provide: HIGHLIGHT_OPTIONS,
             useValue: {
+                coreLibraryLoader: () => import("highlight.js/lib/core"),
                 languages: getHighlightLanguages()
             }
         }

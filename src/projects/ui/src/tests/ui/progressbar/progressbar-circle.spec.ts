@@ -1,5 +1,5 @@
 
-import { ComponentFixture, async, TestBed, fakeAsync, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from "@angular/core/testing";
 import { Component, DebugElement } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
@@ -25,7 +25,7 @@ describe( "ngx-file-upload/libs/ui/progressbar-circle", () => {
     let fixture: ComponentFixture<TestItemComponent>;
     let progressbar: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule( {
             imports: [
                 CommonModule,

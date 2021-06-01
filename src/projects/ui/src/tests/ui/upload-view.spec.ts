@@ -1,4 +1,4 @@
-import { ComponentFixture, async, TestBed, inject } from "@angular/core/testing";
+import { ComponentFixture, TestBed, inject, waitForAsync } from "@angular/core/testing";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { CommonModule } from "@angular/common";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
@@ -12,7 +12,7 @@ describe( "Upload Component:", () => {
     let fixture: ComponentFixture<UploadViewComponent>;
     let testComponent: UploadViewComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule( {
             imports: [
                 CommonModule,

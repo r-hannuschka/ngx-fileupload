@@ -28,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/r-hannuschka/ngx-fileupload/issues"
   },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "homepage": "https://r-hannuschka.github.io/ngx-fileupload"
 }

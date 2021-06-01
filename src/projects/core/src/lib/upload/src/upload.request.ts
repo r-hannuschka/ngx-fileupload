@@ -71,7 +71,6 @@ export class NgxFileUpload implements NgxFileUploadRequest {
     }
 
     public destroy() {
-
         this.finalizeUpload();
         this.destroyed$.next(true);
         this.destroyed$.complete();

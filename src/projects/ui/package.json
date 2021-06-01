@@ -1,6 +1,6 @@
 {
   "name": "@ngx-file-upload/ui",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "Angular 9 File Uploads components for @ngx-file-upload/core",
   "repository": {
     "url": "https://github.com/r-hannuschka/ngx-fileupload/tree/master/src/projects/ui",
@@ -20,9 +20,9 @@
     "queue"
   ],
   "peerDependencies": {
-    "@ngx-file-upload/core": "^0.0.1 || ^1.0.0 || ^2.0.0",
-    "@angular/common": "^8.2.14 || ^9.0.0",
-    "@angular/core": "^8.2.14 || ^9.0.0"
+    "@ngx-file-upload/core": "^3.0.0",
+    "@angular/common": "^10.0.0",
+    "@angular/core": "^10.0.0"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
   "bugs": {

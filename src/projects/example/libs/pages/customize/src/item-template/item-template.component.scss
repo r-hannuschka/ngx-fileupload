@@ -1,8 +1,5 @@
-$icomoon-font-path: "../../../../../assets/fonts" !default;
-
 @import '~igniteui-angular/lib/core/styles/themes/index';
 @import "variables";
-@import "icons";
 
 :host {
 
@@ -49,8 +46,6 @@ $icomoon-font-path: "../../../../../assets/fonts" !default;
                 align-items: center;
 
                 &:before {
-                    @include icon;
-                    content: $icon-warning;
                     font-size: 1.1rem;
                     margin-right: .5rem;
                 }

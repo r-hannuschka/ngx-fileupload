@@ -13,7 +13,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v1
         with:
-          node-version: '12.8'
+          node-version: '14.15'
 
       - name: install dependencies
         run: |

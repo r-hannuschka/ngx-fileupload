@@ -12,6 +12,7 @@
     "target": "es2015",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
+    "strict": false,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -20,9 +21,6 @@
       "dom"
     ],
     "paths": {
-      "@ngx-file-upload/core": [
-        "dist/core"
-      ],
       "@ngx-file-upload/dev/core/*": [
         "projects/core/src/*"
       ],

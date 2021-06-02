@@ -11,7 +11,8 @@ export class NgxFileUploadModel implements NgxFileUploadRequestData {
         this.size = file.size;
     }
 
-    validation: NgxFileUploadValidationErrors = null;
+    // @TODO check is duplicate of validationErrors
+    validation: NgxFileUploadValidationErrors | null = null;
 
     isInvalid = false;
 
@@ -23,7 +24,7 @@ export class NgxFileUploadModel implements NgxFileUploadRequestData {
 
     type = "plain/text";
 
-    response: NgxFileUploadResponse = null;
+    response: NgxFileUploadResponse | null = null;
 
     isPending = false;
 

@@ -39,7 +39,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
         return this.upload;
     }
 
-    public requestId: string;
+    public requestId: string = "";
 
     /**
      * create NgxFileUploadRequest service
@@ -74,12 +74,6 @@ export class NgxFileUpload implements NgxFileUploadRequest {
         this.finalizeUpload();
         this.destroyed$.next(true);
         this.destroyed$.complete();
-
-        this.destroyed$ = null;
-        this.hooks      = null;
-        this.upload     = null;
-        this.cancel$    = null;
-        this.change$    = null;
     }
 
     /**
@@ -87,7 +81,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
      * sends back an error response
      */
     public hasError(): boolean {
-        return this.upload.state === NgxFileUploadState.COMPLETED && !this.upload.response.success;
+        return this.upload.state === NgxFileUploadState.COMPLETED && !this.upload.response?.success;
     }
 
     public isCompleted(ignoreError = false): boolean {
@@ -192,9 +186,9 @@ export class NgxFileUpload implements NgxFileUploadRequest {
      * create upload body which will should be send
      */
     private createUploadBody(): FormData | File {
-        if (this.options.formData.enabled) {
+        if (this.options.formData?.enabled) {
             const formData = new FormData();
-            const label    = this.options.formData.name;
+            const label    = this.options.formData?.name ?? 'fileupload';
             formData.append(label, this.upload.raw, this.upload.name);
             return formData;
         }
@@ -215,7 +209,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
             /** add additional headers which should send */
             Object.keys(this.options.headers)
                 .filter((header)  => header !== "authorization")
-                .forEach((header) => headers = headers.append(header, this.options.headers[header] as string));
+                .forEach((header) => headers = headers.append(header, this.options.headers?.[header] as string));
 
             return headers;
         }
@@ -226,12 +220,16 @@ export class NgxFileUpload implements NgxFileUploadRequest {
      * create authorization header which will send
      */
     private createAuthroizationHeader(headers: HttpHeaders): HttpHeaders {
-        const authHeader = this.options.headers.authorization;
-        if (typeof authHeader === "string") {
-            headers = headers.append("Authorization", `Bearer ${authHeader}`);
-        } else {
-            headers = headers.append("Authorization", `${authHeader.key || "Bearer"} ${authHeader.token}`);
+        const authHeader = this.options.headers?.authorization;
+
+        if (authHeader) {
+            if (typeof authHeader === "string") {
+                headers = headers.append("Authorization", `Bearer ${authHeader}`);
+            } else {
+                headers = headers.append("Authorization", `${authHeader.key || "Bearer"} ${authHeader.token}`);
+            }
         }
+
         return headers;
     }
 

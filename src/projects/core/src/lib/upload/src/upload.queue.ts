@@ -20,11 +20,6 @@ export class NgxFileUploadQueue {
         upload.beforeStart(this.createBeforeStartHook(upload));
     }
 
-    public destroy() {
-        this.queuedUploads = null;
-        this.active = null;
-    }
-
     /**
      * create before start hook, if any upload wants to start we have to check
      */
@@ -103,7 +98,7 @@ export class NgxFileUploadQueue {
     /**
      * remove upload request from queued uploads
      */
-    private removeFromQueue(request) {
+    private removeFromQueue(request: NgxFileUploadRequest) {
         this.queuedUploads = this.queuedUploads.filter(upload =>  upload !== request);
     }
 
@@ -114,7 +109,7 @@ export class NgxFileUploadQueue {
     private startNextInQueue() {
         this.active = Math.max(this.active - 1, 0);
         if (this.queuedUploads.length > 0) {
-            const nextUpload = this.queuedUploads.shift();
+            const nextUpload = this.queuedUploads.shift() as NgxFileUploadRequest;
             nextUpload.start();
         }
     }

@@ -74,7 +74,7 @@ export class NgxFileUploadStorage {
      * if amount of uploaded size has been changed
      */
     private handleRequestChange(request: NgxFileUploadRequest) {
-        const isAutoRemove = !!this.storeConfig.removeCompleted ?? 0;
+        const isAutoRemove = !!(this.storeConfig.removeCompleted ?? 0);
         request.change.pipe(
             distinctUntilKeyChanged("state"),
             /* notify observers upload state has been changed */

@@ -1,6 +1,6 @@
 {
   "name": "ngx-fileupload",
-  "version": "5.2.0",
+  "version": "6.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,7 +11,7 @@
     "e2e": "ng e2e --configuration e2e --port=4201",
     "e2e:watch": "watch 'ng e2e --port=4201' lib example e2e --wait=1",
     "build:demo": "ng build --configuration=demo --base-href=/ngx-fileupload/",
-    "deploy:demo": "npx ngh --dir='dist/ngx-fileupload-example'",
+    "deploy:demo": "npx ngh --dir=dist\\ngx-fileupload-example",
     "github-actions:unit-tests-core": "ng test core --watch=false --code-coverage",
     "github-actions:unit-tests-ui": "ng test ui --watch=false --code-coverage",
     "github-actions:e2e-chrome": "ng e2e --configuration=github-actions-chrome --port=4201",

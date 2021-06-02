@@ -16,7 +16,7 @@ export class NgxFileUploadStorage {
     private storeConfig: NgxFileUploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
 
-    public constructor(config: NgxFileUploadStorageConfig = null) {
+    public constructor(config: NgxFileUploadStorageConfig) {
         this.change$     = new ReplaySubject(1);
         this.uploadQueue = new NgxFileUploadQueue();
 
@@ -74,7 +74,7 @@ export class NgxFileUploadStorage {
      * if amount of uploaded size has been changed
      */
     private handleRequestChange(request: NgxFileUploadRequest) {
-        const isAutoRemove = !isNaN(this.storeConfig.removeCompleted) || false;
+        const isAutoRemove = !!(this.storeConfig.removeCompleted ?? 0);
         request.change.pipe(
             distinctUntilKeyChanged("state"),
             /* notify observers upload state has been changed */
@@ -122,16 +122,9 @@ export class NgxFileUploadStorage {
         /** stop all downloads */
         this.stopAll();
 
-        this.uploadQueue.destroy();
-
         /** destroy change stream */
         this.destroyed$.complete();
         this.change$.complete();
-
-        this.destroyed$ = null;
-        this.change$ = null;
-        this.uploadQueue = null;
-        this.uploads = null;
     }
 
     /**
@@ -140,7 +133,7 @@ export class NgxFileUploadStorage {
     public remove(upload: NgxFileUploadRequest | string) {
         const id = typeof(upload) === "string" ? upload : upload.requestId;
         const request = this.uploads.get(id);
-        request.destroy();
+        request?.destroy();
     }
 
     /**

@@ -41,7 +41,7 @@ export class NgxFileUploadModel implements NgxFileUploadRequestData {
     public response: NgxFileUploadResponse = {
         body: null,
         errors: null,
-        success: null
+        success: false
     };
 
     /**
@@ -54,7 +54,7 @@ export class NgxFileUploadModel implements NgxFileUploadRequestData {
      */
     public uploaded = 0;
 
-    public validationErrors: NgxFileUploadValidationErrors = null;
+    public validationErrors: NgxFileUploadValidationErrors | null = null;
 
     public progress = 0;
 

@@ -42,7 +42,7 @@ export interface NgxFileUploadRequestData {
 
     readonly type: string;
 
-    response: NgxFileUploadResponse;
+    response: NgxFileUploadResponse | null;
 
     state: NgxFileUploadState;
 
@@ -126,7 +126,7 @@ interface AuthorizationHeader {
 }
 
 export interface NgxFileUploadHeaders {
-    [key: string]: string | AuthorizationHeader;
+    [key: string]: string | AuthorizationHeader | undefined;
     authorization?: string | AuthorizationHeader;
 }
 

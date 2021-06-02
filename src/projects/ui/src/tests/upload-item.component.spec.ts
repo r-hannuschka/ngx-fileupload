@@ -8,7 +8,7 @@ import { NgxFileUploadModel, UploadRequestMock } from "@ngx-file-upload/testing"
 
 import { NgxFileUploadUiCommonModule } from "@ngx-file-upload/dev/ui/lib/common/main";
 import { NgxFileUploadUiItemModule } from "@ngx-file-upload/dev/ui/lib/upload-item/main";
-import { UploadItemComponent, FileUploadItemContext } from "@ngx-file-upload/dev/ui/lib/upload-item/src/upload-item";
+import { UploadItemComponent, FileUploadItemContext } from "../lib/upload-item/src/upload-item";
 
 @Component({
     template: `

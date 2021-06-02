@@ -1,6 +1,7 @@
 $ngx-fileupload-icons--font-path: '../../../assets/fonts' !default;
-@import '../../../assets//scss/variables';
-@import '../../../assets/scss/icons';
+
+@import 'scss/variables';
+@import 'scss/icons';
 
 :host {
     display: flex;

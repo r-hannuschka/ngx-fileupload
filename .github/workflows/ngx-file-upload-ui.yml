@@ -38,15 +38,3 @@ jobs:
           cd src
           npm run build -- core
           npm run build -- ui
-
-      - name: unit tests
-        run: |
-          cd src
-          npm run github-actions:unit-tests-ui
-
-      - name: codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} #required
-          file: ./src/coverage/ui/lcov.info
-          flags: ui

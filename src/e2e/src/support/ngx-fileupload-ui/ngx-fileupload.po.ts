@@ -3,7 +3,7 @@ import { by, element, ElementArrayFinder } from "protractor";
 export class NgxFileuploadPO {
 
     public get ngxFileUpload() {
-        return element(by.tagName("ngx-fileupload"));
+        return element(by.tagName("ngx-file-upload"));
     }
 
     public getFileBrowser() {
@@ -15,7 +15,7 @@ export class NgxFileuploadPO {
     }
 
     public getUploadItems(): ElementArrayFinder {
-        return this.ngxFileUpload.all(by.tagName("ngx-fileupload-item"));
+        return this.ngxFileUpload.all(by.tagName("ngx-file-upload-ui--item"));
     }
 
     public getUploadActionsFromItem(): ElementArrayFinder {

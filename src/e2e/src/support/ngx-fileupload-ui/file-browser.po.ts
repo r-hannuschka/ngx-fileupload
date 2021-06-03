@@ -4,7 +4,7 @@ import { by, element } from "protractor";
 export class FileBrowserPo {
 
     public get fileBrowser() {
-        return element(by.css(".upload--body.fileupload"));
+        return element(by.css(".file-browser"));
     }
 
     public async dropFile(file: string) {

@@ -6,9 +6,9 @@
 import { accessSync } from "fs";
 import { resolve } from "path";
 import { F_OK } from "constants";
-import { browser } from "protractor";
+import { browser, ElementFinder } from "protractor";
 
-const JS_BIND_INPUT = (target) => {
+const JS_BIND_INPUT = (target: HTMLElement) => {
 
     const input = document.createElement("input");
     input.type = "file";
@@ -45,7 +45,7 @@ const JS_BIND_INPUT = (target) => {
  * @example
  * dropFile($("#drop-area"), "./image.png");
  */
-export async function simulateDrop(dropArea, file: string[] | string) {
+export async function simulateDrop(dropArea: ElementFinder, file: string[] | string) {
 
     const files    = Array.isArray(file) ? file : [file];
     const filePath: string[] = files.map((sourceFile) => {

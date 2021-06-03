@@ -26,18 +26,18 @@ describe("Ngx Fileupload Upload Toolbar", () => {
     });
 
     it("expect action buttons to be disabled", async () => {
-        const buttonEnabled = uploadToolbar.actionButtons.map<boolean>((button) => button.isEnabled());
+        const buttonEnabled = uploadToolbar.actionButtons.map<boolean>((button) => button?.isEnabled());
         expect(await buttonEnabled).toEqual([false, false, false]);
     });
 
     it("add new file: enabled buttons upload and remove, disabled buttons clear", async () => {
         await simulateDrop(ngxFileUpload.getFileBrowser(), "./upload-file.zip");
-        const buttonEnabled = uploadToolbar.actionButtons.map<boolean>((button) => button.isEnabled());
+        const buttonEnabled = uploadToolbar.actionButtons.map<boolean>((button) => button?.isEnabled());
         expect(await buttonEnabled).toEqual([true, false, true]);
     });
 
     it("should contain 1 idle item in info bar", async () => {
-        const uploadStates = uploadToolbar.uploadStates.map<string>((state) => state.getText());
+        const uploadStates = uploadToolbar.uploadStates.map<string>((state) => state?.getText());
         expect(await uploadStates).toEqual(["0", "0", "1", "0"]);
     });
 
@@ -51,7 +51,7 @@ describe("Ngx Fileupload Upload Toolbar", () => {
         await browser.sleep(100);
 
         expect(
-            await uploadToolbar.uploadStates.map<string>((state) => state.getText())
+            await uploadToolbar.uploadStates.map<string>((state) => state?.getText())
         ).toEqual(["1", "0", "0", "0"]);
 
         await browser.waitForAngularEnabled(true);
@@ -75,7 +75,7 @@ describe("Ngx Fileupload Upload Toolbar", () => {
         await browser.sleep(200);
 
         expect(
-            await uploadToolbar.uploadStates.map<string>((state) => state.getText())
+            await uploadToolbar.uploadStates.map<string>((state) => state?.getText())
         ).toEqual(["3", "7", "0", "0"]);
     });
 
@@ -85,7 +85,7 @@ describe("Ngx Fileupload Upload Toolbar", () => {
         await browser.sleep(200);
 
         expect(
-            await uploadToolbar.uploadStates.map<string>((state) => state.getText())
+            await uploadToolbar.uploadStates.map<string>((state) => state?.getText())
         ).toEqual(["3", "7", "1", "0"]);
 
         /** start uploads */
@@ -103,7 +103,7 @@ describe("Ngx Fileupload Upload Toolbar", () => {
         await uploadToolbar.uploadAll();
 
         expect(
-            await uploadToolbar.uploadStates.map<string>((state) => state.getText())
+            await uploadToolbar.uploadStates.map<string>((state) => state?.getText())
         ).toEqual(["0", "0", "0", "1"]);
 
         /** start uploads */

@@ -24,6 +24,9 @@
       "@ngx-file-upload/dev/core/*": [
         "projects/core/src/*"
       ],
+      "@ngx-file-upload/core": [
+        "dist/core"
+      ],
       "@ngx-file-upload/ui": [
         "dist/ui"
       ],

@@ -65,7 +65,7 @@ describe("Ngx Fileupload Default View", () => {
 
             const uploadingItems = await ngxFileUpload.getUploadItems()
                 .all(by.css(".upload-item--state i"))
-                .map<string>(el => el.getAttribute("class"));
+                .map<string>(el => el?.getAttribute("class"));
 
             expect(uploadingItems).toEqual([
                 "ngx-fileupload-icon--completed success",
@@ -103,11 +103,11 @@ describe("Ngx Fileupload Default View", () => {
 
             // action buttons
             expect(await buttons.count()).toBe(2);
-            expect(await buttons.map<string>(button => button.getAttribute("class")))
+            expect(await buttons.map<string>(button => button?.getAttribute("class")))
                 .toEqual(["item-action--upload", "item-action--cancel"]);
 
             // cancel button should disabled if item has state idle
-            expect(await buttons.map<boolean>(button => button.isEnabled())).toEqual([true, false]);
+            expect(await buttons.map<boolean>(button => button?.isEnabled())).toEqual([true, false]);
         });
 
         it("should upload one item, and remove it", async () => {
@@ -182,7 +182,7 @@ describe("Ngx Fileupload Default View", () => {
             const errorList = ngxFileUpload.getUploadItems().first().all(by.css(".upload-item--response-errors li"));
             expect(await errorList.count()).toBe(2);
 
-            const messages = errorList.map((el) => el.getText());
+            const messages = errorList.map((el) => el?.getText());
             expect(await messages).toEqual(["e2e error", "forbidden"]);
         });
 

@@ -3,7 +3,7 @@ import { by, element, ElementArrayFinder, browser, ElementFinder } from "protrac
 export class UploadToolbarPO {
 
     public get toolbar(): ElementFinder {
-        return element(by.tagName("ngx-fileupload-toolbar"));
+        return element(by.tagName("ngx-file-upload-ui--toolbar"));
     }
 
     public get removeButton(): ElementFinder {

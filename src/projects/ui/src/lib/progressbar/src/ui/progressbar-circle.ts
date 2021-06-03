@@ -25,7 +25,7 @@ export class ProgressbarCircleComponent implements OnInit {
     private circleGap = 1;
 
     @ViewChild("progressbar", {read: ElementRef, static: true})
-    private progressbar: ElementRef<SVGElement>;
+    private progressbar: ElementRef<SVGElement> | undefined;
 
     @Input()
     public set radius(radius: number) {
@@ -73,6 +73,12 @@ export class ProgressbarCircleComponent implements OnInit {
      */
     private initializeData(start: number, time = 0) {
 
+        if (!this.progressbar) {
+            return;
+        }
+
+        debugger;
+
         const {width, height} = this.progressbar.nativeElement.getBoundingClientRect();
         const sideLength  = Math.min(width, height);
 
@@ -98,14 +104,25 @@ export class ProgressbarCircleComponent implements OnInit {
     /**
      * calculate circle radius if no one is passed
      */
-    private calcRadius(sideLength): number {
+    private calcRadius(sideLength: number): number {
 
-        if (sideLength === 0) {
+        if (sideLength === 0 || !this.progressbar || !this.progressbar.nativeElement) {
             return 0;
         }
 
-        const strokeProgress   = getComputedStyle(this.progressbar.nativeElement.querySelector("circle.progress")).strokeWidth;
-        const strokeBackground = getComputedStyle(this.progressbar.nativeElement.querySelector("circle.progress-bar")).strokeWidth;
+        const svgElement: SVGElement = this.progressbar.nativeElement;
+        const strokeProgressEl = svgElement.querySelector("circle.progress");
+        const strokeBackgroundEl = svgElement.querySelector("circle.progress-bar");
+
+        console.log(strokeProgressEl);
+        console.log(strokeBackgroundEl);
+
+        if (!strokeProgressEl || !strokeBackgroundEl) {
+            return 0;
+        }
+
+        const strokeProgress   = getComputedStyle(strokeProgressEl).strokeWidth;
+        const strokeBackground = getComputedStyle(strokeBackgroundEl).strokeWidth;
         const strokeWidth      = Math.max(parseFloat(strokeProgress), parseFloat(strokeBackground));
 
         return sideLength / 2 - (strokeWidth / 2);

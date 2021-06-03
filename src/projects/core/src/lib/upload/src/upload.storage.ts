@@ -16,7 +16,7 @@ export class NgxFileUploadStorage {
     private storeConfig: NgxFileUploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
 
-    public constructor(config: NgxFileUploadStorageConfig) {
+    public constructor(config?: NgxFileUploadStorageConfig) {
         this.change$     = new ReplaySubject(1);
         this.uploadQueue = new NgxFileUploadQueue();
 

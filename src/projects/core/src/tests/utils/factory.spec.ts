@@ -14,7 +14,7 @@ describe("NgxFileUpload/libs/utils/factory", () => {
 
     it("should create single NgxFileUploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
         const file = new File(["ngx file upload"], "file1.txt");
-        const upload = factory.createUploadRequest(file, {url: "/dev/null"}, null);
+        const upload = factory.createUploadRequest(file, {url: "/dev/null"});
 
         expect(upload.data.raw).toEqual(file);
     }));

@@ -76,7 +76,7 @@ export class FileBrowserDirective implements OnDestroy {
         event.stopPropagation();
         event.preventDefault();
 
-        if (!this.disabled) {
+        if (!this.disabled && event.dataTransfer) {
             const files = Array.from(event.dataTransfer.files);
             this.add.emit(files);
         }
@@ -118,13 +118,12 @@ export class FileBrowserDirective implements OnDestroy {
         event.stopPropagation();
         event.preventDefault();
 
-        const files = Array.from(this.fileSelect.files);
+        const files = Array.from(this.fileSelect.files ?? []);
         this.add.emit(files);
 
         /**
          * clear value otherwise change will not trigger again
          */
-        this.fileSelect.value = null;
         this.fileSelect.files = null;
     }
 }

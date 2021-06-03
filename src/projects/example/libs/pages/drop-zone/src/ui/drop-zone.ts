@@ -80,9 +80,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
     public ngOnDestroy() {
         this.destroy$.next(true);
         this.destroy$.complete();
-        this.destroy$ = null;
 
         this.uploadStorage.destroy();
-        this.uploadStorage = null;
     }
 }

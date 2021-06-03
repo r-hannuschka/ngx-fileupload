@@ -31,7 +31,7 @@ describe("@ngx-file-upload/core/validation/or", () => {
         );
 
         const validationResult = orValidationGroup.validate(uploadFile);
-        const validationKeys   = Object.keys(validationResult);
+        const validationKeys   = Object.keys(validationResult ?? {});
 
         expect(validationKeys.length).toBe(2);
         expect(validationKeys).toEqual(["invalidFile", "invalidFileSize"]);

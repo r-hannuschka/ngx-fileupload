@@ -8,33 +8,41 @@ import { NgxFileUploadValidator, NgxFileUploadStorage, NgxFileUploadOptions, Ngx
 export class UploadToolbarComponent {
 
     @Input()
-    validator: NgxFileUploadValidator;
+    validator: NgxFileUploadValidator | undefined;
 
     @Input()
-    url: string;
+    url: string | undefined;
 
     @Input()
-    public storage: NgxFileUploadStorage;
+    public storage: NgxFileUploadStorage | undefined;
 
     public constructor(
         @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
     ) {}
 
     public uploadAll() {
-        this.storage.startAll();
+        if (this.storage) {
+            this.storage.startAll();
+        }
     }
 
     public purge() {
-        this.storage.purge();
+        if (this.storage) {
+            this.storage.purge();
+        }
     }
 
     public stop() {
-        this.storage.stopAll();
+        if (this.storage) {
+            this.storage.stopAll();
+        }
     }
 
     public drop(files: File[]) {
-        const uploadOptions: NgxFileUploadOptions = { url: this.url, headers: { authorization: {token: "foofoo"}} };
-        this.storage.add(
-            this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator));
+
+        if (this.url && this.storage)  {
+            const uploadOptions: NgxFileUploadOptions = { url: this.url, headers: { authorization: {token: "foofoo"}} };
+            this.storage.add(this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator));
+        }
     }
 }

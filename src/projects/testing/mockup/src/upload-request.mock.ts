@@ -11,9 +11,9 @@ export class UploadRequestMock implements NgxFileUploadRequest {
 
     destroyed: Observable<boolean>;
 
-    public hooks = [];
+    public hooks: Observable<boolean>[] = [];
 
-    requestId;
+    requestId: string = "";
 
     public data: NgxFileUploadRequestData;
 

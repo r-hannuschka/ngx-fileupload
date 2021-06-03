@@ -49,7 +49,6 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         this.destroy$.next(true);
         this.destroy$.complete();
-        this.destroy$ = null;
     }
 
     public cancelUpload(upload: NgxFileUploadRequest) {

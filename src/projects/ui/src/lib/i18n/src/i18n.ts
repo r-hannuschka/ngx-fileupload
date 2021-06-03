@@ -25,8 +25,11 @@ export interface NgxFileUploadUiI18nItem extends Labels {
     UPLOADED: string;
 }
 
+declare type NgxFileuploadI18nValue = NgxFileUploadUiI18nCommon | NgxFileUploadUiI18nItem | NgxFileUploadUiI18nToolbar | undefined;
+
 /** all labels which exists */
 export interface NgxFileUploadUiI18n {
+    [key: string]: NgxFileUploadUiI18nCommon | NgxFileUploadUiI18nItem | NgxFileUploadUiI18nToolbar | undefined;
     common?: NgxFileUploadUiI18nCommon;
     item?: NgxFileUploadUiI18nItem;
     toolbar?: NgxFileUploadUiI18nToolbar;
@@ -48,7 +51,7 @@ export class NgxFileUploadUiI18nProvider {
         this.labels = labels || {};
     }
 
-    public getI18n<T extends Labels>(k: NgxFileUploadUiI18nKey): T {
-        return this.labels[k.toString()] ?? void 0;
+    public getI18n<T extends NgxFileuploadI18nValue>(k: NgxFileUploadUiI18nKey): T {
+        return this.labels[k.toString()] as T;
     }
 }

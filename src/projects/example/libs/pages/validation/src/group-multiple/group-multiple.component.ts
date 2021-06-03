@@ -9,8 +9,8 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
     templateUrl: "group-multiple.component.html"
 })
 export class GroupMultipleComponent implements OnInit {
-
-    public validator: NgxFileUploadGroupedvalidator;
+ 
+    public validator: NgxFileUploadGroupedvalidator | undefined;
 
     public exampleCode = ExampleCode;
 

@@ -19,13 +19,13 @@ interface InfoData {
 export class UploadToolbarComponent implements OnInit, OnDestroy {
 
     @Input()
-    public storage: NgxFileUploadStorage;
+    public storage: NgxFileUploadStorage | undefined;
 
     public uploadInfo: InfoData = { error: 0, pending: 0, idle: 0, progress: 0 };
 
     public hasUploadsInList = false;
 
-    public i18n: NgxFileUploadUiI18nToolbar;
+    public i18n: NgxFileUploadUiI18nToolbar | undefined;
 
     /**
      * true if we have completed or invalid uploads
@@ -47,36 +47,43 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.storage = null;
         this.destroyed$.next(true);
     }
 
     /** start upload for all files */
     public uploadAll() {
-        this.storage.startAll();
+        if (this.storage) {
+            this.storage.startAll();
+        }
     }
 
     /** stop all uploads */
     public stopAll() {
-        this.storage.stopAll();
+        if (this.storage) {
+            this.storage.stopAll();
+        }
     }
 
     /** purge uploads, invalid, completed, canceled will be removed */
     public cleanAll() {
-        this.storage.purge();
+        if (this.storage) {
+            this.storage.purge();
+        }
     }
 
     private registerStoreChange() {
-        this.storage.change()
-            .pipe(
-                debounceTime(10),
-                takeUntil(this.destroyed$)
-            )
-            .subscribe((uploads: NgxFileUploadRequest[]) => {
-                this.updateInfoBar(uploads);
-                this.isCleanable      = uploads.some(upload => upload.isCompleted(true) || upload.isInvalid());
-                this.hasUploadsInList = uploads.length > 0;
-            });
+        if (this.storage) {
+            this.storage.change()
+                .pipe(
+                    debounceTime(10),
+                    takeUntil(this.destroyed$)
+                )
+                .subscribe((uploads: NgxFileUploadRequest[]) => {
+                    this.updateInfoBar(uploads);
+                    this.isCleanable      = uploads.some(upload => upload.isCompleted(true) || upload.isInvalid());
+                    this.hasUploadsInList = uploads.length > 0;
+                });
+        }
     }
 
     private updateInfoBar(uploads: NgxFileUploadRequest[]) {

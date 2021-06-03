@@ -10,7 +10,7 @@ export class HeaderMenuComponent implements OnInit {
     constructor() { }
 
     @Input()
-    public items: MenuItem[];
+    public items: MenuItem[] = [];
 
     ngOnInit() { }
 }

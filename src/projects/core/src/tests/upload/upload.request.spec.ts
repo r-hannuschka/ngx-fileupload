@@ -164,7 +164,7 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should call hooks in registered order", (done) => {
-        const hookCalls = [];
+        const hookCalls:string[] = [];
 
         const hook1 = of(true).pipe(
             tap(() => (hookCalls.push("hook1"), request.data.state = NgxFileUploadState.PENDING)),

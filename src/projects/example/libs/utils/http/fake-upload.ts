@@ -1,5 +1,5 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpEventType, HttpResponse, HttpErrorResponse } from "@angular/common/http";
-import { Observable, interval } from "rxjs";
+import { Observable, interval, Subscriber } from "rxjs";
 import { Injectable } from "@angular/core";
 import { takeWhile } from "rxjs/operators";
 
@@ -50,7 +50,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
     /**
      * tick next chunk was "uploaded"
      */
-    private nextTick(upload: FakeUpload, observer): void {
+    private nextTick(upload: FakeUpload, observer: Subscriber<HttpEvent<any>>): void {
         const tmpUploaded   = upload.uploaded + this.chunkSize;
         const uploadedTotal = tmpUploaded < upload.size ? tmpUploaded : upload.size;
 
@@ -70,7 +70,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
     /**
      * upload has been completed
      */
-    private uploadCompleted(observer, fileName: string, hasError = false ): void {
+    private uploadCompleted(observer: Subscriber<HttpEvent<any>>, fileName: string, hasError = false ): void {
 
         if (hasError) {
             const error: HttpErrorResponse = new HttpErrorResponse({

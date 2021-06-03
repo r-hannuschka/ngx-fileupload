@@ -221,12 +221,10 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
         autoStartStorage.change()
             .pipe(auditTime(1200))
-            .subscribe({
-                next: (req: UploadRequestMock[]) => {
-                    expect(req).toEqual([]),
-                    autoStartStorage.destroy();
-                    done();
-                }
+            .subscribe((req) => {
+                expect(req).toEqual([]),
+                autoStartStorage.destroy();
+                done();
             });
 
         autoStartStorage.add(uploadRequest);

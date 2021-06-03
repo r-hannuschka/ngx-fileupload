@@ -9,10 +9,10 @@ export class ButtonComponent implements OnInit {
     constructor() { }
 
     @Input()
-    public icon: string;
+    public icon: string = "";
 
     @Input()
-    public label: string;
+    public label: string = "";
 
     @Input()
     public disabled = false;

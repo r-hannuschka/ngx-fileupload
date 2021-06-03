@@ -7,7 +7,7 @@ class ValidatorGroupMock extends NgxFileUploadGroupedvalidator {
         return this.validators;
     }
 
-    public validate(file: File ): NgxFileUploadValidationErrors {
+    public validate(file: File ): NgxFileUploadValidationErrors | null {
         return this.execValidator(this.validators[0], file);
     }
 }

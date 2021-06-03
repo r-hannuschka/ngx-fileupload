@@ -45,10 +45,10 @@ export class ProgressbarComponent implements OnInit {
     private progressbarParts = 1;
 
     @ViewChild("progressbar", {read: ElementRef, static: true})
-    private progressbar: ElementRef<SVGElement>;
+    private progressbar: ElementRef<SVGElement> | undefined;
 
     @ViewChild("progressLine", {read: ElementRef, static: true})
-    private progressLine: ElementRef<SVGLineElement>;
+    private progressLine: ElementRef<SVGLineElement> | undefined;
 
     public constructor(
         private renderer: Renderer2,
@@ -56,7 +56,7 @@ export class ProgressbarComponent implements OnInit {
     ) {}
 
     public ngOnInit() {
-        const {width} = this.progressbar.nativeElement.getBoundingClientRect();
+        const {width} = this.progressbar?.nativeElement.getBoundingClientRect() ?? { width: 0 };
 
         /** calculate dasharray */
         const gap = this.progressbarParts === 1 ? 0 : this.progressbarGap;
@@ -73,8 +73,10 @@ export class ProgressbarComponent implements OnInit {
             return;
         }
 
-        const el = this.progressLine.nativeElement;
-        this.renderer.setAttribute(el, "x2", `${progress}%`);
+        if (this.progressLine) {
+            const el = this.progressLine.nativeElement;
+            this.renderer.setAttribute(el, "x2", `${progress}%`);
+        }
     }
 
     /**
@@ -82,14 +84,18 @@ export class ProgressbarComponent implements OnInit {
      *
      * @see https://javascript.info/js-animation
      */
-    private animateProgress(progress?: number) {
+    private animateProgress(progress: number) {
 
         const start = performance.now();
         const self  = this;
-        const el    = this.progressLine.nativeElement;
+        const el    = this.progressLine?.nativeElement;
 
-        const curProgress = progress || this.progressBuffer.shift(); // new progress state
-        const oldProgress = parseInt(el.getAttribute("x2"), 10); // old progress state
+        if (!el) {
+            return;
+        }
+
+        const curProgress = progress; // new progress state
+        const oldProgress = parseInt(el.getAttribute("x2") ?? '0', 10); // old progress state
 
         this.isAnimated = true;
 
@@ -115,7 +121,7 @@ export class ProgressbarComponent implements OnInit {
                 }
 
                 if (self.progressBuffer.length > 0) {
-                    self.animateProgress();
+                    self.animateProgress(self.progressBuffer.shift() as number);
                     return;
                 }
 

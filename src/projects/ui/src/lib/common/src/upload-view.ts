@@ -24,10 +24,10 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      * set custom template, will pass through to [NgxFileUploadItem]{@link NgxFileUploadItemComponent.html#itemTpl}
      */
     @Input()
-    public itemTemplate: TemplateRef<FileUploadItemContext>;
+    public itemTemplate: TemplateRef<FileUploadItemContext> | undefined;
 
     @Input()
-    public url: string;
+    public url: string | undefined;
 
     @Input()
     public useFormData = true;
@@ -36,10 +36,10 @@ export class UploadViewComponent implements OnInit, OnDestroy {
     public formDataName = "file";
 
     @Input()
-    public headers: NgxFileUploadHeaders = null;
+    public headers: NgxFileUploadHeaders | undefined;
 
     @Input()
-    public validator: NgxFileUploadValidator | NgxFileUploadValidationFn;
+    public validator: NgxFileUploadValidator | NgxFileUploadValidationFn | undefined;
 
     @Input()
     public set storage(storage: NgxFileUploadStorage) {
@@ -47,40 +47,28 @@ export class UploadViewComponent implements OnInit, OnDestroy {
         this.uploadStorageSet = true;
     }
 
-    public uploadStorage: NgxFileUploadStorage;
+    public uploadStorage: NgxFileUploadStorage = new NgxFileUploadStorage();
 
     public uploads: NgxFileUploadRequest[] = [];
 
-    public i18n: NgxFileUploadUiI18nCommon;
+    public i18n: NgxFileUploadUiI18nCommon | undefined;
 
     private destroyed$: Subject<boolean> = new Subject();
 
     private uploadStorageSet = false;
 
-    private uploadOptions: NgxFileUploadOptions;
-
     public constructor(
         @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory,
         private i18nProvider: NgxFileUploadUiI18nProvider
-    ) { }
+    ) {}
 
     public ngOnInit() {
 
-        if (!this.uploadStorage) {
-            this.uploadStorage = new NgxFileUploadStorage();
+        if (!this.url) {
+            return;
         }
 
         this.i18n = this.i18nProvider.getI18n<NgxFileUploadUiI18nCommon>(NgxFileUploadUiI18nKey.Common);
-
-        this.uploadOptions = {
-            url: this.url,
-            formData: {
-                enabled: this.useFormData,
-                name:    this.formDataName
-            },
-            headers: this.headers
-        };
-
         this.registerStoreEvents();
     }
 
@@ -90,7 +78,6 @@ export class UploadViewComponent implements OnInit, OnDestroy {
         /** we handle our own storage so destroy this one */
         if (!this.uploadStorageSet && this.uploadStorage) {
             this.uploadStorage.destroy();
-            this.uploadStorage = null;
         }
     }
 
@@ -98,11 +85,18 @@ export class UploadViewComponent implements OnInit, OnDestroy {
      * files get dropped
      */
     public dropFiles(files: File[]) {
-        if (files.length) {
-            const uploads = this.uploadFactory.createUploadRequest(
-                files, this.uploadOptions, this.validator);
+        if (files.length && this.url) {
+            const uploadOptions: NgxFileUploadOptions = {
+                url: this.url,
+                formData: {
+                    enabled: this.useFormData,
+                    name:    this.formDataName
+                },
+                headers: this.headers
+            };
 
-            this.uploadStorage.add(uploads);
+            const uploads = this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator);
+            this.uploadStorage?.add(uploads);
         }
     }
 

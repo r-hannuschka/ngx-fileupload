@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
             .pipe(filter((event) => event instanceof NavigationEnd))
             .subscribe({
                 next: () => {
-                    this.showUploadOverlay = this.activatedRoute.snapshot.firstChild.data.uploadOverlay || false;
+                    this.showUploadOverlay = this.activatedRoute.snapshot.firstChild?.data.uploadOverlay || false;
                 }
             });
     }

@@ -34,7 +34,7 @@ describe("@ngx-file-upload/core/validation/and", () => {
         );
 
         const validationResult = validationGroup.validate(uploadFile);
-        const validationKeys   = Object.keys(validationResult);
+        const validationKeys   = Object.keys(validationResult || {});
 
         expect(validationKeys.length).toBe(1);
         expect(validationKeys).toEqual(["invalidFileSize"]);
@@ -48,7 +48,7 @@ describe("@ngx-file-upload/core/validation/and", () => {
         );
 
         const validationResult = validationGroup.validate(uploadFile);
-        const validationKeys   = Object.keys(validationResult);
+        const validationKeys   = Object.keys(validationResult || {});
 
         expect(validationKeys.length).toBe(2);
         expect(validationKeys).toEqual(["invalid", "invalidFileSize"]);

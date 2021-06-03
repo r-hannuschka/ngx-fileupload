@@ -1,6 +1,6 @@
 import { NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
 
-export function isImage(file: File): NgxFileUploadValidationErrors {
+export function isImage(file: File): NgxFileUploadValidationErrors | null {
 
     /** super simple checking */
     const valid = /\.(jpg|jpeg|gif|png)$/i.test(file.name);

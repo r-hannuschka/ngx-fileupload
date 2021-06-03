@@ -10,7 +10,7 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
 })
 export class GroupOrComponent implements OnInit {
 
-    public validator: NgxFileUploadGroupedvalidator;
+    public validator: NgxFileUploadGroupedvalidator | undefined;
 
     public exampleCode = ExampleCode;
 

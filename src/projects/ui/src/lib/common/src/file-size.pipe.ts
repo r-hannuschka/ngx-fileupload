@@ -44,7 +44,7 @@ export class FileSizePipe implements PipeTransform {
          * 123.01231 becomes 123.01
          */
         const formatter = /^[^\.]+(\.(?!0{2})\d[^0]?)?/g;
-        const total = bytes.toString().match(formatter)[0];
+        const total = bytes.toString().match(formatter)?.[0] ?? bytes.toString();
         return `${total} ${this.units[unit]}`;
     }
 }

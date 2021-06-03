@@ -26,12 +26,12 @@ export class UploadItemComponent implements AfterViewInit, OnInit, OnDestroy {
     /**
      * template context which is bound to rendered template
      */
-    public context: FileUploadItemContext;
+    public context: FileUploadItemContext | undefined;
 
     /**
      * file upload which should bound to this view
      */
-    private fileUpload: NgxFileUploadRequest;
+    private fileUpload: NgxFileUploadRequest | undefined;
 
     /**
      * save subscription here,  since we have only 1 sub
@@ -40,14 +40,14 @@ export class UploadItemComponent implements AfterViewInit, OnInit, OnDestroy {
      */
     private destroyed: Subject<boolean> = new Subject();
 
-    public i18n: NgxFileUploadUiI18nItem;
+    public i18n: NgxFileUploadUiI18nItem | undefined;
 
     /**
      * set template which should be used for upload items, if no TemplateRef is passed
      * it will fallback to [defaultUploadItem]{@link #template}
      */
     @ViewChild("defaultUploadItem", {static: true})
-    public itemTpl: TemplateRef<FileUploadItemContext>;
+    public itemTpl: TemplateRef<FileUploadItemContext> | undefined;
 
     @Input()
     public set template(tpl: TemplateRef<FileUploadItemContext>) {
@@ -90,13 +90,13 @@ export class UploadItemComponent implements AfterViewInit, OnInit, OnDestroy {
      * @inheritdoc
      */
     ngAfterViewInit(): void {
+        if (!this.fileUpload) {
+            return;
+        }
+
         this.fileUpload.change
             .pipe(takeUntil(this.destroyed))
-            .subscribe({
-                next: (fileUpload: NgxFileUploadRequestData) => {
-                    return this.context.data = fileUpload;
-                }
-            });
+            .subscribe((fileUpload: NgxFileUploadRequestData) => (this.context as FileUploadItemContext).data = fileUpload);
     }
 
     ngOnInit() {

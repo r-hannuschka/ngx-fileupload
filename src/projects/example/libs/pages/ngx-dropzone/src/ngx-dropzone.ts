@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { NgxFileUploadStorage, NgxFileUploadFactory, NgxFileUploadOptions, NgxFileUploadRequest } from "@ngx-file-upload/core";
+import { NgxDropzoneChangeEvent } from "ngx-dropzone";
 import * as ExampleCodeData from "projects/example/libs/data/code/ngx-dropzone/drop-zone";
 
 @Component({
@@ -33,7 +34,7 @@ export class NgxDropZoneDemoComponent implements OnInit {
           .subscribe(uploads => this.uploads = uploads);
     }
 
-    public onSelect(event) {
+    public onSelect(event: NgxDropzoneChangeEvent) {
       const addedFiles: File[] = event.addedFiles;
       const uploads = this.uploadFactory.createUploadRequest(addedFiles, this.uploadOptions);
       this.storage.add(uploads);

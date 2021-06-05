@@ -187,9 +187,14 @@ export class NgxFileUpload implements NgxFileUploadRequest {
      */
     private createUploadBody(): FormData | File {
         if (this.options.formData?.enabled) {
+            const formDataOptions = this.options.formData;
             const formData = new FormData();
-            const label    = this.options.formData?.name ?? 'fileupload';
+            const label    = formDataOptions.name ?? 'fileupload';
             formData.append(label, this.upload.raw, this.upload.name);
+
+            if (formDataOptions.metadata) {
+                formData.append('metadata', JSON.stringify(formDataOptions.metadata));
+            }
             return formData;
         }
         return this.upload.raw;

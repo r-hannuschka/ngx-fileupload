@@ -155,6 +155,11 @@ export interface NgxFileUploadOptions {
          * in FormData
          */
         name?: string;
+        /**
+         * additional metadata which will append to formData, requires formData
+         * to be enabled
+         */
+        metadata?: Record<string, unknown>;
     };
 
     headers?: NgxFileUploadHeaders;

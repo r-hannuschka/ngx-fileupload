@@ -62,10 +62,10 @@ app.post("/upload", function(req, res) {
 app.post("/upload/gallery", function(req, res) {
 
     const uploadedFile = req.files.picture;
-    const metaData     = JSON.stringify(req.body);
+    const metadata     = JSON.stringify(req.body);
 
     logger.debug(`Picture uploaded: ${uploadedFile.name}`);
-    logger.debug(`Metadata send: ${metaData}`)
+    logger.debug(`Metadata send: ${metadata}`)
 
     console.log(req)
 

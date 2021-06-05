@@ -146,7 +146,7 @@ export interface UploadOptions {
         /**
          * additional meta information for file upload as JSON
          */
-        metaData?: Record<string, unknown>;
+        metadata?: Record<string, unknown>;
     };
 }
 ```

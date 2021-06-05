@@ -27,7 +27,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
         formData: {
             enabled: true,
             name: "picture",
-            metaData: {
+            metadata: {
                 role: 'DEV_NULL',
                 parent: -1
             }

@@ -38,23 +38,6 @@ describe("NgxFileUpload/libs/upload", () => {
         expect(testRequest.request.headers.get("Authorization")).toEqual(`Bearer 01234567890abcdef`);
     });
 
-    it("should add authorization header to request", () => {
-        const uploadFile = new NgxFileUploadModel();
-        const upload = new NgxFileUpload(httpClient, uploadFile, {
-            url,
-            headers: {
-                authorization: {
-                    token: "my-token"
-                }
-            }
-        });
-        upload.start();
-
-        const testRequest: TestRequest = httpMock.expectOne(url);
-        expect(testRequest.request.headers.has("Authorization")).toBeTruthy();
-        expect(testRequest.request.headers.get("Authorization")).toEqual(`Bearer my-token`);
-    });
-
     it("should send custom authorization header", () => {
         const uploadFile = new NgxFileUploadModel();
         const upload = new NgxFileUpload(httpClient, uploadFile, {

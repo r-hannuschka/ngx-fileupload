@@ -158,4 +158,6 @@ export interface NgxFileUploadOptions {
     };
 
     headers?: NgxFileUploadHeaders;
+
+    metaData?: Record<string, unknown>;
 }

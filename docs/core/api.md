@@ -129,7 +129,7 @@ interface UploadRequest {
 
 ## Upload Options
 
-```
+```ts
 export interface UploadOptions {
 
     url: string;
@@ -138,6 +138,11 @@ export interface UploadOptions {
         enabled: boolean;
         name?: string;
     };
+
+    /**
+     * additional meta information for file upload as JSON
+     */
+    metaData?: Record<string, unknown>;
 }
 ```
 

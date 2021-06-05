@@ -26,7 +26,9 @@ export class NgxDropZoneDemoComponent implements OnInit {
           autoStart: true,
           removeCompleted: 5000 // remove completed after 5 seconds
         });
-        this.uploadOptions = {url: "http://localhost:3000/upload"};
+        this.uploadOptions = {
+          url: "http://localhost:3000/upload",
+        };
     }
 
     ngOnInit() {

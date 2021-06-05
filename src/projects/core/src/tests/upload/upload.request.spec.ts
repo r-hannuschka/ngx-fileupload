@@ -1,5 +1,5 @@
 import { TestBed, getTestBed } from "@angular/core/testing";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@angular/common/http/testing";
 import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/http";
 import { Type } from "@angular/core";
 import { NgxFileUploadRequest, NgxFileUploadRequestData, NgxFileUploadState, NgxFileUpload } from "@ngx-file-upload/dev/core/public-api";
@@ -7,7 +7,7 @@ import { NgxFileUploadModel } from "@ngx-file-upload/testing";
 import { tap, filter, delay } from "rxjs/operators";
 import { of } from "rxjs";
 
-describe("NgxFileUpload/libs/upload", () => {
+fdescribe("NgxFileUpload/libs/upload", () => {
 
     const url = "https://localhost/file/upload";
     let httpClient: HttpClient;

@@ -13,7 +13,7 @@ const logger = new letsLog.Logger({
     transports: [
         {
             baseComment: "",
-            loglvl: letsLog.ELoglevel.INFO,
+            loglvl: letsLog.ELoglevel.DEBUG,
             logpath: resolve(dirname(__filename)),
             logFileName: "upload",
             type: letsLog.ETransportType.filesystem,
@@ -62,7 +62,10 @@ app.post("/upload", function(req, res) {
 app.post("/upload/gallery", function(req, res) {
 
     const uploadedFile = req.files.picture;
-    logger.info(`Picture uploaded: ${uploadedFile.name}`);
+    const metaData     = JSON.stringify(req.body);
+
+    logger.debug(`Picture uploaded: ${uploadedFile.name}`);
+    logger.debug(`Metadata send: ${metaData}`)
 
     const message = `New picture added to our gallery ${uploadedFile.name}`;
 

@@ -67,6 +67,8 @@ app.post("/upload/gallery", function(req, res) {
     logger.debug(`Picture uploaded: ${uploadedFile.name}`);
     logger.debug(`Metadata send: ${metaData}`)
 
+    console.log(req)
+
     const message = `New picture added to our gallery ${uploadedFile.name}`;
 
     if(timeout) {

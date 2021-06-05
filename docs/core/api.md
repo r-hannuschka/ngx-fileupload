@@ -135,14 +135,19 @@ export interface UploadOptions {
     url: string;
 
     formData?: {
+        /**
+         * if false file will passed directly as body
+         */
         enabled: boolean;
+        /**
+         * namespace where to find
+         */
         name?: string;
+        /**
+         * additional meta information for file upload as JSON
+         */
+        metaData?: Record<string, unknown>;
     };
-
-    /**
-     * additional meta information for file upload as JSON
-     */
-    metaData?: Record<string, unknown>;
 }
 ```
 

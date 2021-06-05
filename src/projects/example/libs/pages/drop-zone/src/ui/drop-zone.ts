@@ -26,12 +26,12 @@ export class DropZoneComponent implements OnDestroy, OnInit {
         url: "http://localhost:3000/upload/gallery",
         formData: {
             enabled: true,
-            name: "picture"
+            name: "picture",
+            metaData: {
+                role: 'DEV_NULL',
+                parent: -1
+            }
         },
-        metaData: {
-            role: 'DEV_NULL',
-            parent: -1
-        }
     };
 
     private destroy$: Subject<boolean> = new Subject();

@@ -41,7 +41,7 @@
     "ngx-file-drop": "11.1.0",
     "ngx-highlightjs": "4.1.4",
     "rxjs": "6.6.7",
-    "tslib": "2.2.0",
+    "tslib": "2.3.0",
     "web-animations-js": "2.3.2"
   },
   "devDependencies": {

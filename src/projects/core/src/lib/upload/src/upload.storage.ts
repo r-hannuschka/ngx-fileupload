@@ -82,7 +82,7 @@ export class NgxFileUploadStorage {
             /* only continue if completed with no errors and autoremove is enabled */
             filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.COMPLETED && !upload.hasError && isAutoRemove),
             /** wait for given amount of time before we remove item */
-            switchMap(() => timer(this.storeConfig.removeCompleted)),
+            switchMap(() => timer(this.storeConfig.removeCompleted || 0)),
             /* automatically unsubscribe if request gets destroyed */
             takeUntil(request.destroyed),
         )

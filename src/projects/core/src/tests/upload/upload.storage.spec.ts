@@ -182,7 +182,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
         fileUpload1.state = NgxFileUploadState.INVALID;
         storage.add([uploadRequest1]);
-        uploadRequest1.change$.next();
+
+        /** trigger a change on upload request */
+        uploadRequest1.change$.next(uploadRequest1.data);
         uploadRequest1.destroy();
     });
 

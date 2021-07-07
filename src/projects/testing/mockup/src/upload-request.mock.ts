@@ -8,15 +8,10 @@ import { take } from "rxjs/operators";
 export class UploadRequestMock implements NgxFileUploadRequest {
 
     destroy$: Subject<boolean>;
-
     destroyed: Observable<boolean>;
-
-    public hooks: Observable<boolean>[] = [];
-
+    hooks: Observable<boolean>[] = [];
     requestId: string = "";
-
-    public data: NgxFileUploadRequestData;
-
+    data: NgxFileUploadRequestData;
     change$: Subject<NgxFileUploadRequestData>;
 
     public constructor(model: NgxFileUploadRequestData) {

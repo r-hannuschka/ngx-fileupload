@@ -32,8 +32,7 @@ export interface UploadValidation {
     errors: NgxFileUploadValidationErrors | null;
 }
 
-export interface NgxFileUploadRequestData {
-
+export interface INgxFileUploadFile {
     readonly raw: File;
 
     readonly size: number;
@@ -41,6 +40,12 @@ export interface NgxFileUploadRequestData {
     readonly name: string;
 
     readonly type: string;
+}
+
+export interface NgxFileUploadRequestData {
+    readonly files: INgxFileUploadFile[];
+
+    readonly size: number;
 
     response: NgxFileUploadResponse | null;
 

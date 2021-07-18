@@ -25,7 +25,7 @@
         "projects/core/src/*"
       ],
       "@ngx-file-upload/core": [
-        "dist/core"
+        "projects/core/src/public-api"
       ],
       "@ngx-file-upload/ui": [
         "dist/ui"

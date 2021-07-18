@@ -10,6 +10,7 @@ import {
 import { Subject, Observable, merge, of, concat } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
 import { NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadRequest, NgxFileUploadOptions, NgxFileUploadRequestData } from "../../api";
+import { NgxFileUploadRequestModel } from "./upload.model";
 
 /**
  * represents a single file upload
@@ -19,6 +20,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
   private cancel$: Subject<boolean> = new Subject();
   private change$: Subject<NgxFileUploadRequestData> = new Subject();
   private destroyed$: Subject<boolean> = new Subject();
+  private totalSize = -1;
 
   private options: NgxFileUploadOptions = {
     url: "",
@@ -36,7 +38,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
   }
 
   public get data(): NgxFileUploadRequestData {
-    return this.upload;
+    return this.upload.toJson();
   }
 
   public requestId: string = "";
@@ -46,7 +48,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
    */
   public constructor(
     private http: HttpClient,
-    private upload: NgxFileUploadRequestData,
+    private upload: NgxFileUploadRequestModel,
     options: NgxFileUploadOptions
   ) {
     this.options = { ...this.options, ...options };
@@ -173,13 +175,19 @@ export class NgxFileUpload implements NgxFileUploadRequest {
     const uploadBody = this.createUploadBody();
     const headers = this.createUploadHeaders();
 
+    /**
+     * save size on start so we do not call it every time
+     * since this running a reduce loop, and the size will not change
+     * anymore after we start it 
+     */
+    this.totalSize = this.upload.size;
+
     return this.http.post<string>(this.options.url, uploadBody, {
       reportProgress: true,
       observe: "events",
       headers
     }).pipe(
-      takeUntil(merge(this.cancel$, this.destroyed$)),
-      tap((data) => console.dir(data))
+      takeUntil(merge(this.cancel$, this.destroyed$))
     );
   }
 
@@ -278,9 +286,15 @@ export class NgxFileUpload implements NgxFileUploadRequest {
    */
   private handleProgress(event: HttpProgressEvent) {
     const loaded = event.loaded;
-    const progress = loaded * 100 / this.upload.size;
+    const progress = loaded * 100 / this.totalSize;
     this.upload.state = NgxFileUploadState.PROGRESS;
-    this.upload.uploaded = loaded;
+
+    /**
+     * for some reason the upload is sometimes a bit bigger then the files, 
+     * pretty sure this happens because of headers which are send makes the request a bit
+     * bigger
+     */
+    this.upload.uploaded = Math.min(loaded, this.totalSize);
     this.upload.progress = Math.min(Math.round(progress), 100);
     this.notifyObservers();
   }
@@ -304,7 +318,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
    * send notification to observers
    */
   private notifyObservers() {
-    this.change$.next({ ...this.upload });
+    this.change$.next({ ...this.data, size: this.totalSize });
   }
 
   /**

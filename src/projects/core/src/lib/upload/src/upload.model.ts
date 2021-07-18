@@ -1,87 +1,78 @@
-import { NgxFileUploadRequestData, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors } from "../../api";
+import { ValidationErrors } from "@angular/forms";
+import { NgxFileUploadRequestData, NgxFileUploadState, NgxFileUploadResponse } from "../../api";
 
 export class NgxFileUploadFile {
-  /**
-   * get raw file
-   */
-  public readonly raw: File;
+  public readonly raw: File
+  public readonly size: number
+  public readonly name: string
+  public readonly type: string
 
-  /**
-   * returns filesize in byte
-   */
-  public readonly size: number;
-
-  /**
-   * returns filename
-   */
-  public readonly name: string;
-
-  /**
-   * returns mime type of file
-   */
-  public readonly type: string;
+  validationErrors: ValidationErrors | null = null
 
   public constructor(file: File) {
-    this.raw = file;
-    this.size = file.size;
-    this.type = file.type;
-    this.name = file.name;
+    this.raw = file
+    this.size = file.size
+    this.type = file.type
+    this.name = file.name
   }
 }
 
 /**
- * Represents a file which will be uploaded
+ * Represents an upload request, and store the data inside
  */
 export class NgxFileUploadRequestModel implements NgxFileUploadRequestData {
 
-  private filesToUpload: NgxFileUploadFile[] = [];
+  private filesToUpload: NgxFileUploadFile[] = []
 
-  private totalUploadSize = -1;
+  constructor(file: NgxFileUploadFile | NgxFileUploadFile[]) {
+    this.filesToUpload = !Array.isArray(file) ? [file] : file
+  }
 
   get files(): NgxFileUploadFile[] {
-    return this.filesToUpload;
+    return this.filesToUpload
+  }
+
+  get name(): string[] {
+    return this.files.map((file) => file.name)
   }
 
   get size(): number {
-    if (this.totalUploadSize < 0) {
-      this.totalUploadSize = this.files.reduce((current, file) => current + file.size, 0)
-    }
-    return this.totalUploadSize
+    return this.files.reduce((size, file) => size + file.size, 0)
   }
 
-  /**
-   * Creates an instance of UploadFile.
-   */
-  constructor(file: File | File[]) {
-    const files = !Array.isArray(file) ? [file] : file;
-    this.filesToUpload = files.map((data) => new NgxFileUploadFile(data));
+  get validationErrors(): ValidationErrors | null {
+    const validationErrors = this.files.reduce<ValidationErrors>((errors, file) => {
+      if (file.validationErrors) {
+        errors[file.name] = {...file.validationErrors}
+      }
+      return errors
+    }, {})
+    return Object.keys(validationErrors).length ? validationErrors : null
   }
 
-  /**
-   * set response data if upload has been completed
-   */
   response: NgxFileUploadResponse = {
     body: null,
     errors: null,
     success: false
-  };
+  }
 
+  state: NgxFileUploadState = NgxFileUploadState.IDLE
 
-  /**
-   * set current upload state
-   */
-  state: NgxFileUploadState = NgxFileUploadState.IDLE;
+  uploaded = 0
 
-  /**
-   * set uploaded size
-   */
-  uploaded = 0;
+  progress = 0
 
-  validationErrors: NgxFileUploadValidationErrors | null = null;
+  hasError = false
 
-  progress = 0;
-
-  hasError = false;
+  toJson(): NgxFileUploadRequestData {
+    return {
+      ...this,
+      validationErrors: this.validationErrors,
+      size: this.size,
+      name: this.name,
+      files: this.files
+    };
+  }
 }
 
 /**

@@ -64,13 +64,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
             return;
           }
 
-          /**
-           * second file
-           */
-          const blobParts = Array.from(new Array(1000)).map(() => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
-          const f = new File(blobParts, 'file2.txt');
-
-          requests.push(this.uploadFactory.createUploadRequest([droppedFile, f], this.uploadOptions) as unknown as NgxFileUploadRequest);
+          requests.push(this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions) as unknown as NgxFileUploadRequest);
           get += 1;
 
           if (get === required) {

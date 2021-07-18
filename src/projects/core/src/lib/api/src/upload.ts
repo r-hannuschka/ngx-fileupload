@@ -47,6 +47,8 @@ export interface NgxFileUploadRequestData {
 
     readonly size: number;
 
+    readonly name: string[];
+
     response: NgxFileUploadResponse | null;
 
     state: NgxFileUploadState;

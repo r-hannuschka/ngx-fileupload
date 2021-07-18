@@ -1,5 +1,8 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  },
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -25,7 +28,7 @@
         "projects/core/src/*"
       ],
       "@ngx-file-upload/core": [
-        "projects/core/src/public-api"
+        "dist/core"
       ],
       "@ngx-file-upload/ui": [
         "dist/ui"

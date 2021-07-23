@@ -1,5 +1,4 @@
-import { ValidationErrors } from "@angular/forms";
-import { INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUploadResponse } from "../../api";
+import { INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors } from "../../api";
 
 export class NgxFileUploadFile {
   public readonly raw: File
@@ -7,7 +6,7 @@ export class NgxFileUploadFile {
   public readonly name: string
   public readonly type: string
 
-  validationErrors: ValidationErrors | null = null
+  validationErrors: NgxFileUploadValidationErrors | null = null
 
   public constructor(file: File) {
     this.raw = file
@@ -40,8 +39,8 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
     return this.files.reduce((size, file) => size + file.size, 0)
   }
 
-  get validationErrors(): ValidationErrors | null {
-    const validationErrors = this.files.reduce<ValidationErrors>((errors, file) => {
+  get validationErrors(): NgxFileUploadValidationErrors | null {
+    const validationErrors = this.files.reduce<NgxFileUploadValidationErrors>((errors, file) => {
       if (file.validationErrors) {
         errors[file.name] = {...file.validationErrors}
       }

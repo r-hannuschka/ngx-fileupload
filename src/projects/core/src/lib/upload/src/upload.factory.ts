@@ -1,13 +1,13 @@
 import { InjectionToken, inject } from "@angular/core"
 import { HttpClient } from "@angular/common/http"
-import { NgxFileUploadOptions, NgxFileUploadRequest, NgxFileUploadState, NgxFileUploadValidation } from "../../api"
+import { INgxFileUploadRequest, NgxFileUploadOptions, NgxFileUploadState, NgxFileUploadValidation } from "../../api"
 import { NgxFileUploadFile, NgxFileUploadRequestModel } from "./upload.model"
-import { NgxFileUpload } from "./upload.request"
+import { NgxFileUploadRequest } from "./upload.request"
 
 export interface NgxFileUploadFactory {
   createUploadRequest<T extends File | File[]>(
     file: T, options: NgxFileUploadOptions, validator?: NgxFileUploadValidation
-  ): T extends File[] ? NgxFileUploadRequest[] : NgxFileUploadRequest;
+  ): T extends File[] ? INgxFileUploadRequest[] : INgxFileUploadRequest;
 }
 
 /**
@@ -39,7 +39,7 @@ class Factory implements NgxFileUploadFactory {
       requestModel.state = NgxFileUploadState.INVALID;
     }
 
-    return new NgxFileUpload(this.httpClient, requestModel, options)
+    return new NgxFileUploadRequest(this.httpClient, requestModel, options)
   }
 }
 

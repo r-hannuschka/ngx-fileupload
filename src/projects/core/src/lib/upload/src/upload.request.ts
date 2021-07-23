@@ -10,7 +10,6 @@ import {
 import { Subject, Observable, merge, of, concat } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
 import { NgxFileUploadState, NgxFileUploadResponse, INgxFileUploadRequest, NgxFileUploadOptions, INgxFileUploadRequestModel } from "../../api";
-import { NgxFileUploadRequestModel } from "./upload.model";
 
 export class NgxFileUploadRequest implements INgxFileUploadRequest {
 

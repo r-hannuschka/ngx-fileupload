@@ -1,11 +1,11 @@
 import { Observable, Subject } from "rxjs";
-import { INgxFileUploadRequestModel, NgxFileUploadRequest, NgxFileUploadState } from "@ngx-file-upload/core";
+import { INgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadState } from "@ngx-file-upload/core";
 import { take } from "rxjs/operators";
 
 /**
  * represents a single fileupload
  */
-export class UploadRequestMock implements NgxFileUploadRequest {
+export class UploadRequestMock implements INgxFileUploadRequest {
 
     destroy$: Subject<boolean>;
 

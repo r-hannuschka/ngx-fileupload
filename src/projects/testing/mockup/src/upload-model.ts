@@ -7,14 +7,12 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
 
     files: INgxFileUploadFile[] = [new NgxFileUploadFile(file)];
 
-    // @TODO check is duplicate of validationErrors
     validation: NgxFileUploadValidationErrors | null = null;
 
     isInvalid = false;
 
     size = 0;
 
-    /** useless */
     name = [""];
 
     type = "plain/text";
@@ -35,7 +33,14 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
 
     hasError = false;
 
-    toJson(): Omit<INgxFileUploadRequestModel, "progress"> {
-        throw new Error("Method not implemented.");
+    toJson(): INgxFileUploadRequestModel {
+        const jsonedObject: Record<string, unknown> = {};
+        for (const x in this) {
+            if (x === "toJson" || x === "constructor") {
+                continue;
+            }
+            jsonedObject[x] = this[x];
+        }
+        return jsonedObject as unknown as INgxFileUploadRequestModel;
     }
 }

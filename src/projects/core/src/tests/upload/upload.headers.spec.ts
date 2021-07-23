@@ -39,8 +39,8 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should send custom authorization header", () => {
-        const uploadFile = new NgxFileUploadModel();
-        const upload = new NgxFileUpload(httpClient, uploadFile, {
+        const uploadFile = new NgxFileUploadRequestModel();
+        const upload = new NgxFileUploadRequest(httpClient, uploadFile, {
             url,
             headers: {
                 authorization: {
@@ -57,8 +57,8 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should append header", () => {
-        const uploadFile = new NgxFileUploadModel();
-        const upload = new NgxFileUpload(httpClient, uploadFile, {
+        const uploadFile = new NgxFileUploadRequestModel();
+        const upload = new NgxFileUploadRequest(httpClient, uploadFile, {
             url,
             headers: {
                 "X-RefKey": "01234567890abcdef"

@@ -2,8 +2,8 @@ import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/http";
 import { Type } from "@angular/core";
-import { NgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUpload } from "@ngx-file-upload/dev/core/public-api";
-import { NgxFileUploadModel } from "@ngx-file-upload/testing";
+import { NgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadState } from "@ngx-file-upload/dev/core/public-api";
+import { NgxFileUploadRequestModel } from "@ngx-file-upload/testing";
 import { tap, filter, delay } from "rxjs/operators";
 import { of } from "rxjs";
 
@@ -24,13 +24,13 @@ describe("NgxFileUpload/libs/upload", () => {
         httpMock   = injector.inject(HttpTestingController as Type<HttpTestingController>);
         httpClient = injector.inject(HttpClient as Type<HttpClient>);
 
-        const uploadFile = new NgxFileUploadModel();
-        request = new NgxFileUpload(httpClient, uploadFile, {url});
+        const uploadFile = new NgxFileUploadRequestModel();
+        request = new NgxFileUploadRequest(httpClient, uploadFile, {url});
     });
 
     it("should have upload file", () => {
-        const uploadFile = new NgxFileUploadModel();
-        const testRequest = new NgxFileUpload(httpClient, uploadFile, {url});
+        const uploadFile = new NgxFileUploadRequestModel();
+        const testRequest = new NgxFileUploadRequest(httpClient, uploadFile, {url});
 
         expect(testRequest.data).toBe(uploadFile);
     });
@@ -49,15 +49,15 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should send file data directly in body if formdata is disbled", () => {
-        const testUploadFile = new NgxFileUploadModel();
-        const noFormDataRequest = new NgxFileUpload(httpClient, testUploadFile, {
+        const testUploadFile = new NgxFileUploadRequestModel();
+        const noFormDataRequest = new NgxFileUploadRequest(httpClient, testUploadFile, {
             url, formData: {enabled: false}
         });
 
         noFormDataRequest.start();
 
         const mockReq = httpMock.expectOne(url);
-        expect(mockReq.request.body).toBe(testUploadFile.raw);
+        expect(mockReq.request.body).toBe(testUploadFile.files[0].raw);
         mockReq.flush("we are done here"); // Complete Request with response
     });
 
@@ -189,10 +189,10 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should not start upload, is not pending or idle", () => {
-        const testUploadFile = new NgxFileUploadModel();
+        const testUploadFile = new NgxFileUploadRequestModel();
         testUploadFile.state = NgxFileUploadState.INVALID;
 
-        const pendingRequest = new NgxFileUpload(httpClient, testUploadFile, {url});
+        const pendingRequest = new NgxFileUploadRequest(httpClient, testUploadFile, {url});
         const spy = jasmine.createSpy("cancel");
 
         // expect request change will not called

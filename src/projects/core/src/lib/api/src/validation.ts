@@ -1,14 +1,9 @@
-import { ValidationErrors } from "@angular/forms";
-
-/** 
- * @deprecated use ValidationErrors from @angular/forms instead
- */
 export interface NgxFileUploadValidationErrors {
     [key: string]: any;
 }
 
-export type NgxFileUploadValidationFn = (file: File) => ValidationErrors | null;
+export type NgxFileUploadValidationFn = (file: File) => NgxFileUploadValidationErrors | null;
 
 export interface NgxFileUploadValidator {
-    validate(file: File): ValidationErrors | null;
+    validate(file: File): NgxFileUploadValidationErrors | null;
 }

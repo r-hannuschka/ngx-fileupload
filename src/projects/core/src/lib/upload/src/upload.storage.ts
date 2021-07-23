@@ -1,6 +1,6 @@
 import { Observable, Subject, ReplaySubject, timer } from "rxjs";
 import { takeUntil, distinctUntilKeyChanged, tap, take, filter, switchMap } from "rxjs/operators";
-import { NgxFileUploadRequest, NgxFileUploadStorageConfig, NgxFileUploadRequestData, NgxFileUploadState } from "../../api";
+import { NgxFileUploadRequest, NgxFileUploadStorageConfig, INgxFileUploadRequestModel, NgxFileUploadState } from "../../api";
 import { NgxFileUploadQueue } from "./upload.queue";
 
 const defaultStoreConfig: NgxFileUploadStorageConfig = {
@@ -80,7 +80,7 @@ export class NgxFileUploadStorage {
             /* notify observers upload state has been changed */
             tap(() => this.notifyObserver()),
             /* only continue if completed with no errors and autoremove is enabled */
-            filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.COMPLETED && !upload.hasError && isAutoRemove),
+            filter((upload: INgxFileUploadRequestModel) => upload.state === NgxFileUploadState.COMPLETED && !upload.hasError && isAutoRemove),
             /** wait for given amount of time before we remove item */
             switchMap(() => timer(this.storeConfig.removeCompleted)),
             /* automatically unsubscribe if request gets destroyed */

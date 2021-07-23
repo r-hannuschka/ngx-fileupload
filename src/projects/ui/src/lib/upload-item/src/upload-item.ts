@@ -1,13 +1,13 @@
 
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, AfterViewInit, OnInit } from "@angular/core";
-import { NgxFileUploadRequest, NgxFileUploadState, NgxFileUploadRequestData, NgxFileUploadControl } from "@ngx-file-upload/core";
+import { NgxFileUploadRequest, NgxFileUploadState, INgxFileUploadRequestModel, NgxFileUploadControl } from "@ngx-file-upload/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Control } from "./upload.control";
 import { NgxFileUploadUiI18nProvider, NgxFileUploadUiI18nItem, NgxFileUploadUiI18nKey } from "../../i18n";
 
 export interface FileUploadItemContext {
-  data: NgxFileUploadRequestData;
+  data: INgxFileUploadRequestModel;
   ctrl: NgxFileUploadControl;
 }
 
@@ -96,7 +96,7 @@ export class UploadItemComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this.fileUpload.change
       .pipe(takeUntil(this.destroyed))
-      .subscribe((fileUpload: NgxFileUploadRequestData) => (this.context as FileUploadItemContext).data = fileUpload);
+      .subscribe((fileUpload: INgxFileUploadRequestModel) => (this.context as FileUploadItemContext).data = fileUpload);
   }
 
   ngOnInit() {

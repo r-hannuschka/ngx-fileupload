@@ -1,5 +1,5 @@
 import { ValidationErrors } from "@angular/forms";
-import { NgxFileUploadRequestData, NgxFileUploadState, NgxFileUploadResponse } from "../../api";
+import { INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUploadResponse } from "../../api";
 
 export class NgxFileUploadFile {
   public readonly raw: File
@@ -20,7 +20,7 @@ export class NgxFileUploadFile {
 /**
  * Represents an upload request, and store the data inside
  */
-export class NgxFileUploadRequestModel implements NgxFileUploadRequestData {
+export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
 
   private filesToUpload: NgxFileUploadFile[] = []
 
@@ -64,7 +64,7 @@ export class NgxFileUploadRequestModel implements NgxFileUploadRequestData {
 
   hasError = false
 
-  toJson(): NgxFileUploadRequestData {
+  toJson(): INgxFileUploadRequestModel {
     return {
       ...this,
       validationErrors: this.validationErrors,

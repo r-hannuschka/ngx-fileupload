@@ -42,7 +42,7 @@ export interface INgxFileUploadFile {
     readonly type: string;
 }
 
-export interface NgxFileUploadRequestData {
+export interface INgxFileUploadRequestModel {
     readonly files: INgxFileUploadFile[];
 
     readonly size: number;
@@ -60,9 +60,11 @@ export interface NgxFileUploadRequestData {
     progress: number;
 
     hasError: boolean;
+
+    toJson(): INgxFileUploadRequestModel;
 }
 
-export interface NgxFileUploadRequest {
+export interface INgxFileUploadRequest {
 
     requestId: string;
 
@@ -70,9 +72,9 @@ export interface NgxFileUploadRequest {
      * returns observable which notify if file upload state
      * has been changed
      */
-    readonly change: Observable<NgxFileUploadRequestData>;
+    readonly change: Observable<INgxFileUploadRequestModel>;
 
-    readonly data: NgxFileUploadRequestData;
+    readonly data: INgxFileUploadRequestModel;
 
     readonly destroyed: Observable<boolean>;
 

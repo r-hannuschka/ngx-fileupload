@@ -9,16 +9,13 @@ import {
 } from "@angular/common/http";
 import { Subject, Observable, merge, of, concat } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
-import { NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadRequest, NgxFileUploadOptions, NgxFileUploadRequestData } from "../../api";
+import { NgxFileUploadState, NgxFileUploadResponse, INgxFileUploadRequest, NgxFileUploadOptions, INgxFileUploadRequestModel } from "../../api";
 import { NgxFileUploadRequestModel } from "./upload.model";
 
-/**
- * represents a single file upload
- */
-export class NgxFileUpload implements NgxFileUploadRequest {
+export class NgxFileUploadRequest implements INgxFileUploadRequest {
 
   private cancel$: Subject<boolean> = new Subject();
-  private change$: Subject<NgxFileUploadRequestData> = new Subject();
+  private change$: Subject<INgxFileUploadRequestModel> = new Subject();
   private destroyed$: Subject<boolean> = new Subject();
   private totalSize = -1;
 
@@ -29,7 +26,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
 
   private hooks: { beforeStart: Observable<boolean>[] } = { beforeStart: [] };
 
-  public get change(): Observable<NgxFileUploadRequestData> {
+  public get change(): Observable<INgxFileUploadRequestModel> {
     return this.change$.asObservable();
   }
 
@@ -37,7 +34,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
     return this.destroyed$.asObservable();
   }
 
-  public get data(): NgxFileUploadRequestData {
+  public get data(): INgxFileUploadRequestModel {
     return this.upload.toJson();
   }
 
@@ -48,7 +45,7 @@ export class NgxFileUpload implements NgxFileUploadRequest {
    */
   public constructor(
     private http: HttpClient,
-    private upload: NgxFileUploadRequestModel,
+    private upload: INgxFileUploadRequestModel,
     options: NgxFileUploadOptions
   ) {
     this.options = { ...this.options, ...options };

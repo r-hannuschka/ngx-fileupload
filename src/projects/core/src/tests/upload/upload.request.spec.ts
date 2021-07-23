@@ -2,7 +2,7 @@ import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/http";
 import { Type } from "@angular/core";
-import { NgxFileUploadRequest, NgxFileUploadRequestData, NgxFileUploadState, NgxFileUpload } from "@ngx-file-upload/dev/core/public-api";
+import { NgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUpload } from "@ngx-file-upload/dev/core/public-api";
 import { NgxFileUploadModel } from "@ngx-file-upload/testing";
 import { tap, filter, delay } from "rxjs/operators";
 import { of } from "rxjs";
@@ -65,7 +65,7 @@ describe("NgxFileUpload/libs/upload", () => {
         const states: NgxFileUploadState[] = [];
         request.change
             .pipe(
-                tap((data: NgxFileUploadRequestData) => states.push(data.state)),
+                tap((data: INgxFileUploadRequestModel) => states.push(data.state)),
             )
             .subscribe({
                 complete: () => {
@@ -85,7 +85,7 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should cancel upload", (done) => {
         request.change
             .pipe(
-                filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.CANCELED)
+                filter((upload: INgxFileUploadRequestModel) => upload.state === NgxFileUploadState.CANCELED)
             )
             .subscribe({
                 next: () => {
@@ -108,7 +108,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
         request.change
             .pipe(
-                filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.CANCELED)
+                filter((upload: INgxFileUploadRequestModel) => upload.state === NgxFileUploadState.CANCELED)
             )
             .subscribe({
                 next: () => {
@@ -205,7 +205,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should completed but got error", (done) => {
         request.change
-            .pipe(filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.COMPLETED))
+            .pipe(filter((upload: INgxFileUploadRequestModel) => upload.state === NgxFileUploadState.COMPLETED))
             .subscribe({
                 next: () => {
                     expect(request.hasError()).toBeTruthy();
@@ -226,7 +226,7 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should has been an error on 404", (done) => {
         request.change
-            .pipe(filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.COMPLETED))
+            .pipe(filter((upload: INgxFileUploadRequestModel) => upload.state === NgxFileUploadState.COMPLETED))
             .subscribe({
                 next: () => {
                     expect(request.hasError()).toBeTruthy();

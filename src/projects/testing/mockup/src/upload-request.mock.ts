@@ -1,5 +1,5 @@
 import { Observable, Subject } from "rxjs";
-import { NgxFileUploadRequestData, NgxFileUploadRequest, NgxFileUploadState } from "@ngx-file-upload/core";
+import { INgxFileUploadRequestModel, NgxFileUploadRequest, NgxFileUploadState } from "@ngx-file-upload/core";
 import { take } from "rxjs/operators";
 
 /**
@@ -15,11 +15,11 @@ export class UploadRequestMock implements NgxFileUploadRequest {
 
     requestId: string = "";
 
-    public data: NgxFileUploadRequestData;
+    public data: INgxFileUploadRequestModel;
 
-    change$: Subject<NgxFileUploadRequestData>;
+    change$: Subject<INgxFileUploadRequestModel>;
 
-    public constructor(model: NgxFileUploadRequestData) {
+    public constructor(model: INgxFileUploadRequestModel) {
         this.data = model;
         this.change$ = new Subject();
         this.destroy$ = new Subject();
@@ -79,7 +79,7 @@ export class UploadRequestMock implements NgxFileUploadRequest {
         return this.data.state === NgxFileUploadState.PROGRESS || this.data.state === NgxFileUploadState.START;
     }
 
-    public get change(): Observable<NgxFileUploadRequestData> {
+    public get change(): Observable<INgxFileUploadRequestModel> {
         return this.change$.asObservable();
     }
 

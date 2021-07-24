@@ -154,7 +154,9 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should notify observer if hook change state", () => {
         const spy = jasmine.createSpy("cancel");
 
-        request.beforeStart(of(false).pipe(tap(() => request.data.state = NgxFileUploadState.PENDING)));
+        request.beforeStart(of(false).pipe(tap(() => {
+            request.data.state = NgxFileUploadState.PENDING
+        })))
 
         // expect request change will not called
         request.change.subscribe(() => spy());
@@ -248,7 +250,6 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should restart canceled upload", () => {
 
         request.start();
-
         request.cancel();
         expect(request.isCanceled()).toBeTruthy();
         httpMock.expectOne(url);

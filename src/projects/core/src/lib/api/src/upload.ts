@@ -40,6 +40,8 @@ export interface INgxFileUploadFile {
     readonly name: string;
 
     readonly type: string;
+
+    validationErrors: NgxFileUploadValidationErrors | null;
 }
 
 export interface INgxFileUploadRequestModel {
@@ -60,8 +62,6 @@ export interface INgxFileUploadRequestModel {
     progress: number;
 
     hasError: boolean;
-
-    toJson(): INgxFileUploadRequestModel;
 }
 
 export interface INgxFileUploadRequest {

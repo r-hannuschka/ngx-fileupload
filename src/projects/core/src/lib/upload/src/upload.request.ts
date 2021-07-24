@@ -10,6 +10,7 @@ import {
 import { Subject, Observable, merge, of, concat } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
 import { NgxFileUploadState, NgxFileUploadResponse, INgxFileUploadRequest, NgxFileUploadOptions, INgxFileUploadRequestModel } from "../../api";
+import { NgxFileUploadRequestModel } from "./upload.model";
 
 export class NgxFileUploadRequest implements INgxFileUploadRequest {
 
@@ -34,7 +35,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
   }
 
   public get data(): INgxFileUploadRequestModel {
-    return this.upload.toJson();
+    return this.upload;
   }
 
   public requestId: string = "";
@@ -120,8 +121,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    */
   public retry() {
     if (this.isRequestCompleted() && this.hasError() || this.isCanceled()) {
-      // @todo implement
-      // this.upload = new NgxFileUploadModel(this.upload.raw);
+      this.upload = new NgxFileUploadRequestModel(this.upload.files);
       this.start();
     }
   }

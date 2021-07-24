@@ -16,13 +16,14 @@ describe("NgxFileUpload/libs/utils/factory", () => {
         const file = new File(["ngx file upload"], "file1.txt");
         const upload = factory.createUploadRequest(file, {url: "/dev/null"});
 
-        expect(upload.data.files[0].raw).toEqual(file);
+        expect(upload[0].data.files[0].raw).toEqual(file);
     }));
 
     it("should create multiple NgxFileUploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
         const file1 = new File(["ngx file upload"], "file1.txt");
         const file2 = new File(["ngx file upload"], "file2.txt");
 
+        /** das ist korrekt der macht nur einen nun */
         const uploads = factory.createUploadRequest([file1, file2], {url: "/dev/null"});
         const uploadedFiles = uploads.map((req) => req.data.files[0].raw);
 
@@ -33,12 +34,12 @@ describe("NgxFileUpload/libs/utils/factory", () => {
     it("should validate file if validation function is passed", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
         const file1 = new File(["ngx file upload"], "file1.txt");
         const upload = factory.createUploadRequest(file1, {url: "/dev/null"}, ValidatorMockFactory.invalidFileSize());
-        expect(upload.isInvalid()).toBeTruthy();
+        expect(upload[0].isInvalid()).toBeTruthy();
     }));
 
     it("should validate file if validation class is passed", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
         const file1 = new File(["ngx file upload"], "file1.txt");
         const upload = factory.createUploadRequest(file1, {url: "/dev/null"}, ValidatorMockFactory.invalidValidationFn);
-        expect(upload.isInvalid()).toBeTruthy();
+        expect(upload[0].isInvalid()).toBeTruthy();
     }));
 });

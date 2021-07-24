@@ -1,11 +1,10 @@
-import { INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors } from "../../api";
+import { INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors, INgxFileUploadFile } from "../../api";
 
-export class NgxFileUploadFile {
-  public readonly raw: File
-  public readonly size: number
-  public readonly name: string
-  public readonly type: string
-
+export class NgxFileUploadFile implements INgxFileUploadFile {
+  readonly raw: File
+  readonly size: number
+  readonly name: string
+  readonly type: string
   validationErrors: NgxFileUploadValidationErrors | null = null
 
   public constructor(file: File) {
@@ -23,7 +22,7 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
 
   private filesToUpload: NgxFileUploadFile[] = []
 
-  constructor(file: NgxFileUploadFile | NgxFileUploadFile[]) {
+  constructor(file: INgxFileUploadFile | INgxFileUploadFile[]) {
     this.filesToUpload = !Array.isArray(file) ? [file] : file
   }
 
@@ -62,16 +61,6 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
   progress = 0
 
   hasError = false
-
-  toJson(): INgxFileUploadRequestModel {
-    return {
-      ...this,
-      validationErrors: this.validationErrors,
-      size: this.size,
-      name: this.name,
-      files: this.files
-    };
-  }
 }
 
 /**

@@ -41,4 +41,20 @@ describe("NgxFileUpload/libs/utils/factory", () => {
         const upload = factory.createUploadRequest(file1, {url: "/dev/null"}, ValidatorMockFactory.invalidValidationFn);
         expect(upload[0].isInvalid()).toBeTruthy();
     }));
+
+    it("should create no requests if no files are passed", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
+        const requests = factory.createUploadRequest([], {url: "/dev/null"}, ValidatorMockFactory.invalidValidationFn);
+        expect(requests.length).toBe(0);
+    }));
+
+    it("should create one requets which holds all files", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {
+        const file1 = new File(["ngx file upload"], "file1.txt");
+        const file2 = new File(["ngx file upload"], "file2.txt");
+        const file3 = new File(["ngx file upload"], "file3.txt");
+
+        const requests = factory.createUploadRequest([file1, file2, file3], {url: "/dev/null"}, ValidatorMockFactory.invalidValidationFn, -1);
+        expect(requests.length).toBe(1);
+        expect(requests[0].data.files.length).toBe(3);
+        expect(requests[0].data.name).toEqual(['file1.txt', 'file2.txt', 'file3.txt']);
+    }));
 });

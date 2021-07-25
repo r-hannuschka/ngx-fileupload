@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
-import { NgxFileUploadStorage, NgxFileUploadFactory, NgxFileUploadOptions, NgxFileUploadState, NgxFileUploadRequest } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadFactory, NgxFileUploadOptions, NgxFileUploadState, INgxFileUploadRequest } from "@ngx-file-upload/core";
 import { NgxFileDropEntry, FileSystemFileEntry } from "ngx-file-drop";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -13,7 +13,7 @@ import * as ExampleCodeData from "projects/example/libs/data/code/ngx-drop-zone/
 })
 export class DropZoneComponent implements OnDestroy, OnInit {
 
-  public uploads: NgxFileUploadRequest[] = [];
+  public uploads: INgxFileUploadRequest[] = [];
 
   public uploadStorage: NgxFileUploadStorage;
 
@@ -40,7 +40,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
     @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory
   ) {
     this.uploadStorage = new NgxFileUploadStorage({
-      concurrentUploads: 2
+      concurrentUploads: 1
     });
   }
 
@@ -48,10 +48,9 @@ export class DropZoneComponent implements OnDestroy, OnInit {
    * files get dropped
    */
   public drop(files: NgxFileDropEntry[]) {
-    const requests: NgxFileUploadRequest[] = [];
-
     let required = files.length;
     let get = 0;
+    const filesToUpload: File[] = [];
 
     files.forEach((file) => {
       if (file.fileEntry.isFile) {
@@ -64,10 +63,11 @@ export class DropZoneComponent implements OnDestroy, OnInit {
             return;
           }
 
-          requests.push(this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions) as unknown as NgxFileUploadRequest);
+          filesToUpload.push(droppedFile);
           get += 1;
 
           if (get === required) {
+            const requests = this.uploadFactory.createUploadRequests(filesToUpload, this.uploadOptions, null, 3);
             this.uploadStorage.add(requests);
           }
         });

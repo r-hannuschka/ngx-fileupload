@@ -5,8 +5,8 @@ import { NgxFileUploadFile, NgxFileUploadRequestModel } from "./upload.model"
 import { NgxFileUploadRequest } from "./upload.request"
 
 export interface NgxFileUploadFactory {
-  createUploadRequest<T extends File | File[]>(
-    file: T, options: NgxFileUploadOptions, validator?: NgxFileUploadValidation, filesPerRequest?: number
+  createUploadRequests(
+    file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation | null, filesPerRequest?: number
   ): INgxFileUploadRequest[];
 }
 
@@ -22,7 +22,7 @@ class Factory implements NgxFileUploadFactory {
     private httpClient: HttpClient
   ) {}
 
-  public createUploadRequest(file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation, filesPerRequest = 1): INgxFileUploadRequest[] {
+  public createUploadRequests(file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation, filesPerRequest = 1): INgxFileUploadRequest[] {
     const files = Array.isArray(file) ? file : [file]
     if (!files.length || filesPerRequest === 0) {
       return []

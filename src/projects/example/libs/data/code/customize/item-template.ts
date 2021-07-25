@@ -100,7 +100,7 @@ export class ItemTemplateComponent implements OnInit, OnDestroy {
 
     public drop(files: File[]) {
         const uploadOptions: NgxFileUploadOptions = { url: this.url };
-        const requests = this.uploadFactory.createUploadRequest(files, uploadOptions);
+        const requests = this.uploadFactory.createUploadRequests(files, uploadOptions);
         this.storage.add(requests);
     }
 }

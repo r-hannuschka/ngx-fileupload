@@ -13,7 +13,7 @@
                 <span class="state">{{upload.data.state | stateToString}}</span>
             </div>
 
-            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="1">
+            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="1" [duration]="100">
             </ngx-file-upload-ui--progressbar>
         </div>
     </div>

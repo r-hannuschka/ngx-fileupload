@@ -42,7 +42,7 @@ export class UploadToolbarComponent {
 
         if (this.url && this.storage)  {
             const uploadOptions: NgxFileUploadOptions = { url: this.url, headers: { authorization: {token: "foofoo"}} };
-            this.storage.add(this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator));
+            this.storage.add(this.uploadFactory.createUploadRequests(files, uploadOptions, this.validator));
         }
     }
 }

@@ -112,7 +112,7 @@ export class AppComponent implements OnInit {
       const addedFiles: File[] = event.addedFiles;
 
       if (addedFiles.length) {
-        const uploads = this.uploadFactory.createUploadRequest(addedFiles, this.uploadOptions);
+        const uploads = this.uploadFactory.createUploadRequests(addedFiles, this.uploadOptions);
         this.storage.add(uploads);
       }
     }

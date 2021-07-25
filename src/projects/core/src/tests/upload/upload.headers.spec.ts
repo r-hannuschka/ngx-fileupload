@@ -3,8 +3,8 @@ import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@angular/common/http/testing";
 import { HttpClient } from "@angular/common/http";
 import { Type } from "@angular/core";
-import { NgxFileUpload } from "@ngx-file-upload/dev/core/public-api";
-import { NgxFileUploadModel } from "@ngx-file-upload/testing";
+import { NgxFileUploadRequestModel } from "@ngx-file-upload/testing";
+import { NgxFileUploadRequest } from "../../lib/upload";
 
 describe("NgxFileUpload/libs/upload", () => {
 
@@ -24,8 +24,8 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should append authorization header if value is passed as string", () => {
-        const uploadFile = new NgxFileUploadModel();
-        const upload = new NgxFileUpload(httpClient, uploadFile, {
+        const request = new NgxFileUploadRequestModel();
+        const upload = new NgxFileUploadRequest(httpClient, request, {
             url,
             headers: {
                 authorization: "01234567890abcdef"
@@ -39,8 +39,8 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should send custom authorization header", () => {
-        const uploadFile = new NgxFileUploadModel();
-        const upload = new NgxFileUpload(httpClient, uploadFile, {
+        const uploadFile = new NgxFileUploadRequestModel();
+        const upload = new NgxFileUploadRequest(httpClient, uploadFile, {
             url,
             headers: {
                 authorization: {
@@ -57,8 +57,8 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should append header", () => {
-        const uploadFile = new NgxFileUploadModel();
-        const upload = new NgxFileUpload(httpClient, uploadFile, {
+        const uploadFile = new NgxFileUploadRequestModel();
+        const upload = new NgxFileUploadRequest(httpClient, uploadFile, {
             url,
             headers: {
                 "X-RefKey": "01234567890abcdef"

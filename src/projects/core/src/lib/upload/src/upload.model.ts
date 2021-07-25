@@ -1,62 +1,69 @@
-import { NgxFileUploadRequestData, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors } from "../../api";
+import { INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors, INgxFileUploadFile } from "../../api";
+
+export class NgxFileUploadFile implements INgxFileUploadFile {
+  readonly raw: File
+  readonly size: number
+  readonly name: string
+  readonly type: string
+  validationErrors: NgxFileUploadValidationErrors | null = null
+
+  public constructor(file: File) {
+    this.raw = file
+    this.size = file.size
+    this.type = file.type
+    this.name = file.name
+  }
+}
 
 /**
- * Represents a file which will be uploaded
+ * Represents an upload request, and store the data inside
  */
-export class NgxFileUploadModel implements NgxFileUploadRequestData {
+export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
 
-    /**
-     * Creates an instance of UploadFile.
-     */
-    public constructor(file: File) {
-        this.raw  = file;
-        this.size = file.size;
-        this.type = file.type;
-        this.name = file.name;
-    }
+  private filesToUpload: NgxFileUploadFile[] = []
 
-    /**
-     * get raw file
-     */
-    public readonly raw: File;
+  constructor(file: INgxFileUploadFile | INgxFileUploadFile[]) {
+    this.filesToUpload = !Array.isArray(file) ? [file] : file
+  }
 
-    /**
-     * returns filesize in byte
-     */
-    public readonly size: number;
+  get files(): NgxFileUploadFile[] {
+    return this.filesToUpload
+  }
 
-    /**
-     * returns filename
-     */
-    public readonly name: string;
+  get name(): string[] {
+    return this.files.map((file) => file.name)
+  }
 
-    /**
-     * returns mime type of file
-     */
-    public readonly type: string;
+  get size(): number {
+    return this.files.reduce((size, file) => size + file.size, 0)
+  }
 
-    /**
-     * set response data if upload has been completed
-     */
-    public response: NgxFileUploadResponse = {
-        body: null,
-        errors: null,
-        success: false
-    };
+  get validationErrors(): NgxFileUploadValidationErrors | null {
+    const validationErrors = this.files.reduce<NgxFileUploadValidationErrors>((errors, file) => {
+      if (file.validationErrors) {
+        errors[file.name] = {...file.validationErrors}
+      }
+      return errors
+    }, {})
+    return Object.keys(validationErrors).length ? validationErrors : null
+  }
 
-    /**
-     * set current upload state
-     */
-    public state: NgxFileUploadState = NgxFileUploadState.IDLE;
+  response: NgxFileUploadResponse = {
+    body: null,
+    errors: null,
+    success: false
+  }
 
-    /**
-     * set uploaded size
-     */
-    public uploaded = 0;
+  state: NgxFileUploadState = NgxFileUploadState.IDLE
 
-    public validationErrors: NgxFileUploadValidationErrors | null = null;
+  uploaded = 0
 
-    public progress = 0;
+  progress = 0
 
-    public hasError = false;
+  hasError = false
 }
+
+/**
+ * @deprecated use NgxFileUploadRequestModel instead
+ */
+export class NgxFileUploadModel extends NgxFileUploadRequestModel {}

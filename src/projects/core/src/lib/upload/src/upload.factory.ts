@@ -1,13 +1,13 @@
-import { InjectionToken, inject } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { NgxFileUploadOptions, NgxFileUploadState, NgxFileUploadRequest, NgxFileUploadValidation } from "../../api";
-import { NgxFileUploadModel } from "./upload.model";
-import { NgxFileUpload } from "./upload.request";
+import { InjectionToken, inject } from "@angular/core"
+import { HttpClient } from "@angular/common/http"
+import { INgxFileUploadFile, INgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadOptions, NgxFileUploadState, NgxFileUploadValidation } from "../../api"
+import { NgxFileUploadFile, NgxFileUploadRequestModel } from "./upload.model"
+import { NgxFileUploadRequest } from "./upload.request"
 
 export interface NgxFileUploadFactory {
-    createUploadRequest<T extends File | File[]>(
-        file: T, options: NgxFileUploadOptions, validator?: NgxFileUploadValidation
-    ): T extends File[] ? NgxFileUploadRequest[] : NgxFileUploadRequest;
+  createUploadRequests(
+    file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation | null, filesPerRequest?: number
+  ): INgxFileUploadRequest[];
 }
 
 /**
@@ -15,48 +15,54 @@ export interface NgxFileUploadFactory {
  */
 class Factory implements NgxFileUploadFactory {
 
-    /**
-     * construct upload factory
-     */
-    public constructor(
-        private httpClient: HttpClient
-    ) {}
+  /**
+   * construct upload factory
+   */
+  public constructor(
+    private httpClient: HttpClient
+  ) {}
 
-    public createUploadRequest(file: File, options: NgxFileUploadOptions, validator: NgxFileUploadValidation): NgxFileUploadRequest;
-    public createUploadRequest(file: File[], options: NgxFileUploadOptions, validator: NgxFileUploadValidation): NgxFileUploadRequest[];
-    public createUploadRequest(file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation) {
-
-        if (Array.isArray(file)) {
-            return file.map((source) => this.buildRequest(source, options, validator));
-        } else {
-            return this.buildRequest(file, options, validator);
-        }
+  public createUploadRequests(file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation, filesPerRequest = 1): INgxFileUploadRequest[] {
+    const files = Array.isArray(file) ? file : [file]
+    if (!files.length || filesPerRequest === 0) {
+      return []
     }
 
-    /**
-     * build concrete upload request
-     */
-    private buildRequest(file: File, options: NgxFileUploadOptions, validator?: NgxFileUploadValidation): NgxFileUploadRequest {
-        const model = new NgxFileUploadModel(file);
-        let validationResult = null;
+    const fileModels: INgxFileUploadFile[] = files.map((file) => {
+      const model = new NgxFileUploadFile(file)
+      if (validator) {
+        model.validationErrors = "validate" in validator ? validator.validate(file) : validator(file)
+      }
+      return model
+    });
 
-        if (validator) {
-            validationResult = "validate" in validator ? validator.validate(file) : validator(file);
-        }
-
-        if (validationResult !== null) {
-            model.state = NgxFileUploadState.INVALID;
-            model.validationErrors = validationResult;
-        }
-
-        return new NgxFileUpload(this.httpClient, model, options);
+    // * create one requests which holds all files
+    if (filesPerRequest === -1) {
+      const requestModel = this.createRequestModel(fileModels);
+      return [new NgxFileUploadRequest(this.httpClient, requestModel, options)]
     }
+
+    // * create 1 or multiple upload requests
+    const requests: INgxFileUploadRequest[] = []
+    do {
+      const uploads = fileModels.splice(0, filesPerRequest);
+      const requestModel = this.createRequestModel(uploads);
+      requests.push(new NgxFileUploadRequest(this.httpClient, requestModel, options))
+    } while (fileModels.length)
+    return requests
+  }
+
+  private createRequestModel(files: INgxFileUploadFile[]): INgxFileUploadRequestModel {
+      const requestModel = new NgxFileUploadRequestModel(files)
+      requestModel.state = requestModel.validationErrors ? NgxFileUploadState.INVALID : NgxFileUploadState.IDLE
+      return requestModel
+  }
 }
 
 /**
  * InjectionToken for NgxFileuploadFactory
  */
 export const NgxFileUploadFactory = new InjectionToken<NgxFileUploadFactory>("Ngx Fileupload Factory", {
-    providedIn: "root",
-    factory: () => new Factory(inject(HttpClient))
+  providedIn: "root",
+  factory: () => new Factory(inject(HttpClient))
 });

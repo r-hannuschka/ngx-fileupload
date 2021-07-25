@@ -5,10 +5,10 @@ import {
     NgxFileUploadValidator,
     NgxFileUploadValidationFn,
     NgxFileUploadOptions,
-    NgxFileUploadRequest,
     NgxFileUploadFactory,
     NgxFileUploadStorage,
-    NgxFileUploadHeaders
+    NgxFileUploadHeaders,
+    INgxFileUploadRequest
 } from "@ngx-file-upload/core";
 import { FileUploadItemContext } from "../../upload-item/src/upload-item";
 import { NgxFileUploadUiI18nProvider, NgxFileUploadUiI18nCommon, NgxFileUploadUiI18nKey } from "../../i18n";
@@ -49,7 +49,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
 
     public uploadStorage: NgxFileUploadStorage = new NgxFileUploadStorage();
 
-    public uploads: NgxFileUploadRequest[] = [];
+    public uploads: INgxFileUploadRequest[] = [];
 
     public i18n: NgxFileUploadUiI18nCommon | undefined;
 
@@ -95,7 +95,7 @@ export class UploadViewComponent implements OnInit, OnDestroy {
                 headers: this.headers
             };
 
-            const uploads = this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator);
+            const uploads = this.uploadFactory.createUploadRequests(files, uploadOptions, this.validator);
             this.uploadStorage?.add(uploads);
         }
     }

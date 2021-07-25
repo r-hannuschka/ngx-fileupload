@@ -1,26 +1,19 @@
-import { NgxFileUploadResponse, NgxFileUploadState, NgxFileUploadValidationErrors, NgxFileUploadRequestData } from "@ngx-file-upload/core";
+import { NgxFileUploadResponse, NgxFileUploadState, NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
+import { INgxFileUploadFile, INgxFileUploadRequestModel, NgxFileUploadFile } from "@ngx-file-upload/dev/core/public-api";
 
 const file = new File(["ngx file upload unit tests"], "upload-file.txt", {type: "plain/text"});
 
-export class NgxFileUploadModel implements NgxFileUploadRequestData {
+export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
 
-    public constructor() {
-        this.raw = file;
-        this.name = file.name;
-        this.type = file.type;
-        this.size = file.size;
-    }
+    files: INgxFileUploadFile[] = [new NgxFileUploadFile(file)];
 
-    // @TODO check is duplicate of validationErrors
     validation: NgxFileUploadValidationErrors | null = null;
 
     isInvalid = false;
 
-    raw: File;
-
     size = 0;
 
-    name = "";
+    name = [""];
 
     type = "plain/text";
 
@@ -39,4 +32,15 @@ export class NgxFileUploadModel implements NgxFileUploadRequestData {
     isUploadAble = true;
 
     hasError = false;
+
+    toJson(): INgxFileUploadRequestModel {
+        const jsonedObject: Record<string, unknown> = {};
+        for (const x in this) {
+            if (x === "toJson" || x === "constructor") {
+                continue;
+            }
+            jsonedObject[x] = this[x];
+        }
+        return jsonedObject as unknown as INgxFileUploadRequestModel;
+    }
 }

@@ -5,33 +5,33 @@ import { Router, NavigationEnd, ActivatedRoute } from "@angular/router";
 import { filter } from "rxjs/operators";
 
 @Component({
-    selector: "app-root",
-    templateUrl: "./app.component.html",
-    styleUrls: ["./app.component.scss"]
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-    title = "ngx-fileupload";
+  title = "ngx-fileupload";
 
-    public disableAnimations = false;
+  public disableAnimations = false;
 
-    public menuItems: MenuItem[] = MainMenuItems;
+  public menuItems: MenuItem[] = MainMenuItems;
 
-    public showUploadOverlay = false;
+  public showUploadOverlay = false;
 
-    constructor(
-        private router: Router,
-        private activatedRoute: ActivatedRoute
-    ) {
-        this.disableAnimations = environment.disableAnimations || false;
-    }
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.disableAnimations = environment.disableAnimations || false;
+  }
 
-    public ngOnInit() {
-        this.router.events
-            .pipe(filter((event) => event instanceof NavigationEnd))
-            .subscribe({
-                next: () => {
-                    this.showUploadOverlay = this.activatedRoute.snapshot.firstChild?.data.uploadOverlay || false;
-                }
-            });
-    }
+  public ngOnInit() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe({
+        next: () => {
+          this.showUploadOverlay = this.activatedRoute.snapshot.firstChild?.data.uploadOverlay || false;
+        }
+      });
+  }
 }

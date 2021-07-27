@@ -63,7 +63,7 @@ export class NgxDropZoneDemoComponent implements OnInit {
 
     public onSelect(event) {
       const addedFiles: File[] = event.addedFiles;
-      const uploads = this.uploadFactory.createUploadRequests(addedFiles, this.uploadOptions);
+      const uploads = this.uploadFactory.createUploadRequest(addedFiles, this.uploadOptions);
       this.storage.add(uploads);
     }
 

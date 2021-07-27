@@ -79,39 +79,38 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * return true if upload was not completed since the server
    * sends back an error response
    */
-  public hasError(): boolean {
+  hasError(): boolean {
     return this.upload.state === NgxFileUploadState.COMPLETED && !this.upload.response?.success;
   }
 
-  public isCompleted(ignoreError = false): boolean {
+  isCompleted(ignoreError = false): boolean {
     let isCompleted = this.isRequestCompleted();
     isCompleted = isCompleted && (ignoreError || !this.hasError());
     isCompleted = isCompleted || this.upload.state === NgxFileUploadState.CANCELED;
     return isCompleted;
   }
 
-  public isCanceled(): boolean {
+  isCanceled(): boolean {
     return this.upload.state === NgxFileUploadState.CANCELED;
   }
 
-  public isInvalid(): boolean {
+  isInvalid(): boolean {
     return this.upload.state === NgxFileUploadState.INVALID;
   }
 
-  public isProgress(): boolean {
+  isProgress(): boolean {
     return this.upload.state === NgxFileUploadState.PROGRESS || this.upload.state === NgxFileUploadState.START;
   }
 
-  public isPending(): boolean {
+  isPending(): boolean {
     return this.upload.state === NgxFileUploadState.PENDING;
   }
 
-  public isIdle(): boolean {
+  isIdle(): boolean {
     return this.upload.state === NgxFileUploadState.IDLE;
   }
 
-  /** returns true if request has been completed even on error */
-  public isRequestCompleted() {
+  isRequestCompleted() {
     return this.upload.state === NgxFileUploadState.COMPLETED;
   }
 
@@ -119,7 +118,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * restart download again
    * reset state, and reset errors
    */
-  public retry() {
+  retry() {
     if (this.isRequestCompleted() && this.hasError() || this.isCanceled()) {
       this.upload = new NgxFileUploadRequestModel(this.upload.files);
       this.start();
@@ -129,7 +128,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
   /**
    * start file upload
    */
-  public start() {
+  start() {
 
     if (!this.isIdle() && !this.isPending()) {
       return;

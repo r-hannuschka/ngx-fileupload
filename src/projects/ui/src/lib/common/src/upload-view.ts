@@ -95,8 +95,10 @@ export class UploadViewComponent implements OnInit, OnDestroy {
                 headers: this.headers
             };
 
-            const uploads = this.uploadFactory.createUploadRequests(files, uploadOptions, this.validator);
-            this.uploadStorage?.add(uploads);
+            const uploads = this.uploadFactory.createUploadRequest(files, uploadOptions, this.validator);
+            if (uploads) {
+                this.uploadStorage?.add(uploads);
+            }
         }
     }
 

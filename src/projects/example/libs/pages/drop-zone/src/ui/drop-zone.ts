@@ -50,7 +50,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
   public drop(files: NgxFileDropEntry[]) {
     let required = files.length;
     let get = 0;
-    const filesToUpload: File[] = [];
+    const requests: INgxFileUploadRequest[] = []
 
     files.forEach((file) => {
       if (file.fileEntry.isFile) {
@@ -63,11 +63,14 @@ export class DropZoneComponent implements OnDestroy, OnInit {
             return;
           }
 
-          filesToUpload.push(droppedFile);
           get += 1;
 
+          const request = this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions, null);
+          if (request) {
+            requests.push(request);
+          }
+
           if (get === required) {
-            const requests = this.uploadFactory.createUploadRequests(filesToUpload, this.uploadOptions, null, 3);
             this.uploadStorage.add(requests);
           }
         });

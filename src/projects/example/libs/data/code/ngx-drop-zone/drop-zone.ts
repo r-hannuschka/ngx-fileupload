@@ -91,7 +91,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
                         return;
                     }
 
-                    requests.push(this.uploadFactory.createUploadRequests(droppedFile, this.uploadOptions));
+                    requests.push(this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions));
                     get += 1;
 
                     if (get === required) {

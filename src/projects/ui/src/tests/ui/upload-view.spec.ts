@@ -44,7 +44,7 @@ describe( "Upload Component:", () => {
     it( "should call UploadFactory empty files array is dropped", inject(
         [NgxFileUploadFactory], (factory: NgxFileuploadFactoryMock
     ) => {
-        const spy = spyOn(factory, "createUploadRequests").and.callThrough();
+        const spy = spyOn(factory, "createUploadRequest").and.callThrough();
         const file = new File(["hello unit test"], "upload.txt");
 
         fixture.detectChanges();
@@ -56,7 +56,7 @@ describe( "Upload Component:", () => {
     it( "should not call UploadFactory empty files array is dropped", inject(
         [NgxFileUploadFactory], (factory: NgxFileuploadFactoryMock
     ) => {
-        const spy = spyOn(factory, "createUploadRequests").and.callThrough();
+        const spy = spyOn(factory, "createUploadRequest").and.callThrough();
         fixture.detectChanges();
         testComponent.dropFiles([]);
         expect(spy).not.toHaveBeenCalled();

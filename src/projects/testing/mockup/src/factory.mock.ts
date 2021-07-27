@@ -4,9 +4,9 @@ import { NgxFileUploadRequestModel } from "./upload-model";
 
 export class NgxFileuploadFactoryMock implements NgxFileUploadFactory {
 
-    createUploadRequests(file: File, options: NgxFileUploadOptions, validator?: NgxFileUploadValidation): UploadRequestMock;
-    createUploadRequests(file: File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation): UploadRequestMock[];
-    createUploadRequests(): UploadRequestMock | UploadRequestMock[] {
+    createUploadRequest(file: File, options: NgxFileUploadOptions, validator?: NgxFileUploadValidation): UploadRequestMock;
+    createUploadRequest(file: File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation): UploadRequestMock[];
+    createUploadRequest(): UploadRequestMock | UploadRequestMock[] {
         const model = new NgxFileUploadRequestModel();
         return new UploadRequestMock(model);
     }

@@ -231,4 +231,31 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         uploadRequest.data.state = NgxFileUploadState.COMPLETED;
         uploadRequest.applyChange();
     });
+
+    it ("should stop all uploads", (done) => {
+
+        const fileUpload1 = new NgxFileUploadRequestModel();
+        const fileUpload2 = new NgxFileUploadRequestModel();
+        const uploadRequest1 = new UploadRequestMock(fileUpload1);
+        const uploadRequest2 = new UploadRequestMock(fileUpload2);
+        const mockStorage = new NgxFileUploadStorage({ concurrentUploads: 2 });
+
+        let isAdded = false;
+        mockStorage.change()
+            .subscribe({
+                next: (requests) => {
+
+                    if (!isAdded) {
+                        isAdded = true
+                        expect(requests.length).toBe(2)
+                        mockStorage.stopAll();
+                        return;
+                    }
+                    expect(requests.length).toBe(0)
+                    done();
+                }
+            });
+
+        mockStorage.add([uploadRequest1, uploadRequest2]);
+    });
 });

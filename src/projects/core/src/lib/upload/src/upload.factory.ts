@@ -5,9 +5,8 @@ import { NgxFileUploadFile, NgxFileUploadRequestModel } from "./upload.model"
 import { NgxFileUploadRequest } from "./upload.request"
 
 export interface NgxFileUploadFactory {
-  createUploadRequests(
-    file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation | null, filesPerRequest?: number
-  ): INgxFileUploadRequest[];
+  createUploadRequest(
+    file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation | null): INgxFileUploadRequest | null;
 }
 
 /**
@@ -22,34 +21,24 @@ class Factory implements NgxFileUploadFactory {
     private httpClient: HttpClient
   ) {}
 
-  public createUploadRequests(file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation, filesPerRequest = 1): INgxFileUploadRequest[] {
+  public createUploadRequest(file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation): INgxFileUploadRequest | null {
     const files = Array.isArray(file) ? file : [file]
-    if (!files.length || filesPerRequest === 0) {
-      return []
-    }
 
-    const fileModels: INgxFileUploadFile[] = files.map((file) => {
-      const model = new NgxFileUploadFile(file)
-      if (validator) {
-        model.validationErrors = "validate" in validator ? validator.validate(file) : validator(file)
-      }
-      return model
-    });
+    if (files.length) {
+      const fileModels: INgxFileUploadFile[] = files.map((file) => {
+        const model = new NgxFileUploadFile(file)
+        if (validator) {
+          model.validationErrors = "validate" in validator ? validator.validate(file) : validator(file)
+        }
+        return model
+      })
 
-    // * create one requests which holds all files
-    if (filesPerRequest === -1) {
+      // * create one requests which holds all files
       const requestModel = this.createRequestModel(fileModels);
-      return [new NgxFileUploadRequest(this.httpClient, requestModel, options)]
+      return new NgxFileUploadRequest(this.httpClient, requestModel, options)
     }
 
-    // * create 1 or multiple upload requests
-    const requests: INgxFileUploadRequest[] = []
-    do {
-      const uploads = fileModels.splice(0, filesPerRequest);
-      const requestModel = this.createRequestModel(uploads);
-      requests.push(new NgxFileUploadRequest(this.httpClient, requestModel, options))
-    } while (fileModels.length)
-    return requests
+    return null;
   }
 
   private createRequestModel(files: INgxFileUploadFile[]): INgxFileUploadRequestModel {

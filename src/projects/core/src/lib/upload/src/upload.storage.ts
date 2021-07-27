@@ -121,15 +121,8 @@ export class NgxFileUploadStorage {
 
         request.destroyed.pipe(
             tap(() => this.uploads.delete(request.requestId)),
-            filter(() => {
-                if (!this.isBulkProcess(request)) {
-                    return true
-                }
-                this.removeBulkProcess(request)
-                return false
-            }),
             take(1)
-        ).subscribe(() => this.notifyObserver());
+        ).subscribe(() => this.isBulkProcess(request) ? this.removeBulkProcess(request) : this.notifyObserver())
     }
 
     /**

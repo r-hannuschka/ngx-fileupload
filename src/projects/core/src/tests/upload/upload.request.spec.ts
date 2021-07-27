@@ -296,6 +296,24 @@ describe("NgxFileUpload/libs/upload", () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    it("should send metadata", () => {
+        const uploadFile = new NgxFileUploadRequestModel();
+        const request = new NgxFileUploadRequest(httpClient, uploadFile, {
+            url,
+            formData: {
+                enabled: true,
+                metadata: {
+                    'mocked': 'request_data'
+                }
+            }
+        })
+
+        request.start();
+        const mockReq = httpMock.expectOne(url)
+        const metadataSend = JSON.parse(mockReq.request.body.get('metadata'));
+        expect(metadataSend).toEqual({ 'mocked': 'request_data' })
+    });
+
     afterEach(() => {
         httpMock.verify();
     });

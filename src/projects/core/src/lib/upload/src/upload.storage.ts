@@ -112,9 +112,6 @@ export class NgxFileUploadStorage {
         this.notifyObserver()
     }
 
-    /**
-     * register for changes and destroy on upload request
-     */
     private registerUploadEvents(request: INgxFileUploadRequest): void {
 
         if (!request.isInvalid()) {
@@ -124,19 +121,11 @@ export class NgxFileUploadStorage {
 
         request.destroyed.pipe(
             tap(() => this.uploads.delete(request.requestId)),
-            /**
-             * filter out requests which are killed by storage via purge, stop all
-             * which will both destroy a request.
-             *
-             * so we do not send for every request a new notification to observers
-             * and triggers it once it is all done
-             */
             filter(() => {
-                const pass = this.bulkProcess.indexOf(request.requestId)  === -1;
-                if (pass) {
+                if (!this.isBulkProcess(request)) {
                     return true
                 }
-                this.bulkProcess = this.bulkProcess.filter((id) => request.requestId !== id)
+                this.removeBulkProcess(request)
                 return false
             }),
             take(1)
@@ -144,7 +133,7 @@ export class NgxFileUploadStorage {
     }
 
     /**
-     * register to request change events, this will notify all observers
+     * @description register to request change events, this will notify all observers
      * if state from upload state has been changed, this will not notify
      * if amount of uploaded size has been changed
      */
@@ -153,7 +142,7 @@ export class NgxFileUploadStorage {
         request.change.pipe(
             distinctUntilKeyChanged("state"),
             tap(() => /** do not notify if bulk process */ {
-                if (this.isBulkProcess(request)) {
+                if (!this.isBulkProcess(request)) {
                     this.notifyObserver()
                     this.removeBulkProcess(request)
                 }
@@ -168,19 +157,12 @@ export class NgxFileUploadStorage {
         .subscribe(() => this.remove(request));
     }
 
-    /**
-     * uploads has been added and events are registered
-     * finalize operations
-     */
     private afterUploadsAdd(requests: INgxFileUploadRequest[]): void {
         if (this.storeConfig.autoStart) {
             requests.forEach((uploadRequest) => uploadRequest.start());
         }
     }
 
-    /**
-     * generate uniqe request id
-     */
     private generateUniqeRequestId(): string {
         let reqId: string;
         do {
@@ -188,7 +170,6 @@ export class NgxFileUploadStorage {
         } while (this.uploads.has(reqId));
         return reqId;
     }
-
 
     private notifyObserver() {
         this.change$.next(Array.from(this.uploads.values()))
@@ -199,6 +180,6 @@ export class NgxFileUploadStorage {
     }
 
     private isBulkProcess(request: INgxFileUploadRequest): boolean {
-        return this.bulkProcess.indexOf(request.requestId) === -1
+        return this.bulkProcess.indexOf(request.requestId) > -1
     }
 }

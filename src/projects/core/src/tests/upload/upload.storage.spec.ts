@@ -1,6 +1,6 @@
 import { NgxFileUploadStorage, NgxFileUploadState } from "@ngx-file-upload/dev/core/public-api";
 import { UploadRequestMock, NgxFileUploadRequestModel } from "@ngx-file-upload/testing";
-import { take, takeWhile, tap, auditTime } from "rxjs/operators";
+import { take, takeWhile, tap, auditTime, skip } from "rxjs/operators";
 
 describe("@ngx-file-upload/core/upload.storage", () => {
 
@@ -64,7 +64,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         spyOn(uploadRequest1, "destroy").and.callFake(() => uploadRequest1.destroy$.next(true));
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: (requests) => (expect(requests).toEqual([uploadRequest2]), done()),
             });
@@ -81,7 +81,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         spyOn(uploadRequest1, "destroy").and.callFake(() => uploadRequest1.destroy$.next(true));
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: (requests) => (expect(requests).toEqual([uploadRequest2]), done()),
             });
@@ -100,7 +100,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const uploadRequest3 = new UploadRequestMock(fileUpload3);
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: (requests) => (expect(requests).toEqual([uploadRequest3]), done()),
             });
@@ -127,7 +127,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.data));
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1))
             .subscribe({
                 next: () => {
                     expect(startSpyUR1).not.toHaveBeenCalled();
@@ -150,7 +150,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const uploadRequest2 = new UploadRequestMock(fileUpload2);
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: (requests) => (expect(requests).toEqual([uploadRequest2]), done())
             });
@@ -197,7 +197,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
 
         autoStartStorage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: () => {
                     expect(uploadRequest1.isProgress()).toBeTruthy();

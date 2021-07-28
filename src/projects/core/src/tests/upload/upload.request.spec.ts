@@ -2,7 +2,7 @@ import { TestBed, getTestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/http";
 import { Type } from "@angular/core";
-import { NgxFileUploadRequest, NgxFileUploadState } from "@ngx-file-upload/dev/core/public-api";
+import { NgxFileUploadRequest, NgxFileUploadState, NgxFileUploadFile } from "@ngx-file-upload/dev/core/public-api";
 import { NgxFileUploadRequestModel } from "@ngx-file-upload/testing";
 import { tap, filter, delay } from "rxjs/operators";
 import { of } from "rxjs";
@@ -312,6 +312,58 @@ describe("NgxFileUpload/libs/upload", () => {
         const mockReq = httpMock.expectOne(url)
         const metadataSend = JSON.parse(mockReq.request.body.get('metadata'));
         expect(metadataSend).toEqual({ 'mocked': 'request_data' })
+    });
+
+    it("should remove invalid files", () => {
+        const testUploadFiles = new NgxFileUploadRequestModel();
+        testUploadFiles.files = Array.from({length: 2}).map((_, index) => {
+            const file = new File([`hello world ${index + 1}`], `file_${index + 1}.txt`);
+            return new NgxFileUploadFile(file);
+        });
+        testUploadFiles.files[0].validationErrors = { 'image': 'invalid image' };
+
+        const request = new NgxFileUploadRequest(httpClient, testUploadFiles, {url : '/dev/null'});
+        request.state = NgxFileUploadState.INVALID
+
+        // * remove invalid files
+        request.removeInvalidFiles()
+        expect(request.state).toEqual(2)
+    });
+
+    it("should destroy upload request if all files are invalid and removed", () => {
+        const testUploadFiles = new NgxFileUploadRequestModel();
+        testUploadFiles.files = Array.from({length: 1}).map((_, index) => {
+            const file = new File([`hello world ${index + 1}`], `file_${index + 1}.txt`);
+            return new NgxFileUploadFile(file);
+        });
+        testUploadFiles.files[0].validationErrors = { 'image': 'invalid image' };
+
+        const spy = jasmine.createSpy("destroy");
+
+        const request = new NgxFileUploadRequest(httpClient, testUploadFiles, {url : '/dev/null'});
+        request.state = NgxFileUploadState.INVALID
+
+        // * remove invalid files
+        request.destroyed.subscribe(() => spy());
+        request.removeInvalidFiles()
+
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it("should do nothing on removeInvalidFiles if all files are valid", () => {
+        const testUploadFiles = new NgxFileUploadRequestModel();
+        testUploadFiles.files = Array.from({length: 1}).map((_, index) => {
+            const file = new File([`hello world ${index + 1}`], `file_${index + 1}.txt`);
+            return new NgxFileUploadFile(file);
+        });
+
+        const request = new NgxFileUploadRequest(httpClient, testUploadFiles, {url : '/dev/null'});
+        const spy = jasmine.createSpy("change");
+
+        request.removeInvalidFiles()
+        request.destroy()
+        expect(spy).not.toHaveBeenCalled();
+
     });
 
     afterEach(() => {

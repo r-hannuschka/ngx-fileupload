@@ -1,6 +1,7 @@
 import { Observable, Subject } from "rxjs";
 import { INgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadState } from "@ngx-file-upload/core";
 import { take } from "rxjs/operators";
+import { INgxFileUploadRequestData } from "@ngx-file-upload/dev/core/public-api";
 
 /**
  * represents a single fileupload
@@ -15,9 +16,9 @@ export class UploadRequestMock implements INgxFileUploadRequest {
 
     requestId: string = "";
 
-    public data: INgxFileUploadRequestModel;
+    data: INgxFileUploadRequestData;
 
-    change$: Subject<INgxFileUploadRequestModel>;
+    change$: Subject<INgxFileUploadRequestData>;
 
     public constructor(model: INgxFileUploadRequestModel) {
         this.data = model;
@@ -25,6 +26,8 @@ export class UploadRequestMock implements INgxFileUploadRequest {
         this.destroy$ = new Subject();
         this.destroyed = this.destroy$.asObservable();
     }
+
+    state = NgxFileUploadState.IDLE
 
     isCanceled(): boolean {
         return this.data.state === NgxFileUploadState.CANCELED;
@@ -79,7 +82,7 @@ export class UploadRequestMock implements INgxFileUploadRequest {
         return this.data.state === NgxFileUploadState.PROGRESS || this.data.state === NgxFileUploadState.START;
     }
 
-    public get change(): Observable<INgxFileUploadRequestModel> {
+    public get change(): Observable<INgxFileUploadRequestData> {
         return this.change$.asObservable();
     }
 

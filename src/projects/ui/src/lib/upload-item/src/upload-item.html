@@ -57,6 +57,7 @@
 
       <!-- show validation errors -->
       <ul *ngIf="upload.validationErrors" class="upload-item--validation">
+        <button (click)="ctrl.removeInvalidFiles($event)">remove invalid</button>
         <li *ngFor="let invalidFile of upload.validationErrors | keyvalue : returnZero" class="message">
           {{invalidFile.key}}
           <ul>

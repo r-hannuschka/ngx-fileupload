@@ -9,13 +9,13 @@ import {
 } from "@angular/common/http";
 import { Subject, Observable, merge, of, concat } from "rxjs";
 import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
-import { NgxFileUploadState, NgxFileUploadResponse, INgxFileUploadRequest, NgxFileUploadOptions, INgxFileUploadRequestModel } from "../../api";
+import { NgxFileUploadState, NgxFileUploadResponse, INgxFileUploadRequest, NgxFileUploadOptions, INgxFileUploadRequestModel, INgxFileUploadRequestData } from "../../api";
 import { NgxFileUploadRequestModel } from "./upload.model";
 
 export class NgxFileUploadRequest implements INgxFileUploadRequest {
 
   private cancel$: Subject<boolean> = new Subject();
-  private change$: Subject<INgxFileUploadRequestModel> = new Subject();
+  private change$: Subject<INgxFileUploadRequestData> = new Subject();
   private destroyed$: Subject<boolean> = new Subject();
   private totalSize = -1;
 
@@ -26,24 +26,29 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
 
   private hooks: { beforeStart: Observable<boolean>[] } = { beforeStart: [] };
 
-  public get change(): Observable<INgxFileUploadRequestModel> {
+  get change(): Observable<INgxFileUploadRequestData> {
     return this.change$.asObservable();
   }
 
-  public get destroyed(): Observable<boolean> {
+  get destroyed(): Observable<boolean> {
     return this.destroyed$.asObservable();
   }
 
-  public get data(): INgxFileUploadRequestModel {
-    return this.upload;
+  get data(): INgxFileUploadRequestData {
+    return this.upload.toJson();
   }
 
-  public requestId: string = "";
+  set state(state: NgxFileUploadState) {
+    this.upload.state = state;
+  }
 
-  /**
-   * create NgxFileUploadRequest service
-   */
-  public constructor(
+  get state(): NgxFileUploadState {
+    return this.upload.state;
+  }
+
+  requestId: string = "";
+
+  constructor(
     private http: HttpClient,
     private upload: INgxFileUploadRequestModel,
     options: NgxFileUploadOptions
@@ -61,7 +66,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
   /**
    * cancel current file upload, this will complete change subject
    */
-  public cancel() {
+  cancel() {
     if (this.isProgress() || this.isPending()) {
       this.upload.state = NgxFileUploadState.CANCELED;
       this.notifyObservers();
@@ -69,7 +74,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
     }
   }
 
-  public destroy() {
+  destroy() {
     this.finalizeUpload();
     this.destroyed$.next(true);
     this.destroyed$.complete();
@@ -129,7 +134,6 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * start file upload
    */
   start() {
-
     if (!this.isIdle() && !this.isPending()) {
       return;
     }
@@ -142,6 +146,22 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
       next: (event: HttpEvent<string>) => this.handleHttpEvent(event),
       error: (error: HttpErrorResponse) => this.handleError(error)
     });
+  }
+
+  removeInvalidFiles() {
+    if (this.state !== NgxFileUploadState.INVALID) {
+      return;
+    }
+
+    const files = this.data.files.filter((file) => file.validationErrors === null)
+
+    if (files.length) {
+      this.upload = new NgxFileUploadRequestModel(files)
+      this.state = NgxFileUploadState.IDLE
+      this.notifyObservers()
+    } else {
+      this.destroy()
+    }
   }
 
   /**
@@ -313,7 +333,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * send notification to observers
    */
   private notifyObservers() {
-    this.change$.next({ ...this.data, size: this.totalSize });
+    this.change$.next(this.data);
   }
 
   /**

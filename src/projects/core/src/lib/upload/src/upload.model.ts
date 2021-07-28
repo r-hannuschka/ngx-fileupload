@@ -1,4 +1,4 @@
-import { INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors, INgxFileUploadFile } from "../../api";
+import { INgxFileUploadRequestModel, NgxFileUploadState, NgxFileUploadResponse, NgxFileUploadValidationErrors, INgxFileUploadFile, INgxFileUploadRequestData } from "../../api";
 
 export class NgxFileUploadFile implements INgxFileUploadFile {
   readonly raw: File
@@ -61,6 +61,20 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
   progress = 0
 
   hasError = false
+
+  toJson(): INgxFileUploadRequestData {
+    return {
+      files: this.files,
+      hasError: this.hasError,
+      name: this.name,
+      progress: this.progress,
+      response: this.response,
+      size: this.size,
+      state: this.state,
+      uploaded: this.uploaded,
+      validationErrors: this.validationErrors
+    }
+  }
 }
 
 /**

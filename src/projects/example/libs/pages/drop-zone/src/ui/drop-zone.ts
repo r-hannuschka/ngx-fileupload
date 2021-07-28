@@ -48,34 +48,24 @@ export class DropZoneComponent implements OnDestroy, OnInit {
    * files get dropped
    */
   public drop(files: NgxFileDropEntry[]) {
-    let required = files.length;
-    let get = 0;
-    const requests: INgxFileUploadRequest[] = []
+    const sources: File[] = []
 
     files.forEach((file) => {
       if (file.fileEntry.isFile) {
         const dropped = file.fileEntry as FileSystemFileEntry;
-
         dropped.file((droppedFile: File) => {
-
           if (droppedFile instanceof DataTransferItem) {
-            required -= 1;
             return;
           }
-
-          get += 1;
-
-          const request = this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions, null);
-          if (request) {
-            requests.push(request);
-          }
-
-          if (get === required) {
-            this.uploadStorage.add(requests);
-          }
+          sources.push(droppedFile);
         });
       }
     });
+
+    const request = this.uploadFactory.createUploadRequest(sources, this.uploadOptions, null);
+    if (request) {
+      this.uploadStorage.add(request);
+    }
   }
 
   public ngOnInit() {

@@ -1,5 +1,4 @@
-import { INgxFileUploadRequestData, NgxFileUploadResponse, NgxFileUploadState, NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
-import { INgxFileUploadFile, INgxFileUploadRequestModel, NgxFileUploadFile } from "@ngx-file-upload/dev/core/public-api";
+import { INgxFileUploadFile, INgxFileUploadRequestData, INgxFileUploadRequestModel, NgxFileUploadFile, NgxFileUploadResponse, NgxFileUploadState, NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
 
 const file = new File(["ngx file upload unit tests"], "upload-file.txt", {type: "plain/text"});
 

@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { isImage } from "projects/example/libs/utils/validators";
-import { NgxFileUploadValidationFn } from "@ngx-file-upload/core";
+import { NgxFileUploadStorage, NgxFileUploadValidationFn } from "@ngx-file-upload/core";
 import * as ExampleCode from "projects/example/libs/data/code/validation/is-image";
 import * as Validators from "projects/example/libs/data/code/utils/validators";
 
@@ -9,6 +9,10 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
     templateUrl: "is-image.component.html"
 })
 export class IsImageValidationComponent {
+
+    storage = new NgxFileUploadStorage({
+        concurrentUploads: 2
+    })
 
     public validator: NgxFileUploadValidationFn = isImage;
 

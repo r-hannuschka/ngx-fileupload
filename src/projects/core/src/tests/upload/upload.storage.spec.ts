@@ -127,7 +127,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.data));
 
         storage.change()
-            .pipe(skip(1))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: () => {
                     expect(startSpyUR1).not.toHaveBeenCalled();
@@ -181,9 +181,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
             });
 
         fileUpload1.state = NgxFileUploadState.INVALID;
-        storage.add([uploadRequest1]);
-        uploadRequest1.change$.next();
-        uploadRequest1.destroy();
+        storage.add([uploadRequest1])
+        uploadRequest1.applyChange()
+        uploadRequest1.destroy()
     });
 
     it ("should start uploads automatically", (done) => {
@@ -233,7 +233,6 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should stop all uploads", (done) => {
-
         const fileUpload1 = new NgxFileUploadRequestModel();
         const fileUpload2 = new NgxFileUploadRequestModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload1);

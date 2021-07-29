@@ -33,7 +33,7 @@ describe("ngx-fileupload/libs/upload/upload.queue", () => {
             expect(request2.data.state).toBe(NgxFileUploadState.PENDING)
         ));
 
-        queue.concurrent = 1; // concurrent uploads are 0, we could literally upload nothing
+        queue.concurrent = 1;
 
         queue.register(request1);
         queue.register(request2);

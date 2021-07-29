@@ -1,6 +1,6 @@
 import { NgxFileUploadStorage, NgxFileUploadState } from "@ngx-file-upload/dev/core/public-api";
-import { UploadRequestMock, NgxFileUploadModel } from "@ngx-file-upload/testing";
-import { take, takeWhile, tap, auditTime } from "rxjs/operators";
+import { UploadRequestMock, NgxFileUploadRequestModel } from "@ngx-file-upload/testing";
+import { take, takeWhile, tap, auditTime, skip } from "rxjs/operators";
 
 describe("@ngx-file-upload/core/upload.storage", () => {
 
@@ -12,7 +12,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should add single upload", (done) => {
-        const fileUpload = new NgxFileUploadModel();
+        const fileUpload = new NgxFileUploadRequestModel();
         const uploadRequest = new UploadRequestMock(fileUpload);
 
         storage.change()
@@ -27,7 +27,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
     it ("should add multiple uploads at once", (done) => {
 
-        const fileUpload = new NgxFileUploadModel();
+        const fileUpload = new NgxFileUploadRequestModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload);
         const uploadRequest2 = new UploadRequestMock(fileUpload);
 
@@ -43,7 +43,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
 
     it ("should not add same request twice", (done) => {
 
-        const fileUpload = new NgxFileUploadModel();
+        const fileUpload = new NgxFileUploadRequestModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload);
 
         storage.change()
@@ -57,14 +57,14 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should remove request", (done) => {
-        const fileUpload = new NgxFileUploadModel();
+        const fileUpload = new NgxFileUploadRequestModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload);
         const uploadRequest2 = new UploadRequestMock(fileUpload);
 
         spyOn(uploadRequest1, "destroy").and.callFake(() => uploadRequest1.destroy$.next(true));
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: (requests) => (expect(requests).toEqual([uploadRequest2]), done()),
             });
@@ -74,14 +74,14 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should remove request by request id", (done) => {
-        const fileUpload = new NgxFileUploadModel();
+        const fileUpload = new NgxFileUploadRequestModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload);
         const uploadRequest2 = new UploadRequestMock(fileUpload);
 
         spyOn(uploadRequest1, "destroy").and.callFake(() => uploadRequest1.destroy$.next(true));
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: (requests) => (expect(requests).toEqual([uploadRequest2]), done()),
             });
@@ -91,16 +91,16 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should remove invalid and completed requests", (done) => {
-        const fileUpload1 = new NgxFileUploadModel();
-        const fileUpload2 = new NgxFileUploadModel();
-        const fileUpload3 = new NgxFileUploadModel();
+        const fileUpload1 = new NgxFileUploadRequestModel();
+        const fileUpload2 = new NgxFileUploadRequestModel();
+        const fileUpload3 = new NgxFileUploadRequestModel();
 
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
         const uploadRequest2 = new UploadRequestMock(fileUpload2);
         const uploadRequest3 = new UploadRequestMock(fileUpload3);
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: (requests) => (expect(requests).toEqual([uploadRequest3]), done()),
             });
@@ -114,9 +114,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should start all idle uploads", (done) => {
-        const fileUpload1 = new NgxFileUploadModel();
-        const fileUpload2 = new NgxFileUploadModel();
-        const fileUpload3 = new NgxFileUploadModel();
+        const fileUpload1 = new NgxFileUploadRequestModel();
+        const fileUpload2 = new NgxFileUploadRequestModel();
+        const fileUpload3 = new NgxFileUploadRequestModel();
 
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
         const uploadRequest2 = new UploadRequestMock(fileUpload2);
@@ -127,7 +127,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.data));
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1))
             .subscribe({
                 next: () => {
                     expect(startSpyUR1).not.toHaveBeenCalled();
@@ -143,14 +143,14 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should remove only invalid uploads", (done) => {
-        const fileUpload1 = new NgxFileUploadModel();
-        const fileUpload2 = new NgxFileUploadModel();
+        const fileUpload1 = new NgxFileUploadRequestModel();
+        const fileUpload2 = new NgxFileUploadRequestModel();
 
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
         const uploadRequest2 = new UploadRequestMock(fileUpload2);
 
         storage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: (requests) => (expect(requests).toEqual([uploadRequest2]), done())
             });
@@ -162,7 +162,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should not register to changes of invalid uploads", (done) => {
-        const fileUpload1 = new NgxFileUploadModel();
+        const fileUpload1 = new NgxFileUploadRequestModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
         uploadRequest1.requestId = "dontRegisterToInvalid";
 
@@ -193,11 +193,11 @@ describe("@ngx-file-upload/core/upload.storage", () => {
             autoStart: true
         });
 
-        const fileUpload1 = new NgxFileUploadModel();
+        const fileUpload1 = new NgxFileUploadRequestModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
 
         autoStartStorage.change()
-            .pipe(auditTime(20))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: () => {
                     expect(uploadRequest1.isProgress()).toBeTruthy();
@@ -216,7 +216,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
             removeCompleted: 1000
         });
 
-        const fileUpload = new NgxFileUploadModel();
+        const fileUpload = new NgxFileUploadRequestModel();
         const uploadRequest = new UploadRequestMock(fileUpload);
 
         autoStartStorage.change()
@@ -230,5 +230,32 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         autoStartStorage.add(uploadRequest);
         uploadRequest.data.state = NgxFileUploadState.COMPLETED;
         uploadRequest.applyChange();
+    });
+
+    it ("should stop all uploads", (done) => {
+
+        const fileUpload1 = new NgxFileUploadRequestModel();
+        const fileUpload2 = new NgxFileUploadRequestModel();
+        const uploadRequest1 = new UploadRequestMock(fileUpload1);
+        const uploadRequest2 = new UploadRequestMock(fileUpload2);
+        const mockStorage = new NgxFileUploadStorage({ concurrentUploads: 2 });
+
+        let isAdded = false;
+        mockStorage.change()
+            .subscribe({
+                next: (requests) => {
+
+                    if (!isAdded) {
+                        isAdded = true
+                        expect(requests.length).toBe(2)
+                        mockStorage.stopAll();
+                        return;
+                    }
+                    expect(requests.length).toBe(0)
+                    done();
+                }
+            });
+
+        mockStorage.add([uploadRequest1, uploadRequest2]);
     });
 });

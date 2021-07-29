@@ -51,6 +51,11 @@ export class Control implements NgxFileUploadControl {
         this.upload.destroy();
     }
 
+    public removeInvalidFiles($event?: MouseEvent) {
+        this.handleEvent($event);
+        this.upload.removeInvalidFiles();
+    }
+
     private handleEvent(event?: MouseEvent) {
         if (event && event instanceof MouseEvent) {
             event.stopPropagation();

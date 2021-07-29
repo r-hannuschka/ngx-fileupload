@@ -1,5 +1,5 @@
 import { NgxFileUploadQueue, NgxFileUploadState } from "@ngx-file-upload/dev/core/public-api";
-import { UploadRequestMock, NgxFileUploadModel } from "@ngx-file-upload/testing";
+import { UploadRequestMock, NgxFileUploadRequestModel } from "@ngx-file-upload/testing";
 
 describe("ngx-fileupload/libs/upload/upload.queue", () => {
 
@@ -11,7 +11,7 @@ describe("ngx-fileupload/libs/upload/upload.queue", () => {
 
     it ("should add upload and register beforeStartHook", () => {
 
-        const uploadFile = new NgxFileUploadModel();
+        const uploadFile = new NgxFileUploadRequestModel();
         const request = new UploadRequestMock(uploadFile);
 
         const hookSpy = spyOn(request, "beforeStart");
@@ -21,8 +21,8 @@ describe("ngx-fileupload/libs/upload/upload.queue", () => {
     });
 
     it ("should set state of second request to pending", () => {
-        const request1 = new UploadRequestMock(new NgxFileUploadModel());
-        const request2 = new UploadRequestMock(new NgxFileUploadModel());
+        const request1 = new UploadRequestMock(new NgxFileUploadRequestModel());
+        const request2 = new UploadRequestMock(new NgxFileUploadRequestModel());
 
         spyOn(request1, "start").and.callFake(() => request1.hooks[0].subscribe(() => (
             request1.data.state = NgxFileUploadState.START,
@@ -43,8 +43,8 @@ describe("ngx-fileupload/libs/upload/upload.queue", () => {
     });
 
     it ("should start second request after first completed", () => {
-        const request1 = new UploadRequestMock(new NgxFileUploadModel());
-        const request2 = new UploadRequestMock(new NgxFileUploadModel());
+        const request1 = new UploadRequestMock(new NgxFileUploadRequestModel());
+        const request2 = new UploadRequestMock(new NgxFileUploadRequestModel());
 
         const r2StartSpy = spyOn(request2, "start").and.callThrough();
 
@@ -67,8 +67,8 @@ describe("ngx-fileupload/libs/upload/upload.queue", () => {
     });
 
     it ("should remove request from queue, if request is canceled", () => {
-        const request1 = new UploadRequestMock(new NgxFileUploadModel());
-        const request2 = new UploadRequestMock(new NgxFileUploadModel());
+        const request1 = new UploadRequestMock(new NgxFileUploadRequestModel());
+        const request2 = new UploadRequestMock(new NgxFileUploadRequestModel());
 
         const r2StartSpy = spyOn(request2, "start").and.callThrough();
 

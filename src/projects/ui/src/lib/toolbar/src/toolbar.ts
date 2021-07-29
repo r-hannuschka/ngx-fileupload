@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
-import { NgxFileUploadRequest, NgxFileUploadStorage } from "@ngx-file-upload/core";
+import { INgxFileUploadRequest, NgxFileUploadStorage } from "@ngx-file-upload/core";
 import { NgxFileUploadUiI18nProvider, NgxFileUploadUiI18nKey, NgxFileUploadUiI18nToolbar } from "../../i18n";
 
 interface InfoData {
@@ -78,7 +78,7 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
                     debounceTime(10),
                     takeUntil(this.destroyed$)
                 )
-                .subscribe((uploads: NgxFileUploadRequest[]) => {
+                .subscribe((uploads: INgxFileUploadRequest[]) => {
                     this.updateInfoBar(uploads);
                     this.isCleanable      = uploads.some(upload => upload.isCompleted(true) || upload.isInvalid());
                     this.hasUploadsInList = uploads.length > 0;
@@ -86,7 +86,7 @@ export class UploadToolbarComponent implements OnInit, OnDestroy {
         }
     }
 
-    private updateInfoBar(uploads: NgxFileUploadRequest[]) {
+    private updateInfoBar(uploads: INgxFileUploadRequest[]) {
         this.uploadInfo = uploads.reduce<InfoData>((data, upload) => {
             return {
                 error   : data.error    + (upload.hasError() || upload.isInvalid() ? 1 : 0),

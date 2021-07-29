@@ -9,18 +9,17 @@
         <div *ngFor="let upload of uploads" class="upload">
             <div class="data">
                 <span class="name">{{upload.data.name}}</span>
-                <span class="uploaded">{{upload.data.uploaded | fileSize}} | {{upload.data.progress}}%</span>
+                <span class="uploaded">{{upload.data.uploaded | fileSize}} | {{upload.data.size | fileSize}} | {{upload.data.progress}}%</span>
                 <span class="state">{{upload.data.state | stateToString}}</span>
             </div>
 
-            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="1">
+            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="1" [duration]="100">
             </ngx-file-upload-ui--progressbar>
         </div>
     </div>
 </ng-template>
 
 <!-- SECTION CONTENT -->
-
 <p>
     For this example we use <a target="blank" href="https://www.npmjs.com/package/ngx-file-drop">ngx-file-drop
         library</a> for drag and drop which can also handles drag n drop directories. There are other good librarys out

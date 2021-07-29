@@ -32,8 +32,7 @@ export interface UploadValidation {
     errors: NgxFileUploadValidationErrors | null;
 }
 
-export interface NgxFileUploadRequestData {
-
+export interface INgxFileUploadFile {
     readonly raw: File;
 
     readonly size: number;
@@ -41,6 +40,16 @@ export interface NgxFileUploadRequestData {
     readonly name: string;
 
     readonly type: string;
+
+    validationErrors: NgxFileUploadValidationErrors | null;
+}
+
+export interface INgxFileUploadRequestData {
+    readonly files: INgxFileUploadFile[];
+
+    readonly size: number;
+
+    readonly name: string[];
 
     response: NgxFileUploadResponse | null;
 
@@ -55,7 +64,11 @@ export interface NgxFileUploadRequestData {
     hasError: boolean;
 }
 
-export interface NgxFileUploadRequest {
+export interface INgxFileUploadRequestModel extends INgxFileUploadRequestData {
+    toJson(): INgxFileUploadRequestData;
+}
+
+export interface INgxFileUploadRequest {
 
     requestId: string;
 
@@ -63,11 +76,13 @@ export interface NgxFileUploadRequest {
      * returns observable which notify if file upload state
      * has been changed
      */
-    readonly change: Observable<NgxFileUploadRequestData>;
+    readonly change: Observable<INgxFileUploadRequestData>;
 
-    readonly data: NgxFileUploadRequestData;
+    readonly data: INgxFileUploadRequestData;
 
     readonly destroyed: Observable<boolean>;
+
+    state: NgxFileUploadState;
 
     beforeStart(hook: Observable<boolean>): void;
 

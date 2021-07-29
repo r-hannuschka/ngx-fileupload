@@ -1,6 +1,6 @@
 import { Observable, Subject, ReplaySubject, timer } from "rxjs";
 import { takeUntil, distinctUntilKeyChanged, tap, take, filter, switchMap } from "rxjs/operators";
-import { NgxFileUploadRequest, NgxFileUploadStorageConfig, NgxFileUploadRequestData, NgxFileUploadState } from "../../api";
+import { INgxFileUploadRequest, NgxFileUploadStorageConfig, NgxFileUploadState } from "../../api";
 import { NgxFileUploadQueue } from "./upload.queue";
 
 const defaultStoreConfig: NgxFileUploadStorageConfig = {
@@ -10,13 +10,14 @@ const defaultStoreConfig: NgxFileUploadStorageConfig = {
 
 export class NgxFileUploadStorage {
 
-    private change$: ReplaySubject<NgxFileUploadRequest[]>;
-    private uploads: Map<string, NgxFileUploadRequest> = new Map();
+    private change$: ReplaySubject<INgxFileUploadRequest[]>;
+    private uploads: Map<string, INgxFileUploadRequest> = new Map();
     private uploadQueue: NgxFileUploadQueue;
     private storeConfig: NgxFileUploadStorageConfig;
     private destroyed$: Subject<boolean> = new Subject();
+    private bulkProcess: string[] = [];
 
-    public constructor(config?: NgxFileUploadStorageConfig) {
+    constructor(config?: NgxFileUploadStorageConfig) {
         this.change$     = new ReplaySubject(1);
         this.uploadQueue = new NgxFileUploadQueue();
 
@@ -28,17 +29,17 @@ export class NgxFileUploadStorage {
      * submits if any upload changes his state, uploads
      * gets removed or added
      */
-    public change(): Observable<NgxFileUploadRequest[]> {
+    change(): Observable<INgxFileUploadRequest[]> {
         return this.change$;
     }
 
     /**
      * add new upload to store
      */
-    public add(upload: NgxFileUploadRequest | NgxFileUploadRequest[]) {
+    add(upload: INgxFileUploadRequest | INgxFileUploadRequest[]) {
         const requests = Array.isArray(upload) ? upload : [upload];
 
-        requests.forEach((request: NgxFileUploadRequest) => {
+        requests.forEach((request: INgxFileUploadRequest) => {
             if (request.requestId && this.uploads.has(request.requestId)) {
                 return;
             }
@@ -52,10 +53,66 @@ export class NgxFileUploadStorage {
         this.notifyObserver();
     }
 
-    /**
-     * register for changes and destroy on upload request
-     */
-    private registerUploadEvents(request: NgxFileUploadRequest): void {
+    destroy() {
+        /** remove from all subscriptions */
+        this.destroyed$.next(true)
+        /** stop all downloads */
+        this.stopAll()
+        /** destroy change stream */
+        this.destroyed$.complete()
+        this.change$.complete()
+    }
+
+    remove(upload: INgxFileUploadRequest | string) {
+        const id = typeof(upload) === "string" ? upload : upload.requestId;
+        const request = this.uploads.get(id)
+        request?.destroy()
+    }
+
+    purge() {
+        let notify = false;
+        this.uploads.forEach((request) => {
+            if (request.isCompleted() || request.isInvalid()) {
+                this.bulkProcess.push(request.requestId)
+                notify = true
+                request.destroy()
+            }
+        })
+
+        if (notify) {
+            this.notifyObserver()
+        }
+    }
+
+    startAll() {
+        this.uploads.forEach((upload) => {
+            if (upload.isIdle()) {
+                this.bulkProcess.push(upload.requestId)
+                upload.start();
+            }
+        })
+        this.notifyObserver()
+    }
+
+    stopAll() {
+        this.uploads.forEach(upload => {
+            this.bulkProcess.push(upload.requestId)
+            upload.destroy()
+        })
+        this.notifyObserver()
+    }
+
+    removeInvalid() {
+        this.uploads.forEach((upload) => {
+            if (upload.isInvalid()) {
+                this.bulkProcess.push(upload.requestId)
+                upload.destroy()
+            }
+        });
+        this.notifyObserver()
+    }
+
+    private registerUploadEvents(request: INgxFileUploadRequest): void {
 
         if (!request.isInvalid()) {
             this.uploadQueue.register(request);
@@ -65,22 +122,23 @@ export class NgxFileUploadStorage {
         request.destroyed.pipe(
             tap(() => this.uploads.delete(request.requestId)),
             take(1)
-        ).subscribe(() => this.notifyObserver());
+        ).subscribe(() => this.isBulkProcess(request) ? this.removeBulkProcess(request) : this.notifyObserver())
     }
 
     /**
-     * register to request change events, this will notify all observers
+     * @description register to request change events, this will notify all observers
      * if state from upload state has been changed, this will not notify
      * if amount of uploaded size has been changed
      */
-    private handleRequestChange(request: NgxFileUploadRequest) {
+    private handleRequestChange(request: INgxFileUploadRequest) {
         const isAutoRemove = !!(this.storeConfig.removeCompleted ?? 0);
         request.change.pipe(
             distinctUntilKeyChanged("state"),
-            /* notify observers upload state has been changed */
-            tap(() => this.notifyObserver()),
+            tap(() => /** do not notify if bulk process */ {
+                this.isBulkProcess(request) ? this.removeBulkProcess(request) : this.notifyObserver()
+            }),
             /* only continue if completed with no errors and autoremove is enabled */
-            filter((upload: NgxFileUploadRequestData) => upload.state === NgxFileUploadState.COMPLETED && !upload.hasError && isAutoRemove),
+            filter(() => request.data.state === NgxFileUploadState.COMPLETED && !request.hasError() && isAutoRemove),
             /** wait for given amount of time before we remove item */
             switchMap(() => timer(this.storeConfig.removeCompleted)),
             /* automatically unsubscribe if request gets destroyed */
@@ -89,19 +147,12 @@ export class NgxFileUploadStorage {
         .subscribe(() => this.remove(request));
     }
 
-    /**
-     * uploads has been added and events are registered
-     * finalize operations
-     */
-    private afterUploadsAdd(requests: NgxFileUploadRequest[]): void {
+    private afterUploadsAdd(requests: INgxFileUploadRequest[]): void {
         if (this.storeConfig.autoStart) {
             requests.forEach((uploadRequest) => uploadRequest.start());
         }
     }
 
-    /**
-     * generate uniqe request id
-     */
     private generateUniqeRequestId(): string {
         let reqId: string;
         do {
@@ -110,78 +161,15 @@ export class NgxFileUploadStorage {
         return reqId;
     }
 
-    /**
-     * destroy upload storage, should never called
-     * if storage is provided with InjectionToken
-     */
-    public destroy() {
-
-        /** remove from all subscriptions */
-        this.destroyed$.next(true);
-
-        /** stop all downloads */
-        this.stopAll();
-
-        /** destroy change stream */
-        this.destroyed$.complete();
-        this.change$.complete();
-    }
-
-    /**
-     * remove upload from store
-     */
-    public remove(upload: NgxFileUploadRequest | string) {
-        const id = typeof(upload) === "string" ? upload : upload.requestId;
-        const request = this.uploads.get(id);
-        request?.destroy();
-    }
-
-    /**
-     * remove all uploads which has been invalid
-     * canceled or upload has been completed even it is has an error
-     */
-    public purge() {
-        this.uploads.forEach((upload) => {
-            if (upload.isCompleted() || upload.isInvalid()) {
-                upload.destroy();
-            }
-        });
-    }
-
-    /**
-     * starts all queued uploads
-     */
-    public startAll() {
-        this.uploads.forEach((upload) => {
-            if (upload.isIdle()) {
-                upload.start();
-            }
-        });
-    }
-
-    /**
-     * stops all active uploads
-     */
-    public stopAll() {
-        this.uploads.forEach(upload => upload.destroy());
-    }
-
-    /**
-     * remove invalidated uploads
-     */
-    public removeInvalid() {
-        this.uploads.forEach((upload) => {
-            if (upload.isInvalid()) {
-                upload.destroy();
-            }
-        });
-        this.notifyObserver();
-    }
-
-    /**
-     * notify observer store data has been changed
-     */
     private notifyObserver() {
-        this.change$.next(Array.from(this.uploads.values()));
+        this.change$.next(Array.from(this.uploads.values()))
+    }
+
+    private removeBulkProcess(request: INgxFileUploadRequest) {
+        this.bulkProcess = this.bulkProcess.filter((id) => request.requestId !== id)
+    }
+
+    private isBulkProcess(request: INgxFileUploadRequest): boolean {
+        return this.bulkProcess.indexOf(request.requestId) > -1
     }
 }

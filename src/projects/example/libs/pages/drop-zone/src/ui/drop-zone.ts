@@ -62,7 +62,7 @@ export class DropZoneComponent implements OnDestroy, OnInit {
       }
     });
 
-    const request = this.uploadFactory.createUploadRequest(sources, this.uploadOptions, null);
+    const request = this.uploadFactory.createUploadRequest(sources, this.uploadOptions);
     if (request) {
       this.uploadStorage.add(request);
     }

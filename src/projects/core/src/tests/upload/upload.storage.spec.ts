@@ -1,6 +1,6 @@
-import { NgxFileUploadStorage, NgxFileUploadState } from "@ngx-file-upload/dev/core/public-api";
 import { UploadRequestMock, NgxFileUploadRequestModel } from "@ngx-file-upload/testing";
-import { take, takeWhile, tap, auditTime, skip } from "rxjs/operators";
+import { take, takeWhile, tap, auditTime, skip, finalize } from "rxjs/operators";
+import { NgxFileUploadFile, NgxFileUploadState, NgxFileUploadStorage } from "../../public-api";
 
 describe("@ngx-file-upload/core/upload.storage", () => {
 
@@ -127,7 +127,7 @@ describe("@ngx-file-upload/core/upload.storage", () => {
         const startSpyUR3 = spyOn(uploadRequest3, "start").and.callFake(() => uploadRequest3.change$.next(uploadRequest3.data));
 
         storage.change()
-            .pipe(skip(1))
+            .pipe(skip(1)) // skip add
             .subscribe({
                 next: () => {
                     expect(startSpyUR1).not.toHaveBeenCalled();
@@ -181,9 +181,9 @@ describe("@ngx-file-upload/core/upload.storage", () => {
             });
 
         fileUpload1.state = NgxFileUploadState.INVALID;
-        storage.add([uploadRequest1]);
-        uploadRequest1.change$.next();
-        uploadRequest1.destroy();
+        storage.add([uploadRequest1])
+        uploadRequest1.applyChange()
+        uploadRequest1.destroy()
     });
 
     it ("should start uploads automatically", (done) => {
@@ -233,7 +233,6 @@ describe("@ngx-file-upload/core/upload.storage", () => {
     });
 
     it ("should stop all uploads", (done) => {
-
         const fileUpload1 = new NgxFileUploadRequestModel();
         const fileUpload2 = new NgxFileUploadRequestModel();
         const uploadRequest1 = new UploadRequestMock(fileUpload1);
@@ -257,5 +256,62 @@ describe("@ngx-file-upload/core/upload.storage", () => {
             });
 
         mockStorage.add([uploadRequest1, uploadRequest2]);
+    });
+
+    it ("should emit change after invalid files has been removed from request", () => {
+        const file = new File(['mocked file'], 'mocked.file.txt')
+        const uploadFile = new NgxFileUploadFile(file);
+        uploadFile.validationErrors = { invalidFile: true }
+
+        const spy = jasmine.createSpy('removed invalid')
+
+        const uploadRequestModel = new NgxFileUploadRequestModel();
+        uploadRequestModel.files = [uploadFile];
+
+        const uploadRequest = new UploadRequestMock(uploadRequestModel);
+        uploadRequest.state = NgxFileUploadState.INVALID;
+        storage.change()
+            .pipe(
+                skip(1), // skip add
+                finalize(() => expect(spy).toHaveBeenCalledOnceWith(uploadRequest))
+            )
+            .subscribe(([request]) => {
+                if (request) {
+                    spy(request);
+                }
+            });
+        storage.add(uploadRequest);
+
+        uploadRequest.state = NgxFileUploadState.IDLE
+        uploadRequest.applyChange()
+        storage.destroy()
+    });
+
+    it ("should not emit change if nothing has been purged", () => {
+        const file = new File(['mocked file'], 'mocked.file.txt')
+        const uploadFile = new NgxFileUploadFile(file)
+        uploadFile.validationErrors = { invalidFile: true }
+
+        const spy = jasmine.createSpy('purged')
+
+        const uploadRequestModel = new NgxFileUploadRequestModel()
+        uploadRequestModel.files = [uploadFile]
+
+        const uploadRequestModel2 = new NgxFileUploadRequestModel()
+        uploadRequestModel2.files = [uploadFile]
+
+        const uploadRequest1 = new UploadRequestMock(uploadRequestModel)
+        const uploadRequest2 = new UploadRequestMock(uploadRequestModel2)
+
+        storage.change()
+            .pipe(
+                skip(1),
+                finalize(() => expect(spy).toHaveBeenCalledTimes(1))
+            )
+            .subscribe(spy)
+
+        storage.add([uploadRequest1, uploadRequest2]);
+        storage.purge()
+        storage.destroy()
     });
 });

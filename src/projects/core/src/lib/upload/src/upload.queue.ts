@@ -60,7 +60,7 @@ export class NgxFileUploadQueue {
                 .pipe(filter(() => request.isCompleted(true)), take(1));
 
             change$.pipe(
-                filter((upload) => upload.state === NgxFileUploadState.START),
+                filter((data) => data.state === NgxFileUploadState.START),
                 takeUntil(merge(request.destroyed, uploadComplete$))
             ).subscribe({
                 next: () => this.active += 1,
@@ -72,7 +72,7 @@ export class NgxFileUploadQueue {
     }
 
     private writeToQueue(request: INgxFileUploadRequest) {
-        request.data.state = NgxFileUploadState.PENDING;
+        request.state = NgxFileUploadState.PENDING;
         this.queuedUploads = [...this.queuedUploads, request];
     }
 

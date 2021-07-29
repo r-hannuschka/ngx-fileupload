@@ -27,7 +27,13 @@ export class UploadRequestMock implements INgxFileUploadRequest {
         this.destroyed = this.destroy$.asObservable();
     }
 
-    state = NgxFileUploadState.IDLE
+    set state(state: NgxFileUploadState) {
+        this.data.state = state;
+    }
+
+    get state(): NgxFileUploadState {
+        return this.data.state;
+    }
 
     isCanceled(): boolean {
         return this.data.state === NgxFileUploadState.CANCELED;
@@ -87,6 +93,6 @@ export class UploadRequestMock implements INgxFileUploadRequest {
     }
 
     public applyChange() {
-        this.change$.next({...this.data});
+        this.change$.next(this.data)
     }
 }

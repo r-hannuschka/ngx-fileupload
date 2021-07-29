@@ -45,7 +45,6 @@ export class NgxFileUploadStorage {
             }
             request.requestId = request.requestId || this.generateUniqeRequestId();
             this.uploads.set(request.requestId, request);
-
             this.registerUploadEvents(request);
         });
 
@@ -115,14 +114,27 @@ export class NgxFileUploadStorage {
     private registerUploadEvents(request: INgxFileUploadRequest): void {
 
         if (!request.isInvalid()) {
-            this.uploadQueue.register(request);
-            this.handleRequestChange(request);
+            this.queueRequest(request);
+        } else {
+            request.change.pipe(
+                filter((data) => data.state === NgxFileUploadState.IDLE),
+                take(1),
+                takeUntil(request.destroyed)
+            ).subscribe(() => {
+                this.queueRequest(request)
+                this.notifyObserver()
+            });
         }
 
         request.destroyed.pipe(
             tap(() => this.uploads.delete(request.requestId)),
             take(1)
         ).subscribe(() => this.isBulkProcess(request) ? this.removeBulkProcess(request) : this.notifyObserver())
+    }
+
+    private queueRequest(request: INgxFileUploadRequest) {
+        this.uploadQueue.register(request);
+        this.handleRequestChange(request);
     }
 
     /**

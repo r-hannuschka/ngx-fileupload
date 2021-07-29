@@ -1,7 +1,7 @@
 import { InjectionToken, inject } from "@angular/core"
 import { HttpClient } from "@angular/common/http"
-import { INgxFileUploadFile, INgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadOptions, NgxFileUploadState, NgxFileUploadValidation } from "../../api"
-import { NgxFileUploadFile, NgxFileUploadRequestModel } from "./upload.model"
+import { INgxFileUploadFile, INgxFileUploadRequest, NgxFileUploadOptions, NgxFileUploadValidation } from "../../api"
+import { NgxFileUploadFile } from "./upload.model"
 import { NgxFileUploadRequest } from "./upload.request"
 
 export interface NgxFileUploadFactory {
@@ -34,17 +34,10 @@ class Factory implements NgxFileUploadFactory {
       })
 
       // * create one requests which holds all files
-      const requestModel = this.createRequestModel(fileModels);
-      return new NgxFileUploadRequest(this.httpClient, requestModel, options)
+      return new NgxFileUploadRequest(this.httpClient, fileModels, options)
     }
 
     return null;
-  }
-
-  private createRequestModel(files: INgxFileUploadFile[]): INgxFileUploadRequestModel {
-      const requestModel = new NgxFileUploadRequestModel(files)
-      requestModel.state = requestModel.validationErrors ? NgxFileUploadState.INVALID : NgxFileUploadState.IDLE
-      return requestModel
   }
 }
 

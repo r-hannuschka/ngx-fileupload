@@ -1,5 +1,4 @@
-import { NgxFileUploadResponse, NgxFileUploadState, NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
-import { INgxFileUploadFile, INgxFileUploadRequestModel, NgxFileUploadFile } from "@ngx-file-upload/dev/core/public-api";
+import { INgxFileUploadFile, INgxFileUploadRequestData, INgxFileUploadRequestModel, NgxFileUploadFile, NgxFileUploadResponse, NgxFileUploadState, NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
 
 const file = new File(["ngx file upload unit tests"], "upload-file.txt", {type: "plain/text"});
 
@@ -33,7 +32,7 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
 
     hasError = false;
 
-    toJson(): INgxFileUploadRequestModel {
+    toJson(): INgxFileUploadRequestData {
         const jsonedObject: Record<string, unknown> = {};
         for (const x in this) {
             if (x === "toJson" || x === "constructor") {
@@ -41,6 +40,6 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
             }
             jsonedObject[x] = this[x];
         }
-        return jsonedObject as unknown as INgxFileUploadRequestModel;
+        return jsonedObject as unknown as INgxFileUploadRequestData;
     }
 }

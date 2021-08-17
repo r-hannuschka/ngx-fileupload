@@ -41,7 +41,8 @@
     "ngx-highlightjs": "4.1.4",
     "rxjs": "6.6.7",
     "tslib": "2.3.1",
-    "web-animations-js": "2.3.2"
+    "web-animations-js": "2.3.2",
+    "igniteui-angular": "12.1.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "12.2.1",
@@ -57,8 +58,8 @@
     "@types/jasmine": "3.8.2",
     "@types/jasminewd2": "2.0.10",
     "@types/node": "14.17.9",
-    "@typescript-eslint/eslint-plugin": "^4.29.2",
-    "@typescript-eslint/parser": "^4.29.2",
+    "@typescript-eslint/eslint-plugin": "4.29.2",
+    "@typescript-eslint/parser": "4.29.2",
     "angular-cli-ghpages": "0.6.2",
     "bootstrap-scss": "5.1.0",
     "codelyzer": "6.0.2",
@@ -67,7 +68,6 @@
     "express": "4.17.1",
     "express-fileupload": "1.2.1",
     "https-proxy-agent": "5.0.0",
-    "igniteui-angular": "^12.1.2",
     "jasmine-core": "3.8.0",
     "jasmine-spec-reporter": "7.0.0",
     "karma": "6.3.4",

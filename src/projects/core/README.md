@@ -6,6 +6,7 @@
 [![DeepScan grade](https://deepscan.io/api/teams/6017/projects/7879/branches/86957/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=6017&pid=7879&bid=86957)
 [![codecov](https://codecov.io/gh/r-hannuschka/ngx-fileupload/branch/master/graph/badge.svg)](https://codecov.io/gh/r-hannuschka/ngx-fileupload)
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
+[![youtube how tow](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/bin/youtube.badge.svg)](https://www.youtube.com/watch?v=_dLyu2wceak&list=PL8Y_IacQr6GLyAVCQ12g5J04cY1DL0eSI&index=1)
 
 Angular 12 file upload core files for asynchronous file upload. This package does not contain any UI components in order to stay as small as possible and to guarantee the freedom to design the entire surface yourself without bringing the overhead of styles, images and fonts that are not required.
 

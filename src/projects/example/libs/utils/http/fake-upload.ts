@@ -15,26 +15,27 @@ export class FakeUploadInterceptor implements HttpInterceptor {
     /**
      * chunk size: upload speed for 16MBit DSL per second (with sunshine and gas station in front)
      */
-    private chunkSize = 1024 * 1024;
+    private chunkSize = 1024 * 1024
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (req.url.indexOf("upload") === -1) {
-            return next.handle(req);
+            return next.handle(req)
         }
-        const file: File = req.body.has("file") ? req.body.get("file") : req.body.get("picture");
-        return this.createFakeUpload(file, req.url.indexOf("error") !== -1);
+        debugger
+        const file: File[] = req.body.has("file") ? req.body.getAll("file") : req.body.getAll("picture")
+        return this.createFakeUpload(file, req.url.indexOf("error") !== -1)
     }
 
     /**
      * return fake upload observable for http client
      */
-    private createFakeUpload(file: File, hasError = false): Observable<HttpEvent<any>> {
+    private createFakeUpload(files: File[], hasError = false): Observable<HttpEvent<any>> {
         return new Observable<HttpEvent<any>>((observer) => {
-            observer.next({type: HttpEventType.Sent});
+            observer.next({type: HttpEventType.Sent})
             const upload: FakeUpload = {
                 state: "progress",
                 uploaded: 0,
-                size: file.size
+                size: files.reduce((size, file) => size + file.size, 0)
             };
 
             // fake upload
@@ -42,7 +43,7 @@ export class FakeUploadInterceptor implements HttpInterceptor {
                 takeWhile(() => upload.state !== "completed")
             ).subscribe({
                 next: () => this.nextTick(upload, observer),
-                complete: () => this.uploadCompleted(observer, file.name, hasError)
+                complete: () => this.uploadCompleted(observer, files.map((file) => file.name).join(', '), hasError)
             });
         });
     }

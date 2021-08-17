@@ -1,6 +1,6 @@
 {
   "name": "@ngx-file-upload/ui",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Angular 12 file upload components for @ngx-file-upload/core",
   "repository": {
     "url": "https://github.com/r-hannuschka/ngx-fileupload/tree/master/src/projects/ui",

@@ -27,6 +27,10 @@ export class UploadRequestMock implements INgxFileUploadRequest {
         this.destroyed = this.destroy$.asObservable();
     }
 
+    removeInvalidFiles(): void {
+        throw new Error("Method not implemented.");
+    }
+
     set state(state: NgxFileUploadState) {
         this.data.state = state;
     }

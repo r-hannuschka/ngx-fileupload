@@ -1,6 +1,6 @@
 
 import { Component, Input, ViewChild, TemplateRef, HostListener, OnDestroy, AfterViewInit, OnInit } from "@angular/core";
-import { NgxFileUploadRequest, NgxFileUploadState, NgxFileUploadControl, INgxFileUploadRequestData } from "@ngx-file-upload/core";
+import { NgxFileUploadState, NgxFileUploadControl, INgxFileUploadRequestData, INgxFileUploadRequest } from "@ngx-file-upload/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Control } from "./upload.control";
@@ -31,7 +31,7 @@ export class UploadItemComponent implements AfterViewInit, OnInit, OnDestroy {
   /**
    * file upload which should bound to this view
    */
-  private fileUpload: NgxFileUploadRequest | undefined;
+  private fileUpload: INgxFileUploadRequest | undefined;
 
   /**
    * save subscription here,  since we have only 1 sub
@@ -60,7 +60,7 @@ export class UploadItemComponent implements AfterViewInit, OnInit, OnDestroy {
    * sets upload we want to bind with current view
    */
   @Input()
-  public set upload(request: NgxFileUploadRequest) {
+  public set upload(request: INgxFileUploadRequest) {
     this.fileUpload = request;
     this.context = {
       data: request.data,

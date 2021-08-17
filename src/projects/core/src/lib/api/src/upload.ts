@@ -114,6 +114,8 @@ export interface INgxFileUploadRequest {
 
     isCanceled(): boolean;
 
+    removeInvalidFiles(): void;
+
     retry(): void;
 
     start(): void;

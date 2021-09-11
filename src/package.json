@@ -61,7 +61,7 @@
     "@typescript-eslint/eslint-plugin": "4.31.0",
     "@typescript-eslint/parser": "4.31.0",
     "angular-cli-ghpages": "0.6.2",
-    "bootstrap-scss": "5.1.0",
+    "bootstrap-scss": "5.1.1",
     "codelyzer": "6.0.2",
     "cors": "2.8.5",
     "eslint": "7.32.0",

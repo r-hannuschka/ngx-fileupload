@@ -46,7 +46,7 @@ describe("Ngx Fileupload Default View", () => {
         });
 
         it("should remove all uploads at once", async () => {
-            expect(ngxFileUpload.getUploadItems().count()).toBe(2);
+            expect(ngxFileUpload.getUploadItems().count()).toBe(1);
             await uploadToolbar.removeAll();
             expect(ngxFileUpload.getUploadItems().count()).toBe(0);
         });
@@ -60,17 +60,16 @@ describe("Ngx Fileupload Default View", () => {
         });
 
         it("should upload all files to server at once", async () => {
-            await fileBrowser.dropFiles([ "./upload-file.zip", "./upload-file2.zip" ]);
+            await fileBrowser.dropFiles(["./upload-file.zip"]);
+            await fileBrowser.dropFiles(["./upload-file2.zip"]);
+
             await uploadToolbar.uploadAll();
 
             const uploadingItems = await ngxFileUpload.getUploadItems()
                 .all(by.css(".upload-item--state i"))
                 .map<string>(el => el?.getAttribute("class"));
 
-            expect(uploadingItems).toEqual([
-                "ngx-fileupload-icon--completed success",
-                "ngx-fileupload-icon--completed success"
-            ]);
+            expect(uploadingItems).toEqual(["ngx-fileupload-icon--completed success", "ngx-fileupload-icon--completed success"]);
         });
 
         afterAll(async () => {

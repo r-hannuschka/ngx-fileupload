@@ -4,7 +4,7 @@ import { by, element } from "protractor";
 export class FileBrowserPo {
 
     public get fileBrowser() {
-        return element(by.css(".file-browser"));
+        return element(by.css("[ngxfileupload]"));
     }
 
     public async dropFile(file: string) {

@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "devServerTarget": {
+      "type": "string",
+      "description": "A dev-server-builder target to run test against"
+    },
+    "config": {
+      "type": "string",
+      "description": "path to playwright configuration file"
+    }
+  }
+}

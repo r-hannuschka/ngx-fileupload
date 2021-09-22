@@ -1,0 +1,9 @@
+{
+  "builders": {
+    "playwright": {
+      "implementation": "./playwright/playwright.js",
+      "schema": "./playwright/schema.json",
+      "description": "run e2e with playwright"
+    }
+  }
+}

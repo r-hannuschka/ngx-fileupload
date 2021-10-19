@@ -42,7 +42,7 @@
     "rxjs": "6.6.7",
     "tslib": "2.3.1",
     "web-animations-js": "2.3.2",
-    "igniteui-angular": "12.2.1"
+    "igniteui-angular": "12.2.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "12.2.10",

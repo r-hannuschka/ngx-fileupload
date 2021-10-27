@@ -9,10 +9,7 @@
         "*.ts"
       ],
       "parserOptions": {
-        "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
-        ],
+        "project": "src/tsconfig.json",
         "createDefaultProgram": true
       },
       "extends": [

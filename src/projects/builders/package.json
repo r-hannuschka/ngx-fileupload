@@ -4,7 +4,7 @@
   "description": "@tsmonkeypatch/ngx-builders",
   "main": "index.js",
   "scripts": {
-    "build": "tsc" ,
+    "build": "tsc",
     "prebuild": "rimraf ./dist/*",
     "postbuild": "cpx ./{package,builders}.json ./dist && cpx ./src/**/schema.json ./dist && npm run package",
     "package": "tar -cvf ./builders.tar.gz -C ./dist ."

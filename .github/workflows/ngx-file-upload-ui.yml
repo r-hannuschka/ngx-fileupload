@@ -20,8 +20,6 @@ jobs:
         run: |
           cd src
           npm i
-          npm i puppeteer@chrome-78
-          npm run webdriver:update
 
       - name: add @angular/cli global
         run: |

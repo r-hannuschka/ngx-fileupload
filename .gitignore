@@ -10,6 +10,7 @@
 /src/__ivy_ngcc__
 dist
 *.tar.gz
+!/src/projects/builders/*.tar.gz
 
 # Only exists if Bazel was run
 /bazel-out

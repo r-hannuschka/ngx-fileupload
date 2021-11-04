@@ -25,7 +25,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/core": "12.2.11",
+    "@angular-devkit/core": "13.0.1",
     "@angular/animations": "12.2.11",
     "@angular/cdk": "12.2.11",
     "@angular/common": "12.2.11",
@@ -45,13 +45,13 @@
     "igniteui-angular": "12.2.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "12.2.11",
+    "@angular-devkit/build-angular": "13.0.1",
     "@angular-eslint/builder": "12.6.1",
     "@angular-eslint/eslint-plugin": "12.6.1",
     "@angular-eslint/eslint-plugin-template": "12.6.1",
     "@angular-eslint/schematics": "12.6.1",
     "@angular-eslint/template-parser": "12.6.1",
-    "@angular/cli": "12.2.11",
+    "@angular/cli": "13.0.1",
     "@angular/compiler-cli": "12.2.11",
     "@angular/language-service": "12.2.11",
     "@compodoc/compodoc": "1.1.15",

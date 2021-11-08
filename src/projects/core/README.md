@@ -8,7 +8,7 @@
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
 [![youtube how tow](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/bin/youtube.badge.svg)](https://www.youtube.com/watch?v=_dLyu2wceak&list=PL8Y_IacQr6GLyAVCQ12g5J04cY1DL0eSI&index=1)
 
-Angular 12 file upload core files for asynchronous file upload. This package does not contain any UI components in order to stay as small as possible and to guarantee the freedom to design the entire surface yourself without bringing the overhead of styles, images and fonts that are not required.
+Angular 13 file upload core files for asynchronous file upload. This package does not contain any UI components in order to stay as small as possible and to guarantee the freedom to design the entire surface yourself without bringing the overhead of styles, images and fonts that are not required.
 
 This library contains
 
@@ -16,6 +16,11 @@ This library contains
 - A queue to limit the number of active uploads and upload more later. 
 - Validation
 - ansychronous file uploads with live progress update.
+
+## Versions 
+
+- angular@13 - 5.x.x 
+- angular@12 - 4.x.x
 
 ## Version 4
 

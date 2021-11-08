@@ -6,7 +6,7 @@
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
 [![youtube how tow](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/bin/youtube.badge.svg)](https://www.youtube.com/watch?v=_dLyu2wceak&list=PL8Y_IacQr6GLyAVCQ12g5J04cY1DL0eSI&index=1)
 
-Angular 8 Mono Repo for asynchronous file uploads.
+Angular 13 Mono Repo for asynchronous file uploads.
 
 Formerly @ r-hannuschka / ngx-fileupload library which has now been divided into 2 areas.
 

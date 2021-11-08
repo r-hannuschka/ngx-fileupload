@@ -4,9 +4,6 @@
   "lib": {
     "cssUrl": "inline",
     "entryFile": "src/public-api.ts",
-    "umdModuleIds": {
-      "@ngx-file-upload/core": "@ngx-file-upload/core"
-    },
     "styleIncludePaths": ["./src/assets"]
   }
 }

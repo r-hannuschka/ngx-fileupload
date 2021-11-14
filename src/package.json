@@ -25,7 +25,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/core": "13.0.1",
+    "@angular-devkit/core": "13.0.2",
     "@angular/animations": "13.0.1",
     "@angular/common": "13.0.1",
     "@angular/compiler": "13.0.1",
@@ -44,13 +44,13 @@
     "tslib": "2.3.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "13.0.1",
+    "@angular-devkit/build-angular": "13.0.2",
     "@angular-eslint/builder": "12.6.1",
     "@angular-eslint/eslint-plugin": "12.6.1",
     "@angular-eslint/eslint-plugin-template": "12.6.1",
     "@angular-eslint/schematics": "12.6.1",
     "@angular-eslint/template-parser": "12.6.1",
-    "@angular/cli": "13.0.1",
+    "@angular/cli": "13.0.2",
     "@angular/compiler-cli": "13.0.1",
     "@angular/language-service": "13.0.1",
     "@compodoc/compodoc": "1.1.15",

@@ -36,7 +36,7 @@
     "@angular/router": "13.0.1",
     "@angular/cdk": "13.0.1",
     "highlight.js": "11.3.1",
-    "igniteui-angular": "12.2.5",
+    "igniteui-angular": "12.3.0",
     "ngx-dropzone": "3.0.0",
     "ngx-file-drop": "11.3.0",
     "ngx-highlightjs": "6.1.0",

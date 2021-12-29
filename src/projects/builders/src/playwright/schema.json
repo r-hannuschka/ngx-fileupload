@@ -4,11 +4,23 @@
   "properties": {
     "devServerTarget": {
       "type": "string",
-      "description": "A dev-server-builder target to run test against"
+      "description": "A dev-server-builder target to run test against",
+      "default": "@"
     },
-    "config": {
+    "watch": {
+      "type": "boolean",
+      "description": "if set to true it will enable watch mode",
+      "default": false
+    },
+    "watchDir": {
+      "type": "array",
+      "description": "array of directories we watch",
+      "default": ["."]
+    },
+    "playwrightConfig": {
       "type": "string",
-      "description": "path to playwright configuration file"
+      "description": "path to playwright configuration file",
+      "default": "./playwright.config.ts"
     }
   }
 }

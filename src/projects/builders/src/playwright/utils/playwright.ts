@@ -1,23 +1,48 @@
 import { BuilderOutput } from "@angular-devkit/architect"
 import { ChildProcess, spawn } from "child_process"
 import { Observable, Subject } from "rxjs"
+import { PlaywrightTestConfig } from "@playwright/test"
+import { dirname, join, relative } from "path"
 
 export class PlaywrightService {
   private process: ChildProcess | null = null
   
-  private out$: Subject<BuilderOutput> = new Subject();
+  private out$: Subject<BuilderOutput> = new Subject()
 
-  private emit = true;
+  private configuration: PlaywrightTestConfig | null = null
 
-  run(_path?: string): Observable<BuilderOutput> {
+  private rootDir: string | null = null
+
+  constructor(private readonly configPath: string) {}
+
+  destroy() {
+    this.out$.complete()
     if (this.process) {
       this.process.kill()
-      this.emit = false
+    }
+  }
+
+  async initialize() {
+    this.configuration = await import(this.configPath) as PlaywrightTestConfig
+    this.rootDir = join(dirname(this.configPath), this.configuration.testDir ?? '.')
+  }
+
+  run(path?: string): Observable<BuilderOutput> {
+    if (this.process) {
+      this.process.kill()
     }
 
     // playwright
     const playwrightCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx'
-    const playwrightArgs: string[] = ['playwright', 'test', '--config=e2e/playwright.conf.ts']
+    const playwrightArgs: string[] = ['playwright', 'test', `--config=${this.configPath}`]
+
+    if (path && path.trim() !== '') {
+      // for windows systems we get something like this foo\\file.spec.ts which not works
+      // together with playwright since he do not understand this one (even on windows)
+      // and replace to foo/file.spec.ts
+      playwrightArgs.push(relative(this.rootDir ?? '.', path).replace(/\\/g, '/'))
+      console.log(playwrightArgs)
+    }
 
     this.process = spawn(playwrightCommand, playwrightArgs, {
       stdio: 'inherit'
@@ -25,8 +50,7 @@ export class PlaywrightService {
 
     this.process.on('exit', () => {
       this.notify({ success: true, error: '' })
-      this.process = null;
-      this.emit = true
+      this.process = null
     })
 
     this.process.on('error', (error) => this.notify({ success: false, error: error.message }))
@@ -34,8 +58,6 @@ export class PlaywrightService {
   }
 
   private notify(result: BuilderOutput) {
-    if (this.emit) {
-      this.out$.next(result)
-    }
+    this.out$.next(result)
   }
 }

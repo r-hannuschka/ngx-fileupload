@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test('test', async ({ page }) => {
 
   // Go to http://localhost:4201/#/dashboard
-  await page.goto('http://localhost:4200/#/dashboard');
+  await page.goto('http://localhost:4200/#/dashboard')
 
   // Click text=Customize
   await page.click('text=Customize');
@@ -17,7 +17,7 @@ test('test', async ({ page }) => {
   await page.click('text=Typescript');
 
   // Click igx-tab-header[role="tab"]:has-text("Html")
-  await page.click('igx-tab-header[role="tab"]:has-text("Html")');
+  await page.click('igx-tab-header[role="tab"]:has-text("Html")')
 
   // Click text=Validation
   await page.click('text=Validation');
@@ -25,7 +25,7 @@ test('test', async ({ page }) => {
 
   // Click text=Ngx File Drop
   await page.click('text=Ngx File Drop');
-  await expect(page).toHaveURL('http://localhost:4200/#/drop-zone')
+  await expect(page).toHaveURL('http://localhost:4200/#/drop-zone');
 
   // Click text=Ngx Dropzone
   await page.click('text=Ngx Dropzone');

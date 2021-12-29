@@ -1,8 +1,19 @@
 {
+  "ts-node": {
+    "module": "commonjs"
+  },
   "compilerOptions": {
-    "baseUrl": "./",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": false,
+    "target": "es2019",
+    "lib": ["es2020"],
+    "baseUrl": "",
     "rootDir": "./src",
     "outDir": "./dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "sourceMap": false,
     "declaration": false,
     "experimentalDecorators": true,

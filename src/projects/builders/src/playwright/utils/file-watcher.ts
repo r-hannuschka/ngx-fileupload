@@ -1,25 +1,23 @@
 import { FSWatcher, watch } from 'chokidar';
+import { Stats } from 'fs';
 import { Observable, fromEventPattern } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 export class FileWatcherService {
-  private filePath: string[];
-  private watch$: Observable<unknown> | null = null;
+  private watch$: Observable<[string, Stats]> | null = null;
 
-  constructor(path: string | string[]) {
-    this.filePath = Array.isArray(path) ? path : [path];
-  }
+  constructor(private readonly directories: string[]) {}
 
-  change(): Observable<unknown> {
+  change(): Observable<[string, Stats]> {
     if (!this.watch$) {
       this.watch$ = this.initializeWatcher()
     }
     return this.watch$
   }
 
-  private initializeWatcher(): Observable<unknown> {
-    const watcher = watch(this.filePath)
-    const change$ = fromEventPattern(this.createHandler(watcher, 'change'))
+  private initializeWatcher(): Observable<[string, Stats]> {
+    const watcher = watch(this.directories)
+    const change$ = fromEventPattern<[string, Stats]>(this.createHandler(watcher, 'change'))
     const ready$ = fromEventPattern(this.createHandler(watcher, 'ready'))
 
     return ready$.pipe(switchMap(() => change$))

@@ -1,40 +1,70 @@
-import { BuilderOutput, createBuilder, BuilderContext, targetFromTargetString } from '@angular-devkit/architect'
+import { BuilderOutput, createBuilder, BuilderContext, targetFromTargetString, BuilderRun } from '@angular-devkit/architect'
 import { State } from '@angular-devkit/architect/src/progress-schema';
-import { from, Observable, merge } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { Stats } from 'fs';
+import { resolve as pathResolve } from 'path';
+import { from, Observable, merge, EMPTY } from 'rxjs';
+import { filter, map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 import { FileWatcherService } from './utils/file-watcher';
 import { PlaywrightService } from './utils/playwright';
 
 interface PLAYWRIGHT_BUILDER_OPTIONS {
   devServerTarget: string
-  config: string
+  playwrightConfig: string
+  watch: boolean
+  watchDir: string[]
 }
 
 function playwrightBuilder(
   options: PLAYWRIGHT_BUILDER_OPTIONS,
   context: BuilderContext
-): Observable<BuilderOutput> {
-  //start dev server
-  const fileWatcherService = new FileWatcherService('./e2e')
-  const playwrightService = new PlaywrightService()
+): Observable<BuilderOutput> | Promise<BuilderOutput> {
 
-  const target = targetFromTargetString(options.devServerTarget)
-  const server$ = from(context.scheduleTarget(target))
+  const configPath = pathResolve(context.workspaceRoot, options.playwrightConfig)
+  const playwrightService = new PlaywrightService(configPath)
 
-  // progress stream from dev server builder
-  const progress$ = server$.pipe(
-    switchMap((server) => server.progress),
-    filter((progress) => progress.state === State.Stopped),
-  )
+  let server: BuilderRun | null = null;
 
-  return server$.pipe(
-    // get notified one time if server is running
-    switchMap((server) => server.result),
-    // switch to changes on progress or test files
-    switchMap(() => merge(progress$, fileWatcherService.change())),
-    // run playwright
-    switchMap(() => playwrightService.run())
-  )
+  // startup
+  const main$ = from(playwrightService.initialize())
+    .pipe(
+      switchMap(() => {
+        const target = targetFromTargetString(options.devServerTarget)
+        return context.scheduleTarget(target)
+      }),
+      switchMap((builderRun) => {
+        server = builderRun
+        return builderRun.result
+      }),
+      shareReplay()
+    )
+
+  // watch mode
+  if (options.watch) {
+    const fileWatcherService = new FileWatcherService(options.watchDir)
+    console.dir(options.watchDir)
+    const progress$ = main$.pipe(
+      switchMap(() => server?.progress ?? EMPTY),
+      filter((progress) => progress.state === State.Stopped),
+      map(() => null)
+    )
+
+    return main$.pipe(
+      switchMap(() => merge(progress$, fileWatcherService.change())),
+      switchMap((result: [string, Stats] | null ) => {
+        const file = result?.[0]
+          ? pathResolve(context.workspaceRoot, result[0])
+          : void 0
+
+        return playwrightService.run(file)
+      })
+    )
+  }
+
+  return main$.pipe(
+    switchMap(() => playwrightService.run()),
+    tap(() => (server?.stop(), playwrightService.destroy())),
+    take(1),
+  ).toPromise()
 }
 
 // create builder

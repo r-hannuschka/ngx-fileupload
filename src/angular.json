@@ -143,7 +143,10 @@
         "e2e": {
           "builder": "@tsmonkeypatch/ngx-builders:playwright",
           "options": {
-            "devServerTarget": "ngx-fileupload-example:serve"
+            "devServerTarget": "ngx-fileupload-example:serve",
+            "playwrightConfig": "e2e/playwright.config.js",
+            "watch": true,
+            "watchDir": ["e2e/integration"]
           },
           "configurations": {
             "production": {

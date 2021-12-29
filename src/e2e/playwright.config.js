@@ -1,11 +1,12 @@
-import { PlaywrightTestConfig } from '@playwright/test';
-
-const config: PlaywrightTestConfig = {
+// @ts-check
+/** @type {import('@playwright/test').PlaywrightTestConfig} */
+module.exports = {
+  testDir: './integration',
   projects: [
     {
       name: 'Chrome Stable',
       use: {
-        headless: false,
+        headless: true,
         browserName: 'chromium',
         // Test against Chrome Stable channel.
         channel: 'chrome',
@@ -13,4 +14,3 @@ const config: PlaywrightTestConfig = {
     },
   ],
 };
-export default config;

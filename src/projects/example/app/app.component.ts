@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { environment } from "../environments/environment";
-import { MenuItem, MainMenuItems } from "projects/example/libs/data/base/data";
-import { Router, NavigationEnd, ActivatedRoute } from "@angular/router";
-import { filter } from "rxjs/operators";
+import { Component, OnInit } from "@angular/core"
+import { environment } from "../environments/environment"
+import { MenuItem, MainMenuItems } from "projects/example/libs/data/base/data"
+import { Router, NavigationEnd, ActivatedRoute } from "@angular/router"
+import { filter } from "rxjs/operators"
 
 @Component({
   selector: "app-root",
@@ -14,15 +14,16 @@ export class AppComponent implements OnInit {
 
   public disableAnimations = false;
 
-  public menuItems: MenuItem[] = MainMenuItems;
+  public menuItems: MenuItem[] = MainMenuItems
 
-  public showUploadOverlay = false;
+  public showUploadOverlay = false
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.disableAnimations = environment.disableAnimations || false;
+    this.disableAnimations = environment.disableAnimations || false
+
   }
 
   public ngOnInit() {
@@ -30,7 +31,7 @@ export class AppComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe({
         next: () => {
-          this.showUploadOverlay = this.activatedRoute.snapshot.firstChild?.data.uploadOverlay || false;
+          this.showUploadOverlay = this.activatedRoute.snapshot.firstChild?.data.uploadOverlay || false
         }
       });
   }

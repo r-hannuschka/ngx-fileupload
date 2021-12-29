@@ -1,8 +1,13 @@
 {
   "builders": {
     "playwright": {
-      "implementation": "./playwright/playwright.js",
+      "implementation": "./playwright/index.js",
       "schema": "./playwright/schema.json",
+      "description": "run e2e with playwright"
+    },
+    "library": {
+      "implementation": "./library/library.js",
+      "schema": "./library/schema.json",
       "description": "run e2e with playwright"
     }
   }

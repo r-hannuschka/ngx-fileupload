@@ -15,10 +15,13 @@
   "dependencies": {
     "@angular-devkit/architect": "0.1202.11",
     "@angular-devkit/core": "12.2.11",
-    "@playwright/test": "1.16.1"
+    "@playwright/test": "1.16.1",
+    "chokidar": "3.5.2",
+    "rxjs": "^6.6.7"
   },
   "devDependencies": {
     "cpx": "1.5.0",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "typescript": "4.5.2"
   }
 }

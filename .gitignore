@@ -17,6 +17,7 @@ dist
 
 # dependencies
 src/node_modules
+src/**/*.tar.gz
 
 # profiling files
 chrome-profiler-events.json
@@ -30,6 +31,7 @@ speed-measure-plugin.json
 *.launch
 .settings/
 *.sublime-workspace
+node_modules
 
 # IDE - VSCode
 .vscode/*

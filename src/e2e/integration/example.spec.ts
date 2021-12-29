@@ -1,7 +1,33 @@
 import { test, expect } from '@playwright/test'
 
-test('basic test', async({page}) => {
-  await page.goto('https://playwright.dev')
-  const title = page.locator('.navbar__inner .navbar__title')
-  await expect(title).toHaveText('Playwright')
-})
+test('test', async ({ page }) => {
+
+  // Go to http://localhost:4201/#/dashboard
+  await page.goto('http://localhost:4201/#/dashboard');
+
+  // Click text=Customize
+  await page.click('text=Customize');
+  await expect(page).toHaveURL('http://localhost:4201/#/customize');
+
+  // Click text=Automatic NgxFileUpload
+  await page.click('text=Automatic NgxFileUpload');
+  await expect(page).toHaveURL('http://localhost:4201/#/auto-upload');
+
+  // Click text=Typescript
+  await page.click('text=Typescript');
+
+  // Click igx-tab-header[role="tab"]:has-text("Html")
+  await page.click('igx-tab-header[role="tab"]:has-text("Html")');
+
+  // Click text=Validation
+  await page.click('text=Validation');
+  await expect(page).toHaveURL('http://localhost:4201/#/validation');
+
+  // Click text=Ngx File Drop
+  await page.click('text=Ngx File Drop');
+  await expect(page).toHaveURL('http://localhost:4201/#/drop-zone');
+
+  // Click text=Ngx Dropzone
+  await page.click('text=Ngx Dropzone');
+  await expect(page).toHaveURL('http://localhost:4201/#/ngx-dropzone');
+});

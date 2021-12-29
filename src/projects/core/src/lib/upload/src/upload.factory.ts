@@ -9,6 +9,7 @@ export interface NgxFileUploadFactory {
     file: File | File[], options: NgxFileUploadOptions, validator?: NgxFileUploadValidation | null): INgxFileUploadRequest | null;
 }
 
+
 /**
  * Factory to create upload requests
  */

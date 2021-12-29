@@ -5,17 +5,11 @@ const config: PlaywrightTestConfig = {
     {
       name: 'Chrome Stable',
       use: {
+        headless: false,
         browserName: 'chromium',
         // Test against Chrome Stable channel.
         channel: 'chrome',
       },
-    },
-    {
-      name: 'Desktop Firefox',
-      use: {
-        browserName: 'firefox',
-        viewport: { width: 800, height: 600 },
-      }
     },
   ],
 };

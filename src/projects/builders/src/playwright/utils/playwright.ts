@@ -39,9 +39,8 @@ export class PlaywrightService {
     if (path && path.trim() !== '') {
       // for windows systems we get something like this foo\\file.spec.ts which not works
       // together with playwright since he do not understand this one (even on windows)
-      // and replace to foo/file.spec.ts
+      // and replace with foo/file.spec.ts
       playwrightArgs.push(relative(this.rootDir ?? '.', path).replace(/\\/g, '/'))
-      console.log(playwrightArgs)
     }
 
     this.process = spawn(playwrightCommand, playwrightArgs, {

@@ -25,6 +25,8 @@ function playwrightBuilder(
   let server: BuilderRun | null = null;
 
   // startup
+  // maybe we need this directly and not later
+  // in this case we need something like a model
   const main$ = from(playwrightService.initialize())
     .pipe(
       switchMap(() => {
@@ -41,7 +43,6 @@ function playwrightBuilder(
   // watch mode
   if (options.watch) {
     const fileWatcherService = new FileWatcherService(options.watchDir)
-    console.dir(options.watchDir)
     const progress$ = main$.pipe(
       switchMap(() => server?.progress ?? EMPTY),
       filter((progress) => progress.state === State.Stopped),

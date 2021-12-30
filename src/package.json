@@ -18,7 +18,8 @@
     "install:builders": "npm i -D ./projects/builders/builders.tar.gz",
     "github-actions:unit-tests-core": "ng test core --watch=false --code-coverage",
     "github-actions:unit-tests-ui": "ng test ui --watch=false --code-coverage",
-    "test:code-coverage": "ng test --code-coverage"
+    "test:code-coverage": "ng test --code-coverage",
+    "postinstall": "npm run build:builders && npm run install:builders"
   },
   "private": true,
   "dependencies": {
@@ -51,6 +52,7 @@
     "@angular/compiler-cli": "13.0.2",
     "@angular/language-service": "13.0.2",
     "@compodoc/compodoc": "1.1.16",
+    "@tsmonkeypatch/ngx-builders": "file:projects/builders/builders.tar.gz",
     "@types/jasmine": "3.10.2",
     "@types/jasminewd2": "2.0.10",
     "@types/node": "16.11.10",

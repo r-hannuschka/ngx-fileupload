@@ -19,7 +19,8 @@
     "github-actions:unit-tests-core": "ng test core --watch=false --code-coverage",
     "github-actions:unit-tests-ui": "ng test ui --watch=false --code-coverage",
     "test:code-coverage": "ng test --code-coverage",
-    "postinstall": "npm run build:builders && npm run install:builders"
+    "preinstall": "node ./bin/package-install projects/builders && npm run build:builders",
+    "postinstall": "npm run install:builders"
   },
   "private": true,
   "dependencies": {

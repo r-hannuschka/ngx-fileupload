@@ -6,6 +6,7 @@ test('test', async ({ page }) => {
   await page.goto('http://localhost:4200/#/dashboard')
 
 
+
   // Click text=Customize
   await page.click('text=Customize')
   await expect(page).toHaveURL('http://localhost:4200/#/customize')

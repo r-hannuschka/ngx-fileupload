@@ -23,7 +23,7 @@ test('test', async ({ page }) => {
 
   // Click text=Validation
   await page.click('text=Validation');
-  await expect(page).toHaveURL('http://localhost:4200/#/validation');
+  await expect(page).toHaveURL('http://localhost:4200/#/validation')
 
   // Click text=Ngx File Drop
   await page.click('text=Ngx File Drop');

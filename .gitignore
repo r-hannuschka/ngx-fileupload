@@ -9,15 +9,12 @@
 /src/server/upload.log
 /src/__ivy_ngcc__
 dist
-*.tar.gz
-!/src/projects/builders/*.tar.gz
 
 # Only exists if Bazel was run
 /bazel-out
 
 # dependencies
 src/node_modules
-src/**/*.tar.gz
 
 # profiling files
 chrome-profiler-events.json

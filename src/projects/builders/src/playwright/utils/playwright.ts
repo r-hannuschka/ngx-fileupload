@@ -13,6 +13,8 @@ export class PlaywrightService {
 
   private rootDir: string | null = null
 
+  private emit = true
+
   constructor(private readonly configPath: string) {}
 
   destroy() {
@@ -29,6 +31,7 @@ export class PlaywrightService {
 
   run(path?: string): Observable<BuilderOutput> {
     if (this.process) {
+      this.emit = false
       this.process.kill()
     }
 
@@ -50,6 +53,7 @@ export class PlaywrightService {
     this.process.on('exit', () => {
       this.notify({ success: true, error: '' })
       this.process = null
+      this.emit = true
     })
 
     this.process.on('error', (error) => this.notify({ success: false, error: error.message }))
@@ -57,6 +61,8 @@ export class PlaywrightService {
   }
 
   private notify(result: BuilderOutput) {
-    this.out$.next(result)
+    if (this.emit) {
+      this.out$.next(result)
+    }
   }
 }

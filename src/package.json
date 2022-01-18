@@ -56,7 +56,7 @@
     "@compodoc/compodoc": "1.1.16",
     "@types/jasmine": "3.10.2",
     "@types/jasminewd2": "2.0.10",
-    "@types/node": "16.11.10",
+    "@types/node": "16.11.20",
     "@typescript-eslint/eslint-plugin": "5.10.0",
     "@typescript-eslint/parser": "5.10.0",
     "angular-cli-ghpages": "1.0.0",

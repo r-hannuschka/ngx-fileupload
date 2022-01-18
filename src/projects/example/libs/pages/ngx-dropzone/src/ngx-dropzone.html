@@ -1,10 +1,10 @@
 <ng-template #example>
   <ngx-file-upload-ui--toolbar [storage]="storage"></ngx-file-upload-ui--toolbar>
-  <ngx-dropzone (change)="onSelect($event)" [accept]="'image/*'">
+  <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg">
     <ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
 
     <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
-      (removed)="onRemove(upload)" [file]="upload.data.raw" [removable]="true">
+      (removed)="onRemove(upload)" [file]="upload.data.files[0].raw" [removable]="true">
       <ngx-dropzone-label>
         <span class="state">
           State: {{upload.data.state | stateToString }}
@@ -23,7 +23,6 @@
 </ng-template>
 
 <p>
-
   For this example we use <a target="blank" href="https://www.npmjs.com/package/ngx-dropzone">ngx-dropzone
     library</a>.
   We want only upload images and this library could also preview images which are uploaded very easy.

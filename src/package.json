@@ -38,7 +38,7 @@
     "igniteui-angular": "13.0.8",
     "ngx-dropzone": "3.0.0",
     "ngx-file-drop": "13.0.0",
-    "ngx-highlightjs": "6.1.0",
+    "ngx-highlightjs": "6.1.1",
     "rxjs": "7.4.0",
     "tslib": "2.3.1"
   },

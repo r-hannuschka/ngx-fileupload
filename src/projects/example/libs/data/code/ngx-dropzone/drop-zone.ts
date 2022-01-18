@@ -83,9 +83,8 @@ export const HTML = `
     <ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
 
     <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
-        (removed)="onRemove(upload)"
-        [file]="upload.data.raw"
-        [removable]="true">
+        (removed)="onRemove(upload)" [file]="upload.data.files[0].raw" [removable]="true">
+
         <ngx-dropzone-label>
             <span class="state">
                 State: {{upload.data.state | stateToString }}

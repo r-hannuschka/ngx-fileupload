@@ -65,7 +65,7 @@
     "express": "4.17.2",
     "express-fileupload": "1.2.1",
     "https-proxy-agent": "5.0.0",
-    "jasmine-core": "3.99.0",
+    "jasmine-core": "4.0.0",
     "jasmine-spec-reporter": "7.0.0",
     "karma": "6.3.9",
     "karma-chrome-launcher": "3.1.0",

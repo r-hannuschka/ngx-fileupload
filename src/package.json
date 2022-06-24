@@ -72,5 +72,8 @@
   },
   "resolutions": {
     "https-proxy-agent": "5.0.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "13.3.8"
   }
 }

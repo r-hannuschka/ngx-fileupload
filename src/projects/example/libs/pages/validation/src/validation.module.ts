@@ -16,12 +16,12 @@ import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
     imports: [
         CommonModule,
         RouterModule.forChild([{
-            path: "validation",
-            component: ValidationPageComponent,
-            data: {
-                uploadOverlay: true
-            }
-        }]),
+                path: "validation",
+                component: ValidationPageComponent,
+                data: {
+                    uploadOverlay: true
+                }
+            }]),
         NgxFileUploadUiModule,
         HighlightModule,
         IgxTabsModule
@@ -36,9 +36,6 @@ import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
         GroupOrComponent,
         GroupMultipleComponent
     ],
-    entryComponents: [
-        ValidationPageComponent
-    ],
-    providers: [],
+    providers: []
 })
 export class ValidationPage {}

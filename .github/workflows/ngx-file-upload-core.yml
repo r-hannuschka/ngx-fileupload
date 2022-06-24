@@ -24,7 +24,7 @@ jobs:
 
       - name: add @angular/cli global
         run: |
-          npm i -g @angular/cli
+          npm i -g @angular/cli@13.1.3
           ng --version
 
       - name: lint

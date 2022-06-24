@@ -9,7 +9,7 @@
 [![dependencies Status](https://david-dm.org/r-hannuschka/ngx-fileupload/status.svg?path=src)](https://david-dm.org/r-hannuschka/ngx-fileupload?path=src)
 [![youtube how tow](https://raw.githubusercontent.com/r-hannuschka/ngx-fileupload/master/bin/youtube.badge.svg)](https://www.youtube.com/watch?v=_dLyu2wceak&list=PL8Y_IacQr6GLyAVCQ12g5J04cY1DL0eSI&index=1)
 
-Angular 12 components for @ ngx-file-upload / core to create a UI. All components were packed in separate modules which can be integrated and used separately as required.
+Angular 14 components for @ngx-file-upload / core to create a UI. All components were packed in separate modules which can be integrated and used separately as required.
 
 ### Angular 9
 

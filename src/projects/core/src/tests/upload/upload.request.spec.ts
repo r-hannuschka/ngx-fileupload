@@ -309,6 +309,27 @@ describe("NgxFileUpload/libs/upload", () => {
         expect(metadataSend).toEqual({ 'mocked': 'request_data' })
     });
 
+    it("should send additional formdata", () => {
+        const request = new NgxFileUploadRequest(httpClient, createNgxFileUploadFile(), {
+            url,
+            formData: {
+                enabled: true,
+                additionalData: {
+                    'token': '12345',
+                    'name': 'mocked'
+                }
+            }
+        })
+
+        request.start();
+        const mockReq = httpMock.expectOne(url)
+        const token = mockReq.request.body.get('token');
+        const name = mockReq.request.body.get('name');
+
+        expect(token).toEqual('12345')
+        expect(name).toEqual('mocked')
+    });
+
     it("should remove invalid files", () => {
         const file1 = createNgxFileUploadFile()
         const file2 = createNgxFileUploadFile()

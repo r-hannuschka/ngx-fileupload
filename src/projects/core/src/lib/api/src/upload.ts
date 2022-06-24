@@ -173,8 +173,14 @@ export interface NgxFileUploadOptions {
          */
         name?: string;
         /**
+         * additional formdata which will send
+         */
+        additionalData?: Record<string, string>;
+        /**
          * additional metadata which will append to formData, requires formData
          * to be enabled
+         * 
+         * @deprecated use additionalData instead
          */
         metadata?: Record<string, unknown>;
     };

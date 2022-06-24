@@ -3,10 +3,6 @@
 
 :host {
 
-    ::ng-deep {
-        @include igx-tabs($dark-tabs);
-    }
-
     .card-list {
         display: flex;
         flex-wrap: wrap;

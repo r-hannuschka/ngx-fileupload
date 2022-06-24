@@ -4,10 +4,6 @@
 
 :host {
 
-    ::ng-deep {
-        @include igx-tabs($dark-tabs);
-    }
-
     ngx-dropzone {
         border-style: solid;
         border-width: 0 2px 2px;

@@ -143,8 +143,10 @@ export interface UploadOptions {
          * namespace where to find
          */
         name?: string;
+        additionalData: Record<string, string>,
         /**
          * additional meta information for file upload as JSON
+         * @deprecated
          */
         metadata?: Record<string, unknown>;
     };

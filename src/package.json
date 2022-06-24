@@ -53,7 +53,7 @@
     "@angular/language-service": "14.0.3",
     "@types/jasmine": "3.10.5",
     "@types/jasminewd2": "2.0.10",
-    "@types/node": "16.11.26",
+    "@types/node": "16.11.41",
     "@typescript-eslint/eslint-plugin": "5.29.0",
     "@typescript-eslint/parser": "5.29.0",
     "angular-cli-ghpages": "1.0.0",

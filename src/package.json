@@ -24,7 +24,6 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/core": "13.3.8",
     "@angular/animations": "13.3.11",
     "@angular/cdk": "13.3.9",
     "@angular/common": "13.3.11",
@@ -35,18 +34,6 @@
     "@angular/platform-browser-dynamic": "13.3.11",
     "@angular/router": "13.3.11",
     "highlight.js": "11.4.0",
-    "igniteui-angular": "13.2.3",
-    "ngx-dropzone": "3.0.0",
-    "ngx-file-drop": "13.0.0",
-    "ngx-highlightjs": "6.1.1",
-    "rxjs": "7.4.0",
-    "tslib": "2.3.1"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "13.3.8",
-    "@angular-eslint/builder": "13.0.1",
-    "@angular-eslint/eslint-plugin": "13.0.1",
-    "@angular-eslint/eslint-plugin-template": "13.0.1",
     "@angular-eslint/schematics": "13.0.1",
     "@angular-eslint/template-parser": "13.0.1",
     "@angular/cli": "13.3.8",

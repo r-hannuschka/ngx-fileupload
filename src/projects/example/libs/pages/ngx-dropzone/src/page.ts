@@ -18,14 +18,14 @@ import { NgxFileUploadUiProgressbarModule, NgxFileUploadUiCommonModule, NgxFileU
         NgxFileUploadUiToolbarModule,
         NgxFileUploadUiProgressbarModule,
         RouterModule.forChild([
-        {
-            path: "ngx-dropzone",
-            component: NgxDropZoneDemoComponent
-        }
-    ])],
+            {
+                path: "ngx-dropzone",
+                component: NgxDropZoneDemoComponent
+            }
+        ])
+    ],
     exports: [RouterModule],
     declarations: [NgxDropZoneDemoComponent],
-    entryComponents: [NgxDropZoneDemoComponent],
-    providers: [],
+    providers: []
 })
 export class Page { }

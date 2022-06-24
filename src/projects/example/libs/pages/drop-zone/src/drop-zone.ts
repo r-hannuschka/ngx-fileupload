@@ -18,14 +18,14 @@ import { DropZoneComponent } from "./ui/drop-zone";
         IgxTabsModule,
         HighlightModule,
         RouterModule.forChild([
-        {
-            path: "drop-zone",
-            component: DropZoneComponent
-        }
-    ])],
+            {
+                path: "drop-zone",
+                component: DropZoneComponent
+            }
+        ])
+    ],
     exports: [RouterModule],
     declarations: [DropZoneComponent],
-    entryComponents: [DropZoneComponent],
-    providers: [],
+    providers: []
 })
 export class DropZone { }

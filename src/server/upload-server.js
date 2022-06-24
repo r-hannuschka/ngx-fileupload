@@ -64,11 +64,13 @@ app.post("/upload/gallery", function(req, res) {
     const uploadedFile = req.files.picture;
     const metadata     = JSON.stringify(req.body);
 
+    console.dir(req.files);
+    console.dir(req.body);
+
     logger.debug(`Picture uploaded: ${uploadedFile.name}`);
     logger.debug(`Metadata send: ${metadata}`)
 
     const message = `New picture added to our gallery ${uploadedFile.name}`;
-
     if(timeout) {
         setTimeout(() => sendResponse(res, uploadedFile, message), timeout);
     } else {

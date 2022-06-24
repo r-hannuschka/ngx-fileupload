@@ -74,7 +74,7 @@ app.post("/upload/gallery", function(req, res) {
     if(timeout) {
         setTimeout(() => sendResponse(res, uploadedFile, message), timeout);
     } else {
-        sendResponse(res, uploadedFile, message, req.body);
+        sendResponse(res, uploadedFile, message);
     }
 });
 

@@ -11,15 +11,14 @@ import { NgxFileUploadUiModule } from "@ngx-file-upload/ui";
         NgxFileUploadUiModule,
         UiModule,
         RouterModule.forChild([{
-            path: "auto-upload",
-            component: DemoComponent
-        }]),
+                path: "auto-upload",
+                component: DemoComponent
+            }]),
         IgxTabsModule,
         HighlightModule
     ],
     exports: [RouterModule],
     declarations: [DemoComponent],
-    entryComponents: [DemoComponent],
-    providers: [],
+    providers: []
 })
 export class AutoUploadDemo { }

@@ -26,9 +26,6 @@ import { ItemTemplateComponent } from "./item-template/item-template.component";
     declarations: [
         ItemTemplateComponent
     ],
-    entryComponents: [
-        ItemTemplateComponent
-    ],
-    providers: [],
+    providers: []
 })
 export class CustomizePage {}

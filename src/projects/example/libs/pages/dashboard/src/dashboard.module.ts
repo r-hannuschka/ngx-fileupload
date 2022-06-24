@@ -9,19 +9,19 @@ import { UiModule } from "projects/example/libs/ui";
         NgxFileUploadUiModule,
         UiModule,
         RouterModule.forChild([
-        {
-            path: "",
-            redirectTo: "dashboard",
-            pathMatch: "full"
-        },
-        {
-            path: "dashboard",
-            component: DashboardComponent
-        }
-    ])],
+            {
+                path: "",
+                redirectTo: "dashboard",
+                pathMatch: "full"
+            },
+            {
+                path: "dashboard",
+                component: DashboardComponent
+            }
+        ])
+    ],
     exports: [RouterModule],
     declarations: [DashboardComponent],
-    entryComponents: [DashboardComponent],
-    providers: [],
+    providers: []
 })
 export class Dashboard { }

@@ -242,7 +242,6 @@
       }
     }
   },
-  "defaultProject": "ngx-fileupload-example",
   "cli": {
     "analytics": "cba65a43-7455-4d45-a3d8-deaec41bb609"
   }

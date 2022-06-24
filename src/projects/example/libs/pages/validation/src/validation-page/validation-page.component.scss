@@ -2,7 +2,4 @@
 @import "variables";
 
 :host {
-    ::ng-deep {
-        @include igx-tabs($dark-tabs);
-    }
 }

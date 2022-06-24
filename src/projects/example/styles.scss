@@ -4,8 +4,6 @@ $ngx-fileupload-example--font-path: "./example/assets/fonts";
 @import '~highlight.js/styles/github.css';
 @import '~igniteui-angular/lib/core/styles/themes/index';
 @import './assets/scss/variables';
-@include igx-core();
-@include igx-theme($purple-palette);
 
 /* You can add global styles to this file, and also import other style files */
 body {
@@ -14,8 +12,4 @@ body {
 
 .error {
     color: map-get($colors, "red");
-}
-
-::ng-deep {
-    @include igx-tabs($dark-tabs);
 }

@@ -223,6 +223,14 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
         formData.append(label, file.raw, file.name);
       })
 
+      const additionalData = formDataOptions.additionalData;
+      console.dir(additionalData);
+      if (additionalData && Object.keys(additionalData).length > 0) {
+        for (let [key, value] of Object.entries(additionalData)) {
+          formData.append(key, value);
+        }
+      }
+
       if (formDataOptions.metadata) {
         formData.append('metadata', JSON.stringify(formDataOptions.metadata));
       }

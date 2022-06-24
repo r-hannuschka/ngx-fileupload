@@ -144,7 +144,12 @@ export interface UploadOptions {
          */
         name?: string;
         /**
+         * additional form data which is send
+         */
+        additionalData?: Record<string, unknown>,
+        /**
          * additional meta information for file upload as JSON
+         * @deprecated
          */
         metadata?: Record<string, unknown>;
     };

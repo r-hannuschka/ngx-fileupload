@@ -62,7 +62,7 @@
     "cors": "2.8.5",
     "eslint": "8.7.0",
     "express": "4.17.3",
-    "express-fileupload": "1.2.1",
+    "express-fileupload": "1.4.0",
     "https-proxy-agent": "5.0.0",
     "igniteui-angular": "14.0.2",
     "jasmine-core": "4.2.0",

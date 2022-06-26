@@ -26,7 +26,7 @@
   "dependencies": {
     "@angular-devkit/core": "14.0.3",
     "@angular/animations": "14.0.3",
-    "@angular/cdk": "13.3.9",
+    "@angular/cdk": "14.0.3",
     "@angular/common": "14.0.3",
     "@angular/compiler": "14.0.3",
     "@angular/core": "14.0.3",

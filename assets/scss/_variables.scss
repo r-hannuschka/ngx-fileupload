@@ -29,14 +29,3 @@ $colors : (
     black: #0D1F2D,
     red: #ED4337
 );
-
-$dark-tabs: igx-tabs-theme(
-    $item-text-color: map-get($colors, textDark),
-    $item-background: map-get($colors, darkBlue),
-    $item-hover-background: map-get($colors, blue),
-    $item-hover-color: #343a40,
-    $item-active-color: map-get($colors, text),
-    $item-active-icon-color: #FFF,
-    $indicator-color: #F8F8F8,
-    $tab-ripple-color: #F8F8F8
-);

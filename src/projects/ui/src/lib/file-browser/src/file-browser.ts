@@ -124,6 +124,7 @@ export class FileBrowserDirective implements OnDestroy {
         /**
          * clear value otherwise change will not trigger again
          */
+        this.fileSelect.files = null;
         this.fileSelect.value = '';
     }
 }

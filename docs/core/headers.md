@@ -47,7 +47,7 @@ export class MyComponent implements OnDestroy, OnInit {
      */
     public multipleFiles(files: File[]) {
 
-        const uploadRequest: NgxFileUploadRequest[] = 
+        const uploadRequest: NgxFileUploadRequest[] =
             this.uploadFactory.createUploadRequest(files, this.uploadOptions);
 
         this.uploadStorage.add(requests);
@@ -74,7 +74,7 @@ interface AuthorizationHeader {
 
 there are 3 ways to pass an authorization header
 
-- passing a string value 
+- passing a string value
 
     ```ts
     /** upload options */
@@ -82,7 +82,7 @@ there are 3 ways to pass an authorization header
         url: "http://localhost:3000/upload/gallery",
         headers: {
             /**
-             * will send header: 
+             * will send header:
              *
              * Authorization: Bearer my-token
              */
@@ -101,7 +101,7 @@ there are 3 ways to pass an authorization header
             /**
              * pass an object, if no key is passed it will take Bearer by default
              * so this is the same as authorization: "my-token"
-             * 
+             *
              * Authorization: Bearer my-token
              */
             authorization: {token: "my-token" },
@@ -118,11 +118,26 @@ there are 3 ways to pass an authorization header
         headers: {
             /**
              * if you set an key this will be used as token name
-             * sends header: 
-             * 
+             * sends header:
+             *
              * Authorization: MyAuthToken my-token
              */
             authorization: {key: "MyAuthToken", token: "my-token" },
         }
     };
     ```
+
+
+## Send HTTP-only cookies
+
+Set `withCredentials` in the upload options when creating a request.
+
+### example
+
+```ts
+/** upload options */
+const uploadOptions: UploadOptions = {
+    url: "http://localhost:3000/upload/gallery",
+    withCredentials: true
+};
+```

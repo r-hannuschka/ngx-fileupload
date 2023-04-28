@@ -1,7 +1,7 @@
 
-# API 
+# API
 
-## FileUploadItemContext 
+## FileUploadItemContext
 
 ```
 export interface FileUploadItemContext {
@@ -150,6 +150,11 @@ export interface UploadOptions {
          */
         metadata?: Record<string, unknown>;
     };
+
+    /**
+     * whether this request should be sent with outgoing credentials (cookies)
+     */
+    withCredentials?: boolean;
 }
 ```
 
@@ -181,7 +186,7 @@ interface NgxFileUploadFactory {
 }
 ```
 
---- 
+---
 
 ## ValidationErrors
 

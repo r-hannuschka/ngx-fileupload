@@ -22,7 +22,8 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
 
   private options: NgxFileUploadOptions = {
     url: "",
-    formData: { enabled: true, name: "file" }
+    formData: { enabled: true, name: "file" },
+    withCredentials: false,
   };
 
   private model: NgxFileUploadRequestModel;
@@ -197,14 +198,15 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
     /**
      * save size on start so we do not call it every time
      * since this running a reduce loop, and the size will not change
-     * anymore after we start it 
+     * anymore after we start it
      */
     this.totalSize = this.model.size;
 
     return this.http.post<string>(this.options.url, uploadBody, {
       reportProgress: true,
+      withCredentials: this.options.withCredentials,
       observe: "events",
-      headers
+      headers,
     }).pipe(
       takeUntil(merge(this.cancel$, this.destroyed$))
     );
@@ -316,7 +318,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
     this.model.state = NgxFileUploadState.PROGRESS;
 
     /**
-     * for some reason the upload is sometimes a bit bigger then the files, 
+     * for some reason the upload is sometimes a bit bigger then the files,
      * pretty sure this happens because of headers which are send makes the request a bit
      * bigger
      */

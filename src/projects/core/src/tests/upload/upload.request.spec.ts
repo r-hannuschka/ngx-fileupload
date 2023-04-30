@@ -188,7 +188,7 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should not start upload, is not pending or idle", () => {
-        const file = createNgxFileUploadFile() 
+        const file = createNgxFileUploadFile()
         const request = new NgxFileUploadRequest(httpClient, file, {url})
         request.state = NgxFileUploadState.PROGRESS
 
@@ -328,6 +328,17 @@ describe("NgxFileUpload/libs/upload", () => {
 
         expect(token).toEqual('12345')
         expect(name).toEqual('mocked')
+    });
+
+    it("should set withCredentials on request", () => {
+        const request = new NgxFileUploadRequest(httpClient, createNgxFileUploadFile(), {
+            url,
+            withCredentials: true
+        })
+        request.start();
+
+        const mockReq = httpMock.expectOne(url)
+        expect(mockReq.request.withCredentials).toEqual(true)
     });
 
     it("should remove invalid files", () => {

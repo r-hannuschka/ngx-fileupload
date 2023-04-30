@@ -179,11 +179,16 @@ export interface NgxFileUploadOptions {
         /**
          * additional metadata which will append to formData, requires formData
          * to be enabled
-         * 
+         *
          * @deprecated use additionalData instead
          */
         metadata?: Record<string, unknown>;
     };
 
     headers?: NgxFileUploadHeaders;
+
+    /**
+     * if set to true will include HTTP-only cookies with the request
+     */
+    withCredentials?: boolean;
 }

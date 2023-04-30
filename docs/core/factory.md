@@ -46,7 +46,7 @@ export class MyComponent implements OnDestroy, OnInit {
      */
     public fileSelectOrDrop(file: File) {
 
-        const uploadRequest: NgxFileUploadRequest = 
+        const uploadRequest: NgxFileUploadRequest =
             this.uploadFactory.createUploadRequest(droppedFile, this.uploadOptions);
 
         this.uploadStorage.add(requests);
@@ -57,7 +57,7 @@ export class MyComponent implements OnDestroy, OnInit {
      */
     public multipleFiles(files: File[]) {
 
-        const uploadRequest: NgxFileUploadRequest[] = 
+        const uploadRequest: NgxFileUploadRequest[] =
             this.uploadFactory.createUploadRequest(files, this.uploadOptions);
 
         this.uploadStorage.add(requests);
@@ -96,9 +96,9 @@ export interface UploadOptions {
         /**
          * only used if FormData is enabled, defines the name which should used
          * in FormData
-         * 
+         *
          * @example
-         * 
+         *
          * // on server
          * req.files.picture;
          */
@@ -108,6 +108,10 @@ export interface UploadOptions {
      * add aditional headers to request
      */
     headers?: NgxFileUploadHeaders;
+    /**
+     * whether this request should be sent with outgoing credentials (cookies)
+     */
+    withCredentials?: boolean;
 }
 ```
 

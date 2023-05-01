@@ -42,7 +42,7 @@
     "tslib": "2.4.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "14.0.3",
+    "@angular-devkit/build-angular": "14.2.11",
     "@angular-eslint/builder": "14.0.0",
     "@angular-eslint/eslint-plugin": "14.0.0",
     "@angular-eslint/eslint-plugin-template": "14.0.0",

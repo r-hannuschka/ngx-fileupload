@@ -19,7 +19,6 @@ import { Dashboard } from "projects/example/libs/pages/dashboard";
 import { ValidationPage } from "projects/example/libs/pages/validation";
 import { DropZone } from "projects/example/libs/pages/drop-zone";
 import { AutoUploadDemo } from "projects/example/libs/pages/auto-upload";
-import { Page as NgxDropZonePage } from "../libs/pages/ngx-dropzone";
 
 const fakeUploadProvider: Provider = {
     provide: HTTP_INTERCEPTORS,
@@ -55,7 +54,6 @@ export function getHighlightLanguages() {
         Dashboard,
         ValidationPage,
         DropZone,
-        NgxDropZonePage
     ],
     bootstrap: [AppComponent],
     providers: [

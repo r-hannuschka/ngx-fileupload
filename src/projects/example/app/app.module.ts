@@ -42,7 +42,7 @@ export function getHighlightLanguages() {
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot([], { useHash: true, relativeLinkResolution: 'legacy' }),
+        RouterModule.forRoot([], { useHash: true }),
         IgxIconModule,
         HighlightModule,
         // app module

@@ -34,7 +34,8 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "projects/example/assets/scss",
-                "projects/example/assets"
+                "projects/example/assets",
+                "node_modules"
               ]
             },
             "scripts": [],

@@ -1,25 +1,6 @@
 <ng-template #example>
   <ngx-file-upload-ui--toolbar [storage]="storage"></ngx-file-upload-ui--toolbar>
-  <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg">
-    <ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
-
-    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
-      (removed)="onRemove(upload)" [file]="upload.data.files[0].raw" [removable]="true">
-      <ngx-dropzone-label>
-        <span class="state">
-          State: {{upload.data.state | stateToString }}
-        </span>
-
-        <!-- add progressbar -->
-        <ngx-file-upload-ui--progressbar-circle [progress]="upload.data.progress" [parts]="12">
-        </ngx-file-upload-ui--progressbar-circle>
-
-        <span class="label">
-          {{ upload.data.name }}
-        </span>
-      </ngx-dropzone-label>
-    </ngx-dropzone-image-preview>
-  </ngx-dropzone>
+  <h1>ngx dropzone is dead</h1>
 </ng-template>
 
 <p>

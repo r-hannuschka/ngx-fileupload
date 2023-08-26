@@ -4,14 +4,12 @@ import { RouterModule } from "@angular/router";
 import { IgxTabsModule } from "igniteui-angular";
 import { HighlightModule } from "ngx-highlightjs";
 
-import { NgxDropzoneModule } from "ngx-dropzone";
 import { NgxDropZoneDemoComponent } from "./ngx-dropzone";
 import { NgxFileUploadUiProgressbarModule, NgxFileUploadUiCommonModule, NgxFileUploadUiToolbarModule } from "@ngx-file-upload/ui";
 
 @NgModule({
     imports: [
         CommonModule,
-        NgxDropzoneModule,
         IgxTabsModule,
         HighlightModule,
         NgxFileUploadUiCommonModule,

@@ -75,7 +75,7 @@
     "karma-jasmine-html-reporter": "2.0.0",
     "karma-mocha-reporter": "2.2.5",
     "letslog": "1.0.12",
-    "ng-packagr": "14.0.2",
+    "ng-packagr": "14.2.2",
     "protractor": "7.0.0",
     "ts-node": "10.8.1",
     "tsickle": "0.46.0",

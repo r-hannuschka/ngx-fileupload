@@ -64,7 +64,7 @@
     "express": "4.18.1",
     "express-fileupload": "1.4.0",
     "https-proxy-agent": "5.0.1",
-    "igniteui-angular": "14.0.2",
+    "igniteui-angular": "14.2.40",
     "jasmine-core": "4.2.0",
     "jasmine-spec-reporter": "7.0.0",
     "karma": "6.4.0",

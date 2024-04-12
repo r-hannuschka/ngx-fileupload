@@ -232,9 +232,6 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
         }
       }
 
-      if (formDataOptions.metadata) {
-        formData.append('metadata', JSON.stringify(formDataOptions.metadata));
-      }
       return formData;
     }
 

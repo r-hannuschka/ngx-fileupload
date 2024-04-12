@@ -19,6 +19,7 @@ This library contains
 
 ## Versions 
 
+- angular@17 - 9.x.x
 - angular@16 - 8.x.x
 - angular@15 - 7.x.x
 - angular@14 - 6.x.x

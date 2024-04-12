@@ -106,24 +106,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-fileupload-example:build"
+            "buildTarget": "ngx-fileupload-example:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngx-fileupload-example:build:production"
+              "buildTarget": "ngx-fileupload-example:build:production"
             },
             "demo": {
-              "browserTarget": "ngx-fileupload-example:build:demo"
+              "buildTarget": "ngx-fileupload-example:build:demo"
             },
             "e2e": {
-              "browserTarget": "ngx-fileupload-example:build:e2e"
+              "buildTarget": "ngx-fileupload-example:build:e2e"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-fileupload-example:build"
+            "buildTarget": "ngx-fileupload-example:build"
           }
         },
         "lint": {

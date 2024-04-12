@@ -13,7 +13,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '18.10'
+          node-version: '20.9.0'
 
       - name: install dependencies
         run: |
@@ -24,7 +24,7 @@ jobs:
 
       - name: add @angular/cli global
         run: |
-          npm i -g @angular/cli@16.2.0
+          npm i -g @angular/cli@17.3.4
           ng version
 
       - name: lint

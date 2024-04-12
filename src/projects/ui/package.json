@@ -1,7 +1,7 @@
 {
   "name": "@ngx-file-upload/ui",
-  "version": "8.0.0",
-  "description": "Angular 16 file upload components for @ngx-file-upload/core",
+  "version": "9.0.0",
+  "description": "Angular 17 file upload components for @ngx-file-upload/core",
   "repository": {
     "url": "https://github.com/r-hannuschka/ngx-fileupload/tree/master/src/projects/ui",
     "type": "git"
@@ -11,7 +11,7 @@
     "ngx",
     "async",
     "angular",
-    "angular 16",
+    "angular 17",
     "file",
     "upload",
     "fileupload",
@@ -20,9 +20,9 @@
     "queue"
   ],
   "peerDependencies": {
-    "@ngx-file-upload/core": "^8.0.0",
-    "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0"
+    "@ngx-file-upload/core": "^9.0.0",
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
   "bugs": {

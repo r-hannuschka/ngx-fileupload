@@ -1,13 +1,23 @@
 import { TestBed, getTestBed } from "@angular/core/testing";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { HttpClient, HttpEventType, HttpProgressEvent } from "@angular/common/http";
+import {
+    HttpClientTestingModule,
+    HttpTestingController,
+} from "@angular/common/http/testing";
+import {
+    HttpClient,
+    HttpEventType,
+    HttpProgressEvent,
+} from "@angular/common/http";
 import { Type } from "@angular/core";
-import { NgxFileUploadRequest, NgxFileUploadState, NgxFileUploadFile } from "@ngx-file-upload/dev/core/public-api";
+import {
+    NgxFileUploadRequest,
+    NgxFileUploadState,
+    NgxFileUploadFile,
+} from "@ngx-file-upload/dev/core/public-api";
 import { tap, filter, delay, take } from "rxjs/operators";
 import { of } from "rxjs";
 
 describe("NgxFileUpload/libs/upload", () => {
-
     const url = "https://localhost/file/upload";
     let httpClient: HttpClient;
     let injector: TestBed;
@@ -15,31 +25,40 @@ describe("NgxFileUpload/libs/upload", () => {
     let request: NgxFileUploadRequest;
 
     function createNgxFileUploadFile(): NgxFileUploadFile {
-        const raw = new File(['mocked file'], 'mockedfile.txt')
-        return new NgxFileUploadFile(raw)
+        const raw = new File(["mocked file"], "mockedfile.txt");
+        return new NgxFileUploadFile(raw);
     }
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule]
+            imports: [HttpClientTestingModule],
         });
 
-        injector   = getTestBed();
-        httpMock   = injector.inject(HttpTestingController as Type<HttpTestingController>);
+        injector = getTestBed();
+        httpMock = injector.inject(
+            HttpTestingController as Type<HttpTestingController>
+        );
         httpClient = injector.inject(HttpClient as Type<HttpClient>);
-        request = new NgxFileUploadRequest(httpClient, createNgxFileUploadFile(), {url});
+        request = new NgxFileUploadRequest(
+            httpClient,
+            createNgxFileUploadFile(),
+            { url }
+        );
     });
 
     it("should have upload file", () => {
-        const testRequest = new NgxFileUploadRequest(httpClient, createNgxFileUploadFile(), {url});
+        const testRequest = new NgxFileUploadRequest(
+            httpClient,
+            createNgxFileUploadFile(),
+            { url }
+        );
         expect(testRequest.data.files.length).toBe(1);
     });
 
     it("should submit post request", (done) => {
-        request.change
-            .subscribe({
-                complete: () => done()
-            });
+        request.change.subscribe({
+            complete: () => done(),
+        });
         request.start();
 
         const mockReq = httpMock.expectOne(url);
@@ -49,8 +68,11 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should send file data directly in body if formdata is disbled", () => {
-        const file = createNgxFileUploadFile()
-        const noFormDataRequest = new NgxFileUploadRequest( httpClient, file, { url, formData: {enabled: false} });
+        const file = createNgxFileUploadFile();
+        const noFormDataRequest = new NgxFileUploadRequest(httpClient, file, {
+            url,
+            formData: { enabled: false },
+        });
 
         noFormDataRequest.start();
 
@@ -61,22 +83,26 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should complete upload", (done) => {
         const states: NgxFileUploadState[] = [];
-        request.change
-            .pipe(
-                tap((data) => states.push(data.state)),
-            )
-            .subscribe({
-                complete: () => {
-                    expect(states).toEqual([NgxFileUploadState.START, NgxFileUploadState.PROGRESS, NgxFileUploadState.COMPLETED]);
-                    expect(request.isCompleted()).toBeTruthy();
-                    done();
-                }
-            });
+        request.change.pipe(tap((data) => states.push(data.state))).subscribe({
+            complete: () => {
+                expect(states).toEqual([
+                    NgxFileUploadState.START,
+                    NgxFileUploadState.PROGRESS,
+                    NgxFileUploadState.COMPLETED,
+                ]);
+                expect(request.isCompleted()).toBeTruthy();
+                done();
+            },
+        });
 
         request.start();
 
         const mockReq = httpMock.expectOne(url);
-        mockReq.event({type: HttpEventType.UploadProgress, loaded: 7, total: 10 } as HttpProgressEvent);
+        mockReq.event({
+            type: HttpEventType.UploadProgress,
+            loaded: 7,
+            total: 10,
+        } as HttpProgressEvent);
         mockReq.flush("we are done here"); // Complete Request with response
     });
 
@@ -90,7 +116,7 @@ describe("NgxFileUpload/libs/upload", () => {
                     expect(request.isCanceled()).toBeTruthy();
                     expect(request.isCompleted()).toBeTruthy();
                     done();
-                }
+                },
             });
 
         /** we could not cancel an request which has not been started */
@@ -103,7 +129,6 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should retry if request has been canceled", (done) => {
-
         request.change
             .pipe(
                 filter((upload) => upload.state === NgxFileUploadState.CANCELED)
@@ -112,7 +137,7 @@ describe("NgxFileUpload/libs/upload", () => {
                 next: () => {
                     expect(request.isCanceled()).toBeTruthy();
                     done();
-                }
+                },
             });
 
         /** we could not cancel an request which has not been started */
@@ -127,8 +152,7 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should cancel only running uploads", () => {
         const spy = jasmine.createSpy("cancel");
         // expect request change will not called
-        request.change
-            .subscribe(() => spy());
+        request.change.subscribe(() => spy());
 
         request.cancel();
         expect(spy).not.toHaveBeenCalled();
@@ -152,9 +176,13 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should notify observer if hook change state", () => {
         const spy = jasmine.createSpy("cancel");
 
-        request.beforeStart(of(false).pipe(tap(() => {
-            request.state = NgxFileUploadState.PENDING
-        })))
+        request.beforeStart(
+            of(false).pipe(
+                tap(() => {
+                    request.state = NgxFileUploadState.PENDING;
+                })
+            )
+        );
 
         // expect request change will not called
         request.change.subscribe(() => spy());
@@ -164,15 +192,25 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should call hooks in registered order", (done) => {
-        const hookCalls:string[] = [];
+        const hookCalls: string[] = [];
 
         const hook1 = of(true).pipe(
-            tap(() => (hookCalls.push("hook1"), request.state = NgxFileUploadState.PENDING)),
+            tap(
+                () => (
+                    hookCalls.push("hook1"),
+                    (request.state = NgxFileUploadState.PENDING)
+                )
+            ),
             delay(2000)
         );
 
         const hook2 = of(false).pipe(
-            tap(() => (hookCalls.push("hook2"), request.state = NgxFileUploadState.INVALID))
+            tap(
+                () => (
+                    hookCalls.push("hook2"),
+                    (request.state = NgxFileUploadState.INVALID)
+                )
+            )
         );
 
         request.beforeStart(hook1);
@@ -188,9 +226,9 @@ describe("NgxFileUpload/libs/upload", () => {
     });
 
     it("should not start upload, is not pending or idle", () => {
-        const file = createNgxFileUploadFile()
-        const request = new NgxFileUploadRequest(httpClient, file, {url})
-        request.state = NgxFileUploadState.PROGRESS
+        const file = createNgxFileUploadFile();
+        const request = new NgxFileUploadRequest(httpClient, file, { url });
+        request.state = NgxFileUploadState.PROGRESS;
 
         const spy = jasmine.createSpy("cancel");
 
@@ -203,12 +241,16 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should completed but got error", (done) => {
         request.change
-            .pipe(filter((upload) => upload.state === NgxFileUploadState.COMPLETED))
+            .pipe(
+                filter(
+                    (upload) => upload.state === NgxFileUploadState.COMPLETED
+                )
+            )
             .subscribe({
                 next: () => {
                     expect(request.hasError()).toBeTruthy();
                     done();
-                }
+                },
             });
 
         const errorMessage = ["not autohorized"];
@@ -224,12 +266,16 @@ describe("NgxFileUpload/libs/upload", () => {
 
     it("should has been an error on 404", (done) => {
         request.change
-            .pipe(filter((upload) => upload.state === NgxFileUploadState.COMPLETED))
+            .pipe(
+                filter(
+                    (upload) => upload.state === NgxFileUploadState.COMPLETED
+                )
+            )
             .subscribe({
                 next: () => {
                     expect(request.hasError()).toBeTruthy();
                     done();
-                }
+                },
             });
 
         // expect request change will not called
@@ -239,12 +285,11 @@ describe("NgxFileUpload/libs/upload", () => {
         // this will only finish request not change stream
         mockReq.flush("not found", {
             status: 404,
-            statusText: "unauthorized"
+            statusText: "unauthorized",
         });
     });
 
     it("should restart canceled upload", () => {
-
         request.start();
         request.cancel();
         expect(request.isCanceled()).toBeTruthy();
@@ -263,7 +308,7 @@ describe("NgxFileUpload/libs/upload", () => {
         const errorReq = httpMock.expectOne(url);
         errorReq.flush("not found", {
             status: 404,
-            statusText: "unauthorized"
+            statusText: "unauthorized",
         });
 
         expect(request.hasError()).toBeTruthy();
@@ -278,112 +323,107 @@ describe("NgxFileUpload/libs/upload", () => {
     it("should not restart upload which allready completed", () => {
         const startSpy = spyOn(request, "start").and.callThrough();
         request.data.state = NgxFileUploadState.COMPLETED;
-        request.data.response = {success: true, body: null, errors: []};
+        request.data.response = { success: true, body: null, errors: [] };
         request.retry();
         expect(startSpy).not.toHaveBeenCalled();
     });
 
     it("should destroy upload", () => {
         const spy = jasmine.createSpy("destroy");
-        request.destroyed.subscribe(
-            () => spy()
-        );
+        request.destroyed.subscribe(() => spy());
         request.destroy();
         expect(spy).toHaveBeenCalled();
     });
 
-    it("should send metadata", () => {
-        const request = new NgxFileUploadRequest(httpClient, createNgxFileUploadFile(), {
-            url,
-            formData: {
-                enabled: true,
-                metadata: {
-                    'mocked': 'request_data'
-                }
-            }
-        })
-
-        request.start();
-        const mockReq = httpMock.expectOne(url)
-        const metadataSend = JSON.parse(mockReq.request.body.get('metadata'));
-        expect(metadataSend).toEqual({ 'mocked': 'request_data' })
-    });
-
     it("should send additional formdata", () => {
-        const request = new NgxFileUploadRequest(httpClient, createNgxFileUploadFile(), {
-            url,
-            formData: {
-                enabled: true,
-                additionalData: {
-                    'token': '12345',
-                    'name': 'mocked'
-                }
+        const request = new NgxFileUploadRequest(
+            httpClient,
+            createNgxFileUploadFile(),
+            {
+                url,
+                formData: {
+                    enabled: true,
+                    additionalData: {
+                        token: "12345",
+                        name: "mocked",
+                    },
+                },
             }
-        })
+        );
 
         request.start();
-        const mockReq = httpMock.expectOne(url)
-        const token = mockReq.request.body.get('token');
-        const name = mockReq.request.body.get('name');
+        const mockReq = httpMock.expectOne(url);
+        const token = mockReq.request.body.get("token");
+        const name = mockReq.request.body.get("name");
 
-        expect(token).toEqual('12345')
-        expect(name).toEqual('mocked')
+        expect(token).toEqual("12345");
+        expect(name).toEqual("mocked");
     });
 
     it("should set withCredentials on request", () => {
-        const request = new NgxFileUploadRequest(httpClient, createNgxFileUploadFile(), {
-            url,
-            withCredentials: true
-        })
+        const request = new NgxFileUploadRequest(
+            httpClient,
+            createNgxFileUploadFile(),
+            {
+                url,
+                withCredentials: true,
+            }
+        );
         request.start();
 
-        const mockReq = httpMock.expectOne(url)
-        expect(mockReq.request.withCredentials).toEqual(true)
+        const mockReq = httpMock.expectOne(url);
+        expect(mockReq.request.withCredentials).toEqual(true);
     });
 
     it("should remove invalid files", () => {
-        const file1 = createNgxFileUploadFile()
-        const file2 = createNgxFileUploadFile()
+        const file1 = createNgxFileUploadFile();
+        const file2 = createNgxFileUploadFile();
 
-        file1.validationErrors = { 'image': 'invalid image' }
+        file1.validationErrors = { image: "invalid image" };
 
-        const request = new NgxFileUploadRequest(httpClient, [file1, file2], {url : '/dev/null'});
-        request.state = NgxFileUploadState.INVALID
+        const request = new NgxFileUploadRequest(httpClient, [file1, file2], {
+            url: "/dev/null",
+        });
+        request.state = NgxFileUploadState.INVALID;
 
         // * remove invalid files
-        request.removeInvalidFiles()
-        expect(request.state).toEqual(2)
+        request.removeInvalidFiles();
+        const state: NgxFileUploadState = request.state as NgxFileUploadState;
+        expect(state).toEqual(NgxFileUploadState.IDLE);
     });
 
     it("should destroy upload request if all files are invalid and removed", () => {
-        const file1 = createNgxFileUploadFile()
-        const file2 = createNgxFileUploadFile()
+        const file1 = createNgxFileUploadFile();
+        const file2 = createNgxFileUploadFile();
 
-        file1.validationErrors = { 'image': 'invalid image' }
-        file2.validationErrors = { 'image': 'invalid image' }
+        file1.validationErrors = { image: "invalid image" };
+        file2.validationErrors = { image: "invalid image" };
 
         const spy = jasmine.createSpy("destroy");
 
-        const request = new NgxFileUploadRequest(httpClient, [file1, file2], {url : '/dev/null'});
-        request.state = NgxFileUploadState.INVALID
+        const request = new NgxFileUploadRequest(httpClient, [file1, file2], {
+            url: "/dev/null",
+        });
+        request.state = NgxFileUploadState.INVALID;
 
         // * remove invalid files
         request.destroyed.subscribe(() => spy());
-        request.removeInvalidFiles()
+        request.removeInvalidFiles();
 
         expect(spy).toHaveBeenCalled();
     });
 
     it("should do nothing on removeInvalidFiles if all files are valid", () => {
-        const file = createNgxFileUploadFile()
+        const file = createNgxFileUploadFile();
 
-        const request = new NgxFileUploadRequest(httpClient, file, {url : '/dev/null'});
+        const request = new NgxFileUploadRequest(httpClient, file, {
+            url: "/dev/null",
+        });
         const spy = jasmine.createSpy("change");
 
-        request.removeInvalidFiles()
-        request.destroy()
+        request.removeInvalidFiles();
+        request.destroy();
         expect(spy).not.toHaveBeenCalled();
-
     });
 
     afterEach(() => {

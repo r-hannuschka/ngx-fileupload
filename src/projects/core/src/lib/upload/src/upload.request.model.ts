@@ -1,52 +1,53 @@
-import { INgxFileUploadFile, INgxFileUploadRequestData, INgxFileUploadRequestModel, NgxFileUploadResponse, NgxFileUploadState, NgxFileUploadValidationErrors } from "../../api"
-import { NgxFileUploadFile } from "./upload.model"
+import {
+  NgxFileUploadState,
+  type INgxFileUploadFile,
+  type INgxFileUploadRequestData,
+  type INgxFileUploadRequestModel,
+  type NgxFileUploadResponse,
+  type NgxFileUploadValidationErrors,
+} from '../../api';
+import type { NgxFileUploadFile } from './upload.file';
 
 /**
  * Represents an upload request, and store the data inside
  */
 export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
 
-  private filesToUpload: NgxFileUploadFile[] = []
+  private errors: NgxFileUploadValidationErrors | null = null;
 
-  constructor(file: INgxFileUploadFile | INgxFileUploadFile[]) {
-    this.filesToUpload = !Array.isArray(file) ? [file] : file
-  }
+  constructor(
+    private readonly filesToUpload: INgxFileUploadFile | INgxFileUploadFile[],
+  ) { }
 
   get files(): NgxFileUploadFile[] {
-    return this.filesToUpload
+    return Array.isArray(this.filesToUpload) ? this.filesToUpload : [this.filesToUpload];
   }
 
   get name(): string[] {
-    return this.files.map((file) => file.name)
+    return this.files.map((file) => file.name);
   }
 
   get size(): number {
-    return this.files.reduce((size, file) => size + file.size, 0)
+    return this.files.reduce((size, file) => size + file.size, 0);
   }
 
   get validationErrors(): NgxFileUploadValidationErrors | null {
-    const validationErrors = this.files.reduce<NgxFileUploadValidationErrors>((errors, file) => {
-      if (file.validationErrors) {
-        errors[file.name] = {...file.validationErrors}
-      }
-      return errors
-    }, {})
-    return Object.keys(validationErrors).length ? validationErrors : null
+    return this.errors;
   }
 
   response: NgxFileUploadResponse = {
     body: null,
     errors: null,
-    success: false
-  }
+    success: false,
+  };
 
-  state: NgxFileUploadState = NgxFileUploadState.IDLE
+  state: NgxFileUploadState = NgxFileUploadState.IDLE;
 
-  uploaded = 0
+  uploaded = 0;
 
-  progress = 0
+  progress = 0;
 
-  hasError = false
+  hasError = false;
 
   toJson(): INgxFileUploadRequestData {
     return {
@@ -58,7 +59,7 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
       size: this.size,
       state: this.state,
       uploaded: this.uploaded,
-      validationErrors: this.validationErrors
-    }
+      validationErrors: this.validationErrors,
+    };
   }
 }

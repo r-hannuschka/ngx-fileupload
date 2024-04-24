@@ -2,9 +2,13 @@ import { NgxFileUploadValidationErrors, INgxFileUploadFile } from "../../api";
 
 export class NgxFileUploadFile implements INgxFileUploadFile {
   readonly raw: File
+
   readonly size: number
+
   readonly name: string
+
   readonly type: string
+
   validationErrors: NgxFileUploadValidationErrors | null = null
 
   public constructor(file: File) {
@@ -14,4 +18,3 @@ export class NgxFileUploadFile implements INgxFileUploadFile {
     this.name = file.name
   }
 }
-

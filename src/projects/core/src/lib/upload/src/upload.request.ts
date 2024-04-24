@@ -1,33 +1,50 @@
 import {
   HttpClient,
+  HttpErrorResponse,
   HttpEvent,
   HttpEventType,
+  HttpHeaders,
   HttpProgressEvent,
   HttpResponse,
-  HttpErrorResponse,
-  HttpHeaders
-} from "@angular/common/http";
-import { Subject, Observable, merge, of, concat } from "rxjs";
-import { takeUntil, filter, switchMap, map, tap, bufferCount } from "rxjs/operators";
-import { NgxFileUploadState, NgxFileUploadResponse, INgxFileUploadRequest, NgxFileUploadOptions, INgxFileUploadRequestData } from "../../api";
-import { NgxFileUploadFile } from "./upload.model";
-import { NgxFileUploadRequestModel } from "./upload.request.model";
+} from '@angular/common/http';
+import { Observable, Subject, concat, from, isObservable, merge, of } from 'rxjs';
+import { bufferCount, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
+import {
+  INgxFileUploadRequest,
+  INgxFileUploadRequestData,
+  NgxFileUploadOptions,
+  NgxFileUploadResponse,
+  NgxFileUploadState,
+  type BeforeStartFn,
+  type NgxFileUploadHeaders,
+  type NgxFileUploadValidationErrors,
+} from '../../api';
+import type { NgxFileUploadFile } from './upload.file';
+import { NgxFileUploadForm } from './upload.form';
+import { NgxFileUploadRequestModel } from './upload.request.model';
 
 export class NgxFileUploadRequest implements INgxFileUploadRequest {
-
   private cancel$: Subject<boolean> = new Subject();
   private change$: Subject<INgxFileUploadRequestData> = new Subject();
   private destroyed$: Subject<boolean> = new Subject();
   private totalSize = -1;
 
   private options: NgxFileUploadOptions = {
-    url: "",
-    formData: { enabled: true, name: "file" },
+    url: '',
     withCredentials: false,
+    transferMethod: 'formdata',
+    formControlNameToKebabCase: false,
   };
 
   private model: NgxFileUploadRequestModel;
-  private hooks: { beforeStart: Observable<boolean>[] } = { beforeStart: [] };
+
+  private readonly uploadForm: NgxFileUploadForm;
+
+  private hooks: { beforeStart: BeforeStartFn[] } = { beforeStart: [] };
+
+  private headers: NgxFileUploadHeaders = {};
+
+  private uploadUrl: string = '';
 
   get change(): Observable<INgxFileUploadRequestData> {
     return this.change$.asObservable();
@@ -42,30 +59,77 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
   }
 
   set state(state: NgxFileUploadState) {
+    const prevState = this.state;
     this.model.state = state;
+
+    if (prevState !== state) {
+        this.notifyObservers();
+    }
   }
 
   get state(): NgxFileUploadState {
     return this.model.state;
   }
 
-  requestId: string = "";
-
-  constructor(
-    private http: HttpClient,
-    files: NgxFileUploadFile | NgxFileUploadFile[],
-    options: NgxFileUploadOptions
-  ) {
-    this.model = new NgxFileUploadRequestModel(files)
-    this.state = this.isInvalid() ? NgxFileUploadState.INVALID : NgxFileUploadState.IDLE
-    this.options = { ...this.options, ...options }
+  get form(): NgxFileUploadForm {
+    return this.uploadForm;
   }
 
-  public beforeStart(hook: Observable<boolean>) {
-    this.hooks.beforeStart = [
-      ...this.hooks.beforeStart,
-      hook
-    ];
+  set url(url: string) {
+    if (this.state <= NgxFileUploadState.IDLE) {
+      this.uploadUrl = url;
+    }
+  }
+
+  get url(): string {
+    return this.uploadUrl;
+  }
+
+  requestId: string = '';
+
+  constructor(private http: HttpClient, files: NgxFileUploadFile | NgxFileUploadFile[], options: NgxFileUploadOptions) {
+    // additional form data hinzufuegen muessen
+    this.options = { ...this.options, ...options };
+    this.model = new NgxFileUploadRequestModel(files);
+
+    this.uploadForm = this.createForm();
+    this.state = this.isInvalid() ? NgxFileUploadState.INVALID : NgxFileUploadState.IDLE;
+
+    this.headers = structuredClone(this.options.headers ?? {});
+    this.url = this.options.url;
+
+    /**
+     * subscribe to validation state change for form, if state changed update validility for uploda request
+     */
+    this.uploadForm.validationState.pipe(takeUntil(this.destroyed$), distinctUntilChanged()).subscribe(() => this.updateValidility());
+  }
+
+  getHeader(name: string) {
+    return this.headers[name];
+  }
+
+  /**
+   * @description add additional headers to request
+   */
+  addHeader(name: string, value: string) {
+    if (this.state !== NgxFileUploadState.IDLE) {
+      return;
+    }
+    this.headers[name] = value;
+  }
+
+  /**
+   * @description remove additional headers from request
+   */
+  removeHeader(name: string) {
+    if (this.state !== NgxFileUploadState.IDLE) {
+      return;
+    }
+    delete this.headers[name];
+  }
+
+  beforeStart(hook: BeforeStartFn) {
+    this.hooks.beforeStart = [...this.hooks.beforeStart, hook];
   }
 
   /**
@@ -105,7 +169,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
   }
 
   isInvalid(): boolean {
-    return this.state === NgxFileUploadState.INVALID || this.model.validationErrors !== null
+    return this.state === NgxFileUploadState.INVALID || this.model.validationErrors !== null;
   }
 
   isProgress(): boolean {
@@ -129,7 +193,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * reset state, and reset errors
    */
   retry() {
-    if (this.isRequestCompleted() && this.hasError() || this.isCanceled()) {
+    if ((this.isRequestCompleted() && this.hasError()) || this.isCanceled()) {
       this.model = new NgxFileUploadRequestModel(this.model.files);
       this.start();
     }
@@ -143,13 +207,19 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
       return;
     }
 
-    this.beforeStartHook$.pipe(
-      filter(isAllowedToStart => isAllowedToStart),
-      tap(() => (this.model.state = NgxFileUploadState.START, this.notifyObservers())),
-      switchMap(() => this.startUploadRequest()),
-    ).subscribe({
+    this.beforeStartHook$.pipe(filter((isAllowedToStart) => isAllowedToStart)).subscribe(() => {
+      this.state = NgxFileUploadState.START;
+    });
+  }
+
+  /**
+   * @description internal use only, before start hooks can become async if they return simple
+   * boolean value or a promise. A boolean Value will turned into a Promise into an observable.
+   */
+  run() {
+    this.startUploadRequest().subscribe({
       next: (event: HttpEvent<string>) => this.handleHttpEvent(event),
-      error: (error: HttpErrorResponse) => this.handleError(error)
+      error: (error: HttpErrorResponse) => this.handleError(error),
     });
   }
 
@@ -158,15 +228,49 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
       return;
     }
 
-    const files = this.data.files.filter((file) => file.validationErrors === null)
+    const files = this.data.files.filter((file) => file.validationErrors === null);
 
     if (files.length) {
-      this.model = new NgxFileUploadRequestModel(files)
-      this.state = NgxFileUploadState.IDLE
-      this.notifyObservers()
+      this.model = new NgxFileUploadRequestModel(files);
+      this.state = NgxFileUploadState.IDLE;
     } else {
-      this.destroy()
+      this.destroy();
     }
+  }
+
+  /**
+   * @description updates validility for upload request
+   */
+  private updateValidility() {
+    if (this.state > NgxFileUploadState.IDLE) {
+      return;
+    }
+
+    let validationErrors: Record<string, unknown> = {};
+
+    // validation errors file
+    validationErrors = this.model.files.reduce<NgxFileUploadValidationErrors>((errors, file) => {
+      if (file.validationErrors) {
+        return {
+          ...errors,
+          [file.name]: { ...file.validationErrors },
+        };
+      }
+      return errors;
+    }, {});
+
+    // validation errors form
+    if (this.form.errors !== null) {
+      validationErrors = { ...validationErrors, ...this.form.errors };
+    }
+
+    const errors = Object.keys(validationErrors).length ? validationErrors : null;
+    if (errors === null) {
+      this.state = NgxFileUploadState.IDLE;
+      return;
+    }
+
+    this.state = NgxFileUploadState.INVALID;
   }
 
   /**
@@ -174,18 +278,33 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * @see https://rxviz.com/v/58GkkYv8
    */
   private get beforeStartHook$(): Observable<boolean> {
-
     const initialState = this.model.state;
     let hook$: Observable<boolean> = of(true);
     if (this.hooks.beforeStart.length) {
-      hook$ = concat(...this.hooks.beforeStart)
-        .pipe(
-          bufferCount(this.hooks.beforeStart.length),
-          map((result) => result.every(isAllowed => isAllowed)),
-          tap(() => this.model.state !== initialState ? this.notifyObservers() : void 0)
-        );
+      const hooks = this.hooks.beforeStart.map((beforeStartFn) => {
+        let hook = beforeStartFn(this);
+        if (!isObservable(hook)) {
+          hook = from(Promise.resolve(hook));
+        }
+        return hook;
+      });
+
+      // push hooks into a stream so everyone is called
+      hook$ = concat(...hooks).pipe(
+        bufferCount(this.hooks.beforeStart.length),
+        map((result) => result.every((isAllowed) => isAllowed)),
+        tap(() => (this.model.state !== initialState ? this.notifyObservers() : void 0)),
+      );
     }
     return hook$;
+  }
+
+  private createForm(): NgxFileUploadForm {
+    const form = new NgxFileUploadForm(this);
+    for (const [name, ctrlOptions] of Object.entries(this.options.formControls ?? {})) {
+      form.addControl(name, ctrlOptions);
+    }
+    return form;
   }
 
   /**
@@ -202,77 +321,92 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
      */
     this.totalSize = this.model.size;
 
-    return this.http.post<string>(this.options.url, uploadBody, {
-      reportProgress: true,
-      withCredentials: this.options.withCredentials,
-      observe: "events",
-      headers,
-    }).pipe(
-      takeUntil(merge(this.cancel$, this.destroyed$))
-    );
+    return this.http
+      .post<string>(this.url, uploadBody, {
+        reportProgress: true,
+        withCredentials: this.options.withCredentials,
+        observe: 'events',
+        headers,
+      })
+      .pipe(takeUntil(merge(this.cancel$, this.destroyed$)));
   }
 
   /**
    * create upload body which will should be send
    */
   private createUploadBody(): FormData | File {
-    if (this.options.formData?.enabled) {
-      const formDataOptions = this.options.formData;
+    if (this.options.transferMethod === 'formdata') {
       const formData = new FormData();
-      const label = formDataOptions.name ?? 'fileupload';
-
       this.model.files.forEach((file) => {
-        formData.append(label, file.raw, file.name);
-      })
+        formData.append('files', file.raw, file.name);
+      });
 
-      const additionalData = formDataOptions.additionalData;
-      if (additionalData && Object.keys(additionalData).length > 0) {
-        for (let [key, value] of Object.entries(additionalData)) {
-          formData.append(key, value);
+      // add form controls
+      for (const [name, ctrl] of this.form.controls()) {
+        if (ctrl.send === false) {
+          continue;
         }
+        formData.append(name, JSON.stringify(ctrl.value));
       }
-
       return formData;
     }
 
+    // we have to add header how the file is named
+    // since transfer method is body we can only upload 1 file
     return this.model.files[0].raw;
   }
 
   /**
    * create upload request headers
    */
-  private createUploadHeaders(): HttpHeaders | undefined {
-    if (this.options.headers) {
-      let headers = new HttpHeaders();
+  private createUploadHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
 
-      if (this.options.headers.authorization) {
-        headers = this.createAuthroizationHeader(headers);
+    /** if transfer method is body send all form data through headers */
+    if (this.options.transferMethod === 'body') {
+      for (const [name, ctrl] of this.form.controls()) {
+        if (ctrl.send === false) {
+          continue;
+        }
+
+        let headerName = name;
+        if (this.options.formControlNameToKebabCase) {
+          headerName = name
+            // transform fooBar to Foo-Bar-
+            .replace(/(?:(\w)([^A-Z]+))/g, (_full, first, rest) => {
+              return first.toUpperCase().concat(rest, '-');
+            })
+            // remove trailing -
+            .slice(0, -1);
+        }
+        headers = headers.append(headerName, JSON.stringify(ctrl.value));
       }
-
-      /** add additional headers which should send */
-      Object.keys(this.options.headers)
-        .filter((header) => header !== "authorization")
-        .forEach((header) => headers = headers.append(header, this.options.headers?.[header] as string));
-
-      return headers;
     }
-    return void 0;
+
+    if (this.headers.authorization) {
+      headers = this.createAuthroizationHeader(headers);
+    }
+
+    /** add additional headers which should send */
+    Object.keys(this.headers)
+      .filter((header) => header !== 'authorization')
+      .forEach((header) => (headers = headers.append(header, this.headers[header] as string)));
+
+    return headers;
   }
 
   /**
    * create authorization header which will send
    */
   private createAuthroizationHeader(headers: HttpHeaders): HttpHeaders {
-    const authHeader = this.options.headers?.authorization;
-
+    const authHeader = this.headers.authorization;
     if (authHeader) {
-      if (typeof authHeader === "string") {
-        headers = headers.append("Authorization", `Bearer ${authHeader}`);
+      if (typeof authHeader === 'string') {
+        headers = headers.append('Authorization', `Bearer ${authHeader}`);
       } else {
-        headers = headers.append("Authorization", `${authHeader.key || "Bearer"} ${authHeader.token}`);
+        headers = headers.append('Authorization', `${authHeader.key ?? 'Bearer'} ${authHeader.token}`);
       }
     }
-
     return headers;
   }
 
@@ -280,14 +414,13 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * request responds with an error
    */
   private handleError(response: HttpErrorResponse) {
-
     let errors: any[] = response.error instanceof ProgressEvent || response.status === 404 ? response.message : response.error;
     errors = Array.isArray(errors) ? errors : [errors];
 
     const uploadResponse: NgxFileUploadResponse = {
       success: false,
       body: null,
-      errors
+      errors,
     };
 
     this.model.state = NgxFileUploadState.COMPLETED;
@@ -301,8 +434,13 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    */
   private handleHttpEvent(event: HttpEvent<string>) {
     switch (event.type) {
-      case HttpEventType.UploadProgress: this.handleProgress(event); break;
-      case HttpEventType.Response: this.handleResponse(event); break;
+      case HttpEventType.UploadProgress:
+        this.handleProgress(event);
+        break;
+
+      case HttpEventType.Response:
+        this.handleResponse(event);
+        break;
     }
   }
 
@@ -311,7 +449,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    */
   private handleProgress(event: HttpProgressEvent) {
     const loaded = event.loaded;
-    const progress = loaded * 100 / this.totalSize;
+    const progress = (loaded * 100) / this.totalSize;
     this.model.state = NgxFileUploadState.PROGRESS;
 
     /**
@@ -331,8 +469,9 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
     const uploadResponse: NgxFileUploadResponse = {
       success: res.ok,
       body: res.body,
-      errors: null
+      errors: null,
     };
+
     this.model.response = uploadResponse;
     this.model.state = NgxFileUploadState.COMPLETED;
     this.notifyObservers();

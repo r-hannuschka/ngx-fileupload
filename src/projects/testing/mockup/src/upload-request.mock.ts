@@ -1,5 +1,5 @@
 import { Observable, Subject } from "rxjs";
-import { INgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadState } from "@ngx-file-upload/core";
+import { INgxFileUploadRequest, INgxFileUploadRequestModel, NgxFileUploadState, type NgxFileUploadValidation } from "@ngx-file-upload/core";
 import { take } from "rxjs/operators";
 import { INgxFileUploadRequestData } from "@ngx-file-upload/dev/core/public-api";
 
@@ -21,7 +21,6 @@ export class UploadRequestMock implements INgxFileUploadRequest {
     change$: Subject<INgxFileUploadRequestData>;
 
     public constructor(model: INgxFileUploadRequestModel) {
-        this.data = model;
         this.change$ = new Subject();
         this.destroy$ = new Subject();
         this.destroyed = this.destroy$.asObservable();

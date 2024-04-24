@@ -1,21 +1,22 @@
-import { TestBed, getTestBed } from "@angular/core/testing";
-import {
-    HttpClientTestingModule,
-    HttpTestingController,
-} from "@angular/common/http/testing";
 import {
     HttpClient,
     HttpEventType,
     HttpProgressEvent,
 } from "@angular/common/http";
-import { Type } from "@angular/core";
 import {
+    HttpClientTestingModule,
+    HttpTestingController,
+} from "@angular/common/http/testing";
+import { Type } from "@angular/core";
+import { TestBed, getTestBed } from "@angular/core/testing";
+import type { NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
+import {
+    NgxFileUploadFile,
     NgxFileUploadRequest,
     NgxFileUploadState,
-    NgxFileUploadFile,
 } from "@ngx-file-upload/dev/core/public-api";
-import { tap, filter, delay, take } from "rxjs/operators";
 import { of } from "rxjs";
+import { delay, filter, take, tap } from "rxjs/operators";
 
 describe("NgxFileUpload/libs/upload", () => {
     const url = "https://localhost/file/upload";
@@ -71,7 +72,7 @@ describe("NgxFileUpload/libs/upload", () => {
         const file = createNgxFileUploadFile();
         const noFormDataRequest = new NgxFileUploadRequest(httpClient, file, {
             url,
-            formData: { enabled: false },
+            transferMethod: 'body',
         });
 
         noFormDataRequest.start();
@@ -358,6 +359,120 @@ describe("NgxFileUpload/libs/upload", () => {
 
         expect(token).toEqual("12345");
         expect(name).toEqual("mocked");
+    });
+
+    it("should add additional form data", () => {
+        const request = new NgxFileUploadRequest(
+            httpClient,
+            createNgxFileUploadFile(),
+            {
+                url,
+                formData: {
+                    enabled: true,
+                },
+            }
+        );
+
+        request.addFormControl("userId", 10);
+
+        request.start();
+        const mockReq = httpMock.expectOne(url);
+        expect(mockReq.request.body.get("userId")).toEqual("10");
+    });
+
+    it("should state invalid if formControl is invalid", () => {
+        const request = new NgxFileUploadRequest(
+            httpClient,
+            createNgxFileUploadFile(),
+            {
+                url,
+                formData: {
+                    enabled: true,
+                },
+            }
+        );
+
+        request.addFormControl(
+            "userId",
+            null,
+            (control): NgxFileUploadValidationErrors | null => {
+                if (!control.value) {
+                    return {
+                        required: true,
+                    };
+                }
+                return null;
+            }
+        );
+
+        // should become invalid
+        expect(request.state).toBe(NgxFileUploadState.INVALID);
+        expect(request.data.validationErrors).toEqual({
+            userId: { required: true },
+        });
+    });
+
+    it("should become valid if form control value is set", () => {
+        const request = new NgxFileUploadRequest(
+            httpClient,
+            createNgxFileUploadFile(),
+            {
+                url,
+                formData: {
+                    enabled: true,
+                },
+            }
+        );
+
+        request.addFormControl(
+            "userId",
+            null,
+            (control): NgxFileUploadValidationErrors | null => {
+                if (!control.value) {
+                    return {
+                        required: true,
+                    };
+                }
+                return null;
+            }
+        );
+
+        // should become invalid
+        expect(request.state).toBe(NgxFileUploadState.INVALID);
+        expect(request.data.validationErrors).toEqual({
+            userId: { required: true },
+        });
+
+        // set value and become valid
+        request.setFormcontrolValue('userId', 100);
+        expect(request.state).toBe(NgxFileUploadState.IDLE);
+    });
+
+    it("should add validator and become invalid", () => {
+        const request = new NgxFileUploadRequest(
+            httpClient,
+            createNgxFileUploadFile(),
+            {
+                url,
+                formData: {
+                    enabled: true,
+                },
+            }
+        );
+
+        request.addFormControl("userId", 100);
+        expect(request.state).toBe(NgxFileUploadState.IDLE);
+        request.addFormControlValidator('userId', () => {
+            return {
+                required: true
+            }
+        })
+
+        // should become invalid
+        expect(request.state).toBe(NgxFileUploadState.INVALID);
+        expect(request.data.validationErrors).toEqual({
+            userId: { required: true },
+        });
     });
 
     it("should set withCredentials on request", () => {

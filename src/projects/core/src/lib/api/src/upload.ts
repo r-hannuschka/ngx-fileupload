@@ -2,12 +2,7 @@ import type { Observable } from 'rxjs';
 import type { NgxFileUploadValidation } from '..';
 import type { NgxFileUploadForm } from '../../upload/src/upload.form';
 import type { NgxFileUploadValidationErrors } from './validation';
-
-export interface NgxFileUploadResponse {
-  success: boolean;
-  errors: any;
-  body: any;
-}
+import type { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 export enum NgxFileUploadState {
   INVALID = 0,
@@ -53,7 +48,7 @@ export interface INgxFileUploadRequestData {
 
   readonly name: string[];
 
-  response: NgxFileUploadResponse | null;
+  response: HttpResponse<unknown> | HttpErrorResponse | null;
 
   state: NgxFileUploadState;
 

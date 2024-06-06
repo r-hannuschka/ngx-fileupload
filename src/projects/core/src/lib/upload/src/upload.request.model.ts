@@ -1,9 +1,9 @@
+import type { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import {
   NgxFileUploadState,
   type INgxFileUploadFile,
   type INgxFileUploadRequestData,
   type INgxFileUploadRequestModel,
-  type NgxFileUploadResponse,
   type NgxFileUploadValidationErrors,
 } from '../../api';
 import type { NgxFileUploadFile } from './upload.file';
@@ -35,11 +35,7 @@ export class NgxFileUploadRequestModel implements INgxFileUploadRequestModel {
     return this.errors;
   }
 
-  response: NgxFileUploadResponse = {
-    body: null,
-    errors: null,
-    success: false,
-  };
+  response: HttpResponse<unknown> | HttpErrorResponse | null = null;
 
   state: NgxFileUploadState = NgxFileUploadState.IDLE;
 

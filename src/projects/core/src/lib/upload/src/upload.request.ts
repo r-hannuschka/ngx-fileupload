@@ -13,7 +13,6 @@ import {
   INgxFileUploadRequest,
   INgxFileUploadRequestData,
   NgxFileUploadOptions,
-  NgxFileUploadResponse,
   NgxFileUploadState,
   type BeforeStartFn,
   type NgxFileUploadHeaders,
@@ -154,7 +153,7 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * sends back an error response
    */
   hasError(): boolean {
-    return this.model.state === NgxFileUploadState.COMPLETED && !this.model.response?.success;
+    return this.model.response instanceof HttpErrorResponse;
   }
 
   isCompleted(ignoreError = false): boolean {
@@ -414,17 +413,8 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
    * request responds with an error
    */
   private handleError(response: HttpErrorResponse) {
-    let errors: any[] = response.error instanceof ProgressEvent || response.status === 404 ? response.message : response.error;
-    errors = Array.isArray(errors) ? errors : [errors];
-
-    const uploadResponse: NgxFileUploadResponse = {
-      success: false,
-      body: null,
-      errors,
-    };
-
     this.model.state = NgxFileUploadState.COMPLETED;
-    this.model.response = uploadResponse;
+    this.model.response = response;
     this.model.hasError = true;
     this.notifyObservers();
   }
@@ -465,14 +455,8 @@ export class NgxFileUploadRequest implements INgxFileUploadRequest {
   /**
    * upload completed with an success
    */
-  private handleResponse(res: HttpResponse<any>) {
-    const uploadResponse: NgxFileUploadResponse = {
-      success: res.ok,
-      body: res.body,
-      errors: null,
-    };
-
-    this.model.response = uploadResponse;
+  private handleResponse(res: HttpResponse<unknown>) {
+    this.model.response = res;
     this.model.state = NgxFileUploadState.COMPLETED;
     this.notifyObservers();
     this.finalizeUpload();

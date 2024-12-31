@@ -1,7 +1,7 @@
 
 import { TestBed, getTestBed } from "@angular/core/testing";
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@angular/common/http/testing";
-import { HttpClient } from "@angular/common/http";
+import { HttpTestingController, TestRequest, provideHttpClientTesting } from "@angular/common/http/testing";
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { Type } from "@angular/core";
 import { NgxFileUploadFile, NgxFileUploadRequest } from "../../lib/upload";
 
@@ -14,8 +14,9 @@ describe("NgxFileUpload/libs/upload", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule]
-        });
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
         injector   = getTestBed();
         httpMock   = injector.inject(HttpTestingController as Type<HttpTestingController>);

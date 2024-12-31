@@ -1,12 +1,5 @@
-import {
-    HttpClient,
-    HttpEventType,
-    HttpProgressEvent,
-} from "@angular/common/http";
-import {
-    HttpClientTestingModule,
-    HttpTestingController,
-} from "@angular/common/http/testing";
+import { HttpClient, HttpEventType, HttpProgressEvent, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
 import { Type } from "@angular/core";
 import { TestBed, getTestBed } from "@angular/core/testing";
 import type { NgxFileUploadValidationErrors } from "@ngx-file-upload/core";
@@ -32,8 +25,9 @@ describe("NgxFileUpload/libs/upload", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-        });
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
         injector = getTestBed();
         httpMock = injector.inject(

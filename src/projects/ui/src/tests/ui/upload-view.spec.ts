@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, inject, waitForAsync } from "@angular/core/testing";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { CommonModule } from "@angular/common";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 import { NgxFileUploadStorage, NgxFileUploadFactory } from "@ngx-file-upload/core";
 import { UploadViewComponent, NgxFileUploadUiModule } from "@ngx-file-upload/dev/ui/public-api";
 import { NgxFileuploadFactoryMock, UploadStorageMock } from "@ngx-file-upload/testing";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe( "Upload Component:", () => {
 
@@ -14,19 +15,15 @@ describe( "Upload Component:", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule( {
-            imports: [
-                CommonModule,
-                NoopAnimationsModule,
-                HttpClientTestingModule,
-                NgxFileUploadUiModule
-            ],
-            declarations: [
-            ],
-            providers: [{
-                provide: NgxFileUploadFactory,
-                useClass: NgxFileuploadFactoryMock
-            }]
-        }).compileComponents();
+    declarations: [],
+    imports: [CommonModule,
+        NoopAnimationsModule,
+        NgxFileUploadUiModule],
+    providers: [{
+            provide: NgxFileUploadFactory,
+            useClass: NgxFileuploadFactoryMock
+        }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     }));
 
     beforeEach(() => {

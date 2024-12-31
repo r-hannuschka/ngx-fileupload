@@ -1,14 +1,16 @@
 import { TestBed, inject } from "@angular/core/testing";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ValidatorMockFactory } from "@ngx-file-upload/testing";
 import { NgxFileUploadFactory } from "../../lib/upload";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe("NgxFileUpload/libs/utils/factory", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-        });
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     });
 
     it("should create single NgxFileUploadRequest", inject([NgxFileUploadFactory], (factory: NgxFileUploadFactory) => {

@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { Component, Type, } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { By } from "@angular/platform-browser";
 
 import {
     FileBrowserDirective,
 } from "@ngx-file-upload/dev/ui/lib/file-browser/src/file-browser";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 @Component({
     template: `
@@ -32,15 +33,13 @@ describe( "NgxFileUploadDirective NoValidator:", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule( {
-            imports: [
-                CommonModule,
-                HttpClientTestingModule
-            ],
-            declarations: [
-                TestItemComponent,
-                FileBrowserDirective
-            ]
-        }).compileComponents();
+    declarations: [
+        TestItemComponent,
+        FileBrowserDirective
+    ],
+    imports: [CommonModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     }));
 
     beforeEach(() => {

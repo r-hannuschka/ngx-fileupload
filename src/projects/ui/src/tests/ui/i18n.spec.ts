@@ -5,8 +5,9 @@ import { UploadToolbarComponent } from "@ngx-file-upload/dev/ui/lib/toolbar/src/
 import { NGX_FILE_UPLOAD_UI_I18N, NgxFileUploadUiI18n, UploadViewComponent, NgxFileUploadUiModule } from "../../public-api";
 import { NgxFileUploadStorage, NgxFileUploadFactory } from "@ngx-file-upload/core";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { NgxFileuploadFactoryMock } from "@ngx-file-upload/testing";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 const i18n: NgxFileUploadUiI18n = {
     common: {
@@ -80,21 +81,16 @@ describe( "I18N:", () => {
 
         beforeEach(waitForAsync(() => {
             TestBed.configureTestingModule( {
-                imports: [
-                    CommonModule,
-                    NoopAnimationsModule,
-                    HttpClientTestingModule,
-                    NgxFileUploadUiModule
-                ],
-                declarations: [
-                ],
-                providers: [{
-                    provide: NgxFileUploadFactory,
-                    useClass: NgxFileuploadFactoryMock,
-                },
-                { provide: NGX_FILE_UPLOAD_UI_I18N, useValue: i18n }
-            ]
-            }).compileComponents();
+    declarations: [],
+    imports: [CommonModule,
+        NoopAnimationsModule,
+        NgxFileUploadUiModule],
+    providers: [{
+            provide: NgxFileUploadFactory,
+            useClass: NgxFileuploadFactoryMock,
+        },
+        { provide: NGX_FILE_UPLOAD_UI_I18N, useValue: i18n }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
         }));
 
         beforeEach(() => {

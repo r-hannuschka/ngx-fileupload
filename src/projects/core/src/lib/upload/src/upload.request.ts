@@ -1,12 +1,4 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpEventType,
-  HttpHeaders,
-  HttpProgressEvent,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaders, HttpProgressEvent, HttpResponse } from '@angular/common/http';
 import { Observable, Subject, concat, from, isObservable, merge, of } from 'rxjs';
 import { bufferCount, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 import {

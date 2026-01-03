@@ -7,7 +7,8 @@ import { NgxFileUploadUiProgressbarModule, ProgressbarComponent } from "@ngx-fil
 import { By } from "@angular/platform-browser";
 
 @Component({
-    template: `<ngx-file-upload-ui--progressbar></ngx-file-upload-ui--progressbar>`
+    template: `<ngx-file-upload-ui--progressbar></ngx-file-upload-ui--progressbar>`,
+    standalone: false
 })
 class TestItemComponent {
 

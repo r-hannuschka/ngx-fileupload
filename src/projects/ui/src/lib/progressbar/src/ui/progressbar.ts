@@ -3,7 +3,8 @@ import { Component, Input, OnInit, ViewChild, ElementRef, Renderer2, NgZone } fr
 @Component({
     selector: "ngx-file-upload-ui--progressbar",
     templateUrl: "progressbar.html",
-    styleUrls: ["./progressbar.scss"]
+    styleUrls: ["./progressbar.scss"],
+    standalone: false
 })
 export class ProgressbarComponent implements OnInit {
 

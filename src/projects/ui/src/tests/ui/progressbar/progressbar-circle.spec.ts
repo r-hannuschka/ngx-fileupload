@@ -15,7 +15,8 @@ import { By } from "@angular/platform-browser";
             }
         </style>
         <ngx-file-upload-ui--progressbar-circle></ngx-file-upload-ui--progressbar-circle>
-    `
+    `,
+    standalone: false
 })
 class TestItemComponent {
 }

@@ -12,7 +12,8 @@ import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http"
 @Component({
     template: `
         <div class="fileupload" ngxFileUpload (add)="onUploadsAdd($event)">
-    `
+    `,
+    standalone: false
 })
 class TestItemComponent {
 

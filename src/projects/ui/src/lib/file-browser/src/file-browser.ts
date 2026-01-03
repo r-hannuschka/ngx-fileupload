@@ -14,7 +14,8 @@ import { Subject } from "rxjs";
  * <button (click)="ngxFileUploadRef.upload()">Upload</button>
  */
 @Directive({
-  selector: "[ngxFileUpload]"
+    selector: "[ngxFileUpload]",
+    standalone: false
 })
 export class FileBrowserDirective implements OnDestroy {
 

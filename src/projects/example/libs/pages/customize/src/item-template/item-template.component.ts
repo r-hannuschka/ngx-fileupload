@@ -11,7 +11,8 @@ import { ExampleUploadStorage } from "projects/example/libs/data/base/upload-sto
 @Component({
     selector: "app-customize--item-template",
     templateUrl: "item-template.component.html",
-    styleUrls: ["./item-template.component.scss"]
+    styleUrls: ["./item-template.component.scss"],
+    standalone: false
 })
 export class ItemTemplateComponent implements OnInit, OnDestroy {
 

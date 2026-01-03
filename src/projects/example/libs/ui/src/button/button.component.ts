@@ -2,7 +2,8 @@ import { Component, OnInit, Input, HostListener, Output, EventEmitter } from "@a
 
 @Component({
     selector: "app-ui--button",
-    templateUrl: "button.component.html"
+    templateUrl: "button.component.html",
+    standalone: false
 })
 
 export class ButtonComponent implements OnInit {

@@ -15,9 +15,10 @@ export interface FileUploadItemContext {
  * view for upload
  */
 @Component({
-  selector: "ngx-file-upload-ui--item",
-  templateUrl: "upload-item.html",
-  styleUrls: ["./upload-item.scss"],
+    selector: "ngx-file-upload-ui--item",
+    templateUrl: "upload-item.html",
+    styleUrls: ["./upload-item.scss"],
+    standalone: false
 })
 export class UploadItemComponent implements AfterViewInit, OnInit, OnDestroy {
 

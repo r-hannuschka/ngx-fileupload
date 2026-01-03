@@ -6,7 +6,8 @@ import * as ExampleCodeData from "projects/example/libs/data/code/ngx-dropzone/d
 @Component({
     selector: "app-ngx-dropzone-demo",
     templateUrl: "./ngx-dropzone.html",
-    styleUrls: ["./ngx-dropzone-demo.scss"]
+    styleUrls: ["./ngx-dropzone-demo.scss"],
+    standalone: false
 })
 export class NgxDropZoneDemoComponent implements OnInit {
 

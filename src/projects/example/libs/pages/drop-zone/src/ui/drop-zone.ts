@@ -7,9 +7,10 @@ import { Subject } from "rxjs";
 import * as ExampleCodeData from "projects/example/libs/data/code/ngx-drop-zone/drop-zone";
 
 @Component({
-  selector: "app-drop-zone",
-  templateUrl: "drop-zone.html",
-  styleUrls: ["./drop-zone.scss"]
+    selector: "app-drop-zone",
+    templateUrl: "drop-zone.html",
+    styleUrls: ["./drop-zone.scss"],
+    standalone: false
 })
 export class DropZoneComponent implements OnDestroy, OnInit {
 

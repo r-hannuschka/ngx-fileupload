@@ -5,7 +5,8 @@ import * as ExampleCodeData from "projects/example/libs/data/code/auto-upload/au
 @Component({
     selector: "app-auto-upload-demo",
     templateUrl: "demo.html",
-    styleUrls: ["./demo.scss"]
+    styleUrls: ["./demo.scss"],
+    standalone: false
 })
 export class DemoComponent implements OnDestroy {
 

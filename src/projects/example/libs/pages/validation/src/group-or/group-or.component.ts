@@ -6,7 +6,8 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
 
 @Component({
     selector: "app-validation--group-or",
-    templateUrl: "group-or.component.html"
+    templateUrl: "group-or.component.html",
+    standalone: false
 })
 export class GroupOrComponent implements OnInit {
 

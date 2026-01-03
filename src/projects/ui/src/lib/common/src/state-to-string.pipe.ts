@@ -9,7 +9,8 @@ import { NgxFileUploadState } from "@ngx-file-upload/core";
  * // prints one of these idle, pending, progress, completed, start, invalid, canceled
  */
 @Pipe({
-    name: "stateToString"
+    name: "stateToString",
+    standalone: false
 })
 export class StateToStringPipe implements PipeTransform {
 

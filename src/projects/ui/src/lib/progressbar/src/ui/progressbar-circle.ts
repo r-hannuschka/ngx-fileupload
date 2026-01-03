@@ -10,7 +10,8 @@ class ProgressbarCircleData {
 @Component({
     selector: "ngx-file-upload-ui--progressbar-circle",
     templateUrl: "progressbar-circle.html",
-    styleUrls: ["./progressbar-circle.scss"]
+    styleUrls: ["./progressbar-circle.scss"],
+    standalone: false
 })
 export class ProgressbarCircleComponent implements OnInit {
 

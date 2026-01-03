@@ -9,7 +9,8 @@ import { NgxFileUploadState } from "@ngx-file-upload/core";
  * <button [disabled]="!(upload.data.state | isCancelAble)">cancel</button>
  */
 @Pipe({
-    name: "isCancelAble"
+    name: "isCancelAble",
+    standalone: false
 })
 export class CancelAblePipe implements PipeTransform {
 

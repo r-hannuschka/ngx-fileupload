@@ -17,6 +17,7 @@ import { NgxFileUploadUiI18nProvider, NgxFileUploadUiI18nCommon, NgxFileUploadUi
     selector: "ngx-file-upload",
     styleUrls: ["./upload-view.scss"],
     templateUrl: "upload-view.html",
+    standalone: false
 })
 export class UploadViewComponent implements OnInit, OnDestroy {
 

@@ -6,7 +6,8 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
 
 @Component({
     selector: "app-validation--is-image",
-    templateUrl: "is-image.component.html"
+    templateUrl: "is-image.component.html",
+    standalone: false
 })
 export class IsImageValidationComponent {
 

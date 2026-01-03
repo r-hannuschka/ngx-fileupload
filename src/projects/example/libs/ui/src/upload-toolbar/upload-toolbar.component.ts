@@ -3,7 +3,8 @@ import { NgxFileUploadValidator, NgxFileUploadStorage, NgxFileUploadOptions, Ngx
 
 @Component({
     selector: "app-ui--upload-toolbar",
-    templateUrl: "upload-toolbar.component.html"
+    templateUrl: "upload-toolbar.component.html",
+    standalone: false
 })
 export class UploadToolbarComponent {
 

@@ -14,7 +14,8 @@ interface InfoData {
 @Component({
     selector: "ngx-file-upload-ui--toolbar",
     templateUrl: "toolbar.html",
-    styleUrls: ["./toolbar.scss"]
+    styleUrls: ["./toolbar.scss"],
+    standalone: false
 })
 export class UploadToolbarComponent implements OnInit, OnDestroy {
 

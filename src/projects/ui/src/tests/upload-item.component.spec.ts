@@ -18,7 +18,8 @@ import { UploadItemComponent, FileUploadItemContext } from "../lib/upload-item/s
             <div class="uploaded">{{upload.uploaded}}</div>
         </ng-template>
         <ngx-file-upload-ui--item *ngFor="let item of uploads" [upload]="item" [template]="customTemplate"></ngx-file-upload-ui--item>
-    `
+    `,
+    standalone: false
 })
 class TestItemComponent {
 

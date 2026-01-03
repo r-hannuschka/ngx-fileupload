@@ -6,7 +6,8 @@ import * as Validators from "projects/example/libs/data/code/utils/validators";
 
 @Component({
     selector: "app-validation--group-multiple",
-    templateUrl: "group-multiple.component.html"
+    templateUrl: "group-multiple.component.html",
+    standalone: false
 })
 export class GroupMultipleComponent implements OnInit {
  

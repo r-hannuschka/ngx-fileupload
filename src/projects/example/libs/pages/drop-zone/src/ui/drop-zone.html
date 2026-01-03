@@ -1,65 +1,66 @@
 <ng-template #example>
-    <!-- add also actions for upload, clear and remove all -->
-    <ngx-file-upload-ui--toolbar [storage]="uploadStorage"></ngx-file-upload-ui--toolbar>
+  <!-- add also actions for upload, clear and remove all -->
+  <ngx-file-upload-ui--toolbar [storage]="uploadStorage"></ngx-file-upload-ui--toolbar>
 
-    <h1>ngx-file-drop deprecated</h1>
+  <h1>ngx-file-drop deprecated</h1>
 
-    <div class="files">
-        <div *ngFor="let upload of uploads" class="upload">
-            <div class="data">
-                <span class="name">{{upload.data.name}}</span>
-                <span class="uploaded">{{upload.data.uploaded | fileSize}} | {{upload.data.size | fileSize}} | {{upload.data.progress}}%</span>
-                <span class="state">{{upload.data.state | stateToString}}</span>
-            </div>
-
-            <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="1" [duration]="100">
-            </ngx-file-upload-ui--progressbar>
+  <div class="files">
+    @for (upload of uploads; track upload) {
+      <div class="upload">
+        <div class="data">
+          <span class="name">{{upload.data.name}}</span>
+          <span class="uploaded">{{upload.data.uploaded | fileSize}} | {{upload.data.size | fileSize}} | {{upload.data.progress}}%</span>
+          <span class="state">{{upload.data.state | stateToString}}</span>
         </div>
-    </div>
+        <ngx-file-upload-ui--progressbar [progress]="upload.data.progress" [parts]="5" [gap]="1" [duration]="100">
+        </ngx-file-upload-ui--progressbar>
+      </div>
+    }
+  </div>
 </ng-template>
 
 <!-- SECTION CONTENT -->
 <p>
-    For this example we use <a target="blank" href="https://www.npmjs.com/package/ngx-file-drop">ngx-file-drop
-        library</a> for drag and drop which can also handles drag n drop directories. There are other good librarys out
-    for drag and drop we decide to use this one for following reasons:
+  For this example we use <a target="blank" href="https://www.npmjs.com/package/ngx-file-drop">ngx-file-drop
+library</a> for drag and drop which can also handles drag n drop directories. There are other good librarys out
+for drag and drop we decide to use this one for following reasons:
 </p>
 <ul>
-    <li>Well maintained</li>
-    <li>no third party libraries involved</li>
-    <li>Well tested by community</li>
+  <li>Well maintained</li>
+  <li>no third party libraries involved</li>
+  <li>Well tested by community</li>
 </ul>
 <p>Since we dont use ngx-fileupload browser, we have to take care when files have been dropped, create a new
-    NgxFileUploadRequest with NgxFileUploadFactory and put every NgxFileUploadRequest into storage.</p>
+NgxFileUploadRequest with NgxFileUploadFactory and put every NgxFileUploadRequest into storage.</p>
 
 <hr />
 
 <igx-tabs>
-    <igx-tab-item>
-        <igx-tab-header>Demo</igx-tab-header>
-        <igx-tab-content>
-            <ng-container [ngTemplateOutlet]="example"></ng-container>
-        </igx-tab-content>
-    </igx-tab-item>
+  <igx-tab-item>
+    <igx-tab-header>Demo</igx-tab-header>
+    <igx-tab-content>
+      <ng-container [ngTemplateOutlet]="example"></ng-container>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tab-item>
-        <igx-tab-header>Typescript</igx-tab-header>
-        <igx-tab-content>
-            <pre><code [highlight]="code.MODULE"></code></pre>
-        </igx-tab-content>
-    </igx-tab-item>
+  <igx-tab-item>
+    <igx-tab-header>Typescript</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="code.MODULE"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tab-item>
-        <igx-tab-header>Html</igx-tab-header>
-        <igx-tab-content>
-            <pre><code [highlight]="code.HTML"></code></pre>
-        </igx-tab-content>
-    </igx-tab-item>
+  <igx-tab-item>
+    <igx-tab-header>Html</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="code.HTML"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 
-    <igx-tab-item>
-        <igx-tab-header>Scss</igx-tab-header>
-        <igx-tab-content>
-            <pre><code [highlight]="code.SCSS"></code></pre>
-        </igx-tab-content>
-    </igx-tab-item>
+  <igx-tab-item>
+    <igx-tab-header>Scss</igx-tab-header>
+    <igx-tab-content>
+      <pre><code [highlight]="code.SCSS"></code></pre>
+    </igx-tab-content>
+  </igx-tab-item>
 </igx-tabs>

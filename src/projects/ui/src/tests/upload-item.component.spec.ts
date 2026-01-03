@@ -13,12 +13,14 @@ import { UploadItemComponent, FileUploadItemContext } from "../lib/upload-item/s
 @Component({
     template: `
         <ng-template #itemTemplate let-upload="data">
-            <div class="name">{{upload.name}}</div>
-            <div class="size">{{upload.size}}</div>
-            <div class="uploaded">{{upload.uploaded}}</div>
+          <div class="name">{{upload.name}}</div>
+          <div class="size">{{upload.size}}</div>
+          <div class="uploaded">{{upload.uploaded}}</div>
         </ng-template>
-        <ngx-file-upload-ui--item *ngFor="let item of uploads" [upload]="item" [template]="customTemplate"></ngx-file-upload-ui--item>
-    `,
+        @for (item of uploads; track item) {
+          <ngx-file-upload-ui--item [upload]="item" [template]="customTemplate"></ngx-file-upload-ui--item>
+        }
+        `,
     standalone: false
 })
 class TestItemComponent {

@@ -41,18 +41,22 @@
         </div>
       </div>
 
-      <div class="card-footer" *ngIf="upload.isCompleted() || upload.isInvalid()">
-
-        <!-- response completed show error / success -->
-        <ng-container *ngIf="upload.data.state === uploadStates.COMPLETED"
-          [ngTemplateOutlet]="upload.data.hasError ? errorTemplate : successTemplate"
-          [ngTemplateOutletContext]="{data: upload.data.hasError ? upload.data.response.errors : upload.data.name}">
-        </ng-container>
-
-        <ng-container *ngIf="upload.data.validationErrors" [ngTemplateOutlet]="invalidTemplate"
-          [ngTemplateOutletContext]="{data: upload.data.validationErrors}">
-        </ng-container>
-      </div>
+      @if (upload.isCompleted() || upload.isInvalid()) {
+        <div class="card-footer">
+          <!-- response completed show error / success -->
+          @if (upload.data.state === uploadStates.COMPLETED) {
+            <ng-container
+              [ngTemplateOutlet]="upload.data.hasError ? errorTemplate : successTemplate"
+              [ngTemplateOutletContext]="{data: upload.data.hasError ? upload.data.response.errors : upload.data.name}">
+            </ng-container>
+          }
+          @if (upload.data.validationErrors) {
+            <ng-container [ngTemplateOutlet]="invalidTemplate"
+              [ngTemplateOutletContext]="{data: upload.data.validationErrors}">
+            </ng-container>
+          }
+        </div>
+      }
     </div>
   </div>
 </ng-template>
@@ -60,7 +64,9 @@
 <!-- upload error template -->
 <ng-template #errorTemplate let-errors="data">
   <ul class="errors">
-    <li *ngFor="let error of errors" class="error">{{error}}</li>
+    @for (error of errors; track error) {
+      <li class="error">{{error}}</li>
+    }
   </ul>
 </ng-template>
 
@@ -74,9 +80,11 @@
 <!-- upload validation error template -->
 <ng-template #invalidTemplate let-validationErrors="data">
   <ul class="errors">
-    <li class="error" *ngFor="let error of validationErrors | keyvalue">
-      {{error.value}}
-    </li>
+    @for (error of validationErrors | keyvalue; track error) {
+      <li class="error">
+        {{error.value}}
+      </li>
+    }
   </ul>
 </ng-template>
 
@@ -101,9 +109,11 @@
 
           <!-- fileuploads goes here -->
           <div class="card-list">
-            <ng-container *ngFor="let upload of uploads" [ngTemplateOutlet]="itemTemplate"
-              [ngTemplateOutletContext]="{upload: upload}">
-            </ng-container>
+            @for (upload of uploads; track upload) {
+              <ng-container [ngTemplateOutlet]="itemTemplate"
+                [ngTemplateOutletContext]="{upload: upload}">
+              </ng-container>
+            }
           </div>
         </div>
       </igx-tab-content>

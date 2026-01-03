@@ -1,4 +1,6 @@
 <button type="button" class="btn" [ngClass]="class" [disabled]="disabled">
-    <ng-content select="i.icon-left"></ng-content>
-    <span *ngIf="label && label !== ''">{{label}}</span>
+  <ng-content select="i.icon-left"></ng-content>
+  @if (label && label !== '') {
+    <span>{{label}}</span>
+  }
 </button>

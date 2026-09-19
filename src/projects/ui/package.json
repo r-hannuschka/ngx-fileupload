@@ -21,7 +21,7 @@
   ],
   "peerDependencies": {
     "@ngx-file-upload/core": "^6.0.0",
-    "@angular/common": "^14.0.0",
+    "@angular/common": "^19.2.16",
     "@angular/core": "^14.0.0"
   },
   "author": "Ralf Hannuschka (https://github.com/r-hannuschka)",
